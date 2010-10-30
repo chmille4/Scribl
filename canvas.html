@@ -1,0 +1,77 @@
+<!DOCTYPE HTML> 
+<html lang="en">
+	<head>
+		<script src="gene.js" ></script> 
+		<script src="track.js" ></script> 
+		
+		
+		<script> 
+				function draw() {  
+				  	var canvas = document.getElementById("canvas");  
+				  	var ctx = canvas.getContext("2d");  
+				
+/*					chart = new BChart();
+					track = new chart.addTrack;
+					track.addGene(ctx, 200, 100);
+					track.gene.draw();
+*/				
+					obj = new addGene(ctx, 100, 100);
+				//	obj.canvas.fillStyle = "blue";
+					obj.draw();
+					ctx.save();
+	  	//			drawGene1(ctx, 400, 10, 1, 1);
+					ctx.translate(100, 0);
+//					ctx.translate(200, 100);
+//					ctx.rotate(180 * Math.PI / 180);
+//					ctx.rotate(Math.PI);
+//					ctx.transform(cos, sin, -sin, cos, 0, 0);
+//					ctx.setTransform(-1, 0, 0, 1, 200, 200);  
+		//			drawGene1(ctx, 100, 50, 6, 1.1);
+/*					obj1 = new addGene(ctx, 100, 100, '-');
+				//	obj1.canvas.fillStyle = "red";
+					obj1.draw();
+					
+					ctx.restore();
+					
+					ctx.translate(50, 110);
+					obj1 = new addGene(ctx, 100, 50, '+');
+					obj1.draw();*/
+				}
+				
+				function draw1() {  
+				  var canvas = document.getElementById("canvas");  
+				  var ctx = canvas.getContext("2d");  
+
+				  var sin = Math.sin(Math.PI/6);  
+				  var cos = Math.cos(Math.PI/6);  
+				  ctx.translate(200, 200);  
+				  var c = 0;  
+				 // for (var i=0; i <= 2; i++) {  
+				  //  c = Math.floor(255 / 12 * i);  
+				  //  ctx.fillStyle = "rgb(" + c + "," + c + "," + c + ")";  
+					var lineargradient = ctx.createLinearGradient(50,0,50,10);  
+					lineargradient.addColorStop(0,'#99CCFF');  
+					lineargradient.addColorStop(1,'rgb(63, 128, 205)');
+					ctx.fillStyle = lineargradient;
+//				    ctx.fillRect(0, 0, 100, 10);  
+					 ctx.translate(100, 0);
+				    ctx.transform(-1, 0, 0, -1, 0, 30);  
+				    ctx.fillRect(0, 0, 100, 10);  
+					 
+//				    ctx.transform(cos, sin, -sin, cos, 0, 10);
+				 // }  
+
+				  ctx.setTransform(-1, 0, 0, 1, 200, 200);  
+				  ctx.fillStyle = "rgba(255, 128, 255, 0.5)";  
+
+				}
+		</script>
+
+	</head>  
+	
+	<body onload="draw()">  
+		<canvas id="canvas" width="600" height="400"></canvas>  
+		<canvas id="ref" width="300" height="400">Hi</canvas>  
+	</body>
+	
+</html>

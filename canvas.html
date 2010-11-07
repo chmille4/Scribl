@@ -2,36 +2,55 @@
 <html lang="en">
 	<head>
 		<script src="gene.js" ></script> 
-		<script src="track.js" ></script> 
+		<script src="BChart.js" ></script> 
 		
 		
 		<script> 
-				function draw() {  
-				  	var canvas = document.getElementById("canvas");  
-				  	var ctx = canvas.getContext("2d");  
-				
-/*					chart = new BChart();
-					track = new chart.addTrack;
-					track.addGene(ctx, 200, 100);
-					track.gene.draw();
-*/				
-					gene1 = new addGene(ctx, 100, 100, '+');
-					gene1.name = "Gene 1"
-					gene1.draw();
-//					ctx.save();
-					ctx.translate(150, 0);
 
-					gene2 = new addGene(ctx, 200, 100, '-');
-					gene2.name = "Gene 2"
-					gene2.draw();
+				function draw() {  
 					
-//					ctx.restore();
+					// Get Canvas and Create Chart
+				  	var canvas = document.getElementById("canvas");  	
+							
+					chart = new BChart(canvas, 500);
+					chart.scale = 500;
 					
-					ctx.translate(50, 110);
-					gene3 = new addGene(ctx, 400, 50, '+');
-					gene3.name = "Gene 3"
-					gene3.draw();
-				}
+					// chart options					
+//					chart.prettyScale = false;
+//					chart.minScale = 0;
+//					chart.majorTick = 50;
+//					chart.minorTickColor = "red";
+//					chart.minorTick = 5;
+				//	chart.trackSizes = 10;
+				
+					// Create Track 1
+					track1 = chart.addTrack();	
+					
+					// Add Gene 1 to Track 2
+					gene = track1.addGene( 10, 150, '+');
+					gene.name = "Gene 35";	
+				
+					// Add Gene 2 to track 1
+					gene1 = track1.addGene( 200, 250, '-');
+					gene1.name = "Met5";					
+				
+					// Create Track 2
+					track2 = chart.addTrack();
+					
+					// Add Gene 3 to Track 2
+					gene3 = track2.addGene( 10, 200, '-');				
+					gene3.name = "hi";
+
+					// Create Track 3
+					track3 = chart.addTrack();
+
+					// Add Gene 3 to Track 2
+					gene4 = track3.addGene( 50, 200, '+');
+					
+					// Draw Chart
+					chart.draw();
+	
+			}
 				
 
 		</script>
@@ -39,8 +58,8 @@
 	</head>  
 	
 	<body onload="draw()">  
-		<canvas id="canvas" width="600" height="400"></canvas>  
-		<canvas id="ref" width="300" height="400">Hi</canvas>  
+		<canvas id="canvas" width="600" height="10000"></canvas>  
+
 	</body>
 	
 </html>

@@ -1,0 +1,107 @@
+
+
+<!DOCTYPE html>
+<html>
+  <head>
+		<script src="gene.js" ></script> 
+		<script src="BChart.js" ></script>
+		<script src="genbank.js"></script>
+  <style>
+
+  </style>
+  </head>
+  <body style="font: 75% Lucida Grande, Trebuchet MS">
+    <div id="content"></div>
+    <p id="log" style="color: gray"></p>
+    <script>
+      // Content section used alot
+      var content = document.getElementById('content');
+      
+      if (!window.FileReader) {
+        content.innerHTML = "<p>This browser doesnt support the File API</p>";
+      } else {
+        // Page Layout
+        content.innerHTML =
+          '<p>Pick a file below or drag one into this area <br> <input type="file" id="file" /></p>' +
+          '<p><b>Name:</b> <span id="name"></span><br>' +
+          '<b>File Size:</b> <span id="size"></span><br>' +
+          '<b>Content:</b> <br><br> <span id="file-content"></span>' +
+          '</p>';
+      
+        // Prints out file properties.
+        function displayFile(file) {
+          document.getElementById('name').textContent = file.fileName;
+          document.getElementById('size').textContent = file.fileSize;
+          
+      
+          var reader = new FileReader();
+      
+          reader.onload = function(event) {
+            document.getElementById('file-content').innerHTML = 
+              event.target.result.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n|\r/g, '<br>');
+          };
+      
+          reader.onerror = function() {
+            document.getElementById('file-content').innerHTML = 'Unable to read ' + file.fileName;
+          };
+      
+          reader.readAsText(file);
+      
+        }
+
+        // Displays gene charts.
+        function displayChart(file) {
+          document.getElementById('name').textContent = file.fileName;
+          document.getElementById('size').textContent = file.fileSize;
+          
+      
+          var reader = new FileReader();
+      
+          reader.onload = function(event) {
+				var canvas = document.getElementById('canvas');
+				genbank(event.target.result, canvas);
+	
+            // document.getElementById('file-content').innerHTML = 
+            //   event.target.result.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n|\r/g, '<br>');
+          };
+      
+          reader.onerror = function() {
+            document.getElementById('file-content').innerHTML = 'Unable to read ' + file.fileName;
+          };
+      
+          reader.readAsText(file);
+      
+        }		 
+      
+        // Input handler
+        document.getElementById('file').onchange = function() {
+          displayFile(this.files[0]);
+        };
+      
+        // Reduce movement by adding invisible border
+        content.style.border = '4px solid transparent';
+      
+        // Add dragging events
+        content.ondragenter = function() {
+          content.style.border = '4px solid #b1ecb3';
+          return false;
+        };
+      
+        content.ondragover = function() {
+          return false;
+        };
+      
+        content.ondragleave = function() {
+          return false;
+        };
+      
+        content.ondrop = function(event) {
+          content.style.border = '4px solid transparent';
+          displayChart(event.dataTransfer.files[0]);
+          return false;
+        };
+      }
+    </script>
+<canvas id="canvas" width="10000" height="10000"></canvas>  
+  </body>
+</html>​

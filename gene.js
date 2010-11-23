@@ -67,9 +67,9 @@
 						bc_wdth_y = y + height - roundness;
 
 						// arrow x and control coords
-						a_b_x = x + length - roundness;  // bottom x coord
+						a_b_x = x + length - roundness;  // bottom x coord					
 						a_t_x = x + length - roundness; // top point x coord
-						a_max_x = x + length;  // the furthes point of the arrow
+						a_max_x = x + length;  // the furthest point of the arrow
 						// use bezier quadratic equation to calculate control point x coord
 						t = .5  // solve for end of arrow
 						a_ctrl_x = ( a_max_x - (1-t)*(1-t)*a_b_x - t*t*a_t_x ) / ( 2*(1-t)*t )
@@ -89,6 +89,7 @@
 						// bottom slope
 						bs_ctrl_y = y + height;
 						bs_ctrl_x = ( (-bs_ctrl_y - bs_intercept)/slope ); 	// control point
+						
 						bs_lgth_y = y + height; 	// horizontal point
 						bs_lgth_x = bs_ctrl_x - roundness;											
 						bs_slpe_x = bs_ctrl_x + roundness;		// slope point
@@ -99,7 +100,7 @@
 						ts_ctrl_y = y;
 						ts_ctrl_x = (ts_ctrl_y + ts_intercept)/slope ; 	// control point      
 						ts_lgth_y = y; 	// horizontal point
-						ts_lgth_x = ts_ctrl_x - roundness;											
+						ts_lgth_x = ts_ctrl_x - roundness;	
 						ts_slpe_x = ts_ctrl_x + roundness;		// slope point
 						ts_slpe_y = -(ts_slope * ts_slpe_x + ts_intercept);
 
@@ -167,7 +168,7 @@
 					this.slope = 1;
 					this.canvas = ctx;
 					this.name = ""
-					this.canvas.font = '30px arial';
+					this.canvas.font = '20px arial';
 					this.position = position;						
 					
 					// color default - blue linear gradient
@@ -177,13 +178,15 @@
 					this.canvas.fillStyle = lineargradient;
 					
 					// accessors
-					this.roundness = function() { return (this.height * .06); }
-				
+					this.roundness = 6;
+					this.getRoundness = function() { return (this.height * this.roundness/100); }
+//					this.roundness = this.height * .06
+
 					// Draw gene
 					this.draw = function(percentScale) {
 						if (percentScale == undefined)
 							percentScale = 1;
-						drawGene(this.canvas, this.name, this.position*percentScale, length*percentScale, this.height, this.roundness(), this.slope, strand);
+						drawGene(this.canvas, this.name, this.position*percentScale, length*percentScale, this.height, this.getRoundness(), this.slope, strand);
 						
 						// check if track height is too small for gene
 						if (this.height > this.track.height)

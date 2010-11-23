@@ -9,25 +9,32 @@
 		// chart defaults
 		this.trackSizes = 30;	
 		this.trackBuffer = 5;
-		this.prettyScale = true;
-		this.maxScale = undefined;
-		this.minScale = undefined;
-		this.scaleSize = 15;
-		this.scaleFontSize = 15;
+		this.scale = {};
+		this.scale.pretty = true;
+		this.scale.max = undefined;
+		this.scale.min = undefined;
+		this.scale.size = 15;
+		this.scale.font = {};
+		this.scale.font.size = 15;
 		this.canvas = ctx;
 		
 		// tick defaults
-		this.majorTick = 100;
-		this.majorTickColor = "black";
-		this.minorTick = 10;
-		this.minorTickColor = "rgb(55,55,55)";
-		this.halfTickColor = "rgb(10,10,10)";
+		this.tick = {};
+		this.tick.major = {};
+		this.tick.major.size = 100;
+		this.tick.major.color = "black";
+		this.tick.minor = {};
+		this.tick.minor.size = 10;
+		this.tick.minor.color = "rgb(55,55,55)";
+		this.tick.halfColor = "rgb(10,10,10)";
 		
 		// private variables
 		var tracks = [];
-		this.percentScale = function() { return (width / ( this.maxScale - this.minScale) ); }
-		this.scaleTrackSize = function() { return ( this.scaleSize + this.scaleFontSize ); }
-		
+		this.ttracks = tracks;
+		this.percentScale = function() { return (width / ( this.scale.max - this.scale.min) ); }
+		var scaleSize = this.scale.size;
+		var scaleFontSize = this.scale.font.size
+		this.scale.trackSize = function() { return ( this.size + this.font.size ); }
 			
 		// add a new track to the chart
 		this.addTrack = function() {
@@ -38,32 +45,33 @@
 			return track_new;
 		}
 		
+		
 		// draws chart
 		this.draw = function() {
-			var offset = ctx.measureText('0').width/2;
-			ctx.translate(offset, 0);
+			this.offset = ctx.measureText('0').width/2;
+			ctx.translate(this.offset, 0);
 			
 			// draw scale
 			ctx.save();
-			ctx.font = this.scaleFontSize + "px arial";
+			ctx.font = this.scale.font.size + "px arial";
 			ctx.fillStyle = "black";
 			ctx.textBaseline = "top";
 			
 			// make scale pretty by starting and ending the scale at major ticks
-			if (this.prettyScale) {
-				this.minScale -= this.minScale % this.majorTick
-				this.maxScale += this.majorTick - (this.maxScale % this.majorTick)				
+			if (this.scale.pretty) {
+				this.scale.min -= this.scale.min % this.tick.major.size
+				this.scale.max += this.tick.major.size - (this.scale.max % this.tick.major.size)				
 			}
 			
 			// determine tick sizes and vertical tick positions
-			var tickStartPos = this.scaleFontSize + this.scaleSize ;
-			var majorTickEndPos = this.scaleFontSize + 2;
-			var minorTickEndPos = this.scaleFontSize + this.scaleSize * 0.66;
-			var halfTickEndPos = this.scaleFontSize + this.scaleSize * 0.33;
+			var tickStartPos = this.scale.font.size + this.scale.size ;
+			var majorTickEndPos = this.scale.font.size + 2;
+			var minorTickEndPos = this.scale.font.size + this.scale.size * 0.66;
+			var halfTickEndPos = this.scale.font.size + this.scale.size * 0.33;
 
-			for (var i = this.minScale; i <= this.maxScale; i++ ) {
+			for (var i = this.scale.min; i <= this.scale.max; i++ ) {
 				ctx.beginPath();
-				if ( i % this.majorTick == 0) {
+				if ( i % this.tick.major.size == 0) {
 					// create text
 					dim = ctx.measureText(i);
 					ctx.fillText( i , i*this.percentScale() - dim.width/2, 0 );
@@ -71,20 +79,20 @@
 					// create major tick
 					ctx.moveTo( i*this.percentScale(), tickStartPos );
 					ctx.lineTo( i*this.percentScale(), majorTickEndPos );
-					ctx.strokeStyle = this.majorTickColor;
+					ctx.strokeStyle = this.tick.major.color;
 					ctx.stroke();
 
-				} else if ( i % this.minorTick == 0 ) {				
+				} else if ( i % this.tick.minor.size == 0 ) {				
 					ctx.moveTo( i*this.percentScale(), tickStartPos );
 					
 					// create half tick - tick between two major ticks
-					if ( i % (this.majorTick/2) == 0 ) {
+					if ( i % (this.tick.major.size/2) == 0 ) {
 						ctx.strokeStyle = this.halfTickColor;						
 						ctx.lineTo( i*this.percentScale(), halfTickEndPos );
 					}
 					// create minor tick
 					else{
-						ctx.strokeStyle = this.minorTickColor;
+						ctx.strokeStyle = this.tick.minor.color;
 						ctx.lineTo( i*this.percentScale(), minorTickEndPos );
 					}
 					ctx.stroke();
@@ -93,7 +101,7 @@
 			ctx.restore();
 			
 			// draw tracks
-			ctx.translate(0, this.scaleTrackSize() + this.trackBuffer);
+			ctx.translate(0, this.scale.trackSize() + this.trackBuffer);
 			for (var i=0; i<tracks.length; i++) {
 				tracks[i].draw();
 				ctx.translate(0, tracks[i].height + this.trackBuffer);
@@ -119,10 +127,10 @@
 			genes.push(gene_new);
 			
 			// gather information about gene postion for scaling purposes
-			if ( length + position > this.chart.maxScale || this.chart.maxScale == undefined )
-				this.chart.maxScale = length + position;
-			if ( position < this.chart.minscale || this.chart.minScale == undefined )
-				this.chart.minScale = position;
+			if ( length + position > this.chart.scale.max || this.chart.scale.max == undefined )
+				this.chart.scale.max = length + position;
+			if ( position < this.chart.scale.min || this.chart.scale.min == undefined )
+				this.chart.scale.min = position;
 				
 			return gene_new;
 		}
@@ -135,5 +143,6 @@
 			}
 		}
 	}
+	
 	
 	

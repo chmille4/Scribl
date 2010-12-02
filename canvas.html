@@ -17,8 +17,8 @@
 				
 				function testGB() {
 					var canvas = document.getElementById('canvas');
-
-					genbank(document.getElementById('gbData').value, canvas);
+					chart = new BChart(canvas, 4000);
+					chart.loadGenbank(document.getElementById('gbData').value);
 				}
 
 				function draw(canvasName) {  
@@ -36,60 +36,72 @@
 					// 				                        }, false);
 //					for (i )
 							
-					chart = new BChart(canvas, 200);
+					chart = new BChart(canvas, 500);
 					//chart.scale = 500;
 					
 					// chart options					
 //				chart.scale.pretty = false;
+//				chart.scale.max = 100;
 //					chart.scale.min = 0;
-//					chart.tick.major.size = 50;
+//					chart.tick.major.size = 25;
 //					chart.tick.minor.color = "red";
 //					chart.tick.minor.size = 5;
 					chart.trackSizes = 70;
-				
 					// Create Track 1
+
 					track1 = chart.addTrack();	
-					
+
 					
 					// Add Gene 1 to Track 2
-					gene1 = track1.addGene( 50, 10, '+');
-/*					gene1.name = "Gene 35";	
+					gene1 = track1.addGene( 5, 75 , '-');
+//					gene1.name = "Gene X";	
 					
 //					gene1.height = 15;
-//					gene1.roundness = 0;
+//					gene1.roundness = 20;
 				
 					// Add Gene 2 to track 1
-					gene2 = track1.addGene( 150, 250, '-');
-					gene2.name = "Gene3";		
+					gene2 = track1.addGene( 350, 250, '-');
+//					gene2.name = "Gene3";		
 					
 					// Add Gene 3 to track 1
-					gene3 = track1.addGene( 600, 100, '-');
-					gene3.name = "Gene21";			
+					gene3 = track1.addGene( 800, 100, '-');
+//					gene3.name = "Gene21";
+					
+					gene4 = track1.addGene( 620, 150, '+');
+//					gene4.name = "Gene7";			
 				
 					// Create Track 2
 					track2 = chart.addTrack();
 					
 					// Add Gene 3 to Track 2
 					gene4 = track2.addGene( 10, 100, '-');				
-					gene4.name = "Gene 11";
+//					gene4.name = "Gene 11";
 					
 					gene5 = track2.addGene( 350, 150, '-');				
-					gene5.name = "Gene 12";
+//					gene5.name = "Gene 12";
 
 					// Create Track 3
 					track3 = chart.addTrack();
 
 					// Add Gene 3 to Track 2
 					gene6 = track3.addGene( 223, 100, '+');
-					gene6.name = "Gene 6"
+//					gene6.name = "Gene 6"
 					
 					gene7 = track3.addGene( 450, 150, '+');
-					gene7.name = "Gene 8"
+//					gene7.name = "Gene 8"
 					
 					gene8 = track3.addGene( 723, 100, '-');
-					gene8.name = "Gene 14"
+//					gene8.name = "Gene 14"
 					// Draw Chart
-	*/				chart.draw();
+					
+			//		for (var i = 200; i <= 400; i++) {
+			//			chart.width = i
+			//			chart.draw();
+			//		}
+
+					chart.draw();
+
+				
 	
 			}
 				
@@ -99,269 +111,9 @@
 	</head>  
 	
 	<body onload="draw('canvas')">  
-		<canvas id="canvas" width="1000" height="10000"></canvas>  
+		<canvas id="canvas" width="4050" height="900"></canvas>  
 		<textarea id="gbData" rows="6" cols="81"> 
-			LOCUS       NM_004364               2591 bp    mRNA    linear   PRI 14-NOV-2010
-			DEFINITION  Homo sapiens CCAAT/enhancer binding protein (C/EBP), alpha (CEBPA),
-			            mRNA.
-			ACCESSION   NM_004364
-			VERSION     NM_004364.3  GI:225735576
-			KEYWORDS    .
-			SOURCE      Homo sapiens (human)
-			  ORGANISM  Homo sapiens
-			            Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi;
-			            Mammalia; Eutheria; Euarchontoglires; Primates; Haplorrhini;
-			            Catarrhini; Hominidae; Homo.
-			REFERENCE   1  (bases 1 to 2591)
-			  AUTHORS   Ferrari-Amorotti,G., Mariani,S.A., Novi,C., Cattelani,S.,
-			            Pecorari,L., Corradini,F., Soliera,A.R., Manzotti,G.,
-			            Fragliasso,V., Zhang,Y., Martinez,R.V., Lam,E.W., Guerzoni,C. and
-			            Calabretta,B.
-			  TITLE     The biological effects of C/EBPalpha in K562 cells depend on the
-			            potency of the N-terminal regulatory region, not on specificity of
-			            the DNA binding domain
-			  JOURNAL   J. Biol. Chem. 285 (40), 30837-30850 (2010)
-			   PUBMED   20659895
-			  REMARK    GeneRIF: Expression of FOXO3a, a novel C/EBPalpha-regulated gene,
-			            was required for apoptosis but not for differentiation induction or
-			            proliferation inhibition of K562 cells
-			REFERENCE   2  (bases 1 to 2591)
-			  AUTHORS   Benet,M., Lahoz,A., Guzman,C., Castell,J.V. and Jover,R.
-			  TITLE     CCAAT/enhancer-binding protein alpha (C/EBPalpha) and hepatocyte
-			            nuclear factor 4alpha (HNF4alpha) synergistically cooperate with
-			            constitutive androstane receptor to transactivate the human
-			            cytochrome P450 2B6 (CYP2B6) gene: application to the development
-			            of a metabolically competent human hepatic cell model
-			  JOURNAL   J. Biol. Chem. 285 (37), 28457-28471 (2010)
-			   PUBMED   20622021
-			  REMARK    GeneRIF: CCAAT/enhancer-binding protein alpha (C/EBPalpha) and
-			            hepatocyte nuclear factor 4alpha (HNF4alpha) synergistically
-			            cooperate with constitutive androstane receptor to transactivate
-			            the human cytochrome P450 2B6 (CYP2B6) gene
-			REFERENCE   3  (bases 1 to 2591)
-			  AUTHORS   Fu,H.Y., Okada,K., Liao,Y., Tsukamoto,O., Isomura,T., Asai,M.,
-			            Sawada,T., Okuda,K., Asano,Y., Sanada,S., Asanuma,H., Asakura,M.,
-			            Takashima,S., Komuro,I., Kitakaze,M. and Minamino,T.
-			  TITLE     Ablation of C/EBP homologous protein attenuates endoplasmic
-			            reticulum-mediated apoptosis and cardiac dysfunction induced by
-			            pressure overload
-			  JOURNAL   Circulation 122 (4), 361-369 (2010)
-			   PUBMED   20625112
-			  REMARK    GeneRIF: In myocardial samples from patients with heart failure,
-			            quantitative real-time polymerase chain reaction reveals an
-			            increase in messenger RNA for C/EBP homologous protein (CHOP).
-			REFERENCE   4  (bases 1 to 2591)
-			  AUTHORS   Eyholzer,M., Schmid,S., Wilkens,L., Mueller,B.U. and Pabst,T.
-			  TITLE     The tumour-suppressive miR-29a/b1 cluster is regulated by CEBPA and
-			            blocked in human AML
-			  JOURNAL   Br. J. Cancer 103 (2), 275-284 (2010)
-			   PUBMED   20628397
-			  REMARK    GeneRIF: This study reports the activation of the
-			            tumour-suppressive miR-29b by the haematopoietic key transcription
-			            factor CEBPA
-			REFERENCE   5  (bases 1 to 2591)
-			  AUTHORS   Bengoechea-Alonso,M.T. and Ericsson,J.
-			  TITLE     The ubiquitin ligase Fbxw7 controls adipocyte differentiation by
-			            targeting C/EBPalpha for degradation
-			  JOURNAL   Proc. Natl. Acad. Sci. U.S.A. 107 (26), 11817-11822 (2010)
-			   PUBMED   20534483
-			  REMARK    GeneRIF: the expression of Fbxw7 is down-regulated during adipocyte
-			            differentiation, resulting in the accumulation of proadipogenic
-			            proteins such as C/EBPalpha
-			REFERENCE   6  (bases 1 to 2591)
-			  AUTHORS   Antonson,P. and Xanthopoulos,K.G.
-			  TITLE     Molecular cloning, sequence, and expression patterns of the human
-			            gene encoding CCAAT/enhancer binding protein alpha (C/EBP alpha)
-			  JOURNAL   Biochem. Biophys. Res. Commun. 215 (1), 106-113 (1995)
-			   PUBMED   7575576
-			REFERENCE   7  (bases 1 to 2591)
-			  AUTHORS   Wu,K.J., Wilson,D.R., Shih,C. and Darlington,G.J.
-			  TITLE     The transcription factor HNF1 acts with C/EBP alpha to
-			            synergistically activate the human albumin promoter through a novel
-			            domain
-			  JOURNAL   J. Biol. Chem. 269 (2), 1177-1182 (1994)
-			   PUBMED   8288579
-			REFERENCE   8  (bases 1 to 2591)
-			  AUTHORS   Hendricks-Taylor,L.R., Bachinski,L.L., Siciliano,M.J., Fertitta,A.,
-			            Trask,B., de Jong,P.J., Ledbetter,D.H. and Darlington,G.J.
-			  TITLE     The CCAAT/enhancer binding protein (C/EBP alpha) gene (CEBPA) maps
-			            to human chromosome 19q13.1 and the related nuclear factor NF-IL6
-			            (C/EBP beta) gene (CEBPB) maps to human chromosome 20q13.1
-			  JOURNAL   Genomics 14 (1), 12-17 (1992)
-			   PUBMED   1427819
-			REFERENCE   9  (bases 1 to 2591)
-			  AUTHORS   Szpirer,C., Riviere,M., Cortese,R., Nakamura,T., Islam,M.Q.,
-			            Levan,G. and Szpirer,J.
-			  TITLE     Chromosomal localization in man and rat of the genes encoding the
-			            liver-enriched transcription factors C/EBP, DBP, and HNF1/LFB-1
-			            (CEBP, DBP, and transcription factor 1, TCF1, respectively) and of
-			            the hepatocyte growth factor/scatter factor gene (HGF)
-			  JOURNAL   Genomics 13 (2), 293-300 (1992)
-			   PUBMED   1535333
-			REFERENCE   10 (bases 1 to 2591)
-			  AUTHORS   Cao,Z., Umek,R.M. and McKnight,S.L.
-			  TITLE     Regulated expression of three C/EBP isoforms during adipose
-			            conversion of 3T3-L1 cells
-			  JOURNAL   Genes Dev. 5 (9), 1538-1552 (1991)
-			   PUBMED   1840554
-			COMMENT     REVIEWED REFSEQ: This record has been curated by NCBI staff. The
-			            reference sequence was derived from BC027902.1 and AC008738.7.
-			            This sequence is a reference standard in the RefSeqGene project.
-			            On Mar 28, 2009 this sequence version replaced gi:28872793.
-
-			            Summary: The protein encoded by this intronless gene is a bZIP
-			            transcription factor which can bind as a homodimer to certain
-			            promoters and enhancers. It can also form heterodimers with the
-			            related proteins CEBP-beta and CEBP-gamma. The encoded protein has
-			            been shown to bind to the promoter and modulate the expression of
-			            the gene encoding leptin, a protein that plays an important role in
-			            body weight homeostasis. Also, the encoded protein can interact
-			            with CDK2 and CDK4, thereby inhibiting these kinases and causing
-			            growth arrest in cultured cells. [provided by RefSeq].
-
-			            Sequence Note: This RefSeq record was created from transcript and
-			            genomic sequence data to make the sequence consistent with the
-			            reference genome assembly. The genomic coordinates used for the
-			            transcript record were based on transcript alignments.
-
-			            Publication Note:  This RefSeq record includes a subset of the
-			            publications that are available for this gene. Please see the
-			            Entrez Gene record to access additional publications.
-			            COMPLETENESS: complete on the 3' end.
-			PRIMARY     REFSEQ_SPAN         PRIMARY_IDENTIFIER PRIMARY_SPAN        COMP
-			            1-509               BC027902.1         1-509
-			            510-2591            AC008738.7         169053-171134       c
-			FEATURES             Location/Qualifiers
-			     source          1..2591
-			                     /organism="Homo sapiens"
-			                     /mol_type="mRNA"
-			                     /db_xref="taxon:9606"
-			                     /chromosome="19"
-			                     /map="19q13.1"
-			     gene            1..2591
-			                     /gene="CEBPA"
-			                     /gene_synonym="C/EBP-alpha; CEBP"
-			                     /note="CCAAT/enhancer binding protein (C/EBP), alpha"
-			                     /db_xref="GeneID:1050"
-			                     /db_xref="HGNC:1833"
-			                     /db_xref="HPRD:00296"
-			                     /db_xref="MIM:116897"
-			     exon            1..2591
-			                     /gene="CEBPA"
-			                     /gene_synonym="C/EBP-alpha; CEBP"
-			                     /inference="alignment:Splign"
-			                     /number=1
-			     STS             83..1504
-			                     /gene="CEBPA"
-			                     /gene_synonym="C/EBP-alpha; CEBP"
-			                     /db_xref="UniSTS:485918"
-			     STS             111..1237
-			                     /gene="CEBPA"
-			                     /gene_synonym="C/EBP-alpha; CEBP"
-			                     /db_xref="UniSTS:481683"
-			     CDS             111..1187
-			                     /gene="CEBPA"
-			                     /gene_synonym="C/EBP-alpha; CEBP"
-			                     /note="c/EBP alpha"
-			                     /codon_start=1
-			                     /product="CCAAT/enhancer-binding protein alpha"
-			                     /protein_id="NP_004355.2"
-			                     /db_xref="GI:28872794"
-			                     /db_xref="GeneID:1050"
-			                     /db_xref="HGNC:1833"
-			                     /db_xref="HPRD:00296"
-			                     /db_xref="MIM:116897"
-			                     /translation="MESADFYEAEPRPPMSSHLQSPPHAPSSAAFGFPRGAGPAQPPA
-			                     PPAAPEPLGGICEHETSIDISAYIDPAAFNDEFLADLFQHSRQQEKAKAAVGPTGGGG
-			                     GGDFDYPGAPAGPGGAVMPGGAHGPPPGYGCAAAGYLDGRLEPLYERVGAPALRPLVI
-			                     KQEPREEDEAKQLALAGLFPYQPPPPPPPSHPHPHPPPAHLAAPHLQFQIAHCGQTTM
-			                     HLQPGHPTPPPTPVPSPHPAPALGAAGLPGPGSALKGLGAAHPDLRASGGSGAGKAKK
-			                     SVDKNSNEYRVRRERNNIAVRKSRDKAKQRNVETQQKVLELTSDNDRLRKRVEQLSRE
-			                     LDTLRGIFRQLPESSLVKAMGNCA"
-			     STS             121..772
-			                     /gene="CEBPA"
-			                     /gene_synonym="C/EBP-alpha; CEBP"
-			                     /standard_name="Cebpa"
-			                     /db_xref="UniSTS:527283"
-			     STS             927..1115
-			                     /gene="CEBPA"
-			                     /gene_synonym="C/EBP-alpha; CEBP"
-			                     /standard_name="Cebpa"
-			                     /db_xref="UniSTS:516500"
-			     STS             1235..1435
-			                     /gene="CEBPA"
-			                     /gene_synonym="C/EBP-alpha; CEBP"
-			                     /standard_name="SHGC-35476"
-			                     /db_xref="UniSTS:15241"
-			     STS             2068..2217
-			                     /gene="CEBPA"
-			                     /gene_synonym="C/EBP-alpha; CEBP"
-			                     /standard_name="WI-16546"
-			                     /db_xref="UniSTS:45508"
-			     STS             2261..2380
-			                     /gene="CEBPA"
-			                     /gene_synonym="C/EBP-alpha; CEBP"
-			                     /standard_name="RH64933"
-			                     /db_xref="UniSTS:6031"
-			     STS             2315..2547
-			                     /gene="CEBPA"
-			                     /gene_synonym="C/EBP-alpha; CEBP"
-			                     /standard_name="A002S24"
-			                     /db_xref="UniSTS:35898"
-			     STS             2337..2478
-			                     /gene="CEBPA"
-			                     /gene_synonym="C/EBP-alpha; CEBP"
-			                     /standard_name="STS-T52003"
-			                     /db_xref="UniSTS:70876"
-			     polyA_site      2591
-			                     /gene="CEBPA"
-			                     /gene_synonym="C/EBP-alpha; CEBP"
-			ORIGIN      
-			        1 cggaggtgcg cgggcgcggg cgagcagggt ctccgggtgg gcggcggcga cgccccgcgc
-			       61 aggctggagg ccgccgaggc tcgccatgcc gggagaactc taactccccc atggagtcgg
-			      121 ccgacttcta cgaggcggag ccgcggcccc cgatgagcag ccacctgcag agccccccgc
-			      181 acgcgcccag cagcgccgcc ttcggctttc cccggggcgc gggccccgcg cagcctcccg
-			      241 ccccacctgc cgccccggag ccgctgggcg gcatctgcga gcacgagacg tccatcgaca
-			      301 tcagcgccta catcgacccg gccgccttca acgacgagtt cctggccgac ctgttccagc
-			      361 acagccggca gcaggagaag gccaaggcgg ccgtgggccc cacgggcggc ggcggcggcg
-			      421 gcgactttga ctacccgggc gcgcccgcgg gccccggcgg cgccgtcatg cccgggggag
-			      481 cgcacgggcc cccgcccggc tacggctgcg cggccgccgg ctacctggac ggcaggctgg
-			      541 agcccctgta cgagcgcgtc ggggcgccgg cgctgcggcc gctggtgatc aagcaggagc
-			      601 cccgcgagga ggatgaagcc aagcagctgg cgctggccgg cctcttccct taccagccgc
-			      661 cgccgccgcc gccgccctcg cacccgcacc cgcacccgcc gcccgcgcac ctggccgccc
-			      721 cgcacctgca gttccagatc gcgcactgcg gccagaccac catgcacctg cagcccggtc
-			      781 accccacgcc gccgcccacg cccgtgccca gcccgcaccc cgcgcccgcg ctcggtgccg
-			      841 ccggcctgcc gggccctggc agcgcgctca aggggctggg cgccgcgcac cccgacctcc
-			      901 gcgcgagtgg cggcagcggc gcgggcaagg ccaagaagtc ggtggacaag aacagcaacg
-			      961 agtaccgggt gcggcgcgag cgcaacaaca tcgcggtgcg caagagccgc gacaaggcca
-			     1021 agcagcgcaa cgtggagacg cagcagaagg tgctggagct gaccagtgac aatgaccgcc
-			     1081 tgcgcaagcg ggtggaacag ctgagccgcg aactggacac gctgcggggc atcttccgcc
-			     1141 agctgccaga gagctccttg gtcaaggcca tgggcaactg cgcgtgaggc gcgcggctgt
-			     1201 gggaccgccc tgggccagcc tccggcgggg acccagggag tggtttgggg tcgccggatc
-			     1261 tcgaggcttg cccgagccgt gcgagccagg actaggagat tccggtgcct cctgaaagcc
-			     1321 tggcctgctc cgcgtgtccc ctcccttcct ctgcgccgga cttggtgcgt ctaagatgag
-			     1381 ggggccaggc ggtggcttct ccctgcgagg aggggagaat tcttggggct gagctgggag
-			     1441 cccggcaact ctagtattta ggataacctt gtgccttgga aatgcaaact caccgctcca
-			     1501 atgcctactg agtaggggga gcaaatcgtg ccttgtcatt ttatttggag gtttcctgcc
-			     1561 tccttcccga ggctacagca gacccccatg agagaaggag gggagcaggc ccgtggcagg
-			     1621 aggagggctc agggagctga gatcccgaca agcccgccag ccccagccgc tcctccacgc
-			     1681 ctgtccttag aaaggggtgg aaacataggg acttggggct tggaacctaa ggttgttccc
-			     1741 ctagttctac atgaaggtgg agggtctcta gttccacgcc tctcccacct ccctccgcac
-			     1801 acaccccacc ccagcctgct ataggctggg cttccccttg gggcggaact cactgcgatg
-			     1861 ggggtcacca ggtgaccagt gggagccccc accccgagtc acaccagaaa gctaggtcgt
-			     1921 gggtcagctc tgaggatgta tacccctggt gggagaggga gacctagaga tctggctgtg
-			     1981 gggcgggcat ggggggtgaa gggccactgg gaccctcagc cttgtttgta ctgtatgcct
-			     2041 tcagcattgc ctaggaacac gaagcacgat cagtccatcc cagagggacc ggagttatga
-			     2101 caagctttcc aaatattttg ctttatcagc cgatatcaac acttgtatct ggcctctgtg
-			     2161 ccccagcagt gccttgtgca atgtgaatgt gcgcgtctct gctaaaccac cattttattt
-			     2221 ggtttttgtt ttgttttggt tttgctcgga tacttgccaa aatgagactc tccgtcggca
-			     2281 gctgggggaa gggtctgaga ctccctttcc ttttggtttt gggattactt ttgatcctgg
-			     2341 gggaccaatg aggtgagggg ggttctcctt tgccctcagc tttccccagc ccctccggcc
-			     2401 tgggctgccc acaaggcttg tcccccagag gccctggctc ctggtcggga agggaggtgg
-			     2461 cctcccgcca acgcatcact ggggctggga gcagggaagg acggcttggt tctcttcttt
-			     2521 tggggagaac gtagagtctc actctagatg ttttatgtat tatatctata atataaacat
-			     2581 atcaaagtca a
-			//
+	
 		</textarea><br />
 
 	</body>

@@ -1,25 +1,94 @@
-// 			function round_rect(x, y, length, height) {  
-// 	      		var canvas = document.getElementById("canvas");  
-// 	      		if (canvas.getContext) {  
-// 	        		var ctx = canvas.getContext("2d"); 
-// 	
-// 	 				var how_round = 10;
-// 	                var length = 80;
-// 					y = 20;
-// 					x = 20;
-// 					ctx.beginPath();
-// 					ctx.moveTo(x, y);
-// 					ctx.lineTo(80, y);
-// /*					ctx.quadraticCurveTo(90, y, 90, y+how_round);
-// 					ctx.lineTo(90, 80);
-// 					ctx.quadraticCurveTo(90, 90, 80, 90);
-// 					ctx.lineTo(x, 90);
-// 					ctx.quadraticCurveTo(10, 90, 10, 80);
-// 					ctx.lineTo(10, y+how_round);
-// 					ctx.quadraticCurveTo(10, y, x, y);
-// */					ctx.stroke();
-// 	      		}  
-// 	    	}  
+			function round_rect(x, y, length, height) {  
+	      		var canvas = document.getElementById("canvas");  
+	      		if (canvas.getContext) {  
+	        		var ctx = canvas.getContext("2d"); 
+	
+	 				var how_round = 10;
+	                var length = 80;
+					y = 20;
+					x = 20;
+					ctx.beginPath();
+					ctx.moveTo(x, y);
+					ctx.lineTo(80, y);
+					ctx.quadraticCurveTo(90, y, 90, y+how_round);
+					ctx.lineTo(90, 80);
+					ctx.quadraticCurveTo(90, 90, 80, 90);
+					ctx.lineTo(x, 90);
+					ctx.quadraticCurveTo(10, 90, 10, 80);
+					ctx.lineTo(10, y+how_round);
+					ctx.quadraticCurveTo(10, y, x, y);
+					ctx.stroke();
+	      		}  
+	    	}  
+
+			function drawExon(ctx, name, position, length, height, roundness, slope, strand) {   
+				
+						// Save and move
+						ctx.save();
+						ctx.translate(position, 0);
+						
+						// Set Defaults
+						x = y = 0;
+						ctx.beginPath();
+
+						
+						// calculate points
+
+						// top left corner
+						tlc_ctrl_x = x; 				// control point
+						tlc_ctrl_y = y;
+						tlc_lgth_x = x + roundness; 	// horizontal point
+						tlc_lgth_y = y;
+						tlc_wdth_x = x;				// vertical point
+						tlc_wdth_y = y + roundness;
+
+						// bottom left corner
+						blc_ctrl_x = x; 				// control point
+						blc_ctrl_y = y + height;
+						blc_lgth_x = x + roundness; 	// horizontal point
+						blc_lgth_y = y + height;
+						blc_wdth_x = x;				// vertical point
+						blc_wdth_y = y + height - roundness;
+						
+						// bottom right corner
+						brc_ctrl_x = x + length; 				// control point
+						brc_ctrl_y = y + height;
+						brc_lgth_x = x + length - roundness; 	// horizontal point
+						brc_lgth_y = y + height;
+						brc_wdth_x = x + length;				// vertical point
+						brc_wdth_y = y + height - roundness;
+						
+						// top right corner
+						trc_ctrl_x = x + length; 				// control point
+						trc_ctrl_y = y;
+						trc_lgth_x = x + length - roundness; 	// horizontal point
+						trc_lgth_y = y;
+						trc_wdth_x = x + length;				// vertical point
+						trc_wdth_y = y + roundness;
+
+						// draw lines
+
+						// top left corner
+					   ctx.moveTo(tlc_lgth_x, tlc_lgth_y); 
+					   ctx.quadraticCurveTo(tlc_ctrl_x, tlc_ctrl_y, tlc_wdth_x, tlc_wdth_y);
+
+						// bottom left corner
+					   ctx.lineTo(blc_wdth_x, blc_wdth_y);
+				    	ctx.quadraticCurveTo(blc_ctrl_x, blc_ctrl_y, blc_lgth_x, blc_lgth_y);
+				
+						// bottom right corner
+					   ctx.lineTo(brc_lgth_x, brc_lgth_y);
+				    	ctx.quadraticCurveTo(brc_ctrl_x, brc_ctrl_y, brc_wdth_x, brc_wdth_y);
+				
+						// top right corner
+					   ctx.lineTo(trc_wdth_x, trc_wdth_y);
+				    	ctx.quadraticCurveTo(trc_ctrl_x, trc_ctrl_y, trc_lgth_x, trc_lgth_y);
+
+						// top line
+						ctx.lineTo(tlc_lgth_x, tlc_lgth_y);
+						ctx.fill();
+						ctx.restore();
+		    	}
 	         
 	
 
@@ -89,6 +158,12 @@
 						// bottom slope
 						bs_ctrl_y = y + height;
 						bs_ctrl_x = ( (-bs_ctrl_y - bs_intercept)/slope ); 	// control point
+						if (bs_ctrl_x < x ) {
+							ctx.restore();
+							ctx.restore();
+							drawExon(ctx, name, position, length, height, roundness, slope, strand)
+							return;
+						}
 						
 						bs_lgth_y = y + height; 	// horizontal point
 						bs_lgth_x = bs_ctrl_x - roundness;											
@@ -169,10 +244,12 @@
 					this.canvas = ctx;
 					this.name = ""
 					this.canvas.font = '20px arial';
-					this.position = position;						
+					this.position = position;
+					this.length = length;
+					this.strand = strand;						
 					
 					// color default - blue linear gradient
-					var lineargradient = this.canvas.createLinearGradient(length/2,0,length/2,height);  
+					var lineargradient = this.canvas.createLinearGradient(this.length/2,0,this.length/2,height);  
 					lineargradient.addColorStop(0,'#99CCFF');  
 					lineargradient.addColorStop(1,'rgb(63, 128, 205)');
 					this.canvas.fillStyle = lineargradient;
@@ -186,7 +263,7 @@
 					this.draw = function(percentScale) {
 						if (percentScale == undefined)
 							percentScale = 1;
-						drawGene(this.canvas, this.name, this.position*percentScale, length*percentScale, this.height, this.getRoundness(), this.slope, strand);
+						drawGene(this.canvas, this.name, this.position*percentScale, this.length*percentScale, this.height, this.getRoundness(), this.slope, this.strand);
 						
 						// check if track height is too small for gene
 						if (this.height > this.track.height)

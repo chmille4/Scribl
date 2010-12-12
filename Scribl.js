@@ -1,22 +1,27 @@
 
 
 
-	function BChart(canvasName, width) {
+	function Scribl(canvasName, width) {
 
 		// create canvas contexts
 		var ctx = canvasName.getContext("2d");  
 		
 		// chart defaults
-		this.trackSizes = 30;	
+		this.trackSizes = 70;	
 		this.trackBuffer = 5;
 		this.scale = {};
 		this.scale.pretty = true;
 		this.scale.max = undefined;
 		this.scale.min = undefined;
+		this.scale.max_min = {};
+		this.scale.max_min.auto = true;
+		this.scale.offset = false
+		this.scale.off = false;
 		this.scale.size = 15;
 		this.scale.units = "";
 		this.scale.font = {};
 		this.scale.font.size = 15;
+		this.scale.font.color = "black";
 		this.canvas = ctx;
 		this.canvasName = canvasName;
 		this.width = width;
@@ -83,6 +88,7 @@
 				
 			// add gene
 			var gene = curr_track.addGene( position, length, strand);	
+			return gene;
 		}
 		
 		
@@ -116,32 +122,79 @@
 			return newChart;
 		}
 		
+		this.delayed_draw = function(theChart) { 
+			theChart.canvas.clearRect(0, 0, theChart.width, 900);
+			theChart.draw(); 
+			}
+		
+		// zoom chart
+		// this.zoom = function(stopMin, stopMax, drawRate, smoothness) {
+		// 	var currPixels = startMax / this.width;
+		// 	var newChart = undefined;
+		// 	var timeout;
+		// 	while() {
+		// 
+		// 		if (newChart == undefined)
+		// 			newChart = this;
+		// 		else
+		// 			newChart = newChart.slice(newChart.scale.min + currPixels/2, newChart.scale.max - currPixels/2);
+		// 			
+		// 		newChart.scale.min = Math.round(startMin + currPixels/2);
+		// 		newChart.scale.max = Math.round(startMax - currPixels/2);
+		// 
+		// 		newChart.scale.off = true;
+		// 		newChart.scale.max_min.auto = false;
+		// 		setTimeout(this.delayed_draw, drawRate*k, newChart );
+		// 		timeout = drawRate*k;
+		// 		startMax = newChart.scale.max;
+		// 		startMin = newChart.scale.min;
+		// 		currPixels = (newChart.scale.max - newChart.scale.min) * .02;
+		// 		
+		// 		// check if at max
+		// 	}
+		// 
+		// 	newChart.scale.off = false;
+		// 	newChart.scale.offset = false;
+		// 	setTimeout(delayed_draw, timeout, newChart);
+		// }
+		
+
 		
 		// draws chart
 		this.draw = function() {
 			
+			ctx.save();
 			// make scale pretty by starting and ending the scale at major ticks and choosing best tick distances
 			if (this.scale.pretty) {
 		
 				var numtimes = this.width/(ctx.measureText(this.scale.max).width+10);
 
 				this.tick.major.size = Math.round(this.scale.max / numtimes / this.tick.major.size + .4) * this.tick.major.size;
+				
+				if (this.scale.max <= 100)
+					this.tick.major.size = 10;
+				
 				if (this.tick.major.size >= 1000) {
 					var scaleMaxText = Math.round(this.scale.max/1000 + .4) + "k";
 				 	numtimes = this.width/(ctx.measureText(scaleMaxText).width+10);
 					this.tick.major.size = Math.round(this.scale.max / numtimes / 1000 + .4) * 1000;
 					this.scale.units = "k";
-				}
-					
-				
+				}		
 				this.tick.minor.size = this.tick.major.size / 10 ;
 				
-				this.scale.min -= this.scale.min % this.tick.major.size;
-				this.scale.max = Math.round(this.scale.max / this.tick.major.size + .4) * this.tick.major.size;
+				if (this.scale.max_min.auto) { 
+					this.scale.min -= this.scale.min % this.tick.major.size;
+					this.scale.max = Math.round(this.scale.max / this.tick.major.size + .4) * this.tick.major.size;
+				}
 			}
 			
 			// fix offsets so scale will not be cut off on left side
-			this.offset = ctx.measureText(this.getTickText(this.scale.min)).width/2;
+			// check if offset is turned off and then set it to static '0'
+			if (this.scale.min.offset) 
+				this.offset = ctx.measureText(this.getTickText(this.scale.min)).width/2;
+			else
+				this.offset = ctx.measureText("0").width/2;
+				
 			ctx.translate(this.offset, 0);
 			
 			// determine tick vertical sizes and vertical tick positions
@@ -152,45 +205,49 @@
 			
 			// translate canvas so that the min can be non-zero and still draw at the starting left
 			ctx.save();
-			ctx.translate( -this.scale.min*this.percentScale(), 0);
+			ctx.translate( -this.scale.min*this.percentScale() + 10, 0);
 			
 			// set scale defaults
 			ctx.font = this.scale.font.size + "px arial";
 			ctx.textBaseline = "top";
 			var fillStyleRevert = ctx.fillStyle;
-			ctx.fillStyle = "black";
+			ctx.fillStyle = this.scale.font.color;
 			
 			// draw scale
-			for (var i = this.scale.min; i <= this.scale.max; i++ ) {
-
-				ctx.beginPath();
-				if ( i % this.tick.major.size == 0) {
-					// create text
-					var tickText = this.getTickText(i);
-					dim = ctx.measureText(tickText);
-					ctx.fillText( tickText , i*this.percentScale() - dim.width/2, 0 );
+			if (!this.scale.off) {
+				for (var i = this.scale.min; i <= this.scale.max; i++ ) {
+				
+					var curr_pos = i*this.percentScale();
+				
+					ctx.beginPath();
+					if ( i % this.tick.major.size == 0) {
+						// create text
+						var tickText = this.getTickText(i);
+						ctx.textAlign = "center";
+						ctx.fillText( tickText , curr_pos, 0 );
 					
-					// create major tick
-					ctx.moveTo( i*this.percentScale(), tickStartPos );
-					ctx.lineTo( i*this.percentScale(), majorTickEndPos );
-					ctx.strokeStyle = this.tick.major.color;
-					ctx.stroke();
+						// create major tick
+						ctx.moveTo( curr_pos, tickStartPos );
+						ctx.lineTo( curr_pos, majorTickEndPos );
+						ctx.strokeStyle = this.tick.major.color;
+						ctx.stroke();
 
-				} else if ( i % this.tick.minor.size == 0 ) {				
-					ctx.moveTo( i*this.percentScale(), tickStartPos );
+					} else if ( i % this.tick.minor.size == 0 ) {				
+						ctx.moveTo( curr_pos, tickStartPos );
 					
-					// create half tick - tick between two major ticks
-					if ( i % (this.tick.major.size/2) == 0 ) {
-						ctx.strokeStyle = this.halfTickColor;						
-						ctx.lineTo( i*this.percentScale(), halfTickEndPos );
+						// create half tick - tick between two major ticks
+						if ( i % (this.tick.major.size/2) == 0 ) {
+							ctx.strokeStyle = this.halfTickColor;						
+							ctx.lineTo( curr_pos, halfTickEndPos );
+						}
+						// create minor tick
+						else{
+							ctx.strokeStyle = this.tick.minor.color;
+							ctx.lineTo( curr_pos, minorTickEndPos );
+						}
+						ctx.stroke();
+						//ctx.clearRect(0,0,900, 900);
 					}
-					// create minor tick
-					else{
-						ctx.strokeStyle = this.tick.minor.color;
-						ctx.lineTo( i*this.percentScale(), minorTickEndPos );
-					}
-					ctx.stroke();
-					//ctx.clearRect(0,0,900, 900);
 				}
 			}
 			
@@ -207,6 +264,7 @@
 			
 			ctx.restore();	
 			ctx.restore();	
+			ctx.restore();
 		}
 
 		this.getTickText = function(tickNumber) {
@@ -231,7 +289,7 @@
 				this.height = this.chart.trackSizes;
 			
 			// create gene
-			var gene_new = new addGene(ctx, position, length, this.height, strand); 
+			var gene_new = new Gene(ctx, position, length, this.height, strand); 
 			gene_new.track = this;
 			this.genes.push(gene_new);
 			

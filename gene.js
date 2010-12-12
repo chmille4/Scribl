@@ -92,7 +92,7 @@
 	         
 	
 
-			function drawGene(ctx, name, position, length, height, roundness, slope, strand) {   
+			function drawGene(ctx, name, position, length, height, roundness, slope, strand, color) {   
 						
 						// Set Defaults
 						var side = length*.75;
@@ -101,12 +101,17 @@
 						fontSizeMin = 10;
 						
 						// Check for font being to tall
-						if (fontSize > height)
-							(height < fontSizeMin) ? ctx.font = fontSizeMin + "px " + font : ctx.font = height + "px " + font;
+					//	if (fontSize > height)
+							
 						
-						// save and move!
+						// save
 						ctx.save();
+						
+						// set defaults
+						(height < fontSizeMin) ? ctx.font = fontSizeMin + "px " + font : ctx.font = height *.9 + "px " + font;
 						ctx.translate(position, 0);	
+						ctx.fillStyle = color;
+						
 						ctx.save();						
 						
 						x = y = 0;
@@ -232,42 +237,43 @@
 								break;
 							}
 						}
-
-						ctx.fillText(name, (length - dim.width)/2, height/2);
+						
+						ctx.fillText(name, length/2, height/2);
 						ctx.restore();
 		    	}
 		
-				function addGene(ctx, position, length, height, strand) {
-					// defaults
-					this.height = height;
-					this.slope = 1;
-					this.canvas = ctx;
-					this.name = ""
-					this.canvas.font = '20px arial';
-					this.position = position;
-					this.length = length;
-					this.strand = strand;						
-					
-					// color default - blue linear gradient
-					var lineargradient = this.canvas.createLinearGradient(this.length/2,0,this.length/2,height);  
-					lineargradient.addColorStop(0,'#99CCFF');  
-					lineargradient.addColorStop(1,'rgb(63, 128, 205)');
-					this.canvas.fillStyle = lineargradient;
-					
-					// accessors
-					this.roundness = 6;
-					this.getRoundness = function() { return (this.height * this.roundness/100); }
-//					this.roundness = this.height * .06
+	function Gene(ctx, position, length, height, strand) {
+		// defaults
+		this.height = height;
+		this.slope = 1;
+		this.canvas = ctx;
+		this.name = ""
+		this.canvas.font = '20px arial';
+		this.position = position;
+		this.length = length;
+		this.strand = strand;						
+		
+		// color default - blue linear gradient
+		var lineargradient = this.canvas.createLinearGradient(this.length/2,0,this.length/2,height);  
+		lineargradient.addColorStop(0,'#99CCFF');  
+		lineargradient.addColorStop(1,'rgb(63, 128, 205)');
+		this.canvas.fillStyle = lineargradient;
+		this.color = this.canvas.fillStyle;
+		
+		// accessors
+		this.roundness = 6;
+		this.getRoundness = function() { return (this.height * this.roundness/100); }
 
-					// Draw gene
-					this.draw = function(percentScale) {
-						if (percentScale == undefined)
-							percentScale = 1;
-						drawGene(this.canvas, this.name, this.position*percentScale, this.length*percentScale, this.height, this.getRoundness(), this.slope, this.strand);
-						
-						// check if track height is too small for gene
-						if (this.height > this.track.height)
-							this.track.height = this.height;
-					}					 
-				}
+		// Draw gene
+		this.draw = function(percentScale) {
+			if (percentScale == undefined)
+				percentScale = 1;
+			// This is horrible. Refactor this to be a function of this class
+			drawGene(this.canvas, this.name, this.position*percentScale, this.length*percentScale, this.height, this.getRoundness(), this.slope, this.strand, this.color);
+			
+			// check if track height is too small for gene
+			if (this.height > this.track.height)
+				this.track.height = this.height;
+		}					 
+	}
 

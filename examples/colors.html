@@ -6,53 +6,107 @@
 		
 		<script> 
 
-				function draw(canvasName) {  
+			function draw(canvasName) {  
 					
-					// Get Canvas and Create Chart
-				  	var canvas = document.getElementById(canvasName);  	
-					
-					// Create Chart
-					chart = new Scribl(canvas, 500);
-			
-					// Add Genes
-					gene1 = chart.addGene( 5,    750 , '-');
-					gene1.name = "Gene 1";
-					
-					gene2 = chart.addGene( 3500, 2500, '+');
-					gene2.name = "Gene 1";
-					
-					gene3 = chart.addGene( 8100, 1000, '-');
-					gene3.name = "Gene 1";
-					
-					gene4 = chart.addGene( 6200, 1500, '+');
-					gene4.name = "Gene 1";
-					
-					gene5 = chart.addGene( 100,  1000, '-');
-					gene5.name = "Gene 1";
-							
-					gene6 = chart.addGene( 3500, 1500, '-');		
-					gene6.name = "Gene 1";
-					
-					gene7 = chart.addGene( 2230, 1000, '+');
-					gene7.name = "Gene 1";
-					
-					gene8 = chart.addGene( 4500, 1500, '+');				
-					gene8.name = "Gene 1";
-					
-					gene9 = chart.addGene( 7230, 1000, '-');
-					gene9.name = "Gene 1";					
-					
-					// Draw Chart
-					chart.draw();
+									// Get Canvas and Create Chart
+				var canvas = document.getElementById(canvasName);  
+
+				chart = new Scribl(canvas, 500);
+				// Create Track 1
+
+				chart.tick.major.size = 1000;
+				chart.tick.major.color = "white";
+				chart.tick.minor.color = "white";
+				chart.scale.font.color = "white";
+				chart.scale.font.size = 30;
+				chart.scale.offset = 20;
+
+
+				// Create Track 1
+				track1 = chart.addTrack();	
+
+				// Add Genes to Track 2
+				gene1 = track1.addGene( 5, 750 , '-');
+				var lineargradient = chart.canvas.createLinearGradient(gene1.length/2,0,gene1.length/2,gene1.height);  
+				lineargradient.addColorStop(0,'rgb(204, 193, 208)');  
+				lineargradient.addColorStop(1,'rgb(96, 74, 123)');
+				gene1.color = lineargradient;
+
+
+				gene2 = track1.addGene( 3500, 2500, '+');
+				var lineargradient = chart.canvas.createLinearGradient(gene2.length/2,0,gene2.length/2,gene2.height);  
+				lineargradient.addColorStop(0,'rgb(230, 185, 184)');  
+				lineargradient.addColorStop(1,'rgb(149, 55, 53)');
+				gene2.color = lineargradient;
+				gene2.roundness = 18;
+
+				gene3 = track1.addGene( 8900, 500, '-');
+				var lineargradient = chart.canvas.createLinearGradient(gene3.length/2,0,gene3.length/2,gene3.height);  
+				lineargradient.addColorStop(0,'rgb(215, 228, 189)');  
+				lineargradient.addColorStop(1,'rgb(119, 147, 60)');
+				gene3.color = lineargradient;
+
+
+				gene4 = track1.addGene( 6000, 1500, '-');		
+				var lineargradient = chart.canvas.createLinearGradient(gene4.length/2,0,gene4.length/2,gene4.height);  
+				lineargradient.addColorStop(0,'rgb(252, 213, 181)');  
+				lineargradient.addColorStop(1,'rgb(228, 108, 10)');
+				gene4.color = lineargradient;
+				gene4.roundness = 0;
+
+				// Create Track 2
+				track2 = chart.addTrack();
+
+				// Add Genes to Track 2
+				gene5 = track2.addGene( 100, 1000, '-');				
+				var lineargradient = chart.canvas.createLinearGradient(gene5.length/2,0,gene5.length/2,gene5.height);  
+				lineargradient.addColorStop(0,'rgb(255, 189, 192)');  
+				lineargradient.addColorStop(1,'rgb(255, 0, 0)');
+				gene5.color = lineargradient;
+
+				gene6 = track2.addGene( 3500, 1500, '-');				
+				// create a linear gradient for the genes color
+				var lineargradient = chart.canvas.createLinearGradient(gene6.length/2,0,gene6.length/2,gene6.height);  
+				lineargradient.addColorStop(0,'rgb(232, 227, 155)');  
+				lineargradient.addColorStop(1,'rgb(255, 255, 0)');
+				gene6.color = lineargradient;
+
+				// make gene have sharp angles with a roundness of 0 pixels
+				gene6.roundness = 0;
+
+
+				// Create Track 3
+				track3 = chart.addTrack();
+
+				// Add Genes to Track 3
+				gene7 = track3.addGene( 2230, 1000, '+');
+				var lineargradient = chart.canvas.createLinearGradient(gene7.length/2,0,gene7.length/2,gene7.height);  
+				lineargradient.addColorStop(0,'rgb(217, 217, 217)');  
+				lineargradient.addColorStop(1,'rgb(38, 38, 38)');								 
+				gene7.color = lineargradient;
+
+
+				gene8 = track3.addGene( 4500, 1500, '+');
+
+				gene9 = track3.addGene( 7230, 1000, '-');
+				var lineargradient = chart.canvas.createLinearGradient(gene9.length/2,0,gene9.length/2,gene9.height);  
+				lineargradient.addColorStop(0,'rgb(194, 222, 255)');  
+				lineargradient.addColorStop(1,'rgb(0, 0, 255)');
+				gene9.color = lineargradient;
+
+				// Draw Chart
+				chart.draw();
 
 			}
 				
+
 		</script>
 
 	</head>  
 	
 	<body onload="draw('canvas')">  
-		<canvas id="canvas" width="750" height="400"></canvas>  
+		<canvas id="canvas" width=547 height=310 style="border-radius:15px; background:-webkit-gradient(linear, left top, left bottom, from(rgb(50,50,50)), to(rgb(50,50,50)), color-stop(0.5, rgb(170,170,170)), color-stop(0.5, rgb(170,170,170)))"
+
 	</body>
 	
 </html>

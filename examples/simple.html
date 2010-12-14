@@ -6,7 +6,7 @@
 		
 		<script> 
 
-				function draw(canvasName) {  
+			function draw(canvasName) {  
 					
 					// Get Canvas and Create Chart
 				  	var canvas = document.getElementById(canvasName);  	
@@ -24,6 +24,9 @@
 					gene7 = chart.addGene( 2230, 1000, '+');
 					gene8 = chart.addGene( 4500, 1500, '+');				
 					gene9 = chart.addGene( 7230, 1000, '-');
+					
+					// add name
+					gene3.name = "Gene 2";
 					
 					// Draw Chart
 					chart.draw();

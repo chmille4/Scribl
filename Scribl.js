@@ -117,7 +117,7 @@
 				
 			}
 			
-			var newChart = new BChart(this.canvasName, this.width);
+			var newChart = new Scribl(this.canvasName, this.width);
 			newChart.loadGenes(sliced_genes);
 			return newChart;
 		}

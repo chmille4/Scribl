@@ -1,25 +1,3 @@
-			function round_rect(x, y, length, height) {  
-	      		var canvas = document.getElementById("canvas");  
-	      		if (canvas.getContext) {  
-	        		var ctx = canvas.getContext("2d"); 
-	
-	 				var how_round = 10;
-	                var length = 80;
-					y = 20;
-					x = 20;
-					ctx.beginPath();
-					ctx.moveTo(x, y);
-					ctx.lineTo(80, y);
-					ctx.quadraticCurveTo(90, y, 90, y+how_round);
-					ctx.lineTo(90, 80);
-					ctx.quadraticCurveTo(90, 90, 80, 90);
-					ctx.lineTo(x, 90);
-					ctx.quadraticCurveTo(10, 90, 10, 80);
-					ctx.lineTo(10, y+how_round);
-					ctx.quadraticCurveTo(10, y, x, y);
-					ctx.stroke();
-	      		}  
-	    	}  
 
 			function drawExon(ctx, name, position, length, height, roundness, slope, strand) {   
 				

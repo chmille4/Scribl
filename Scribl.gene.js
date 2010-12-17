@@ -153,8 +153,7 @@
 						bs_slpe_x = bs_ctrl_x + roundness;		// slope point
 						bs_slpe_y = -(bs_slope * bs_slpe_x + bs_intercept);											
 
-						// top slope
-					
+						// top slope					
 						ts_ctrl_y = y;
 						ts_ctrl_x = (ts_ctrl_y + ts_intercept)/slope ; 	// control point      
 						ts_lgth_y = y; 	// horizontal point

@@ -1,10 +1,10 @@
 
 
 
-	function Scribl(canvasName, width) {
+	function Scribl(canvas, width) {
 
 		// create canvas contexts
-		var ctx = canvasName.getContext("2d");  
+		var ctx = canvas.getContext("2d");  
 		
 		// chart defaults
 		this.trackSizes = 70;	
@@ -22,8 +22,8 @@
 		this.scale.font = {};
 		this.scale.font.size = 15;
 		this.scale.font.color = "black";
-		this.canvas = ctx;
-		this.canvasName = canvasName;
+		this.canvas = canvas;
+		this.ctx = ctx;
 		this.width = width;
 		
 		// tick defaults
@@ -39,9 +39,19 @@
 		// private variables
 		var tracks = [];
 		this.tracks = tracks;
-		this.percentScale = function() { return (this.width / ( this.scale.max - this.scale.min) ); }
 		var scaleSize = this.scale.size;
 		var scaleFontSize = this.scale.font.size
+		
+		// get the pixels/nt  TODO: Rename to pixelPerNt and fix elsewhere
+		this.percentScale = function() { return (this.width / ( this.scale.max - this.scale.min) ); }
+		
+		// gets the nts/pixel
+		this.ntsPerPixel = function(nts) { 
+			if (nts == undefined) 
+				return ( 1 / this.percentScale() );
+			else
+				return ( nts / this.width );
+		}
 		this.scale.trackSize = function() { return ( this.size + this.font.size ); }
 			
 		// add a new track to the chart
@@ -105,7 +115,7 @@
 					var start = s_genes[k].position
 
 					// determine if gene is in slice/region
-					if ( start > from && start < to )
+					if ( start >= from && start <= to )
 						sliced_genes.push( s_genes[k] )
 					else if ( end > from && end < to )
 						sliced_genes.push( s_genes[k] )				
@@ -117,52 +127,87 @@
 				
 			}
 			
-			var newChart = new Scribl(this.canvasName, this.width);
+			var newChart = new Scribl(this.canvas, this.width);
 			newChart.loadGenes(sliced_genes);
 			return newChart;
 		}
 		
 		this.delayed_draw = function(theChart) { 
-			theChart.canvas.clearRect(0, 0, theChart.width, 900);
+			theChart.ctx.clearRect(0, 0, theChart.canvas.width, theChart.canvas.height);
 			theChart.draw(); 
+		}
+		
+		// function   : zooms chart in or out
+		// startMin   = where the min (left) scale starts the zoom
+		// stopMin    = where the min scale ends the zoom
+		// startMax   = where the max (right) scale starts the zoom 
+		// stopMax    = where the max scale ends the zoom
+		// drawRate   = the delay (in milliseconds) between each draw (e.g. 1000 would be a 1s/frame draw rate)
+		// smoothness = the number of pixels changed between frames ( lower = smoother but slower )
+		this.zoom = function(startMin, startMax, stopMin, stopMax, drawRate, smoothness) {
+			
+			var newChart = undefined;
+			var delay = 0;
+			var pxlsToChange = smoothness;
+			var currMax = startMax;
+			var currMin = startMin;
+		
+			// loop till the zoom is done
+			while(currMin != stopMin || currMax != stopMax) {
+				
+				// create new chart as a region of the original chart
+				newChart = this.slice(currMin, currMax);
+				
+				// turn off auto scale stuff
+				newChart.scale.off = true;
+				newChart.scale.max_min.auto = false;
+				newChart.scale.min = currMin;
+				newChart.scale.max = currMax;
+				newChart.scale.pretty = false;
+				
+				// set delay amount
+				delay += drawRate;
+				
+				// schedule current chart to be drawn with some delay
+				setTimeout(this.delayed_draw, delay, newChart );
+				
+				// determine number of nts to change min/max scales
+				var maxNtsToChange = newChart.ntsPerPixel((currMax - stopMax)) * pxlsToChange;
+				var minNtsToChange = newChart.ntsPerPixel((currMin - stopMin)) * pxlsToChange;
+				
+				// check if zoom is close enough stopMin
+				if ( Math.abs(minNtsToChange) < .05 )
+					currMin = stopMin;
+				else
+					currMin -= minNtsToChange;
+
+				// check if zoom is close enough to stopMax
+				if ( Math.abs(maxNtsToChange) < .05 )
+					currMax = stopMax
+				else
+					currMax -= maxNtsToChange;	
+				
 			}
 		
-		// zoom chart
-		// this.zoom = function(stopMin, stopMax, drawRate, smoothness) {
-		// 	var currPixels = startMax / this.width;
-		// 	var newChart = undefined;
-		// 	var timeout;
-		// 	while() {
-		// 
-		// 		if (newChart == undefined)
-		// 			newChart = this;
-		// 		else
-		// 			newChart = newChart.slice(newChart.scale.min + currPixels/2, newChart.scale.max - currPixels/2);
-		// 			
-		// 		newChart.scale.min = Math.round(startMin + currPixels/2);
-		// 		newChart.scale.max = Math.round(startMax - currPixels/2);
-		// 
-		// 		newChart.scale.off = true;
-		// 		newChart.scale.max_min.auto = false;
-		// 		setTimeout(this.delayed_draw, drawRate*k, newChart );
-		// 		timeout = drawRate*k;
-		// 		startMax = newChart.scale.max;
-		// 		startMin = newChart.scale.min;
-		// 		currPixels = (newChart.scale.max - newChart.scale.min) * .02;
-		// 		
-		// 		// check if at max
-		// 	}
-		// 
-		// 	newChart.scale.off = false;
-		// 	newChart.scale.offset = false;
-		// 	setTimeout(delayed_draw, timeout, newChart);
-		// }
+			// draw final zoomed chart with scale on
+			// get final slice
+			newChart = this.slice(stopMin, stopMax);
+		
+			// set scale
+			newChart.scale.max = stopMax;
+			newChart.scale.min = stopMin;
+			
+			// schedule final chart to be drawn at 1 millisecond after zoom completes
+			setTimeout(this.delayed_draw, delay + 1, newChart);
+
+		}
 		
 
 		
 		// draws chart
 		this.draw = function() {
 			
+						
 			ctx.save();
 			// make scale pretty by starting and ending the scale at major ticks and choosing best tick distances
 			if (this.scale.pretty) {
@@ -171,8 +216,8 @@
 
 				this.tick.major.size = Math.round(this.scale.max / numtimes / this.tick.major.size + .4) * this.tick.major.size;
 				
-				if (this.scale.max <= 100)
-					this.tick.major.size = 10;
+				//if (this.scale.max <= 100)
+				//	this.tick.major.size = 10;
 				
 				if (this.tick.major.size >= 1000) {
 					var scaleMaxText = Math.round(this.scale.max/1000 + .4) + "k";
@@ -264,7 +309,7 @@
 			
 			ctx.restore();	
 			ctx.restore();	
-			ctx.restore();
+			ctx.restore();	
 		}
 
 		this.getTickText = function(tickNumber) {
@@ -293,11 +338,11 @@
 			gene_new.track = this;
 			this.genes.push(gene_new);
 			
-			// gather information about gene postion for scaling purposes
+			// determine chart absolute_min and absolute_max
 			if ( length + position > this.chart.scale.max || this.chart.scale.max == undefined )
 				this.chart.scale.max = length + position;
 			if ( position < this.chart.scale.min || this.chart.scale.min == undefined )
-				this.chart.scale.min = position;
+				this.chart.scale.min = position;				
 				
 			return gene_new;
 		}

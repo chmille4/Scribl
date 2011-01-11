@@ -1,1 +1,46 @@
-Instructions Coming ...
+= Scribl
+
+Scribl is a bioinformatic canvas-based charting library that makes it easy to create charts of alignment and assembly data
+
+== Usage
+
+download the lib folder and place in directory
+
+include the js files in the html
+ <!DOCTYPE HTML> 
+ <html lang="en">
+	<head>
+		<script src="lib/Scribl.gene.js" ></script> 
+		<script src="lib/Scribl.js" ></script>
+		
+		<script> 
+
+			function draw(canvasName) {  
+					
+					// Get Canvas and Create Chart
+				  	var canvas = document.getElementById(canvasName);  	
+					
+					// Create Chart
+					chart = new Scribl(canvas, 500);
+			
+					// Add Genes
+					gene1 = chart.addGene( 5,    750 , '-');
+					
+					// Draw Chart
+					chart.draw();
+			}
+				
+		</script>
+
+	</head>  
+	
+	<body onload="draw('canvas')">
+		<canvas id="canvas" width="750" height="330"></canvas>  
+	</body>
+	
+ </html>
+
+== Examples
+
+== License
+MIT License

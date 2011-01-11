@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<script src="https://github.com/chmille4/Scribl/raw/master/lib/Scribl.gene.js" ></script>
+	<script src="https://github.com/chmille4/Scribl/raw/master/lib/Scribl.js" ></script>
+
+	<title>chmille4/Scribl @ GitHub</title>
+	
+	<script>
+	
+		function draw(canvasName) {  
+			
+				// Get Canvas and Create Chart
+			  	var canvas = document.getElementById(canvasName);  	
+			
+				// Create Chart
+				chart = new Scribl(canvas, 500);
+	
+				// Add Genes
+				gene1 = chart.addGene( 5,    750 , '-');
+				gene2 = chart.addGene( 3500, 2500, '+');
+				gene3 = chart.addGene( 8100, 1000, '-');
+				gene4 = chart.addGene( 6200, 1500, '+');
+				gene5 = chart.addGene( 100,  1000, '-');		
+				gene6 = chart.addGene( 3500, 1500, '-');		
+				gene7 = chart.addGene( 2230, 1000, '+');
+				gene8 = chart.addGene( 4500, 1500, '+');				
+				gene9 = chart.addGene( 7230, 1000, '-');
+			
+				// Draw Chart
+				chart.draw();
+		}
+	</script>
+	
+	<style type="text/css">
+		body {
+  		margin-top: 1.0em;
+  		background-color: #e5ecf3;
+		  font-family: "Helvetica,Arial,FreeSans";
+  		color: #000000;
+    }
+    #container {
+      margin: 0 auto;
+      width: 700px;
+    }
+		h1 { font-size: 3.8em; color: #856a4a; margin-bottom: 3px; }
+		h1 .small { font-size: 0.4em; }
+		h1 a { text-decoration: none }
+		h2 { font-size: 1.5em; color: #856a4a; }
+    h3 { text-align: center; color: #856a4a; }
+    a { color: #856a4a; }
+    .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
+    .download { float: right; }
+		pre { background: #000; color: #fff; padding: 15px;}
+    hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
+    .footer { text-align:center; padding-top:30px; font-style: italic; }
+	</style>
+	
+</head>
+
+<body onload="draw('canvas')">
+
+
+  <canvas id="canvas" width="535" height="335"></canvas>
+</body>
+</html>

@@ -4,25 +4,53 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<script src="https://github.com/chmille4/Scribl/raw/master/lib/Scribl.gene.js" ></script>
+	<script src="https://github.com/chmille4/Scribl/raw/master/lib/Scribl.js" ></script>
 
 	<title>chmille4/Scribl @ GitHub</title>
+	
+	<script>
+	
+		function draw(canvasName) {  
+			
+				// Get Canvas and Create Chart
+			  	var canvas = document.getElementById(canvasName);  	
+			
+				// Create Chart
+				chart = new Scribl(canvas, 500);
+	
+				// Add Genes
+				gene1 = chart.addGene( 5,    750 , '-');
+				gene2 = chart.addGene( 3500, 2500, '+');
+				gene3 = chart.addGene( 8100, 1000, '-');
+				gene4 = chart.addGene( 6200, 1500, '+');
+				gene5 = chart.addGene( 100,  1000, '-');		
+				gene6 = chart.addGene( 3500, 1500, '-');		
+				gene7 = chart.addGene( 2230, 1000, '+');
+				gene8 = chart.addGene( 4500, 1500, '+');				
+				gene9 = chart.addGene( 7230, 1000, '-');
+			
+				// Draw Chart
+				chart.draw();
+		}
+	</script>
 	
 	<style type="text/css">
 		body {
   		margin-top: 1.0em;
-  		background-color: #7a95b5;
-		  font-family: "Helvetica,Arial,FreeSans";
+  		background-color: #e5ecf3;
+		  font-family: "Arial";
   		color: #000000;
     }
     #container {
       margin: 0 auto;
       width: 700px;
     }
-		h1 { font-size: 3.8em; color: #856a4a; margin-bottom: 3px; }
+		h1 { font-size: 3.8em; color: rgb(83,104,150); margin-bottom: 3px; }
 		h1 .small { font-size: 0.4em; }
-		h1 a { text-decoration: none }
-		h2 { font-size: 1.5em; color: #856a4a; }
-    h3 { text-align: center; color: #856a4a; }
+		h1 a { text-decoration: none; color: rgb(83,104,150); }
+		h2 { font-size: 2em; color: rgb(30,30,30); }
+    h3 { text-align: center; color: rgb(83,104,150); }
     a { color: #856a4a; }
     .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
     .download { float: right; }
@@ -33,7 +61,7 @@
 	
 </head>
 
-<body>
+<body onload="draw('canvas')">
   <a href="http://github.com/chmille4/Scribl"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
 
   <div id="container">
@@ -45,22 +73,13 @@
         <img border="0" width="90" src="http://github.com/images/modules/download/tar.png"></a>
     </div>
 
-    <h1><a href="http://github.com/chmille4/Scribl">Scribl</a>
-      <span class="small">by <a href="http://github.com/chmille4">chmille4</a></span></h1>
+    <h1><img src="images/scribl.scribl_under(150ppi).png" style="height:150px"/></h1>
 
     <div class="description">
       Scribl is a bioinformatic canvas-based charting library that makes it easy to create charts of alignment and assembly data
     </div>
 
-    <h2>License</h2>
-<p>MIT</p>
-<h2>Authors</h2>
-<p>Chase Miller (chmille4@gmail.com)<br/><br/>      </p>
-<h2>Contact</h2>
-<p>Chase Miller (chmille4@gmail.com)<br/>      </p>
-
-
-    <h2>Download</h2>
+	 <h2>Download</h2>
     <p>
       You can download this project in either
       <a href="http://github.com/chmille4/Scribl/zipball/master">zip</a> or
@@ -70,6 +89,18 @@
       by running:
       <pre>$ git clone git://github.com/chmille4/Scribl</pre>
     </p>
+
+	 <h2>Examples</h2>
+		<canvas id="canvas" width="535" height="335" style="border-radius:15px;background-color:white"></canvas>
+		<p><a href="http://chmille4.github.com/Scribl/examples.html">more examples</a></p>
+    <h2>License</h2>
+<p>MIT</p>
+<h2>Authors</h2>
+<p>Chase Miller (chmille4@gmail.com)
+<br/>
+<br/>      </p>
+
+
 
     <div class="footer">
       get the source code on GitHub : <a href="http://github.com/chmille4/Scribl">chmille4/Scribl</a>

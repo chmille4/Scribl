@@ -4,19 +4,44 @@
 		<script src="../Scribl.gene.js" ></script> 
 		<script src="../Scribl.js" ></script>
 		<script src="../genbank.js" ></script>
-		<script src="antimatter15-jsgif/LZWEncoder.js"></script>
-		<script src="antimatter15-jsgif/NeuQuant.js"></script>
-		<script src="antimatter15-jsgif/GIFEncoder.js"></script>
-		<script src="antimatter15-jsgif/demos/b64.js"></script>
+		
+		<!-- <script> 
+
+			function draw(canvasName) {  
+					
+					// Get Canvas and Create Chart
+				  	var canvas = document.getElementById(canvasName);  	
+					
+					// Create Chart
+					chart = new Scribl(canvas, 800);
+
+					// Add Genes
+					gene1 = chart.addGene( 1,    100 , '-');
+					gene2 = chart.addGene( 101, 90, '+');
+					gene3 = chart.addGene(8000, 999, '+');
+					gene4 = chart.addGene(4500, 1000, '+');
+					
+					//chart = chart.slice(0, 100);
+					
+					// Draw Chart
+//					chart.draw();
+					chart.zoom(0, 1000, 9000, 10000, 4, 5);
+//					chart.zoom(0, 1000, 0, 200, 2, 10);
+			}
+				
+		</script> -->
 
 	</head>  
 	
 	<body>  
-		<span>Minimum</span>
-		<input type="text" id="minTxtBx" value="0"/>
-		<span>Maximum</span>
-		<input type="text" id="maxTxtBx" value="360000"/> 
-		<input type="button" value="Zoom" onClick="zoomScale(document.getElementById('minTxtBx').value, document.getElementById('maxTxtBx').value);"/></br>
+		<form>
+			<div>Zoom Scale</div>
+			<input id="minSlider" type="range" min="0" max="360000" value="0" onchange="changeScale(this.value, document.getElementById('maxSlider').value)" />
+			<input id="maxSlider" type="range" min="0" max="360000" value="360000" onchange="changeScale(document.getElementById('minSlider').value, this.value)" />
+			
+			
+			</br><input id="maxSlider" type="range" min="0" max="360000" value="360000" style="width:825px;margin-left:8px" />
+		</form>
 
 		<canvas id="canvas" width="900" height="400"></canvas>  
 							<div id="ecoli" style="display: none">
@@ -12081,8 +12106,13 @@
 		origZoomChart.loadGenbank(document.getElementById('ecoli').innerHTML);
 		origZoomChart.draw();
 		
-		function zoomScale(newMin, newMax) {
-			origZoomChart.zoom(0, 360000, newMin, newMax, 2, 10);
+		function changeScale(newMin, newMax) {
+			newChart = origZoomChart.slice(newMin, newMax);
+			newChart.scale.off = true;
+			newChart.scale.pretty = false;
+			newChart.scale.offset = false;
+			origZoomChart.ctx.clearRect(0, 0, 900, 400);
+			newChart.draw();
 		}
 
 	</script>

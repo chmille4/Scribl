@@ -201,21 +201,22 @@
 						}*/
 						// decrement fontsize until the name fits
 						//dim = ctx.measureText(name);
-						
-						while ( (length-dim.width) < 4 ) {
-							fontSize = /^\d+/.exec(ctx.font);
-							fontSize--;
-							dim = ctx.measureText(name);
-							ctx.font = fontSize +  "px " + font;
+						if (name != "") {
+							while ( (length-dim.width) < 4 ) {
+								fontSize = /^\d+/.exec(ctx.font);
+								fontSize--;
+								dim = ctx.measureText(name);
+								ctx.font = fontSize +  "px " + font;
 							
-							// Check if font is getting too small
-							if (fontSize <= fontSizeMin) {
-								name = "";  // set name to blank if gene is too small to display text
-								break;
+								// Check if font is getting too small
+								if (fontSize <= fontSizeMin) {
+									name = "";  // set name to blank if gene is too small to display text
+									break;
+								}
 							}
+							ctx.fillText(name, length/2, height/2);
 						}
 						
-						ctx.fillText(name, length/2, height/2);
 						ctx.restore();
 		    	}
 		

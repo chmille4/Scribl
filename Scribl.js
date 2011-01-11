@@ -9,16 +9,14 @@
 		// chart defaults
 		this.trackSizes = 70;	
 		this.trackBuffer = 5;
+		this.offset = undefined;
 		this.scale = {};
 		this.scale.pretty = true;
 		this.scale.max = undefined;
 		this.scale.min = undefined;
-		this.scale.max_min = {};
-		this.scale.max_min.auto = true;
-		this.scale.offset = false
+		this.scale.auto = true;
 		this.scale.off = false;
 		this.scale.size = 15;
-		this.scale.units = "";
 		this.scale.font = {};
 		this.scale.font.size = 15;
 		this.scale.font.color = "black";
@@ -28,6 +26,7 @@
 		
 		// tick defaults
 		this.tick = {};
+		this.tick.auto = true;
 		this.tick.major = {};
 		this.tick.major.size = 100;
 		this.tick.major.color = "black";
@@ -42,13 +41,18 @@
 		var scaleSize = this.scale.size;
 		var scaleFontSize = this.scale.font.size
 		
-		// get the pixels/nt  TODO: Rename to pixelPerNt and fix elsewhere
-		this.percentScale = function() { return (this.width / ( this.scale.max - this.scale.min) ); }
+		// get the pixels/nt
+		this.pixelsPerNt = function(pixels) { 
+			if (pixels == undefined)
+				return (this.width / ( this.scale.max - this.scale.min) ); 
+			else
+				return ( pixels / (this.scale.max - this.scale.min) );
+		}
 		
 		// gets the nts/pixel
 		this.ntsPerPixel = function(nts) { 
 			if (nts == undefined) 
-				return ( 1 / this.percentScale() );
+				return ( 1 / this.pixelsPerNt() );
 			else
 				return ( nts / this.width );
 		}
@@ -85,7 +89,7 @@
 				var prev_gene = this.tracks[j].genes[ this.tracks[j].genes.length - 1 ];
 
 				// check if new track is needed
-				if ( prev_gene != undefined && (position - 3/this.percentScale()) > (prev_gene.position + prev_gene.length) ) {
+				if ( prev_gene != undefined && (position - 3/this.pixelsPerNt()) > (prev_gene.position + prev_gene.length) ) {
 					new_track = false;
 					curr_track = this.tracks[j];
 					break;
@@ -131,8 +135,8 @@
 			newChart.loadGenes(sliced_genes);
 			return newChart;
 		}
-		
-		this.delayed_draw = function(theChart) { 
+
+		this.delayed_draw = function(theChart) {
 			theChart.ctx.clearRect(0, 0, theChart.canvas.width, theChart.canvas.height);
 			theChart.draw(); 
 		}
@@ -151,16 +155,16 @@
 			var pxlsToChange = smoothness;
 			var currMax = startMax;
 			var currMin = startMin;
-		
+			
 			// loop till the zoom is done
 			while(currMin != stopMin || currMax != stopMax) {
-				
+
 				// create new chart as a region of the original chart
 				newChart = this.slice(currMin, currMax);
 				
 				// turn off auto scale stuff
 				newChart.scale.off = true;
-				newChart.scale.max_min.auto = false;
+				newChart.scale.auto = false;
 				newChart.scale.min = currMin;
 				newChart.scale.max = currMax;
 				newChart.scale.pretty = false;
@@ -196,43 +200,36 @@
 			// set scale
 			newChart.scale.max = stopMax;
 			newChart.scale.min = stopMin;
+			newChart.tick.major.size = 1000;
 			
 			// schedule final chart to be drawn at 1 millisecond after zoom completes
 			setTimeout(this.delayed_draw, delay + 1, newChart);
 
 		}
 		
-
-		
 		// draws chart
 		this.draw = function() {
-			
-						
+				
 			ctx.save();
 			// make scale pretty by starting and ending the scale at major ticks and choosing best tick distances
-			if (this.scale.pretty) {
-		
-				var numtimes = this.width/(ctx.measureText(this.scale.max).width+10);
+			if (this.scale.pretty) {					
+			
+				// determine reasonable tick intervals
+				if (this.tick.auto) {
+					// set major tick interval
+					this.tick.major.size = this.determineMajorTick();
 
-				this.tick.major.size = Math.round(this.scale.max / numtimes / this.tick.major.size + .4) * this.tick.major.size;
-				
-				//if (this.scale.max <= 100)
-				//	this.tick.major.size = 10;
-				
-				if (this.tick.major.size >= 1000) {
-					var scaleMaxText = Math.round(this.scale.max/1000 + .4) + "k";
-				 	numtimes = this.width/(ctx.measureText(scaleMaxText).width+10);
-					this.tick.major.size = Math.round(this.scale.max / numtimes / 1000 + .4) * 1000;
-					this.scale.units = "k";
-				}		
-				this.tick.minor.size = this.tick.major.size / 10 ;
-				
-				if (this.scale.max_min.auto) { 
+					// set minor tick interval
+					this.tick.minor.size = this.tick.major.size / 10;
+				}			
+			
+				// make scale end on major ticks
+				if (this.scale.auto) { 
 					this.scale.min -= this.scale.min % this.tick.major.size;
 					this.scale.max = Math.round(this.scale.max / this.tick.major.size + .4) * this.tick.major.size;
 				}
 			}
-			
+						
 			// fix offsets so scale will not be cut off on left side
 			// check if offset is turned off and then set it to static '0'
 			if (this.scale.min.offset) 
@@ -243,14 +240,14 @@
 			ctx.translate(this.offset, 0);
 			
 			// determine tick vertical sizes and vertical tick positions
-			var tickStartPos = this.scale.font.size + this.scale.size ;
+			var tickStartPos = this.scale.font.size + this.scale.size;
 			var majorTickEndPos = this.scale.font.size + 2;
 			var minorTickEndPos = this.scale.font.size + this.scale.size * 0.66;
 			var halfTickEndPos = this.scale.font.size + this.scale.size * 0.33;
 			
 			// translate canvas so that the min can be non-zero and still draw at the starting left
 			ctx.save();
-			ctx.translate( -this.scale.min*this.percentScale() + 10, 0);
+			ctx.translate( -this.scale.min*this.pixelsPerNt() + 10, 0);
 			
 			// set scale defaults
 			ctx.font = this.scale.font.size + "px arial";
@@ -262,7 +259,7 @@
 			if (!this.scale.off) {
 				for (var i = this.scale.min; i <= this.scale.max; i++ ) {
 				
-					var curr_pos = i*this.percentScale();
+					var curr_pos = i*this.pixelsPerNt();
 				
 					ctx.beginPath();
 					if ( i % this.tick.major.size == 0) {
@@ -312,11 +309,31 @@
 			ctx.restore();	
 		}
 
+		this.determineMajorTick = function() {
+			var numtimes = this.width/(ctx.measureText(this.scale.max).width);
+
+			this.tick.major.size = Math.round( (this.scale.max - this.scale.min) / numtimes / this.tick.major.size + .4) * this.tick.major.size;
+			
+			digits = (this.tick.major.size + '').length;
+			places = Math.pow(10, digits);
+			first_digit = this.tick.major.size / places;
+
+			if (first_digit > .1 && first_digit <= .5)
+				first_digit = .5;
+			else if (first_digit > .5)
+				first_digit = 1;
+			
+			// return major tick interval
+			return (first_digit * places);
+			
+		}
+
 		this.getTickText = function(tickNumber) {
 			var tickText = tickNumber;
-			if ( this.scale.units == 'k' && tickNumber/1000 >= 1) {
+			if (tickNumber >= 1000000 )
+				tickText = tickText / 1000000 + 'm';
+			else if ( tickNumber >= 1000 )
 				tickText = tickText / 1000 + 'k';
-			}
 			
 			return tickText;
 		}
@@ -350,8 +367,8 @@
 		// draw track
 		this.draw = function() {
 			for (var i=0; i< this.genes.length; i++) {
-				var percentScale = this.genes[i].track.chart.percentScale();
-				this.genes[i].draw(percentScale);
+				var pixelsPerNt = this.genes[i].track.chart.pixelsPerNt();
+				this.genes[i].draw(pixelsPerNt);
 			}
 		}
 	}

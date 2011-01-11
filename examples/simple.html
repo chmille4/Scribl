@@ -30,15 +30,20 @@
 					
 					// Draw Chart
 					chart.draw();
-
+					
+					// Create image of chart
+					var img = chart.canvas.toDataURL("image/png");
+					// Add link to download image
+					document.getElementById('export').href = img;
 			}
 				
 		</script>
 
 	</head>  
 	
-	<body onload="draw('canvas')">  
-		<canvas id="canvas" width="750" height="400"></canvas>  
+	<body onload="draw('canvas')">
+		<canvas id="canvas" width="750" height="330"></canvas>  
+		</br><a id="export">Export as PNG (right click Save As)</a>
 	</body>
 	
 </html>

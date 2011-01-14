@@ -1,111 +1,106 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!DOCTYPE HTML> 
+<html lang="en">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<script src="https://github.com/chmille4/Scribl/raw/master/lib/Scribl.gene.js" ></script>
 	<script src="https://github.com/chmille4/Scribl/raw/master/lib/Scribl.js" ></script>
+	<link rel="stylesheet" type="text/css" href="css/base.css" />
 
 	<title>chmille4/Scribl @ GitHub</title>
-	
-	<script>
-	
-		function draw(canvasName) {  
-			
-				// Get Canvas and Create Chart
-			  	var canvas = document.getElementById(canvasName);  	
-			
-				// Create Chart
-				chart = new Scribl(canvas, 500);
-	
-				// Add Genes
-				gene1 = chart.addGene( 5,    750 , '-');
-				gene2 = chart.addGene( 3500, 2500, '+');
-				gene3 = chart.addGene( 8100, 1000, '-');
-				gene4 = chart.addGene( 6200, 1500, '+');
-				gene5 = chart.addGene( 100,  1000, '-');		
-				gene6 = chart.addGene( 3500, 1500, '-');		
-				gene7 = chart.addGene( 2230, 1000, '+');
-				gene8 = chart.addGene( 4500, 1500, '+');				
-				gene9 = chart.addGene( 7230, 1000, '-');
-			
-				// Draw Chart
-				chart.draw();
-		}
-	</script>
-	
-	<style type="text/css">
-		body {
-  		margin-top: 1.0em;
-  		background-color: #e5ecf3;
-		  font-family: "Arial";
-  		color: #000000;
-    }
-    #container {
-      margin: 0 auto;
-      width: 700px;
-    }
-		h1 { font-size: 3.8em; color: rgb(83,104,150); margin-bottom: 3px; }
-		h1 .small { font-size: 0.4em; }
-		h1 a { text-decoration: none; color: rgb(83,104,150); }
-		h2 { font-size: 2em; color: rgb(30,30,30); }
-    h3 { text-align: center; color: rgb(83,104,150); }
-    a { color: #856a4a; }
-    .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
-    .download { float: right; }
-		pre { background: #000; color: #fff; padding: 15px;}
-    hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
-    .footer { text-align:center; padding-top:30px; font-style: italic; }
-	</style>
-	
 </head>
 
-<body onload="draw('canvas')">
+<body>
   <a href="http://github.com/chmille4/Scribl"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
 
-  <div id="container">
 
-    <div class="download">
-      <a href="http://github.com/chmille4/Scribl/zipball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/zip.png"></a>
-      <a href="http://github.com/chmille4/Scribl/tarball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/tar.png"></a>
-    </div>
+	<div id="container">	
 
-    <h1><img src="images/scribl.scribl_under(150ppi).png" style="height:150px"/></h1>
+		<div id="content">
 
-    <div class="description">
-      Scribl is a bioinformatic canvas-based charting library that makes it easy to create charts of alignment and assembly data
-    </div>
+				
+			  <section>
+					<div id="top"><a href="http://chmille4.github.com/Scribl/"><img id="title" src="images/scribl.scribl_under(150ppi).png"/></a></div>
+					<div id="description">a canvas-based biological charting library that makes it easy to create charts of alignment and assembly data</div>
+					<div style="clear:both"/>
+				</section>
 
-	 <h2>Download</h2>
-    <p>
-      You can download this project in either
-      <a href="http://github.com/chmille4/Scribl/zipball/master">zip</a> or
-      <a href="http://github.com/chmille4/Scribl/tarball/master">tar</a> formats.
-    </p>
-    <p>You can also clone the project with <a href="http://git-scm.com">Git</a>
-      by running:
-      <pre>$ git clone git://github.com/chmille4/Scribl</pre>
-    </p>
+		
+			<header><span>Get Started Quickly</span></header>
+			<section>
+				<div class="code">
+					<span class="comment">// Get Canvas and Create Chart</span></br>
+					<span class="orange">var</span> canvas = <span class="red">document.getElementById</span>(canvasName);</br></br>  	
 
-	 <h2>Examples</h2>
-		<canvas id="canvas" width="535" height="335" style="border-radius:15px;background-color:white"></canvas>
-		<p><a href="http://chmille4.github.com/Scribl/examples.html">more examples</a></p>
-    <h2>License</h2>
-<p>MIT</p>
-<h2>Authors</h2>
-<p>Chase Miller (chmille4@gmail.com)
-<br/>
-<br/>      </p>
+					<span class="comment">// Create Chart with canvas, width</span></br>
+					chart <span class="orange">=</span> new Scribl(canvas, <span class="green">500</span>);</br></br>
+
+					<span class="comment">// Add Gene with position, length, orientation</span></br>
+					gene1 <span class="orange">=</span> chart.addGene( <span class="green">5</span>, <span class="green">750</span> , <span class="green">'+'</span>);</br></br>
+
+					<span class="comment">// Draw Chart</span></br>
+					chart.draw();
+				</div>
+			</section>
+			
+			<header><span>Demos</span></header>
+			<section>
+				<div class="demos">
+					<span>Simple</span></br>
+					<img src="images/simple.png"/>
+				</div>
+				<div class="demos">
+					<span>Genbank</span></br>
+					<img src="images/genbank.png"/>
+				</div>
+				<div class="demos">
+					<span>Colors</span></br>				
+					<img src="images/colors.png"/>
+				</div>
+				<div class="demos">
+					<span>Interact</span></br>				
+					<img src="images/interact.png"/>
+				</div>
+				<div class="demos">
+					<span>Zoom</span></br>				
+					<img src="images/zoom.png"/>
+				</div>
+				<div class="demos">
+					<span>Tracks</span></br>				
+					<img src="images/tracks.png"/>
+				</div>
+				<div class="demos">
+					<span>Drag Drop</span></br>				
+					<img src="images/drag.png"/>
+				</div>
+				
+				<div style="clear:both"></div>
+
+			</section>
+			
+			<header><span>Download</span></header>
+			<section>
+				<p>
+				  You can download this project in either
+				  <a href="http://github.com/chmille4/Scribl/zipball/master">zip</a> or
+				  <a href="http://github.com/chmille4/Scribl/tarball/master">tar</a> formats.
+				</p>
+				<p>You can also clone the project with <a href="http://git-scm.com">Git</a>
+				  by running:
+				  <pre>$ git clone git://github.com/chmille4/Scribl</pre>
+				</p>
+			</section>
+			
+			<header><span>Author</span></header>
+			<section>
+				Chase Miller
+			</section>
+			
+			
+				
+
+				
 
 
-
-    <div class="footer">
-      get the source code on GitHub : <a href="http://github.com/chmille4/Scribl">chmille4/Scribl</a>
-    </div>
-
+		</div>
   </div>
 
   

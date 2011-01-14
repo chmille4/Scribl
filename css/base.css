@@ -1,0 +1,115 @@
+ body {
+	background: #1d3a5a;
+	background-image: -moz-linear-gradient(left, #18304a, #5b9cd1, #5b9cd1, #18304a);
+	background-image: -webkit-gradient(linear, left top, right top, color-stop(0.0, #18304a), color-stop(0.33, #5b9cd1), color-stop(0.66, #5b9cd1), color-stop(1.0, #18304a));
+	font-family: "Arial";
+ }
+
+ a {
+	color: #6D9CBE;
+ }
+
+ #container {
+   width: 900px;
+	background-color: #C3D3E4;
+	border: 1px solid black;
+	border-radius: 15px;
+	margin-top: 2px;
+	margin-left: auto; 
+	margin-right: auto;
+ }
+
+ #top {
+	float:left;
+	margin-top:-25px;
+ }
+
+ #title {
+	display: block; 
+	margin-left: auto; 	
+	margin-right: auto;
+	padding-bottom: 0px;
+	height: 130px;
+ }
+
+ #content {
+	margin: 2px;
+	padding-top: 2px;
+ }
+
+ header {
+	background-image: -webkit-gradient(linear, left top, right top, color-stop(0.0, #0B1723), color-stop(0.7, #112436));
+	border-radius: 15px;
+ }
+
+ header span {
+	font-size: 2em; 
+	color: white;
+	margin-left: 10px;
+ }
+
+.code {
+	background-color: #171717;
+	margin-left: -32px;
+	width: 520px;
+	color: rgb(200, 200, 200);
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+	font-size: .8em;
+	padding-left: 5px;
+ }
+
+ .code .orange {
+	color: #CC7833;
+ }
+
+ .code .green {
+	color: #A5C261;
+ }
+
+ .code .red {
+	color: #DA4939;
+ } 
+
+ .code .comment {
+	color: #6D9CBE;
+ }
+
+ section {
+	margin-left: 30px;
+	color: rgb(60,60,60);
+	font-size: 1.3em;
+	margin: 30px;
+ }
+
+ #description {
+	font-style: italic;	
+	font-size: 1em;
+	padding-top: 5px;
+	
+ }
+
+ .download {
+	float: right; 
+ }
+
+ .demos {
+	text-align: center;
+	float: left;
+	margin-left: 11px;
+	margin-right: 8px;
+ }
+
+ .demos img {
+	background-color: black;
+	width: 100px;
+	height: 100px;
+	border-radius: 15px;
+
+ }
+ 
+ pre {
+	background: #000;
+	color: #fff;
+	padding: 15px;
+ }

@@ -4,7 +4,6 @@
 	<script src="https://github.com/chmille4/Scribl/raw/master/lib/Scribl.gene.js" ></script>
 	<script src="https://github.com/chmille4/Scribl/raw/master/lib/Scribl.js" ></script>
 	<link rel="stylesheet" type="text/css" href="css/base.css" />
-
 	<title>chmille4/Scribl @ GitHub</title>
 </head>
 
@@ -15,84 +14,81 @@
 	<div id="container">	
 
 		<div id="content">
-
-				
-			  <section>
-					<div id="top"><a href="http://chmille4.github.com/Scribl/"><img id="title" src="images/scribl.scribl_under(150ppi).png"/></a></div>
-					<div id="description">a canvas-based biological charting library that makes it easy to create charts of alignment and assembly data</div>
-					<div style="clear:both"/>
-				</section>
+	
+				<div id="top"><a href="http://chmille4.github.com/Scribl/"><img id="title" src="images/scribl.scribl_under(150ppi).png"/></a>
+				  <div class="section">
+					
+						<div id="description">making biological charts as easy as pie ... charts</div>
+						<div style="clear:both"></div>
+					</div>
+				</div>
 
 		
-			<header><span>Get Started Quickly</span></header>
-			<section>
+			<div class="header"><span>Get Started Quickly</span></div>
+			<div class="section">
 				<div class="code">
-					<span class="comment">// Get Canvas and Create Chart</span></br>
-					<span class="orange">var</span> canvas = <span class="red">document.getElementById</span>(canvasName);</br></br>  	
+					<span class="comment">// Get Canvas and Create Chart</span><br/>
+					<span class="orange">var</span> canvas = <span class="red">document.getElementById</span>(canvasName);<br/><br/>  	
 
-					<span class="comment">// Create Chart with canvas, width</span></br>
-					chart <span class="orange">=</span> new Scribl(canvas, <span class="green">500</span>);</br></br>
+					<span class="comment">// Create Chart with canvas, width</span><br/>
+					chart <span class="orange">=</span> new Scribl(canvas, <span class="green">500</span>);<br/><br/>
 
-					<span class="comment">// Add Gene with position, length, orientation</span></br>
-					gene1 <span class="orange">=</span> chart.addGene( <span class="green">5</span>, <span class="green">750</span> , <span class="green">'+'</span>);</br></br>
+					<span class="comment">// Add Gene with position, length, orientation</span><br/>
+					gene1 <span class="orange">=</span> chart.addGene( <span class="green">5</span>, <span class="green">750</span> , <span class="green">'+'</span>);<br/><br/>
 
-					<span class="comment">// Draw Chart</span></br>
+					<span class="comment">// Draw Chart</span><br/>
 					chart.draw();
 				</div>
-			</section>
+			</div>
 			
-			<header><span>Demos</span></header>
-			<section>
+			<div class="header"><span>Demos</span></div>
+			<div class="section">
 				<div class="demos">
-					<span>Simple</span></br>
-					<img src="images/simple.png"/>
+					<span>Simple</span><br/>
+					<a href="demos/simple.html"><img src="images/simple.png"/></a>
 				</div>
 				<div class="demos">
-					<span>Genbank</span></br>
-					<img src="images/genbank.png"/>
+					<span>Genbank</span><br/>
+					<a href="demos/genbank.html"><img src="images/genbank.png"/></a>
 				</div>
 				<div class="demos">
-					<span>Colors</span></br>				
-					<img src="images/colors.png"/>
+					<span>Colors</span><br/>				
+					<a href="demos/colors.html"><img src="images/colors.png"/></a>
 				</div>
 				<div class="demos">
-					<span>Interact</span></br>				
-					<img src="images/interact.png"/>
+					<span>Interact</span><br/>				
+					<a href="demos/interaction.html"><img src="images/interact.png"/></a>
 				</div>
 				<div class="demos">
-					<span>Zoom</span></br>				
-					<img src="images/zoom.png"/>
+					<span>Zoom</span><br/>				
+					<a href="demos/zoom.html"><img src="images/zoom.png"/></a>
 				</div>
 				<div class="demos">
-					<span>Tracks</span></br>				
-					<img src="images/tracks.png"/>
+					<span>Tracks</span><br/>				
+					<a href="demos/tracks.html"><img src="images/tracks.png"/></a>
 				</div>
 				<div class="demos">
-					<span>Drag Drop</span></br>				
-					<img src="images/drag.png"/>
+					<span>Drag Drop</span><br/>				
+					<a href="demos/genbank_dragNdrop.html"><img src="images/drag.png"/></a>
 				</div>
 				
 				<div style="clear:both"></div>
 
-			</section>
+			</div>
 			
-			<header><span>Download</span></header>
-			<section>
-				<p>
-				  You can download this project in either
-				  <a href="http://github.com/chmille4/Scribl/zipball/master">zip</a> or
-				  <a href="http://github.com/chmille4/Scribl/tarball/master">tar</a> formats.
-				</p>
-				<p>You can also clone the project with <a href="http://git-scm.com">Git</a>
-				  by running:
-				  <pre>$ git clone git://github.com/chmille4/Scribl</pre>
-				</p>
-			</section>
+			<div class="header"><span>Download</span></div>
+			<div id="download" class="section"> 
+	      	<a href="http://github.com/chmille4/Scribl/zipball/master"> 
+	        	<img border="0" width="90" src="http://github.com/images/modules/download/zip.png"></a>
+	 			<a href="http://github.com/chmille4/Scribl"> 
+	        	<img border="0" width="90" src="images/github.png"></a>
+	    	</div>
+
 			
-			<header><span>Author</span></header>
-			<section>
-				Chase Miller
-			</section>
+			<div class="header"><span>About</span></div>
+			<div class="section">
+				Scribl was started by Chase Miller in Dr. Michelle Myers lab at Boston College as an attempt to make bioinformatic charts as easy to generate as a pie charts.  Scribl is built on top of the HTML5 canvas element which it allows it to be very performant and visualize large data sets.
+			</div>
 			
 			
 				

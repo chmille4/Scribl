@@ -41,6 +41,6 @@ include the js files in the html
  </html>
 
 == Examples
-
+http://chmille4.github.com/Scribl/
 == License
 MIT License

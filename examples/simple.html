@@ -4,6 +4,7 @@
 		<script src="../lib/Scribl.events.js" ></script>
 		<script src="../lib/Scribl.gene.js" ></script> 
 		<script src="../lib/Scribl.js" ></script>
+		<link rel="stylesheet" type="text/css" href="demos.css" />
 		
 		<script> 
 
@@ -43,8 +44,15 @@
 	</head>  
 	
 	<body onload="draw('canvas')">
-		<canvas id="canvas" width="750" height="330" ></canvas>  
-		</br><a id="export">Export as PNG (right click Save As)</a>
+		<div id="description">
+			<h2>Simple Demo</h2><br/>
+			get up and running with minimal code
+		</div><br/>
+		<div id="container">
+			<canvas id="canvas" width="547" height="330"></canvas>  
+			</br><a id="export">Export as PNG (right click Save As)</a>
+		</div>
+		
 	</body>
 	
 </html>

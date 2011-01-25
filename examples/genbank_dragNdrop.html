@@ -5,16 +5,22 @@
 		<script src="../lib/Scribl.events.js" ></script>
 		<script src="../lib/Scribl.js" ></script>
 		<script src="../lib/genbank.js" ></script>		
+		<link rel="stylesheet" type="text/css" href="demos.css" />
 
 	<!-- NOTE - This will only work as is in Firefox but IT IS MUCH FASTER IN CHROME! -->
 	<!-- To use in Chrome it must be accessed via a server (for some strange reason) -->
 	
 	</head>  
 	
-	<body>  
-		<div id="content"></div>
-	   <p id="log" style="color: gray"></p>
-		<canvas id='canvas' width=900 height=450/>
+	<body> 
+		<div id="description"><h2>Genbank Drag and Drop</h2>
+			
+			<div id="content"></div>
+	   	<p id="log" style="color: gray"></p>
+		</div>
+		<div id="container">
+			<canvas id='canvas' width=900 height=450/>
+		</div>
 		
 		<script>
 			var content = document.getElementById('content');

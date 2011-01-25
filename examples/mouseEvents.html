@@ -4,6 +4,7 @@
 		<script src="../lib/Scribl.events.js" ></script>
 		<script src="../lib/Scribl.gene.js" ></script> 
 		<script src="../lib/Scribl.js" ></script>
+		<link rel="stylesheet" type="text/css" href="demos.css" />		
 		
 		<script> 
 
@@ -17,7 +18,7 @@
 
 					// Add Gene      position, length, orientation
 					gene1 = chart1.addGene( 900,    750 , '-');
-					gene1.name = "Gene 1";
+					gene1.name = "Click Me";
 					gene1.onMouseover = "Start:900 Length:750";
 					gene1.onClick = "http://www.google.com";
 					
@@ -34,7 +35,12 @@
 	</head>  
 	
 	<body onload="draw('canvas')">
-		<canvas id="canvas" width="750" height="330" ></canvas>  
+		<div id="description"><h2>Events</h2>
+			add click and mouseover events to genes
+		</div>
+		<div id="container">
+			<canvas id="canvas" width="750" height="330" ></canvas>  
+		</div>
 	</body>
 	
 </html>

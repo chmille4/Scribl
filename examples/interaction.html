@@ -5,46 +5,25 @@
 		<script src="../lib/Scribl.events.js" ></script>
 		<script src="../lib/Scribl.js" ></script>
 		<script src="../lib/genbank.js" ></script>
-		
-		<!-- <script> 
-
-			function draw(canvasName) {  
-					
-					// Get Canvas and Create Chart
-				  	var canvas = document.getElementById(canvasName);  	
-					
-					// Create Chart
-					chart = new Scribl(canvas, 800);
-
-					// Add Genes
-					gene1 = chart.addGene( 1,    100 , '-');
-					gene2 = chart.addGene( 101, 90, '+');
-					gene3 = chart.addGene(8000, 999, '+');
-					gene4 = chart.addGene(4500, 1000, '+');
-					
-					//chart = chart.slice(0, 100);
-					
-					// Draw Chart
-//					chart.draw();
-					chart.zoom(0, 1000, 9000, 10000, 4, 5);
-//					chart.zoom(0, 1000, 0, 200, 2, 10);
-			}
-				
-		</script> -->
+		<link rel="stylesheet" type="text/css" href="demos.css" />
 
 	</head>  
 	
 	<body>  
-		<form>
+		<div id="description"><h2>Interaction</h2>
+		<span>Move sliders to change the scale size</span><br/>
+		<br/><form>
 			<div>Zoom Scale</div>
 			<input id="minSlider" type="range" min="0" max="360000" value="0" onchange="changeScale(this.value, document.getElementById('maxSlider').value)" />
 			<input id="maxSlider" type="range" min="0" max="360000" value="360000" onchange="changeScale(document.getElementById('minSlider').value, this.value)" />
 			
 			
-			</br><input id="maxSlider" type="range" min="0" max="360000" value="360000" style="width:825px;margin-left:8px" />
+			</br>
 		</form>
-
-		<canvas id="canvas" width="900" height="400"></canvas>  
+		</div>
+		<div id="container">
+			<canvas id="canvas" width="900" height="400"></canvas>  
+		</div>
 							<div id="ecoli" style="display: none">
 		LOCUS       FR719195              359618 bp    DNA     linear   BCT 16-NOV-2010
 		DEFINITION  Erwinia amylovora ATCC BAA-2158, whole genome shotgun sequence,

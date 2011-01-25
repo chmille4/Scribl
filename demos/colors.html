@@ -1,8 +1,10 @@
 <!DOCTYPE HTML> 
 <html lang="en">
 	<head>
-		<script src="https://github.com/chmille4/Scribl/raw/master/lib/Scribl.gene.js" ></script>
-		<script src="https://github.com/chmille4/Scribl/raw/master/lib/Scribl.js" ></script>
+		<script src="../lib/Scribl.gene.js" ></script> 
+		<script src="../lib/Scribl.events.js" ></script>
+		<script src="../lib/Scribl.js" ></script>
+		<link rel="stylesheet" type="text/css" href="../css/demos.css" />
 		
 		<script> 
 
@@ -14,9 +16,10 @@
 				chart = new Scribl(canvas, 500);
 
 				chart.tick.major.color = "white";
-				chart.tick.minor.color = "white";
+				chart.tick.minor.color = "red";
 				chart.scale.font.color = "white";
-				chart.scale.font.size = 30;
+				chart.scale.font.size = 26;
+				chart.scale.size = 7;
 
 				// Create Track 1
 				track1 = chart.addTrack();	
@@ -101,8 +104,17 @@
 	</head>  
 	
 	<body onload="draw('canvas')">  
-		<canvas id="canvas" width=547 height=310 style="-moz-border-radius:15px; border-radius:15px; background:-webkit-gradient(linear, left top, left bottom, from(rgb(50,50,50)), to(rgb(50,50,50)), color-stop(0.5, rgb(170,170,170)), color-stop(0.5, rgb(170,170,170))); background: -moz-linear-gradient(top, rgb(50,50,50), rgb(170,170,170), rgb(170,170,170), rgb(50,50,50));"</canvas>
 
+		<div id="description"><H2>Versatility</H2>
+			<div>Easily change:<br/> background color, scale size, scale major tick color, scale minor tick color, scale text color, scale font size
+			</div>
+
+		</div><br/>
+		
+		<div id="container">		
+			<canvas id="canvas" width=547 height=310 style="-moz-border-radius:15px; border-radius:15px; background:-webkit-gradient(linear, left top, left bottom, from(rgb(50,50,50)), to(rgb(50,50,50)), color-stop(0.5, rgb(170,170,170)), color-stop(0.5, rgb(170,170,170))); background: -moz-linear-gradient(top, rgb(50,50,50), rgb(170,170,170), rgb(170,170,170), rgb(50,50,50));"
+			</canvas>
+		</div>
 	</body>
 	
 </html>

@@ -1,9 +1,11 @@
 <!DOCTYPE HTML> 
 <html lang="en">
 	<head>
-		<script src="https://github.com/chmille4/Scribl/raw/master/lib/Scribl.gene.js" ></script>
-		<script src="https://github.com/chmille4/Scribl/raw/master/lib/Scribl.js" ></script>
-		<script src="https://github.com/chmille4/Scribl/raw/master/lib/genbank.js" ></script>
+		<script src="../lib/Scribl.gene.js" ></script> 
+		<script src="../lib/Scribl.events.js" ></script>
+		<script src="../lib/Scribl.js" ></script>
+		<script src="../lib/genbank.js" ></script>
+		<link rel="stylesheet" type="text/css" href="demos.css" />
 		
 		<script> 
 
@@ -18,6 +20,8 @@
 					// parse and load genbank file
 					chart.loadGenbank(document.getElementById('ecoli').innerHTML);
 					
+					chart.tracks[0].genes[0].onMouseover = "test test test";
+					
 					// Draw Chart
 					chart.draw();
 
@@ -28,7 +32,12 @@
 	</head>  
 	
 	<body onload="draw('canvas')">  
-		<canvas id="canvas" width="950" height="400"></canvas>  
+		<div id="description"><h2>Visualize Genbank</h2>
+			parsing and displaying 360k base pairs of the ecoli genome (AC: FR719195)
+		</div>
+		<div id="container">
+			<canvas id="canvas" width="950" height="400"></canvas>  
+		</div>
 		<div id="ecoli" style="display: none">
 			LOCUS       FR719195              359618 bp    DNA     linear   BCT 16-NOV-2010
 			DEFINITION  Erwinia amylovora ATCC BAA-2158, whole genome shotgun sequence,

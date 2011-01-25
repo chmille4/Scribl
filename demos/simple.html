@@ -1,8 +1,10 @@
 <!DOCTYPE HTML> 
 <html lang="en">
 	<head>
-		<script src="https://github.com/chmille4/Scribl/raw/master/lib/Scribl.gene.js" ></script>
-		<script src="https://github.com/chmille4/Scribl/raw/master/lib/Scribl.js" ></script>
+		<script src="../lib/Scribl.events.js" ></script>
+		<script src="../lib/Scribl.gene.js" ></script> 
+		<script src="../lib/Scribl.js" ></script>
+		<link rel="stylesheet" type="text/css" href="../css/demos.css" />
 		
 		<script> 
 
@@ -12,27 +14,27 @@
 				  	var canvas = document.getElementById(canvasName);  	
 					
 					// Create Chart
-					chart = new Scribl(canvas, 500);
-			
-					// Add Genes
-					gene1 = chart.addGene( 5,    750 , '-');
-					gene2 = chart.addGene( 3500, 2500, '+');
-					gene3 = chart.addGene( 8100, 1000, '-');
-					gene4 = chart.addGene( 6200, 1500, '+');
-					gene5 = chart.addGene( 100,  1000, '-');		
-					gene6 = chart.addGene( 3500, 1500, '-');		
-					gene7 = chart.addGene( 2230, 1000, '+');
-					gene8 = chart.addGene( 4500, 1500, '+');				
-					gene9 = chart.addGene( 7230, 1000, '-');
-					
+					chart1 = new Scribl(canvas, 500);
+
+					// Add Genes      position, length, orientation
+					gene1 = chart1.addGene( 900,    750 , '-');
+					gene2 = chart1.addGene( 3500, 2500, '+');
+					gene3 = chart1.addGene( 8100, 1000, '-');
+					gene4 = chart1.addGene( 6200, 1500, '+');
+					gene5 = chart1.addGene( 1000,  1000, '-');		
+					gene6 = chart1.addGene( 3500, 1500, '-');		
+					gene7 = chart1.addGene( 2230, 1000, '+');
+					gene8 = chart1.addGene( 4500, 1500, '+');				
+					gene9 = chart1.addGene( 7230, 1000, '-');
+
 					// add name
 					gene3.name = "Gene 2";
 					
 					// Draw Chart
-					chart.draw();
+					chart1.draw();
 					
-					// Create image of chart
-					var img = chart.canvas.toDataURL("image/png");
+					// Create image of chart1
+					var img = chart1.canvas.toDataURL("image/png");
 					// Add link to download image
 					document.getElementById('export').href = img;
 			}
@@ -42,8 +44,15 @@
 	</head>  
 	
 	<body onload="draw('canvas')">
-		<canvas id="canvas" width="750" height="330"></canvas>  
-		</br><a id="export">Export as PNG (right click Save As)</a>
+		<div id="description">
+			<h2>Simple Demo</h2><br/>
+			get up and running with minimal code
+		</div><br/>
+		<div id="container">
+			<canvas id="canvas" width="547" height="330"></canvas>  
+			</br><a id="export">Export as PNG (right click Save As)</a>
+		</div>
+		
 	</body>
 	
 </html>

@@ -1,0 +1,49 @@
+<!DOCTYPE HTML> 
+<html lang="en">
+	<head>
+		<script src="../lib/Scribl.gene.js" ></script> 
+		<script src="../lib/Scribl.events.js" ></script>
+		<script src="../lib/Scribl.js" ></script>
+		<link rel="stylesheet" type="text/css" href="../css/demos.css" />
+		
+		<script> 
+
+				function draw(canvasName) {  
+					
+					// Get Canvas and Create Chart
+				  	var canvas = document.getElementById(canvasName);  	
+					
+					// Create Chart
+					chart = new Scribl(canvas, 500);
+					
+					// force scale min and max
+					chart.scale.min = 0;
+					chart.scale.max = 12000;
+					
+					// force size of ticks
+					chart.tick.major.size = 1000;
+			
+					// Add Genes
+					gene1 = chart.addGene( 7000,    1000 , '-');
+					gene2 = chart.addGene( 3500, 1500, '+');
+					gene5 = chart.addGene( 6000,  1000, '-');	
+					
+					// Draw Chart
+					chart.draw();
+
+			}
+				
+		</script>
+
+	</head>  
+	
+	<body onload="draw('canvas')">  
+		<div id="description"><h2>Custom Scale</h2>
+			You can force a specific region for your scale.  Here an extra 3k bases are shown on either side of the genes
+		</div><br/>
+		<div id="container">
+			<canvas id="canvas" width="547" height="400"></canvas>  
+		</div>
+	</body>
+	
+</html>

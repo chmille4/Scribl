@@ -1,20 +1,25 @@
 <!DOCTYPE HTML> 
 <html lang="en">
 	<head>
-		<script src="https://github.com/chmille4/Scribl/raw/master/lib/Scribl.gene.js" ></script>
-		<script src="https://github.com/chmille4/Scribl/raw/master/lib/Scribl.js" ></script>
-		<script src="https://github.com/chmille4/Scribl/raw/master/lib/genbank.js" ></script>
+		<script src="../lib/Scribl.gene.js" ></script> 
+		<script src="../lib/Scribl.events.js" ></script>
+		<script src="../lib/Scribl.js" ></script>
+		<script src="../lib/genbank.js" ></script>
+		<link rel="stylesheet" type="text/css" href="../css/demos.css" />
 
 	</head>  
 	
 	<body>  
-		<span>Minimum</span>
-		<input type="text" id="minTxtBx" value="0"/>
-		<span>Maximum</span>
-		<input type="text" id="maxTxtBx" value="360000"/> 
-		<input type="button" value="Zoom" onClick="zoomScale(document.getElementById('minTxtBx').value, document.getElementById('maxTxtBx').value);"/></br>
-
-		<canvas id="canvas" width="900" height="400"></canvas>  
+		<div id="description"><h2>Zoom</h2><span>Minimum</span>
+			<input type="text" id="minTxtBx" value="0"/>
+			<span>Maximum</span>
+			<input type="text" id="maxTxtBx" value="360000"/> 
+			<input type="button" value="Zoom" onClick="zoomScale(document.getElementById('minTxtBx').value, document.getElementById('maxTxtBx').value);"/></br>
+		</div>
+		
+		<div id="container">
+			<canvas id="canvas" width="900" height="400"></canvas>  
+		</div>
 							<div id="ecoli" style="display: none">
 		LOCUS       FR719195              359618 bp    DNA     linear   BCT 16-NOV-2010
 		DEFINITION  Erwinia amylovora ATCC BAA-2158, whole genome shotgun sequence,

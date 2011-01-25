@@ -1,21 +1,29 @@
 <!DOCTYPE HTML> 
 <html lang="en">
 	<head>
-		<script src="https://github.com/chmille4/Scribl/raw/master/lib/Scribl.gene.js" ></script>
-		<script src="https://github.com/chmille4/Scribl/raw/master/lib/Scribl.js" ></script>
-		<script src="https://github.com/chmille4/Scribl/raw/master/lib/genbank.js" ></script>
+		<script src="../lib/Scribl.gene.js" ></script> 
+		<script src="../lib/Scribl.events.js" ></script>
+		<script src="../lib/Scribl.js" ></script>
+		<script src="../lib/genbank.js" ></script>
+		<link rel="stylesheet" type="text/css" href="../css/demos.css" />
 
 	</head>  
 	
 	<body>  
-		<form>
+		<div id="description"><h2>Interaction</h2>
+		<span>Move sliders to change the scale size</span><br/>
+		<br/><form>
 			<div>Zoom Scale</div>
 			<input id="minSlider" type="range" min="0" max="360000" value="0" onchange="changeScale(this.value, document.getElementById('maxSlider').value)" />
 			<input id="maxSlider" type="range" min="0" max="360000" value="360000" onchange="changeScale(document.getElementById('minSlider').value, this.value)" />
-		
+			
+			
+			</br>
 		</form>
-
-		<canvas id="canvas" width="900" height="400"></canvas>  
+		</div>
+		<div id="container">
+			<canvas id="canvas" width="900" height="400"></canvas>  
+		</div>
 							<div id="ecoli" style="display: none">
 		LOCUS       FR719195              359618 bp    DNA     linear   BCT 16-NOV-2010
 		DEFINITION  Erwinia amylovora ATCC BAA-2158, whole genome shotgun sequence,

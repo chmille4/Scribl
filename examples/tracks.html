@@ -1,6 +1,7 @@
 <!DOCTYPE HTML> 
 <html lang="en">
 	<head>
+		<script src="../lib/Scribl.events.js" ></script> 
 		<script src="../lib/Scribl.gene.js" ></script> 
 		<script src="../lib/Scribl.js" ></script>
 		
@@ -13,6 +14,9 @@
 					
 					// Create Chart
 					chart = new Scribl(canvas, 500);
+					
+					// Change TrackSizes
+					chart.trackSizes = 15;
 
 					// Create Track 1
 					track1 = chart.addTrack();	

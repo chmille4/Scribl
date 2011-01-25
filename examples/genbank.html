@@ -2,6 +2,7 @@
 <html lang="en">
 	<head>
 		<script src="../lib/Scribl.gene.js" ></script> 
+		<script src="../lib/Scribl.events.js" ></script>
 		<script src="../lib/Scribl.js" ></script>
 		<script src="../lib/genbank.js" ></script>
 		
@@ -17,6 +18,8 @@
 					
 					// parse and load genbank file
 					chart.loadGenbank(document.getElementById('ecoli').innerHTML);
+					
+					chart.tracks[0].genes[0].onMouseover = "test test test";
 					
 					// Draw Chart
 					chart.draw();

@@ -5,9 +5,34 @@
 		<script src="https://github.com/chmille4/Scribl/raw/master/lib/Scribl.gene.js" ></script> 
 		<script src="https://github.com/chmille4/Scribl/raw/master/lib/Scribl.js" ></script>
 		<script src="https://github.com/chmille4/Scribl/raw/master/lib/genbank.js" ></script>
+
 		<link rel="stylesheet" type="text/css" href="../css/demos.css" />
+		<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+	  	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+	  	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+	   <style type="text/css">
+	   	.slider { margin: 10px; width:120px; height: .7em; font-size:.6em; }
+	  	</style>
+	  	<script>
+	  		$(document).ready(function() {
+	    		$("#minSlider").slider( {
+					min: 0, 
+					max:360000, 
+					value: 0, 
+					slide: function(event, ui){ changeScale( $("#minSlider").slider( "option", "value" ), $("#maxSlider").slider( "option", "value" ) ) },
+				});
+				$("#maxSlider").slider( {
+					min: 0,
+					max:360000,
+					value: 360000,
+					slide: function(event, ui){ changeScale( $("#minSlider").slider( "option", "value" ), $("#maxSlider").slider( "option", "value" ) ) },
+				});
+	  		});
+	  	</script>
+		
 		
 		<script type="text/javascript">
+		
 
 		  var _gaq = _gaq || [];
 		  _gaq.push(['_setAccount', 'UA-21069282-1']);
@@ -28,14 +53,16 @@
 			<div>(Best viewed in Chrome/Safari)</div>
 		<span>Move sliders to change the scale size</span><br/>
 		<br/><form>
-			<div style="margin-left: auto; margin-right: auto; width:40%">
+			<div style="margin-left: auto; margin-right: auto; width:50%">
 				<div style="float:left">
 					<span>Min Scale</span><br/>
-					<input id="minSlider" type="range" min="0" max="360000" value="0" onchange="changeScale(this.value, document.getElementById('maxSlider').value)" />
+					<!--<input id="minSlider" type="range" min="0" max="360000" value="0" onchange="changeScale(this.value, document.getElementById('maxSlider').value)" />-->
+					<div id="minSlider" class="slider"></div>
 				</div>
 				<div style="float:right">
 					<span>Max Scale</span><br/>
-					<input id="maxSlider" type="range" min="0" max="360000" value="360000" onchange="changeScale(document.getElementById('minSlider').value, this.value)" />
+					<div id="maxSlider" class="slider"></div>
+					<!--<input id="maxSlider" type="range" min="0" max="360000" value="360000" onchange="changeScale(document.getElementById('minSlider').value, this.value)" /> -->
 				</div><br/>
 			</div>
 				

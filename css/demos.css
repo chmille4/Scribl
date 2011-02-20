@@ -15,6 +15,14 @@ body {
 	text-align: center;
 }
 
+.slider {
+  margin-left: 10px;
+	width: 120px; 
+	height: 6px; 
+	font-size: 8px; 
+	display: inline-block;
+}
+
 #watermark {
 	margin-top: -210px;
 	margin-left:auto; 

@@ -1,4 +1,4 @@
-http://chmille4.github.com/Scribl/
+http://chmille4.github.com/Scribl/index.html
 http://chmille4.github.com/Scribl/demos/simple.html
 http://chmille4.github.com/Scribl/demos/builder.html
 http://chmille4.github.com/Scribl/demos/genbank.html

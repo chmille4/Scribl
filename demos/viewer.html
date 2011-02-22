@@ -1,14 +1,55 @@
 <!DOCTYPE HTML> 
 <html lang="en">
 	<head>
-		<title>Scribl - zoom demo</title>
+		<title>Scribl - viewer</title>
 		<script  src="../js/Scribl.events.js" ></script>
 		<script  src="../js/Scribl.gene.js" ></script> 
 		<script  src="../js/Scribl.js" ></script>
-		<script  src="../js/genbank.js" ></script>
+		<script  src="../js/genbank.js" ></script>		
+		<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
 		<link rel="stylesheet" type="text/css" href="../css/demos.css" />
+	  	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+	  	<script src="../js/jquery/jquery-ui.min.js"></script>
+	
+		<style>
+		#demo-frame > div.demo { padding: 10px !important; };
+		</style>
+		<script>
+		$(function() {
+			$( "#slider-range" ).slider({
+				range: true,
+				min: 0,
+				max: 360000,
+				values: [ 100000, 250000 ],
+				slide: function( event, ui ) {
+					changeScale( ui.values[ 0 ], ui.values[ 1 ] );
+				}
+			});
+			$( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
+				" - $" + $( "#slider-range" ).slider( "values", 1 ) );
+		});
+		</script>
+
+	  	<script>
+	  		$(document).ready(function() {
+	    		$("#minSlider").slider( {
+					min: 0, 
+					max:360000, 
+					value: 0, 
+					slide: function(event, ui){ changeScale( $("#minSlider").slider( "option", "value" ), $("#maxSlider").slider( "option", "value" ) ) },
+				});
+				$("#maxSlider").slider( {
+					min: 0,
+					max:360000,
+					value: 360000,
+					slide: function(event, ui){ changeScale( $("#minSlider").slider( "option", "value" ), $("#maxSlider").slider( "option", "value" ) ) },
+				});
+	  		});
+	  	</script>
+		
 		
 		<script type="text/javascript">
+		
 
 		  var _gaq = _gaq || [];
 		  _gaq.push(['_setAccount', 'UA-21069282-1']);
@@ -25,16 +66,17 @@
 	</head>  
 	
 	<body>  
-		<div id="description"><h2>Zoom</h2>
+		<div id="description"><h2>Interaction</h2>
 			<div>(Best viewed in Chrome/Safari)</div>
-			create a smooth zoom between two values<br/><span>Minimum</span>
+		<br/><form>
+			<div style="margin-left: auto; margin-right: auto; width:50%">
+				<div>Viewing 360kb region of Ecoli Genome</div><br/>
+				<div style="font-size:.8em">Move End Sliders to Change Zoom <br/> Drag Middle to Scroll Left and Right</div>				
+				<div id="slider-range" class="slider" style="width:100%;"></div>
+				
+			</div>
 			
-			<input type="text" id="minTxtBx" value="0"/>
-			<span>Maximum</span>
-			<input type="text" id="maxTxtBx" value="360000"/> 
-			<input type="button" value="Zoom" onClick="zoomScale(document.getElementById('minTxtBx').value, document.getElementById('maxTxtBx').value);"/></br>
 		</div>
-		
 		<div id="container">
 			<canvas id="canvas" width="840" height="400"></canvas>  
 		</div>
@@ -12098,10 +12140,15 @@
 		var zoomCanvas = document.getElementById('canvas');
 		origZoomChart = new Scribl(zoomCanvas, 810);
 		origZoomChart.loadGenbank(document.getElementById('ecoli').innerHTML);
-		origZoomChart.draw();
+		changeScale(100000, 250000);
 		
-		function zoomScale(newMin, newMax) {
-			origZoomChart.zoom(0, 360000, newMin, newMax, 2, 10);
+		function changeScale(newMin, newMax) {
+			newChart = origZoomChart.slice(newMin, newMax);
+			newChart.scale.off = true;
+			newChart.scale.pretty = false;
+			newChart.scale.offset = false;
+			origZoomChart.ctx.clearRect(0, 0, 900, 400);
+			newChart.draw();
 		}
 
 	</script>

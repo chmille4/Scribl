@@ -1,33 +1,81 @@
 <!DOCTYPE HTML> 
 <html lang="en">
 	<head>
-		<script src="https://github.com/chmille4/Scribl/raw/master/lib/Scribl.events.js" ></script>
-		<script src="https://github.com/chmille4/Scribl/raw/master/lib/Scribl.gene.js" ></script> 
-		<script src="https://github.com/chmille4/Scribl/raw/master/lib/Scribl.js" ></script>
-		<script src="https://github.com/chmille4/Scribl/raw/master/lib/genbank.js" ></script>
+		<title>Scribl - viewer</title>
+		<script  src="../lib/Scribl.events.js" ></script>
+		<script  src="../lib/Scribl.gene.js" ></script> 
+		<script  src="../lib/Scribl.js" ></script>
+		<script  src="../lib/genbank.js" ></script>		
+		<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
 		<link rel="stylesheet" type="text/css" href="demos.css" />
+	  	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+	  	<script src="jquery-ui.min.js"></script>
+	
+		<style>
+		#demo-frame > div.demo { padding: 10px !important; };
+		</style>
+		<script>
+		$(function() {
+			$( "#slider-range" ).slider({
+				range: true,
+				min: 0,
+				max: 360000,
+				values: [ 100000, 250000 ],
+				slide: function( event, ui ) {
+					changeScale( ui.values[ 0 ], ui.values[ 1 ] );
+				}
+			});
+			$( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
+				" - $" + $( "#slider-range" ).slider( "values", 1 ) );
+		});
+		</script>
+
+	  	<script>
+	  		$(document).ready(function() {
+	    		$("#minSlider").slider( {
+					min: 0, 
+					max:360000, 
+					value: 0, 
+					slide: function(event, ui){ changeScale( $("#minSlider").slider( "option", "value" ), $("#maxSlider").slider( "option", "value" ) ) },
+				});
+				$("#maxSlider").slider( {
+					min: 0,
+					max:360000,
+					value: 360000,
+					slide: function(event, ui){ changeScale( $("#minSlider").slider( "option", "value" ), $("#maxSlider").slider( "option", "value" ) ) },
+				});
+	  		});
+	  	</script>
+		
+		
+		<script type="text/javascript">
+		
+
+		  var _gaq = _gaq || [];
+		  _gaq.push(['_setAccount', 'UA-21069282-1']);
+		  _gaq.push(['_trackPageview']);
+
+		  (function() {
+		    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		  })();
+
+		</script>
 
 	</head>  
 	
 	<body>  
-		<div id="description"><h2>Interaction</h2>
-		<span>Move sliders to change the scale size</span><br/>
+		<div id="description"><h2>Simple Viewer</h2>
+			<div>(Best viewed in Chrome/Safari)</div>
 		<br/><form>
-			<div style="margin-left: auto; margin-right: auto; width:40%">
-				<div style="float:left">
-					<span>Min Scale</span><br/>
-					<input id="minSlider" type="range" min="0" max="360000" value="0" onchange="changeScale(this.value, document.getElementById('maxSlider').value)" />
-				</div>
-				<div style="float:right">
-					<span>Max Scale</span><br/>
-					<input id="maxSlider" type="range" min="0" max="360000" value="360000" onchange="changeScale(document.getElementById('minSlider').value, this.value)" />
-				</div><br/>
-			</div>
+			<div style="margin-left: auto; margin-right: auto; width:50%">
+				<div>Viewing 360kb region of Ecoli Genome</div><br/>
+				<div style="font-size:.8em">Move End Sliders to Change Zoom <br/> Drag Middle to Scroll Left and Right</div>				
+				<div id="slider-range" class="slider" style="width:100%;"></div>
 				
+			</div>
 			
-			
-			</br>
-		</form>
 		</div>
 		<div id="container">
 			<canvas id="canvas" width="840" height="400"></canvas>  
@@ -12092,7 +12140,7 @@
 		var zoomCanvas = document.getElementById('canvas');
 		origZoomChart = new Scribl(zoomCanvas, 810);
 		origZoomChart.loadGenbank(document.getElementById('ecoli').innerHTML);
-		origZoomChart.draw();
+		changeScale(100000, 250000);
 		
 		function changeScale(newMin, newMax) {
 			newChart = origZoomChart.slice(newMin, newMax);

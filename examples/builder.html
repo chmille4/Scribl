@@ -1,11 +1,39 @@
 <!DOCTYPE HTML> 
 <html lang="en">
 	<head>
-		<script src="https://github.com/chmille4/Scribl/raw/master/lib/Scribl.events.js" ></script>
-		<script src="https://github.com/chmille4/Scribl/raw/master/lib/Scribl.gene.js" ></script> 
-		<script src="https://github.com/chmille4/Scribl/raw/master/lib/Scribl.js" ></script>
-					<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js" ></script>
+		<title>Scribl - builder</title>
+		<script  src="../lib/Scribl.events.js" ></script>
+		<script  src="../lib/Scribl.gene.js" ></script> 
+		<script  src="../lib/Scribl.js" ></script>
+		<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
 		<link rel="stylesheet" type="text/css" href="demos.css" />
+	  	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+	  	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+		
+		<script type="text/javascript">
+			  var _gaq = _gaq || [];
+			  _gaq.push(['_setAccount', 'UA-21069282-1']);
+			  _gaq.push(['_trackPageview']);
+
+			  (function() {
+			    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			  })();
+		</script>
+		
+		<script>
+	  		$(document).ready(function() {
+	    		$("#shapeSlider").slider( { min: 0, max: 20, value: 6, slide: function(event, ui){ redraw() } });
+	    		$("#trackSlider").slider( { min: 10, max: 200, value: 70, slide: function(event, ui){ redraw() } });
+				$("#rSlider1").slider( { min: 0, max: 260, value: 0, slide: function(event, ui){ redraw() } });
+				$("#bSlider1").slider( { min: 0, max: 260, value: 0, slide: function(event, ui){ redraw() } });	
+				$("#gSlider1").slider( { min: 0, max: 260, value: 0, slide: function(event, ui){ redraw() } });	
+				$("#rSlider2").slider( { min: 0, max: 260, value: 0, slide: function(event, ui){ redraw() } });	
+				$("#bSlider2").slider( { min: 0, max: 260, value: 0, slide: function(event, ui){ redraw() } });	
+				$("#gSlider2").slider( { min: 0, max: 260, value: 0, slide: function(event, ui){ redraw() } });	
+	  		});
+	  	</script>
 		
 		<script> 
 
@@ -35,6 +63,10 @@
 					
 					// Draw Chart
 					chart1.draw();
+					// Create image of chart1
+					var img = chart1.canvas.toDataURL("image/png");
+					// Add link to download image
+					$("a#export").attr('href', img);
 					
 					// have to reset chart.gene.color to undefined or else it overrides everything downstream ...
 					chart1.gene.color = undefined;
@@ -42,14 +74,14 @@
 			
 			function redraw() {
 				// changeable options
-				roundness = document.getElementById('shapeSlider').value;
-				trackSizes = document.getElementById('trackSlider').value;
-				r1 = document.getElementById('rSlider1').value;
-				g1 = document.getElementById('gSlider1').value;
-				b1 = document.getElementById('bSlider1').value;
-				r2 = document.getElementById('rSlider2').value;
-				g2 = document.getElementById('gSlider2').value;
-				b2 = document.getElementById('bSlider2').value;
+				roundness = $("#shapeSlider").slider( "option", "value" );
+				trackSizes = $("#trackSlider").slider( "option", "value" );
+				r1 = $("#rSlider1").slider( "option", "value" );
+				g1 = $("#gSlider1").slider( "option", "value" );
+				b1 = $("#bSlider1").slider( "option", "value" );
+				r2 = $("#rSlider2").slider( "option", "value" );
+				g2 = $("#gSlider2").slider( "option", "value" );
+				b2 = $("#bSlider2").slider( "option", "value" );
 				canvas = document.getElementById('canvas');
 				canvas.height = chart1.chartHeight() + 20;
 				
@@ -68,7 +100,7 @@
 				// Create image of chart1
 				var img = chart1.canvas.toDataURL("image/png");
 				// Add link to download image
-				document.getElementById('export').href = img;
+				$("a#export").attr('href', img);
 			}
 				
 		</script>
@@ -77,38 +109,47 @@
 	
 	<body onload="draw('canvas')">
 		<div id="description">
-			<h2>Chart Builder</h2><br/>
+			<h2>Chart Builder</h2><div>(Best viewed in Chrome/Safari)</div><br/>
 			since the chart is being drawn in the browser, changes are instant
+		</div>	
 		</div><br/>
-		<form>
 			<div style="margin-left: auto; margin-right: auto; width:40%">
-				<div style="float:left">
+				<div style="float:left; width:40%">
 					<span>Gene Shape</span><br/>
-					<input id="shapeSlider" type="range" min="0" max="20" value="6" onchange="redraw()" />
+					<div id="shapeSlider" class="slider"></div>
+					<!-- <input id="shapeSlider" type="range" min="0" max="20" value="6" onchange="redraw()" /> -->
+					<br/><span>Track Size</span><br/>
+					<div id="trackSlider" class ="slider"></div>
+					<!-- <input id="trackSlider" type="range" min="10" max="200" value="70" onchange="redraw()" /> -->
+				</div>
+				
+
+				<div style="float:right; width:60%">
+					<div style="float:left">
+						<span>Gene Color 1</span><br/>
+						<span>r</span><div id="rSlider1" class="slider"></div><br/>
+						<span>g</span><div id="gSlider1" class="slider"></div><br/>
+						<span>b</span><div id="bSlider1" class="slider"></div>
+						<!-- <input id="rSlider1" type="range" min="0" max="260" value="0" onchange="redraw()" /><br/>
+						<input id="gSlider1" type="range" min="0" max="260" value="0" onchange="redraw()" /><br/>
+						<input id="bSlider1" type="range" min="0" max="260" value="0" onchange="redraw()" /> -->
+					</div>
+					<div style="float:right; margin-left: 5px">
+						<span>Gene Color 2</span><br/>
+						<span>r</span><div id="rSlider2" class="slider"></div><br/>
+						<span>g</span><div id="gSlider2" class="slider"></div><br/>
+						<span>b</span><div id="bSlider2" class="slider"></div>
+						<!-- <input id="rSlider2" type="range" min="0" max="260" value="0" onchange="redraw()" /><br/>
+						<input id="gSlider2" type="range" min="0" max="260" value="0" onchange="redraw()" /><br/>
+						<input id="bSlider2" type="range" min="0" max="260" value="0" onchange="redraw()" /> -->
+					</div>
 				</div>
 
-				<div style="float:right; margin-left: 5px">
-					<span>Gene Color 2</span><br/>
-					<span>r</span><input id="rSlider2" type="range" min="0" max="260" value="0" onchange="redraw()" /><br/>
-					<span>g</span><input id="gSlider2" type="range" min="0" max="260" value="0" onchange="redraw()" /><br/>
-					<span>b</span><input id="bSlider2" type="range" min="0" max="260" value="0" onchange="redraw()" />
-				</div>
-
-				<div style="float:right">
-					<span>Gene Color 1</span><br/>
-					<span>r</span><input id="rSlider1" type="range" min="0" max="260" value="0" onchange="redraw()" /><br/>
-					<span>g</span><input id="gSlider1" type="range" min="0" max="260" value="0" onchange="redraw()" /><br/>
-					<span>b</span><input id="bSlider1" type="range" min="0" max="260" value="0" onchange="redraw()" />
-				</div>
-				<div style="float:left">
-					<span>Track Size</span><br/>
-					<input id="trackSlider" type="range" min="10" max="200" value="70" onchange="redraw()" />
-				</div><br/>
 				<div style="clear:both"></div> <br/>
 			</div>
 		<div id="container">
-			<canvas id="canvas" width="547" height="330"></canvas>  
-					</br><a id="export">Export as PNG (right click Save As)</a>
+			<canvas id="canvas" width="547" height="350"></canvas>  
+			<br/><a id="export">Export as PNG (right click Save As)</a>
 		</div>
 
 		

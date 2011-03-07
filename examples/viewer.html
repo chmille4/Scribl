@@ -29,23 +29,6 @@
 				" - $" + $( "#slider-range" ).slider( "values", 1 ) );
 		});
 		</script>
-
-	  	<script>
-	  		$(document).ready(function() {
-	    		$("#minSlider").slider( {
-					min: 0, 
-					max:360000, 
-					value: 0, 
-					slide: function(event, ui){ changeScale( $("#minSlider").slider( "option", "value" ), $("#maxSlider").slider( "option", "value" ) ) },
-				});
-				$("#maxSlider").slider( {
-					min: 0,
-					max:360000,
-					value: 360000,
-					slide: function(event, ui){ changeScale( $("#minSlider").slider( "option", "value" ), $("#maxSlider").slider( "option", "value" ) ) },
-				});
-	  		});
-	  	</script>
 		
 		
 		<script type="text/javascript">

@@ -4,6 +4,7 @@
 		<script src="../lib/Scribl.events.js" ></script>
 		<script src="../lib/Scribl.gene.js" ></script> 
 		<script src="../lib/Scribl.js" ></script>
+		<script src="https://github.com/mbostock/d3/raw/v1.8.2/d3.js" ></script>
 		<link rel="stylesheet" type="text/css" href="demos.css" />
 		
 		<script> 
@@ -31,12 +32,7 @@
 					gene3.name = "Gene 2";
 					
 					// Draw Chart
-					chart1.draw();
-					
-					// Create image of chart1
-					var img = chart1.canvas.toDataURL("image/png");
-					// Add link to download image
-					document.getElementById('export').href = img;
+					chart1.drawSVG();
 			}
 				
 		</script>
@@ -49,8 +45,9 @@
 			get up and running with minimal code
 		</div><br/>
 		<div id="container">
-			<canvas id="canvas" width="547" height="330"></canvas>  
-			</br><a id="export">Export as PNG (right click Save As)</a>
+			<canvas id="canvas" width="547" height="30"></canvas>  <br/>
+			<svg id="svg" width="547" height="600"></svg>  
+			
 		</div>
 		
 	</body>

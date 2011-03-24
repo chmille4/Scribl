@@ -1,10 +1,334 @@
 <!DOCTYPE HTML> 
 <html lang="en">
 	<head>
-		<script src="https://github.com/chmille4/Scribl/blob/svg_experiment/lib/Scribl.events.js" ></script>
-		<script src="https://github.com/chmille4/Scribl/blob/svg_experiment/lib/Scribl.gene.js" ></script> 
-		<script src="https://github.com/chmille4/Scribl/blob/svg_experiment/lib/Scribl.js" ></script>
-		<script src="https://github.com/chmille4/Scribl/blob/svg_experiment/lib/genbank.js" ></script>	
+		<script src="https://github.com/chmille4/Scribl/raw/svg_experiment/lib/Scribl.events.js" ></script>
+		<script src="https://github.com/chmille4/Scribl/raw/svg_experiment/lib/Scribl.gene.js" ></script> 
+		<script src="https://github.com/chmille4/Scribl/raw/svg_experiment/lib/Scribl.js" ></script>
+		<script src="https://github.com/chmille4/Scribl/raw/svg_experiment/lib/genbank.js" ></script>	
+		<script src="https://github.com/mbostock/d3/raw/v1.8.2/d3.js" ></script>
+		<link rel="stylesheet" type="text/css" href="demos.css" />
+
+	<!-- NOTE - This will only work as is in Firefox but IT IS MUCH FASTER IN CHROME! -->
+	<!-- To use in Chrome it must be accessed via a server (for some strange reason) -->
+	
+	</head>  
+	
+	<body> 
+		<span id="fps">0</span>
+		<div id="description"><h2>Genbank Drag and Drop</h2>
+			
+			<div id="content"></div>
+	   	<p id="log" style="color: gray"></p>
+		</div>
+		<div id="container">
+			<canvas id='canvas' width=900 height=450/>
+		</div>
+		
+		<script>
+			var content = document.getElementById('content');
+			if (!window.FileReader) {
+			  content.innerHTML = "<p>This browser doesnt support the File API</p>";
+			} else {
+			  // Page Layout
+			  content.innerHTML =
+			    '<p>Drag a Genbank file onto this area <input type="hidden" id="file" /></p>';
+
+			  // Displays gene charts.
+			  function displayChart(file) {
+			    var reader = new FileReader();
+
+			   reader.onload = function(event) {
+					var canvas = document.getElementById('canvas');
+					chart = new Scribl(canvas, 810, true);
+					chart.scale.off = true;
+					chart.trackSizes = 70;
+					chart.loadGenbank(event.target.result);
+					chart.drawSVG();
+					fps = 0;
+					now = undefined;
+					lastUpdate = (new Date)*1 - 1;
+					
+
+					// The higher this value, the less the FPS will be affected by quick changes
+					// Setting this to 1 will show you the FPS of the last sampled frame only
+					fpsFilter = 50;
+
+					
+					
+					fpsOut = document.getElementById('fps');
+					setInterval(function(){
+					  fpsOut.innerHTML = fps.toFixed(1) + "fps";
+					}, 1000);
+					runLoop();		
+			    };
+			    reader.readAsText(file);
+			  }		 
+
+			  // Input handler
+			  document.getElementById('file').onchange = function() {
+			    displayFile(this.files[0]);
+			  };
+
+			  // Reduce movement by adding invisible border
+			  content.style.border = '4px solid transparent';
+
+			  // Add dragging events
+			  content.ondragenter = function() {
+			    content.style.border = '4px solid #b1ecb3';
+			    return false;
+			  };
+
+			  content.ondragover = function() {
+			    return false;
+			  };
+
+			  content.ondragleave = function() {
+			    return false;
+			  };
+
+			  content.ondrop = function(event) {
+			    content.style.border = '4px solid transparent';
+			    displayChart(event.dataTransfer.files[0]);
+			    return false;
+			  };
+			}
+			
+				function runLoop() {
+
+					  var thisFrameFPS = 1000 / ((now=new Date) - lastUpdate);
+					  fps += (thisFrameFPS - fps) / fpsFilter;
+					  lastUpdate = now;
+
+					  chart.drawSVG();
+	//				  setTimeout( function() {alert('hihihih')}, 1000 );
+					setTimeout(runLoop, 0);
+				}
+		</script>
+	</body>
+	
+</html><!DOCTYPE HTML> 
+<html lang="en">
+	<head>
+		<script src="https://github.com/chmille4/Scribl/raw/svg_experiment/lib/Scribl.events.js" ></script>
+		<script src="https://github.com/chmille4/Scribl/raw/svg_experiment/lib/Scribl.gene.js" ></script> 
+		<script src="https://github.com/chmille4/Scribl/raw/svg_experiment/lib/Scribl.js" ></script>
+		<script src="https://github.com/chmille4/Scribl/raw/svg_experiment/lib/genbank.js" ></script>	
+		<script src="https://github.com/mbostock/d3/raw/v1.8.2/d3.js" ></script>
+		<link rel="stylesheet" type="text/css" href="demos.css" />
+
+	<!-- NOTE - This will only work as is in Firefox but IT IS MUCH FASTER IN CHROME! -->
+	<!-- To use in Chrome it must be accessed via a server (for some strange reason) -->
+	
+	</head>  
+	
+	<body> 
+		<span id="fps">0</span>
+		<div id="description"><h2>Genbank Drag and Drop</h2>
+			
+			<div id="content"></div>
+	   	<p id="log" style="color: gray"></p>
+		</div>
+		<div id="container">
+			<canvas id='canvas' width=900 height=450/>
+		</div>
+		
+		<script>
+			var content = document.getElementById('content');
+			if (!window.FileReader) {
+			  content.innerHTML = "<p>This browser doesnt support the File API</p>";
+			} else {
+			  // Page Layout
+			  content.innerHTML =
+			    '<p>Drag a Genbank file onto this area <input type="hidden" id="file" /></p>';
+
+			  // Displays gene charts.
+			  function displayChart(file) {
+			    var reader = new FileReader();
+
+			   reader.onload = function(event) {
+					var canvas = document.getElementById('canvas');
+					chart = new Scribl(canvas, 810, true);
+					chart.scale.off = true;
+					chart.trackSizes = 70;
+					chart.loadGenbank(event.target.result);
+					chart.drawSVG();
+					fps = 0;
+					now = undefined;
+					lastUpdate = (new Date)*1 - 1;
+					
+
+					// The higher this value, the less the FPS will be affected by quick changes
+					// Setting this to 1 will show you the FPS of the last sampled frame only
+					fpsFilter = 50;
+
+					
+					
+					fpsOut = document.getElementById('fps');
+					setInterval(function(){
+					  fpsOut.innerHTML = fps.toFixed(1) + "fps";
+					}, 1000);
+					runLoop();		
+			    };
+			    reader.readAsText(file);
+			  }		 
+
+			  // Input handler
+			  document.getElementById('file').onchange = function() {
+			    displayFile(this.files[0]);
+			  };
+
+			  // Reduce movement by adding invisible border
+			  content.style.border = '4px solid transparent';
+
+			  // Add dragging events
+			  content.ondragenter = function() {
+			    content.style.border = '4px solid #b1ecb3';
+			    return false;
+			  };
+
+			  content.ondragover = function() {
+			    return false;
+			  };
+
+			  content.ondragleave = function() {
+			    return false;
+			  };
+
+			  content.ondrop = function(event) {
+			    content.style.border = '4px solid transparent';
+			    displayChart(event.dataTransfer.files[0]);
+			    return false;
+			  };
+			}
+			
+				function runLoop() {
+
+					  var thisFrameFPS = 1000 / ((now=new Date) - lastUpdate);
+					  fps += (thisFrameFPS - fps) / fpsFilter;
+					  lastUpdate = now;
+
+					  chart.drawSVG();
+	//				  setTimeout( function() {alert('hihihih')}, 1000 );
+					setTimeout(runLoop, 0);
+				}
+		</script>
+	</body>
+	
+</html><!DOCTYPE HTML> 
+<html lang="en">
+	<head>
+		<script src="https://github.com/chmille4/Scribl/raw/svg_experiment/lib/Scribl.events.js" ></script>
+		<script src="https://github.com/chmille4/Scribl/raw/svg_experiment/lib/Scribl.gene.js" ></script> 
+		<script src="https://github.com/chmille4/Scribl/raw/svg_experiment/lib/Scribl.js" ></script>
+		<script src="https://github.com/chmille4/Scribl/raw/svg_experiment/lib/genbank.js" ></script>	
+		<script src="https://github.com/mbostock/d3/raw/v1.8.2/d3.js" ></script>
+		<link rel="stylesheet" type="text/css" href="demos.css" />
+
+	<!-- NOTE - This will only work as is in Firefox but IT IS MUCH FASTER IN CHROME! -->
+	<!-- To use in Chrome it must be accessed via a server (for some strange reason) -->
+	
+	</head>  
+	
+	<body> 
+		<span id="fps">0</span>
+		<div id="description"><h2>Genbank Drag and Drop</h2>
+			
+			<div id="content"></div>
+	   	<p id="log" style="color: gray"></p>
+		</div>
+		<div id="container">
+			<canvas id='canvas' width=900 height=450/>
+		</div>
+		
+		<script>
+			var content = document.getElementById('content');
+			if (!window.FileReader) {
+			  content.innerHTML = "<p>This browser doesnt support the File API</p>";
+			} else {
+			  // Page Layout
+			  content.innerHTML =
+			    '<p>Drag a Genbank file onto this area <input type="hidden" id="file" /></p>';
+
+			  // Displays gene charts.
+			  function displayChart(file) {
+			    var reader = new FileReader();
+
+			   reader.onload = function(event) {
+					var canvas = document.getElementById('canvas');
+					chart = new Scribl(canvas, 810, true);
+					chart.scale.off = true;
+					chart.trackSizes = 70;
+					chart.loadGenbank(event.target.result);
+					chart.drawSVG();
+					fps = 0;
+					now = undefined;
+					lastUpdate = (new Date)*1 - 1;
+					
+
+					// The higher this value, the less the FPS will be affected by quick changes
+					// Setting this to 1 will show you the FPS of the last sampled frame only
+					fpsFilter = 50;
+
+					
+					
+					fpsOut = document.getElementById('fps');
+					setInterval(function(){
+					  fpsOut.innerHTML = fps.toFixed(1) + "fps";
+					}, 1000);
+					runLoop();		
+			    };
+			    reader.readAsText(file);
+			  }		 
+
+			  // Input handler
+			  document.getElementById('file').onchange = function() {
+			    displayFile(this.files[0]);
+			  };
+
+			  // Reduce movement by adding invisible border
+			  content.style.border = '4px solid transparent';
+
+			  // Add dragging events
+			  content.ondragenter = function() {
+			    content.style.border = '4px solid #b1ecb3';
+			    return false;
+			  };
+
+			  content.ondragover = function() {
+			    return false;
+			  };
+
+			  content.ondragleave = function() {
+			    return false;
+			  };
+
+			  content.ondrop = function(event) {
+			    content.style.border = '4px solid transparent';
+			    displayChart(event.dataTransfer.files[0]);
+			    return false;
+			  };
+			}
+			
+				function runLoop() {
+
+					  var thisFrameFPS = 1000 / ((now=new Date) - lastUpdate);
+					  fps += (thisFrameFPS - fps) / fpsFilter;
+					  lastUpdate = now;
+
+					  chart.drawSVG();
+	//				  setTimeout( function() {alert('hihihih')}, 1000 );
+					setTimeout(runLoop, 0);
+				}
+		</script>
+	</body>
+	
+</html><!DOCTYPE HTML> 
+<html lang="en">
+	<head>
+		<script src="https://github.com/chmille4/Scribl/raw/svg_experiment/lib/Scribl.events.js" ></script>
+		<script src="https://github.com/chmille4/Scribl/raw/svg_experiment/lib/Scribl.gene.js" ></script> 
+		<script src="https://github.com/chmille4/Scribl/raw/svg_experiment/lib/Scribl.js" ></script>
+		<script src="https://github.com/chmille4/Scribl/raw/svg_experiment/lib/genbank.js" ></script>	
 		<script src="https://github.com/mbostock/d3/raw/v1.8.2/d3.js" ></script>
 		<link rel="stylesheet" type="text/css" href="demos.css" />
 

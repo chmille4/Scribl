@@ -1,0 +1,24 @@
+body {
+	background-color: #C3D3E4;
+}
+
+#description {
+	margin-left:auto; 
+	margin-right:auto; 
+	width:700px; 
+	font: 20px arial; 
+	color: rgb(64, 64, 64);
+	text-align: center;
+}
+
+#container {
+	text-align: center;
+}
+
+.slider {
+  margin-left: 10px;
+	width: 120px; 
+	height: 6px; 
+	font-size: 8px; 
+	display: inline-block;
+}

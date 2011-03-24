@@ -5,6 +5,7 @@
 		<script src="Scribl.gene.js" ></script> 
 		<script src="Scribl.js" ></script>
 		<script src="genbank.js" ></script>	
+		<script src="https://github.com/mbostock/d3/raw/v1.8.2/d3.js" ></script>
 		<link rel="stylesheet" type="text/css" href="demos.css" />
 
 	<!-- NOTE - This will only work as is in Firefox but IT IS MUCH FASTER IN CHROME! -->
@@ -38,15 +39,11 @@
 
 			   reader.onload = function(event) {
 					var canvas = document.getElementById('canvas');
-					chart = new Scribl(canvas, 810);
+					chart = new Scribl(canvas, 810, true);
 					chart.scale.off = true;
 					chart.trackSizes = 70;
-					var gene1 = chart.addGene(0, 500000, "+");
-					gene1.onMouseover = "Start:900 Length:750";
 					chart.loadGenbank(event.target.result);
-					chart.gene.color = "blue";
-
-					chart.draw();
+					chart.drawSVG();
 					fps = 0;
 					now = undefined;
 					lastUpdate = (new Date)*1 - 1;
@@ -62,7 +59,7 @@
 					setInterval(function(){
 					  fpsOut.innerHTML = fps.toFixed(1) + "fps";
 					}, 1000);
-					runLoop();
+					runLoop();		
 			    };
 			    reader.readAsText(file);
 			  }		 
@@ -96,16 +93,16 @@
 			  };
 			}
 			
-			function runLoop() {
+				function runLoop() {
 
-				  var thisFrameFPS = 1000 / ((now=new Date) - lastUpdate);
-				  fps += (thisFrameFPS - fps) / fpsFilter;
-				  lastUpdate = now;
+					  var thisFrameFPS = 1000 / ((now=new Date) - lastUpdate);
+					  fps += (thisFrameFPS - fps) / fpsFilter;
+					  lastUpdate = now;
 
-				  chart.redraw();
-//				  setTimeout( function() {alert('hihihih')}, 1000 );
-				setTimeout(runLoop, 0);
-			}
+					  chart.drawSVG();
+	//				  setTimeout( function() {alert('hihihih')}, 1000 );
+					setTimeout(runLoop, 0);
+				}
 		</script>
 	</body>
 	

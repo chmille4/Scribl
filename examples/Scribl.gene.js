@@ -289,6 +289,10 @@
 			var height = gene.getHeight();
 			var roundness = gene.getRoundness();
 			var color = gene.getBackgroundColor();
+			var c = d3.scale.linear().domain([0,1])
+			.range(["hsl(250, 50%, 50%)", "hsl(350, 100%, 50%)"])
+			.interpolate(d3.interpolateHsl)
+			color = c(Math.random());
 
 			// set defaults
 			(height < fontSizeMin) ? ctx.font = fontSizeMin + "px " + font : ctx.font = height *.9 + "px " + font;					

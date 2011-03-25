@@ -437,7 +437,7 @@
 					.attr("stroke-width", "none")
 					//.attr("fill", function() { return "blue" })
 					.attr("fill", function() { return c(Math.random()) })
-					.attr("fill-opacity", .5)
+	//				.attr("fill-opacity", .5)
 					.on("mouseover", function(d) {
 						var x = d.getPixelPosition() + 20;
 						var y = d.getPosition_y() - 20;

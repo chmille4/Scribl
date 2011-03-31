@@ -1,9 +1,12 @@
 <!DOCTYPE HTML> 
 <html lang="en">
 	<head>
+				<script src="../lib/Scribl.js" ></script>
 		<script src="../lib/Scribl.events.js" ></script>
-		<script src="../lib/Scribl.gene.js" ></script> 
-		<script src="../lib/Scribl.js" ></script>
+				<script src="../lib/Scribl.glyph.js" ></script> 
+		<script src="../lib/Scribl.gene.js" ></script>
+
+
 		<link rel="stylesheet" type="text/css" href="demos.css" />
 		
 		<script> 
@@ -28,7 +31,8 @@
 					gene9 = chart1.addFeature( new Gene(7230, 1000, '-') );
 					
 					// add name
-					gene3.name = "Gene 2";
+					gene3.name = "Gene 2"; 
+					gene3.onMouseover = "hihi";
 					
 					// Draw Chart
 					chart1.draw();

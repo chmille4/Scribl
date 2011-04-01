@@ -2,9 +2,7 @@
 <html lang="en">
 	<head>
 		<title>Scribl - builder</title>
-		<script  src="https://github.com/chmille4/Scribl/raw/master/lib/Scribl.events.js" ></script>
-		<script  src="https://github.com/chmille4/Scribl/raw/master/lib/Scribl.gene.js" ></script> 
-		<script  src="https://github.com/chmille4/Scribl/raw/master/lib/Scribl.js" ></script>
+		<script src="../Scribl.min.js" ></script>
 		<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
 		<link rel="stylesheet" type="text/css" href="demos.css" />
 	  	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
@@ -58,11 +56,11 @@
 					gene9 = chart1.addGene( 7230, 1000, '-');
 
 					// add name
-					// gene3.font.color = "white";
-					// 	gene3.name = "Gene 2";
+					gene3.name = "Gene 2";
 					
 					// Draw Chart
 					chart1.draw();
+					
 					// Create image of chart1
 					var img = chart1.canvas.toDataURL("image/png");
 					// Add link to download image

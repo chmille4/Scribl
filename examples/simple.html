@@ -1,13 +1,7 @@
 <!DOCTYPE HTML> 
 <html lang="en">
 	<head>
-				<script src="../lib/Scribl.js" ></script>
-		<script src="../lib/Scribl.events.js" ></script>
-				<script src="../lib/Scribl.glyph.js" ></script> 
-		<script src="../lib/Scribl.blockarrow.js" ></script>
-		<script src="../lib/Scribl.rect.js" ></script>
-
-
+		<script src="../Scribl.min.js" ></script>
 		<link rel="stylesheet" type="text/css" href="demos.css" />
 		
 		<script> 
@@ -21,26 +15,20 @@
 					chart1 = new Scribl(canvas, 500);
 
 					// Add Genes      position, length, orientation
-					gene1 = chart1.addFeature( new BlockArrow("gene", 900,    150 , '-') );
-					gene2 = chart1.addFeature( new BlockArrow("gene", 3500, 2500, '+') );
-					gene3 = chart1.addFeature( new BlockArrow("gene", 8100, 1000, '-') );
-					gene4 = chart1.addFeature( new BlockArrow("gene", 6200, 1500, '+') );
-					gene5 = chart1.addFeature( new BlockArrow("gene", 1000,  1000, '-') );		
-					gene6 = chart1.addFeature( new BlockArrow("gene", 3500, 1500, '-') );		
-					gene7 = chart1.addFeature( new BlockArrow("gene", 2230, 1000, '+') );
-					gene8 = chart1.addFeature( new BlockArrow("gene", 4500, 1500, '+') );				
-					gene9 = chart1.addFeature( new BlockArrow("protein", 7230, 1000, '-') );
-					gene9 = chart1.addFeature( new Rect("gene", 7230, 1000, '-') );
+					gene1 = chart1.addGene(900,  750 , '-');
+					gene2 = chart1.addGene(3500, 2500, '+') ;
+					gene3 = chart1.addGene(8100, 1000, '-') ;
+					gene4 = chart1.addGene(6200, 1500, '+') ;
+					gene5 = chart1.addGene(1000, 1000, '-');		
+					gene6 = chart1.addGene(3500, 1500, '-') ;		
+					gene7 = chart1.addGene(2230, 1000, '+') ;
+					gene8 = chart1.addGene(4500, 1500, '+') ;				
+					gene9 = chart1.addGene(7230, 1000, '-') ;
 					
 					// add name
 					gene3.name = "Gene 2"; 
-					gene3.onMouseover = "hihi";
-					gene3.color = "red";
 				
 					// Draw Chart
-					chart1.glyph.roundness = 20;
-					chart1.gene.roundness = 0;
-//					chart1.protein.roundness = 10;
 					chart1.draw();
 					
 					// Create image of chart1

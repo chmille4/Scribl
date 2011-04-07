@@ -10,8 +10,7 @@ include the js files in the html
  <!DOCTYPE HTML> 
  <html lang="en">
 	<head>
-		<script src="lib/Scribl.gene.js" ></script> 
-		<script src="lib/Scribl.js" ></script>
+		<script src="https://github.com/chmille4/Scribl/raw/v0.2.1/Scribl.min.js" ></script>
 		
 		<script> 
 

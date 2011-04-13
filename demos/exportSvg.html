@@ -1,0 +1,80 @@
+<!DOCTYPE HTML> 
+<html lang="en">
+	<head>
+		<script src="https://github.com/chmille4/Scribl/raw/v0.2.2/Scribl.min.js" ></script>
+		<script src="https://github.com/chmille4/Scribl/raw/master/lib/Scribl.svg.js" ></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+		
+		<link rel="stylesheet" type="text/css" href="../css/demos.css" />
+		
+		<script> 
+			function toggleDiv(divid){ 
+			  var div = document.getElementById(divid); 
+			  if (div.style.display == 'none')
+				div.style.display = '';
+			  else
+				div.style.display = 'none';
+			}
+
+			function draw(canvasName) {  
+					
+					// Get Canvas and Create Chart
+				  	var canvas = document.getElementById(canvasName);  	
+					
+					// Create Chart
+					chart1 = new Scribl(canvas, 500);
+
+					// Add Genes      position, length, orientation
+					gene1 = chart1.addGene(900,  750 , '-');
+					gene2 = chart1.addGene(3500, 2500, '+') ;
+					gene3 = chart1.addGene(8100, 1000, '-') ;
+					gene4 = chart1.addGene(6200, 1500, '+') ;
+					gene5 = chart1.addGene(1000, 1000, '-');		
+					gene6 = chart1.addGene(3500, 1500, '-') ;		
+					gene7 = chart1.addGene(2230, 1000, '+') ;
+					gene8 = chart1.addGene(4500, 1500, '+') ;				
+					gene9 = chart1.addGene(7230, 1000, '-') ;
+					
+					// add name
+					gene3.name = "Gene 2"; 
+				
+					// Draw Chart
+					chart1.draw();
+					
+					// Create image of chart1
+					var img = chart1.canvas.toDataURL("image/png");
+					// Add link to download image
+					document.getElementById('export').href = img;
+					
+					var targetSVG = document.getElementById('svg');
+					CanvasToSVG.convert(chart1.canvas, targetSVG);
+					document.getElementById('export').href = targetSVG.firstChild.imageData;
+					var s = document.getElementById('2');
+					document.getElementById('svgcode').value = "<!-- Copy the contents of this box into a text editor, then save the file with a .svg extension.-->\n\n\n" +  svgToString(targetSVG);
+//					alert(svgToString(s.childNodes[1], 0));
+			}
+				
+		</script>
+
+	</head>  
+
+	<body onload="draw('canvas')">
+		<div id="description">
+			<h2>Export to SVG</h2><br/>
+		</div><br/>
+		<div id="container">
+			<canvas id="canvas" width="547" height="330"></canvas>  
+			<br/><a id="export">Export as PNG (right click Save As)</a>
+			<br/><a id="svgexport" href="javascript:toggleDiv('svgcode');">Export as SVG</a>
+			<br/><textarea id="svgcode" rows="20" cols="30" style="display:none">
+			</textarea>
+			<div style="display:none">
+				<svg id="svg" width="600" height="400" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"></svg>
+			</div>
+			
+			
+		</div>
+		
+	</body>
+	
+</html>

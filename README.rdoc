@@ -46,12 +46,12 @@ https://github.com/chmille4/Scribl/wiki/Documentation
 == Minification
 The {closure compiler}[http://code.google.com/closure/compiler/] is used to combine and minify multiple javascript files.
  java -jar compiler.jar  \
- --js lib/Scribl.js \
- --js lib/Scribl.events.js \
- --js lib/Scribl.glyph.js \
- --js lib/Scribl.blockarrow.js \
- --js lib/Scribl.rect.js \
- --js lib/genbank.js \
+ --js src/Scribl.js \
+ --js src/Scribl.events.js \
+ --js src/Scribl.glyph.js \
+ --js src/Scribl.blockarrow.js \
+ --js src/Scribl.rect.js \
+ --js src/genbank.js \
  --js_output_file Scribl.min.js
 == License
 MIT License

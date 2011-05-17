@@ -23,111 +23,118 @@
 <body>
   <a href="http://github.com/chmille4/Scribl"><img style="position: absolute; top: 0; right: 0; border: 0;" src="images/forkme.png" alt="Fork me on GitHub" /></a>
 
+	<div id="parent">
+		<div class="update-panel" style="height:10px; float:left;"></div>
+		<div class="update-panel" id="updates">
+			<br/>
+			<span>Using Scribl?</span>
+			<div>Where?</div>
+			<div>How?</div>
+			<div>Why?</div>
+			<div>Help out the project and let us know at:</div>
+			<div>millerwz-at-bc-dot-edu</div>
+		</div>
+		<div id="container" >	
 
-	<div id="container">	
-
-		<div id="content">
+			<div id="content">
 	
-				<div id="top"><a href="http://chmille4.github.com/Scribl/"><img id="title" src="images/scribl.scribl_under(150ppi).png"/></a>
-				  <div class="section">
+					<div id="top"><a href="http://chmille4.github.com/Scribl/"><img id="title" src="images/scribl.scribl_under(150ppi).png"/></a>
+					  <div class="section">
 					
-						<div id="description">making biological charts as easy as pie ... charts</div>
-						<div style="clear:both"></div>
+							<div id="description">making biological charts as easy as pie ... charts</div>
+							<div style="clear:both"></div>
+						</div>
+					</div>
+
+				<div class="header"><span>About</span></div>
+				<div class="section">
+					Scribl is a javascript, Canvas-based library that easily generates biological charts of genomic regions, alignments, and assembly data. It is perfect for dynamically generating charts and reports for the web.  Scribl can also be used in conventional offline pipelines, since everything needed to generate charts can be contained in a single html file.
+
+				</div>
+		
+				<div class="header"><span>Get Started Quickly</span></div>
+				<div class="section">
+					<div class="code">
+						<span class="comment">// Get Canvas</span><br/>
+						<span class="orange">var</span> canvas <span class="orange">=</span> <span class="red">document.getElementById</span>(canvasName);<br/><br/>  	
+
+						<span class="comment">// Create Chart with canvas, width</span><br/>
+						chart <span class="orange">=</span> new Scribl(canvas, <span class="green">500</span>);<br/><br/>
+
+						<span class="comment">// Add Gene with position, length, orientation</span><br/>
+						gene1 <span class="orange">=</span> chart.addGene( <span class="green">5</span>, <span class="green">750</span> , <span class="green">'+'</span>);<br/><br/>
+
+						<span class="comment">// Draw Chart</span><br/>
+						chart.draw();
 					</div>
 				</div>
-
-			<div class="header"><span>About</span></div>
-			<div class="section">
-				Scribl is a javascript, Canvas-based library that easily generates biological charts of genomic regions, alignments, and assembly data. It is perfect for dynamically generating charts and reports for the web.  Scribl can also be used in conventional offline pipelines, since everything needed to generate charts can be contained in a single html file.
-			</div>
-		
-			<div class="header"><span>Get Started Quickly</span></div>
-			<div class="section">
-				<div class="code">
-					<span class="comment">// Get Canvas</span><br/>
-					<span class="orange">var</span> canvas <span class="orange">=</span> <span class="red">document.getElementById</span>(canvasName);<br/><br/>  	
-
-					<span class="comment">// Create Chart with canvas, width</span><br/>
-					chart <span class="orange">=</span> new Scribl(canvas, <span class="green">500</span>);<br/><br/>
-
-					<span class="comment">// Add Gene with position, length, orientation</span><br/>
-					gene1 <span class="orange">=</span> chart.addGene( <span class="green">5</span>, <span class="green">750</span> , <span class="green">'+'</span>);<br/><br/>
-
-					<span class="comment">// Draw Chart</span><br/>
-					chart.draw();
-				</div>
-			</div>
 			
-			<div class="header"><span>Demos</span></div>
-			<div class="section">
-				<div class="demos">
-					<span>Simple</span><br/>
-					<a href="demos/simple.html"><img src="images/simple.png" /></a>
-				</div>
-				<div class="demos">
-					<span>Builder</span><br/>				
-					<a href="demos/builder.html"><img src="images/tools.png" /></a>
-				</div>
-				<div class="demos">
-					<span>Genbank</span><br/>
-					<a href="demos/genbank.html"><img src="images/genbank.png"/></a>
-				</div>
-				<div class="demos">
-					<span>Colors</span><br/>				
-					<a href="demos/colors.html"><img src="images/colors.png"/></a>
-				</div>
-				<div class="demos">
-					<span>Viewer</span><br/>				
-					<a href="demos/viewer.html"><img src="images/viewer.png"/></a>
-				</div>
-				<div class="demos">
-					<span>Drag Drop</span><br/>				
-					<a href="demos/genbank_dragNdrop.html"><img src="images/drag.png"/></a>
-				</div>
-				<div class="demos">
-					<span>Tracks</span><br/>				
-					<a href="demos/tracks.html"><img src="images/tracks.png"/></a>
-				</div>
-				<div class="demos">
-					<span>Events</span><br/>				
-					<a href="demos/mouseEvents.html"><img src="images/mouse.png"/></a>
-				</div>
+				<div class="header"><span>Demos</span></div>
+				<div class="section">
+					<div class="demos">
+						<span>Simple</span><br/>
+						<a href="demos/simple.html"><img src="images/simple.png" /></a>
+					</div>
+					<div class="demos">
+						<span>Builder</span><br/>				
+						<a href="demos/builder.html"><img src="images/tools.png" /></a>
+					</div>
+					<div class="demos">
+						<span>Genbank</span><br/>
+						<a href="demos/genbank.html"><img src="images/genbank.png"/></a>
+					</div>
+					<div class="demos">
+						<span>Colors</span><br/>				
+						<a href="demos/colors.html"><img src="images/colors.png"/></a>
+					</div>
+					<div class="demos">
+						<span>Viewer</span><br/>				
+						<a href="demos/viewer.html"><img src="images/viewer.png"/></a>
+					</div>
+					<div class="demos">
+						<span>Drag Drop</span><br/>				
+						<a href="demos/genbank_dragNdrop.html"><img src="images/drag.png"/></a>
+					</div>
+					<div class="demos">
+						<span>Tracks</span><br/>				
+						<a href="demos/tracks.html"><img src="images/tracks.png"/></a>
+					</div>
+					<div class="demos">
+						<span>Events</span><br/>				
+						<a href="demos/mouseEvents.html"><img src="images/mouse.png"/></a>
+					</div>
 				
-				<div style="clear:both"></div>
+					<div style="clear:both"></div>
+
+				</div>
+			
+				<div class="header"><span>Download</span></div>
+				<div id="download" class="section"> 
+		      	<a href="https://github.com/chmille4/Scribl/zipball/v0.2.0"> 
+		        	<img border="0" width="140" src="images/zip.png"></a>
+		 			<a href="http://github.com/chmille4/Scribl"> 
+		        	<img border="0" width="140" src="images/github.png"></a>
+		    	</div>
+			
+				<div class="header"><span>Documentation</span></div>
+				<div class="section"> 
+		      	<a href="https://github.com/chmille4/Scribl/wiki">wiki</a>
+		    	</div>
+			
+				<div class="header"><span>Authors</span></div>
+				<div class="section">
+					Scribl was started by Chase Miller in Dr. Michelle <a href="http://bioinformatics.bc.edu/meyerlab/index.html"> Meyer's lab</a> at Boston College as an attempt to make bioinformatic charts as easy to generate as pie charts.  Scribl is built on top of the HTML5 canvas element, which allows it to be very performant and to visualize large data sets.
+				</div>
+				<div class="header"><span>Bugs/Suggestions</span></div>
+				<div class="section">
+					Send all bugs and suggestions to chmille4-at-gmail-dot-com
+				</div>
+
 
 			</div>
-			
-			<div class="header"><span>Download</span></div>
-			<div id="download" class="section"> 
-	      	<a href="https://github.com/chmille4/Scribl/zipball/v0.2.0"> 
-	        	<img border="0" width="140" src="images/zip.png"></a>
-	 			<a href="http://github.com/chmille4/Scribl"> 
-	        	<img border="0" width="140" src="images/github.png"></a>
-	    	</div>
-			
-			<div class="header"><span>Documentation</span></div>
-			<div class="section"> 
-	      	<a href="https://github.com/chmille4/Scribl/wiki">wiki</a>
-	    	</div>
-			
-			<div class="header"><span>Authors</span></div>
-			<div class="section">
-				Scribl was started by Chase Miller in Dr. Michelle <a href="http://bioinformatics.bc.edu/meyerlab/index.html"> Meyer's lab</a> at Boston College as an attempt to make bioinformatic charts as easy to generate as pie charts.  Scribl is built on top of the HTML5 canvas element, which allows it to be very performant and to visualize large data sets.
-			</div>
-			<div class="header"><span>Bugs/Suggestions</span></div>
-			<div class="section">
-				Send all bugs and suggestions to chmille4-at-gmail-dot-com
-			</div>
-			
-			
-				
+	  </div>
 
-				
-
-
-		</div>
-  </div>
-
-  
+	</div>
+  	
 </body>
 </html>

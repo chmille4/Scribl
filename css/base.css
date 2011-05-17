@@ -10,7 +10,7 @@
  }
 
  #parent{
-	width: 1190px;
+	width: 1240px;
 	margin-top: 2px;
 	margin: 0 auto;
 	
@@ -18,7 +18,7 @@
 
  #container {
 	background-color: #C3D3E4;
-	width: 850px;
+	width: 900px;
 	margin-right: -100px;
 	border: 1px solid black;
 	border-radius: 15px;

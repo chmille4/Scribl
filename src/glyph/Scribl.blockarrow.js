@@ -1,3 +1,9 @@
+/*
+	Scribl::Glyph::BlockArrow
+	Standard glyph used to draw any blockarrow shape
+	Chase Miller 2011
+ */
+
 	var BlockArrow = Glyph.extend({
 		/**
 		 * @constructor
@@ -14,14 +20,14 @@
 
 			// Initialize
 			var blockarrow = this;
-			var side = length*.75;
 			
 			// see if optional parameters are set and get chart specific info
-			var ctx = ctx || rect.ctx;
-			var length = length || rect.pixelLength();
-			var height = height || rect.getHeight();
-			var roundness = roundness + 1 || rect.getRoundness();
+			var ctx = ctx || blockarrow.ctx;
+			var length = length || blockarrow.pixelLength();
+			var height = height || blockarrow.getHeight();
+			var roundness = roundness + 1 || blockarrow.getRoundness();
 			if (roundness != undefined) roundness -= 1;
+			var side = length*.75;
 			
 			// set start x and y draw locations to 0
 			x = y = 0;
@@ -68,7 +74,6 @@
 			bs_ctrl_y = y + height;
 			bs_ctrl_x = ( (-bs_ctrl_y - bs_intercept)/blockarrow.slope ); 	// control point
 			if (bs_ctrl_x < x ) {
-				//drawExon(ctx, blockarrow.name, position, length, height, roundness, color)
 				var r = new Rect(blockarrow.type, 0, length);
 				r._draw(ctx, length, height, roundness);
 				return;

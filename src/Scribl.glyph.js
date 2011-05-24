@@ -1,3 +1,9 @@
+/*
+	Scribl::Glyph
+	Generic glyph class that all other glyphs inherit from
+	Chase Miller 2011
+ */
+
 
 var Glyph = Class.extend({
 	/**
@@ -48,38 +54,58 @@ var Glyph = Class.extend({
 	},
 	
 	setTextOptions : function() {
-		// chart level overides defaults and glyph level overrides chart level
-		
+		// chart level overides defaults, type level overrides chart and defaults, and glyph level overrides everything		
 		var glyph = this;
 		var chartLevelGlyph = "this.track.chart." + glyph.type;
 		
 		// set style
-		// check if individual level has not been set but glyph level has
-		if (glyph.font.style == undefined && eval(chartLevelGlyph).text.style != undefined)
-			glyph.font.style = eval(chartLevelGlyph).text.font
-		else if ( glyph.font.style == undefined && glyph.track.chart.glyph.text.font != undefined ) 
-			glyph.font.style = glyph.track.chart.glyph.text.font
+		// determie correct hierarchical attribute level
+		if ( glyph.font.style != undefined)  // glyph level
+			glyph.font.style = glyph.font.style;
+		else if ( glyph.parent && glyph.parent.font.color != undefined)  // parent level
+			glyph.font.style = glyph.parent.font.color;
+		else if ( eval(chartLevelGlyph).text.font != undefined ) // type level
+			glyph.font.style = eval(chartLevelGlyph).text.font;
+		else if ( glyph.track.chart.glyph.text.font != undefined ) // chart level
+			glyph.font.style = glyph.track.chart.glyph.text.font;
+			
+		// if (glyph.font.style == undefined && eval(chartLevelGlyph).text.style != undefined )
+		// 	glyph.font.style = eval(chartLevelGlyph).text.font
+		// else if ( glyph.font.style == undefined && glyph.track.chart.glyph.text.font != undefined ) 
+		// 	glyph.font.style = glyph.track.chart.glyph.text.font
 		
 		// set font size
-		// check if individual level has not been set but glyph level has
-		if (glyph.font.size == undefined && eval(chartLevelGlyph).text.size != undefined)
-			glyph.font.size = eval(chartLevelGlyph).text.size
-		else if ( glyph.font.size == undefined && glyph.track.chart.glyph.text.size != undefined )
-			glyph.font.size = glyph.track.chart.glyph.text.size
+		// determie correct hierarchical attribute level
+		if ( glyph.font.size != undefined)  // glyph level
+			glyph.font.size = glyph.font.size;
+		else if ( glyph.parent && glyph.parent.font.size != undefined)  // parent level
+			glyph.font.size = glyph.parent.font.size;
+		else if ( eval(chartLevelGlyph).text.size != undefined ) // type level
+			glyph.font.size = eval(chartLevelGlyph).text.size;
+		else if ( glyph.track.chart.glyph.text.size != undefined ) // chart level
+			glyph.font.size = glyph.track.chart.glyph.text.size;
 		
-		// set color
-		// check if individual level has not been set but glyph level has
-		if (glyph.font.color == undefined && eval(chartLevelGlyph).text.color != undefined )
-			glyph.font.color = eval(chartLevelGlyph).text.color
-		else if ( glyph.font.color == undefined && glyph.track.chart.glyph.text.color != undefined ) 
+		// set text color
+		// determie correct hierarchical attribute level
+		if ( glyph.font.color != undefined)  // glyph level
+			glyph.font.color = glyph.font.color;
+		else if ( glyph.parent && glyph.parent.font.color != undefined)  // parent level
+			glyph.font.color = glyph.parent.font.color;
+		else if ( eval(chartLevelGlyph).text.color != undefined ) // type level
+			glyph.font.color = eval(chartLevelGlyph).text.color;
+		else if ( glyph.track.chart.glyph.text.color != undefined ) // chart level
 			glyph.font.color = glyph.track.chart.glyph.text.color;
 			
 		// set text align
-		// check if individual level has not been set but glyph level has
-		if (glyph.font.align == undefined && eval(chartLevelGlyph).text.align != undefined)
-			glyph.font.align = eval(chartLevelGlyph).text.align
-		else if ( glyph.font.align == undefined && glyph.track.chart.glyph.text.align != undefined ) 
-			glyph.font.align = glyph.track.chart.glyph.text.align
+		// determie correct hierarchical attribute level
+		if ( glyph.font.align != undefined)  // glyph level
+			glyph.font.align = glyph.font.align;
+		else if ( glyph.parent && glyph.parent.font.align != undefined)  // parent level
+			glyph.font.align = glyph.parent.font.align;
+		else if ( eval(chartLevelGlyph).text.align != undefined ) // type level
+			glyph.font.align = eval(chartLevelGlyph).text.align;
+		else if ( glyph.track.chart.glyph.text.align != undefined ) // chart level
+			glyph.font.align = glyph.track.chart.glyph.text.align;
 	},
 	
 	drawText : function(text) {
@@ -144,19 +170,22 @@ var Glyph = Class.extend({
 	
 	getRoundness : function() { 
 		var roundness;
-		var chartLevel = "this.track.chart." + this.type
+		var glyph = this;
+		var chartLevel = "this.track.chart." + glyph.type
 
 		// check if individual roundness was set
-		if ( this.roundness != undefined )
-			roundness = this.roundness
+		if ( glyph.roundness != undefined )
+			roundness = glyph.roundness
+		else if ( glyph.parent && glyph.parent.roundness != undefined )
+				roundness = glyph.parent.roundness;
 		// check if custom chart level is set
 		else if (eval(chartLevel) != undefined && eval(chartLevel).roundness != undefined)
 			roundness = eval(chartLevel).roundness;
 		// fall back to default behavior for all glyphs
 		else
-			roundness = this.track.chart.glyph.roundness;
+			roundness = glyph.track.chart.glyph.roundness;
 			
-		return (this.getHeight() * roundness/100); 
+		return (glyph.getHeight() * roundness/100); 
 	},
 	
 	getHeight : function() {
@@ -172,6 +201,8 @@ var Glyph = Class.extend({
 		// check if default color was ovewridden on a glyph level
 		if (glyph.color != undefined)
 			color = glyph.color
+		else if ( glyph.parent && glyph.parent.color != undefined )
+			color = glyph.parent.color;
 		else if ( eval(chartLevelGlyph).color != undefined)
 			color = eval(chartLevelGlyph).color;
 		else if (eval(chartLevelGlyph).linearGradient != undefined){

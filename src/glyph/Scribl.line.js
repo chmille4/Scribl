@@ -1,3 +1,8 @@
+/*
+	Scribl::Glyph::Line
+	Chase Miller 2011
+ */
+
 	var Line = Glyph.extend({
 		/**
 		 * @constructor
@@ -20,9 +25,7 @@
 			
 			// Set starting draw position
 			x = y = 0;
-			ctx.beginPath();
-			
+			ctx.beginPath();			
 			ctx.fillRect(x, y, length, height);
-
 	}
 });

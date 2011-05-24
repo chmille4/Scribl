@@ -1,3 +1,7 @@
+/*
+	Scribl::Utils
+	Chase Miller 2011
+ */
 function ScriblWrapLines(max, text) {
 	var lines = [];
 	text = "" + text;

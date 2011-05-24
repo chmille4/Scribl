@@ -1,3 +1,9 @@
+/*
+	Scribl::Glyph::Rect
+	Standard glyph used to draw any rectangle shape
+	Chase Miller 2011
+ */
+
 	var Rect = Glyph.extend({
 		/**
 		 * @constructor

@@ -1,0 +1,67 @@
+<!DOCTYPE HTML> 
+<html lang="en">
+	<head>
+		<script src="../Scribl.min.js" ></script>
+		<script src="../lib/jsdas.0.1.6.min.js" ></script>
+		<link rel="stylesheet" type="text/css" href="demos.css" />
+		
+		<script> 
+			function getFeatures(url) {
+				var canvas = document.getElementById("canvas");
+				chart = new Scribl(canvas, 500);
+//				chart.addGene(0, 10000, '+');
+//				chart.draw();
+				var types = ""
+				
+				JSDAS.features(url, function(response) {
+					var features = response.GFF.SEGMENT[0].FEATURE;
+
+					for (var i=0; i < features.length; i++) {
+						var f = features[i];
+						var start = parseInt(f.START.textContent);
+						var length =  parseInt(f.END.textContent) - start;
+						if (f.ORIENTATION) {
+							orientation =  f.ORIENTATION.textContent;
+							var glyph = chart.addGene(start, length, orientation);
+						} else
+							var glyph = chart.addFeature( new Rect( "rect", start, length) );
+
+						if (f.TYPE.textContent) glyph.name = f.TYPE.textContent;
+						if(f.LINK && f.LINK[0] && f.LINK[0].href) { 
+							glyph.onMouseover = f.LINK[0].textContent || f.LINK[0].href;
+							glyph.onClick = f.LINK[0].href.replace(":8080", "");
+						}
+					}
+					chart.draw();
+				});
+			}
+				
+		</script>
+
+	</head>  
+	
+	<body>
+		<div id="description">
+			<h2>Simple Demo</h2><br/>
+			get up and running with minimal code
+		</div><br/>
+		<p>Enter a valid features command url to the box below and press 'Go'. JSDAS will fetch the features 
+				and create a table with them</p> 
+				<fieldset> 
+					<legend>Features command URL</legend> 
+					<label for="url_field">URL: </label> 
+					<input id="url_field"></input><button onclick="getFeatures(document.getElementById('url_field').value);">Go</button><br> 
+					<p class="input_example">Example: http://useast.ensembl.org/das/Homo_sapiens.NCBI36.transcript/features?segment=1:1000000,1001000</span> 
+				</fieldset> 
+
+				<div id="results"> 
+					<div id="results_content"></div> 
+				</div>
+		<div id="container">
+			<canvas id="canvas" width="547" height="10000"></canvas>  
+			</br><a id="export">Export as PNG (right click Save As)</a>
+		</div>
+		
+	</body>
+	
+</html>

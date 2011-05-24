@@ -10,16 +10,18 @@
 		},
 
 		// Draw blockarrow method
-		_draw : function() {
+		_draw : function(ctx, length, height, roundness) {
 
 			// Initialize
 			var blockarrow = this;
 			var side = length*.75;
 			
-			// get chart specific info
-			var length = blockarrow.pixelLength();
-			var height = blockarrow.getHeight();
-			var roundness = blockarrow.getRoundness();
+			// see if optional parameters are set and get chart specific info
+			var ctx = ctx || rect.ctx;
+			var length = length || rect.pixelLength();
+			var height = height || rect.getHeight();
+			var roundness = roundness + 1 || rect.getRoundness();
+			if (roundness != undefined) roundness -= 1;
 			
 			// set start x and y draw locations to 0
 			x = y = 0;
@@ -67,8 +69,8 @@
 			bs_ctrl_x = ( (-bs_ctrl_y - bs_intercept)/blockarrow.slope ); 	// control point
 			if (bs_ctrl_x < x ) {
 				//drawExon(ctx, blockarrow.name, position, length, height, roundness, color)
-				var r = new Rect("gene", 0, length);
-				r._draw(blockarrow.ctx, length, height, roundness);
+				var r = new Rect(blockarrow.type, 0, length);
+				r._draw(ctx, length, height, roundness);
 				return;
 			}
 
@@ -87,31 +89,31 @@
 
 
 			// draw lines
-			blockarrow.ctx.beginPath();
+			ctx.beginPath();
 
 			// top left corner
-		    blockarrow.ctx.moveTo(tc_lgth_x, tc_lgth_y); 
-		    blockarrow.ctx.quadraticCurveTo(tc_ctrl_x, tc_ctrl_y, tc_wdth_x, tc_wdth_y);
+		    ctx.moveTo(tc_lgth_x, tc_lgth_y); 
+		    ctx.quadraticCurveTo(tc_ctrl_x, tc_ctrl_y, tc_wdth_x, tc_wdth_y);
 
 			// bottom left corner
-		    blockarrow.ctx.lineTo(bc_wdth_x, bc_wdth_y);
-	    	blockarrow.ctx.quadraticCurveTo(bc_ctrl_x, bc_ctrl_y, bc_lgth_x, bc_lgth_y);
+		    ctx.lineTo(bc_wdth_x, bc_wdth_y);
+	    	ctx.quadraticCurveTo(bc_ctrl_x, bc_ctrl_y, bc_lgth_x, bc_lgth_y);
 
 			// bottom right slope
-		    blockarrow.ctx.lineTo(bs_lgth_x, bs_lgth_y);
-		    blockarrow.ctx.quadraticCurveTo(bs_ctrl_x, bs_ctrl_y, bs_slpe_x, bs_slpe_y);
+		    ctx.lineTo(bs_lgth_x, bs_lgth_y);
+		    ctx.quadraticCurveTo(bs_ctrl_x, bs_ctrl_y, bs_slpe_x, bs_slpe_y);
 
 			// arrow
-		    blockarrow.ctx.lineTo( a_b_x, a_b_y );
-		    blockarrow.ctx.quadraticCurveTo(a_ctrl_x, a_ctrl_y, a_t_x, a_t_y);
+		    ctx.lineTo( a_b_x, a_b_y );
+		    ctx.quadraticCurveTo(a_ctrl_x, a_ctrl_y, a_t_x, a_t_y);
 
 			// top right slope
-			blockarrow.ctx.lineTo(ts_slpe_x, ts_slpe_y);
-			blockarrow.ctx.quadraticCurveTo(ts_ctrl_x, ts_ctrl_y, ts_lgth_x, ts_lgth_y);
+			ctx.lineTo(ts_slpe_x, ts_slpe_y);
+			ctx.quadraticCurveTo(ts_ctrl_x, ts_ctrl_y, ts_lgth_x, ts_lgth_y);
 
 			// top line
-			blockarrow.ctx.lineTo(tc_lgth_x, tc_lgth_y);
-			blockarrow.ctx.fill();
+			ctx.lineTo(tc_lgth_x, tc_lgth_y);
+			ctx.fill();
 			
 		}
 				 

@@ -1,72 +1,7 @@
-/* Simple JavaScript Inheritance
- * By John Resig http://ejohn.org/
- * MIT Licensed.
- */
-// Inspired by base2 and Prototype
-
-(function(){
-  var initializing = false, fnTest = /xyz/.test(function(){xyz;}) ? /\b_super\b/ : /.*/;
-  // The base Class implementation (does nothing)
-  this.Class = function(){};
-
-  // Create a new Class that inherits from this class
-  Class.extend = function(prop) {
-    var _super = this.prototype;
-
-    // Instantiate a base class (but only create the instance,
-    // don't run the init constructor)
-    initializing = true;
-    var prototype = new this();
-    initializing = false;
-
-    // Copy the properties over onto the new prototype
-    for (var name in prop) {
-      // Check if we're overwriting an existing function
-      prototype[name] = typeof prop[name] == "function" && 
-        typeof _super[name] == "function" && fnTest.test(prop[name]) ?
-        (function(name, fn){
-          return function() {
-            var tmp = this._super;
-
-            // Add a new ._super() method that is the same method
-            // but on the super-class
-            this._super = _super[name];
-
-            // The method only need to be bound temporarily, so we
-            // remove it when we're done executing
-            var ret = fn.apply(this, arguments);        
-            this._super = tmp;
-
-            return ret;
-          };
-        })(name, prop[name]) :
-        prop[name];
-    }
-
-    // The dummy class constructor
-
-    function Class() {
-      // All construction is actually done in the init method
-      if ( !initializing && this.init )
-        this.init.apply(this, arguments);
-    }
-
-    // Populate our constructed prototype object
-    Class.prototype = prototype;
-
-    // Enforce the constructor to be what we expect
-    Class.constructor = Class;
-
-    // And make this class extendable
-    Class.extend = arguments.callee;
-
-    return Class;
-  };
-})();
-	
-
-/**
- * 	Start Scribl Code Here!
+/*
+	Scribl
+	Main File: sets defaults, defines how to add features to panel/chart, defines tracks, and some methods to help coordinate drawing
+	Chase Miller 2011
  */
 
 var Scribl = Class.extend({
@@ -281,64 +216,64 @@ var Scribl = Class.extend({
 	// stopMax    = where the max scale ends the zoom
 	// drawRate   = the delay (in milliseconds) between each draw (e.g. 1000 would be a 1s/frame draw rate)
 	// smoothness = the number of pixels changed between frames ( lower = smoother but slower )
-	zoom: function(startMin, startMax, stopMin, stopMax, drawRate, smoothness) {
-		
-		var newChart = undefined;
-		var delay = 0;
-		var pxlsToChange = smoothness;
-		var currMax = startMax;
-		var currMin = startMin;
-		
-		// loop till the zoom is done
-		while(currMin != stopMin || currMax != stopMax) {
-
-			// create new chart as a region of the original chart
-			newChart = this.slice(currMin, currMax);
-			
-			// turn off auto scale stuff
-			newChart.scale.off = true;
-			newChart.scale.auto = false;
-			newChart.scale.min = currMin;
-			newChart.scale.max = currMax;
-			newChart.scale.pretty = false;
-			
-			// set delay amount
-			delay += drawRate;
-			
-			// schedule current chart to be drawn with some delay
-			setTimeout(this.delayed_draw, delay, newChart );
-			
-			// determine number of nts to change min/max scales
-			var maxNtsToChange = newChart.ntsPerPixel((currMax - stopMax)) * pxlsToChange;
-			var minNtsToChange = newChart.ntsPerPixel((currMin - stopMin)) * pxlsToChange;
-			
-			// check if zoom is close enough stopMin
-			if ( Math.abs(minNtsToChange) < .05 )
-				currMin = stopMin;
-			else
-				currMin -= minNtsToChange;
-
-			// check if zoom is close enough to stopMax
-			if ( Math.abs(maxNtsToChange) < .05 )
-				currMax = stopMax
-			else
-				currMax -= maxNtsToChange;	
-			
-		}
-	
-		// draw final zoomed chart with scale on
-		// get final slice
-		newChart = this.slice(stopMin, stopMax);
-	
-		// set scale
-		newChart.scale.max = stopMax;
-		newChart.scale.min = stopMin;
-		newChart.tick.major.size = 1000;
-		
-		// schedule final chart to be drawn at 1 millisecond after zoom completes
-		setTimeout(this.delayed_draw, delay + 1, newChart);
-
-	},
+	// zoom: function(startMin, startMax, stopMin, stopMax, drawRate, smoothness) {
+	// 	
+	// 	var newChart = undefined;
+	// 	var delay = 0;
+	// 	var pxlsToChange = smoothness;
+	// 	var currMax = startMax;
+	// 	var currMin = startMin;
+	// 	
+	// 	// loop till the zoom is done
+	// 	while(currMin != stopMin || currMax != stopMax) {
+	// 
+	// 		// create new chart as a region of the original chart
+	// 		newChart = this.slice(currMin, currMax);
+	// 		
+	// 		// turn off auto scale stuff
+	// 		newChart.scale.off = true;
+	// 		newChart.scale.auto = false;
+	// 		newChart.scale.min = currMin;
+	// 		newChart.scale.max = currMax;
+	// 		newChart.scale.pretty = false;
+	// 		
+	// 		// set delay amount
+	// 		delay += drawRate;
+	// 		
+	// 		// schedule current chart to be drawn with some delay
+	// 		setTimeout(this.delayed_draw, delay, newChart );
+	// 		
+	// 		// determine number of nts to change min/max scales
+	// 		var maxNtsToChange = newChart.ntsPerPixel((currMax - stopMax)) * pxlsToChange;
+	// 		var minNtsToChange = newChart.ntsPerPixel((currMin - stopMin)) * pxlsToChange;
+	// 		
+	// 		// check if zoom is close enough stopMin
+	// 		if ( Math.abs(minNtsToChange) < .05 )
+	// 			currMin = stopMin;
+	// 		else
+	// 			currMin -= minNtsToChange;
+	// 
+	// 		// check if zoom is close enough to stopMax
+	// 		if ( Math.abs(maxNtsToChange) < .05 )
+	// 			currMax = stopMax
+	// 		else
+	// 			currMax -= maxNtsToChange;	
+	// 		
+	// 	}
+	// 
+	// 	// draw final zoomed chart with scale on
+	// 	// get final slice
+	// 	newChart = this.slice(stopMin, stopMax);
+	// 
+	// 	// set scale
+	// 	newChart.scale.max = stopMax;
+	// 	newChart.scale.min = stopMin;
+	// 	newChart.tick.major.size = 1000;
+	// 	
+	// 	// schedule final chart to be drawn at 1 millisecond after zoom completes
+	// 	setTimeout(this.delayed_draw, delay + 1, newChart);
+	// 
+	// },
 	
 	// draws chart
 	draw: function() {
@@ -536,59 +471,4 @@ var Scribl = Class.extend({
 		this.events.added = true;
 	}
 	
-});
-
-
-var track = Class.extend({
-	/**
-	 * @constructor
-	 */
-	init: function(ctx) {
-		// defaults
-		this.height = undefined;
-		this.features = [];
-	},
-	
-	addGene: function(position, length, strand) {
-		return (this.addFeature( new BlockArrow("gene", position, length, strand) ) );
-	},
-	
-	addProtein: function(position, length, strand) {
-		return (this.addFeature( new BlockArrow("protein", position, length, strand) ) );
-	},
-	
-	addFeature: function( feature ) {
-		
-		// create feature
-		feature.track = this;
-		this.features.push(feature);
-		
-		// initialize hash containers for "type" level options
-		var chartLevel = "this.chart." + feature.type
-		if (!eval(chartLevel) ) {
-			eval(chartLevel + " = {}");
-			eval(chartLevel).text = {}
-		}
-		
-		// determine chart absolute_min and absolute_max
-		if ( feature.length + feature.position > this.chart.scale.max || this.chart.scale.max == undefined )
-			this.chart.scale.max = feature.length + feature.position;
-		if ( feature.position < this.chart.scale.min || this.chart.scale.min == undefined )
-			this.chart.scale.min = feature.position;				
-			
-		return feature;
-	},
-	
-	getHeight: function() {
-		if ( this.height != undefined )
-			return this.height;
-		else
-			return this.chart.trackSizes;
-	},
-	
-	// draw track
-	draw: function() {
-		for (var i=0; i< this.features.length; i++)
-			this.features[i].draw();
-	}
 });

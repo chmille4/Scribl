@@ -226,6 +226,10 @@ var Glyph = Class.extend({
 		return ( color );
 	},
 	
+	isSubFeature: function() {
+		return (this.parent != undefined);
+	},
+	
 	draw: function() {
 		var glyph = this;
 		
@@ -248,14 +252,14 @@ var Glyph = Class.extend({
 		
 		// setup ctx so the glyph will be drawn at the right position and right direction
 		glyph.ctx.translate(position, 0);	
-		if (glyph.strand == '-') 
+		if (glyph.strand == '-' && !glyph.isSubFeature()) 
 			glyph.ctx.transform(-1, 0, 0, 1, glyph.pixelLength(), 0);
 		
 		// draw glyph with subclass specific draw
 		glyph._draw();
 		
 		// explicity change transformation matrix back -- it's faster than save restore!
-		if (glyph.strand == '-') 
+		if (glyph.strand == '-' && !glyph.isSubFeature()) 
 			glyph.ctx.transform(-1, 0, 0, 1, glyph.pixelLength(), 0);
 
 		// draw text

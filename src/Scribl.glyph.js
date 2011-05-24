@@ -235,7 +235,7 @@ var Glyph = Class.extend({
 		glyph.ctx.fillStyle = fillStyle;
 		
 		// setup mouse events if need be
-		glyph.track.chart.myMouseEventHandler.addEvents(this);  // move this to draw when above is refactored
+		glyph.track.chart.myMouseEventHandler.addEvents(this); 
 		
 		
 	}

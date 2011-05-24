@@ -13,7 +13,7 @@
 			// initialize
 			var rect = this;
 			
-			// see if optional parameters
+			// see if optional parameters are set
 			var ctx = ctx || rect.ctx;
 			var length = length || rect.pixelLength();
 			var height = height || rect.getHeight();

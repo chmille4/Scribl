@@ -1,3 +1,9 @@
+/*
+	Scribl::Events
+	Adds event support to Scribl
+	Chase Miller 2011
+ */
+
 var MouseEventHandler = Class.extend({
 	/**
 	 * @constructor
@@ -17,13 +23,23 @@ var MouseEventHandler = Class.extend({
 		var me = chart.myMouseEventHandler;
 		
 		// check if any genes use onmouseover and if so register an event listener if not already done
+		// if (gene.parent && gene.parent.onMouseover && !gene.onMouseover)
+		// 	gene.onMouseover = gene.parent.onMouseover
 		if (gene.onMouseover && !chart.events.hasMouseover) {
+			chart.addMouseoverEventListener(chart.myMouseEventHandler.handleMouseover);
+			chart.events.hasMouseover = true;
+		} 
+		else if (gene.parent && gene.parent.onMouseover && !chart.events.hasMouseover) {
 			chart.addMouseoverEventListener(chart.myMouseEventHandler.handleMouseover);
 			chart.events.hasMouseover = true;
 		}
 			
 		// check if any genes use onclick and if so register event listeners if not already done
 		if (gene.onClick && !chart.events.hasClick) {
+			chart.addClickEventListener(chart.myMouseEventHandler.handleClick);
+			chart.addMouseoverEventListener(chart.myMouseEventHandler.handleMouseStyle);
+			chart.events.hasClick = true;
+		} else if (gene.parent && gene.parent.onClick && !chart.events.hasClick) {
 			chart.addClickEventListener(chart.myMouseEventHandler.handleClick);
 			chart.addMouseoverEventListener(chart.myMouseEventHandler.handleMouseStyle);
 			chart.events.hasClick = true;
@@ -53,6 +69,8 @@ var MouseEventHandler = Class.extend({
 		
 		if (obj != undefined && obj.onClick != undefined)
 			window.open(obj.onClick);
+		else if (obj && obj.parent && obj.parent.onClick)
+			window.open(obj.parent.onClick);
 	},
 	
 	
@@ -62,6 +80,8 @@ var MouseEventHandler = Class.extend({
 		
 		if (obj != undefined && obj.onMouseover != undefined)
 			me.tooltip.fire(obj);
+		else if (obj && obj.parent && obj.parent.onMouseover)
+			me.tooltip.fire(obj.parent);
 	},
 	
 	
@@ -70,10 +90,13 @@ var MouseEventHandler = Class.extend({
 		var obj = me.eventElement;
 		var ctx = chart.ctx;
 
-		if (obj == undefined || obj.onClick == undefined)
-			ctx.canvas.style.cursor = 'auto';
-		else 		
+		if (obj && obj.onClick != undefined)
 			ctx.canvas.style.cursor = 'pointer';
+		else if (obj && obj.parent && obj.parent.onClick != undefined)
+			ctx.canvas.style.cursor = 'pointer';
+		else
+			ctx.canvas.style.cursor = 'auto'; 		
+			
 	},
 
 
@@ -130,6 +153,7 @@ var tooltips = Class.extend({
 		var roundness = this.chart.tooltips.roundness;
 		var font = this.chart.tooltips.text.font;
 		var fontSize = this.chart.tooltips.text.size;
+		//obj.onMouseover = obj.onMouseover || obj.parent.onMouseover;
 
 		// Save
 		this.ctx.save();

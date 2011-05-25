@@ -80,8 +80,10 @@ var MouseEventHandler = Class.extend({
 		
 		if (obj != undefined && obj.onMouseover != undefined)
 			me.tooltip.fire(obj);
-		else if (obj && obj.parent && obj.parent.onMouseover)
-			me.tooltip.fire(obj.parent);
+		else if (obj && obj.parent && obj.parent.onMouseover) {
+			obj.onMouseover = obj.parent.onMouseover
+			me.tooltip.fire(obj);
+		}
 	},
 	
 	

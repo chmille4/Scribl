@@ -53,7 +53,8 @@ The {closure compiler}[http://code.google.com/closure/compiler/] is used to comb
 	--js src/glyph/Scribl.blockarrow.js \
 	--js src/glyph/Scribl.rect.js \
 	--js src/glyph/Scribl.line.js \	
-	--js src/glyph/Scribl.spliced.js \	
+	--js src/glyph/Scribl.spliced.js \
+	--js src/glyph/Scribl.arrow.js \	
 	--js_output_file Scribl.min.js
 == License
 MIT License

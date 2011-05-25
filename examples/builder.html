@@ -42,7 +42,7 @@
 					
 					// Create Chart
 					chart1 = new Scribl(canvas, 500);
-					chart1.gene.color = "black";
+					chart1.glyph.color = "black";
 					
 					// Add Genes      position, length, orientation
 					gene1 = chart1.addGene( 900,    750 , '-');
@@ -52,8 +52,9 @@
 					gene5 = chart1.addGene( 1000,  1000, '-');		
 					gene6 = chart1.addGene( 3500, 1500, '-');		
 					gene7 = chart1.addGene( 2230, 1000, '+');
-					gene8 = chart1.addGene( 4500, 1500, '+');				
+					gene8 = chart1.addGene( 5000, 1500, '+');				
 					gene9 = chart1.addGene( 7230, 1000, '-');
+					gene10 = chart1.addFeature( new Spliced('splice', 1500, 8000, '+', [[1500,500], [3500, 2000], [8500, 1000]]));
 
 					// add name
 					gene3.name = "Gene 2";
@@ -67,7 +68,7 @@
 					$("a#export").attr('href', img);
 					
 					// have to reset chart.gene.color to undefined or else it overrides everything downstream ...
-					chart1.gene.color = undefined;
+					chart1.glyph.color = undefined;
 			}
 			
 			function redraw() {
@@ -84,14 +85,14 @@
 				canvas.height = chart1.chartHeight() + 20;
 				
 				// set new values
-				chart1.gene.roundness = roundness;
+				chart1.glyph.roundness = roundness;
 				chart1.trackSizes = parseInt(trackSizes);
 				
 				// assemble color
 				top_color = "rgb(" + r1 + ", " + g1 + ", " + b1 + ")";
 				bottom_color = "rgb(" + r2 + ", " + g2 + ", " + b2 + ")";	
 				
-				chart1.gene.linearGradient = [top_color, bottom_color];
+				chart1.glyph.linearGradient = [top_color, bottom_color];
 
 				chart1.redraw();
 				

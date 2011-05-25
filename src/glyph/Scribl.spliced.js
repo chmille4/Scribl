@@ -17,8 +17,8 @@
 			this.exons = [];
 			
 			// defaults
-			this.connectorColor = "";
-			this.connectorThickness = 4;
+			this.connectorColor = "black";
+			this.connectorThickness = 2;
 			
 			// instantiate exons
 			var numExons = exonsData.length
@@ -53,7 +53,11 @@
 			//var to = (exonsData[exonsData.length-1][0] - exonsData[0][0]) * spliced.track.chart.pixelsPerNt() || 1;
 			var thickness = spliced.connectorThickness;
 			fillColor = ctx.fillStyle;  // manually handle state; it's faster than a save-restore!
-			ctx.fillStyle =  spliced.connectorColor || fillColor
+			ctx.fillStyle =  spliced.connectorColor || fillColor;
+			// var l =  new Line(spliced.type, 0, spliced.length, thickness);
+			// 		l.track = spliced.track;
+			// 		l.parent = this;
+			// 		l.draw();
 			ctx.fillRect(0, height/2 - thickness/2, length, thickness);
 			ctx.fillStyle = fillColor; 
 			

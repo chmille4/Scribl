@@ -7,7 +7,8 @@
 		/**
 		 * @constructor
 		 */
-		init: function(type, position, length) {
+		init: function(type, position, length, thickness) {
+			this.thickness = thickness
 			this._super(type, position, length, "+");
 		},
 		
@@ -26,6 +27,6 @@
 			// Set starting draw position
 			x = y = 0;
 			ctx.beginPath();			
-			ctx.fillRect(x, y, length, height);
+			ctx.fillRect(x, height/2 - line.thickness/2, length, line.thickness);
 	}
 });

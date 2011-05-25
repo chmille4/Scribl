@@ -1,6 +1,6 @@
 /*
 	Scribl::Glyph::Spliced
-	glyph used to draw any feature that has spices (e.g gene with exons and introns, etc)
+	glyph used to draw any feature that has splices (e.g gene with exons and introns, etc)
 	Chase Miller 2011
  */
 
@@ -34,7 +34,7 @@
 			
 		},
 
-		// Draw blockarrow method
+		// internal Draw spliced method
 		_draw : function(ctx, length, height, roundness) {
 
 			// Initialize

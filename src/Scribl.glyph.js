@@ -8,17 +8,17 @@
 var Glyph = Class.extend({
 	/**
 	 * iniatilization method
-	 * This method must be called in all subclasses like so this._super(pos, length, strand) )
+	 * This method must be called in all subclasses like so this._super(type, pos, length, strand) )
 	 * Parameters: position of glyph, length of glyph, strand
 	 * @constructor
 	 */
-	init: function(type, pos, lngth, strnd) {
+	init: function(type, pos, length, strand) {
 		var glyph = this;
 		
 		// set variables
 		glyph.position = pos;
-		glyph.length = lngth;
-		glyph.strand = strnd;
+		glyph.length = length;
+		glyph.strand = strand;
 		// this is used for all attributes at the chart level (e.g. chart.gene.color = "blue" )
 		this.type = type;
 		

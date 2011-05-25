@@ -4,13 +4,10 @@ Scribl is a bioinformatic canvas-based charting library that makes it easy to cr
 
 == Usage
 
-download the lib folder and place in directory
-
-include the js files in the html
  <!DOCTYPE HTML> 
  <html lang="en">
 	<head>
-		<script src="https://github.com/chmille4/Scribl/raw/v0.2.1/Scribl.min.js" ></script>
+		<script src="https://github.com/chmille4/Scribl/raw/v0.2.3/Scribl.min.js" ></script>
 		
 		<script> 
 
@@ -45,13 +42,18 @@ http://chmille4.github.com/Scribl/
 https://github.com/chmille4/Scribl/wiki/Documentation
 == Minification
 The {closure compiler}[http://code.google.com/closure/compiler/] is used to combine and minify multiple javascript files.
- java -jar compiler.jar  \
- --js src/Scribl.js \
- --js src/Scribl.events.js \
- --js src/Scribl.glyph.js \
- --js src/Scribl.blockarrow.js \
- --js src/Scribl.rect.js \
- --js src/genbank.js \
- --js_output_file Scribl.min.js
+ java -jar ~/Tools/google-closure/compiler.jar  \  
+	--js src/Scribl.class.js \
+	--js src/Scribl.js \
+	--js src/Scribl.track.js \
+	--js src/Scribl.events.js \
+	--js src/Scribl.utils.js \
+	--js src/Scribl.svg.js \
+	--js src/Scribl.glyph.js \
+	--js src/glyph/Scribl.blockarrow.js \
+	--js src/glyph/Scribl.rect.js \
+	--js src/glyph/Scribl.line.js \	
+	--js src/glyph/Scribl.spliced.js \	
+	--js_output_file Scribl.min.js
 == License
 MIT License

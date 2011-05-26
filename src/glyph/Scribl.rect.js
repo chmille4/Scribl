@@ -10,6 +10,7 @@
 		 */
 		init: function(type, position, length, opts) {
 			this._super(type, position, length, "+", opts);
+			this.glyphType = "Rect";
 		},
 		
 		// optional parameters if you want to call this method directly

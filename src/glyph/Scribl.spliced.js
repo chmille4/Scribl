@@ -15,6 +15,7 @@
 			// instantiate and set defaults
 			this.slope = 1;
 			this.name = "";
+			this.glyphType = "Spliced";
 			this.exons = exons;
 						
 			// instantiate connector line and set default attributes

@@ -13,6 +13,7 @@
 			this._super(type, position, length, strand, opts);
 			this.slope = 1;
 			this.name = "";
+			this.glyphType = "BlockArrow";
 		},
 
 		// Draw blockarrow method

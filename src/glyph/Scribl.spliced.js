@@ -8,29 +8,20 @@
 		/**
 		 * @constructor
 		 */
-		init: function(type, position, length, strand, exonsData) {
+		init: function(type, position, length, strand, exons, opts) {
 			// call super init method to initialize glyph
-			this._super(type, position, length, strand);
+			this._super(type, position, length, strand, opts);
 			
 			// instantiate and set defaults
 			this.slope = 1;
 			this.name = "";
-			this.exons = [];
+			this.exons = exons;
 						
 			// instantiate connector line and set default attributes
 			this.line =  new Line(type, 0, length);
 			this.line.parent = this;
 			this.line.color = "black";
 			this.line.thickness = 2;
-			
-			// instantiate exons
-			var numExons = exonsData.length
-			for (var i=0; i< numExons; i++) {
-				// create exon
-				var exon = new BlockArrow(type, exonsData[i][0] - position, exonsData[i][1], strand);
-				exon.parent = this;
-				this.exons.push(exon);
-			}
 			
 		},
 
@@ -59,10 +50,13 @@
 			var numExons = spliced.exons.length
 			for (var i=0; i< numExons; i++) {				
 				// set exon to same track and draw
+				spliced.exons[i].parent = spliced;
 				spliced.exons[i].track = spliced.track;
 				spliced.exons[i].draw();
 			}
-					
+			
+			// end path so it doesn't get redrawn when parent tries to draw
+			ctx.beginPath();					
 		}
 			 
 	});

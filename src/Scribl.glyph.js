@@ -12,7 +12,7 @@ var Glyph = Class.extend({
 	 * Parameters: position of glyph, length of glyph, strand
 	 * @constructor
 	 */
-	init: function(type, pos, length, strand) {
+	init: function(type, pos, length, strand, opts) {
 		var glyph = this;
 		
 		// set variables
@@ -23,6 +23,7 @@ var Glyph = Class.extend({
 		this.type = type;
 		
 		glyph.name = "";
+		glyph.borderColor = "none";
 		
 		// initialize font variables
 		glyph.font = {};
@@ -32,6 +33,11 @@ var Glyph = Class.extend({
 		glyph.font.color = undefined; // default: 'black'
 		glyph.font.align = undefined; // default: 'middle'
 		
+		// set option attributes if any
+		for (var attribute in opts) {
+			if (typeof opts[attribute] == "string") opts[attribute] = "'" + opts[attribute] + "'";
+			eval("glyph." + attribute + "=" + opts[attribute]);
+		}
 		
 	},
 	
@@ -238,6 +244,7 @@ var Glyph = Class.extend({
 		
 		// set ctx
 		glyph.ctx = glyph.track.chart.ctx;
+		glyph.ctx.beginPath();
 		
 		// intialize
 		var fontSize = /^\d+/.exec(glyph.ctx.font);
@@ -257,6 +264,15 @@ var Glyph = Class.extend({
 		
 		// draw glyph with subclass specific draw
 		glyph._draw();
+		// draw border color
+		if (glyph.borderColor != "none") {
+			if(glyph.color == 'none') {
+				glyph.ctx.clearRect(0,0, glyph.pixelLength(), glyph.getHeight());
+			}
+			glyph.ctx.stroke();
+		}
+		// draw fill color
+		if (glyph.color !="none") glyph.ctx.fill();
 		
 		// explicity change transformation matrix back -- it's faster than save restore!
 		if (glyph.strand == '-' && !glyph.isSubFeature()) 
@@ -271,7 +287,6 @@ var Glyph = Class.extend({
 		
 		// setup mouse events if need be
 		glyph.track.chart.myMouseEventHandler.addEvents(this); 
-		
-		
+			
 	}
 });

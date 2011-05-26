@@ -8,8 +8,8 @@
 		/**
 		 * @constructor
 		 */
-		init: function(type, position, length) {
-			this._super(type, position, length, "+");
+		init: function(type, position, length, opts) {
+			this._super(type, position, length, "+", opts);
 		},
 		
 		// optional parameters if you want to call this method directly
@@ -85,6 +85,6 @@
 
 			// top line
 			ctx.lineTo(tlc_lgth_x, tlc_lgth_y);
-			ctx.fill();
+//			ctx.fill();
 	}
 });

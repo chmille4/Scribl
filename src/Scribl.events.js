@@ -77,7 +77,7 @@ var MouseEventHandler = Class.extend({
 	handleMouseover: function(chart) {
 		var me = chart.myMouseEventHandler;
 		var obj = me.eventElement;
-		
+
 		if (obj != undefined && obj.onMouseover != undefined)
 			me.tooltip.fire(obj);
 		else if (obj && obj.parent && obj.parent.onMouseover) {

@@ -8,9 +8,9 @@
 		/**
 		 * @constructor
 		 */
-		init: function(type, position, length, strand) {
+		init: function(type, position, length, strand, opts) {
 			// call super init method to initialize glyph
-			this._super(type, position, length, strand);
+			this._super(type, position, length, strand, opts);
 			this.slope = 1;
 			this.name = "";
 		},
@@ -118,8 +118,7 @@
 
 			// top line
 			ctx.lineTo(tc_lgth_x, tc_lgth_y);
-			ctx.fill();
-			
+						
 		}
 				 
 	});

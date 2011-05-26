@@ -7,9 +7,9 @@
 		/**
 		 * @constructor
 		 */
-		init: function(type, position, length) {
+		init: function(type, position, length, opts) {
 			this.thickness = 2;
-			this._super(type, position, length, "+");
+			this._super(type, position, length, "+", opts);
 		},
 		
 		// optional parameters if you want to call this method directly
@@ -31,7 +31,7 @@
 			ctx.lineTo(x, height/2 + line.thickness/2);
 			ctx.lineTo(x+length, height/2 + line.thickness/2);
 			ctx.lineTo(x+length, height/2 - line.thickness/2);
-			ctx.fill();			
+//			ctx.fill();			
 //			ctx.fillRect(x, height/2 - line.thickness/2, length, line.thickness);
 	}
 });

@@ -9,9 +9,9 @@
 		/**
 		 * @constructor
 		 */
-		init: function(type, position, strand) {
+		init: function(type, position, strand, opts) {
 			// call super init method to initialize glyph
-			this._super(type, position, 0, strand);
+			this._super(type, position, 0, strand, opts);
 			
 			// set defaults
 			this.slope = 1;
@@ -30,14 +30,17 @@
 			var height = height || arrow.getHeight();
 			var roundness = roundness + 1 || arrow.getRoundness();
 			if (roundness != undefined) roundness -= 1;
+			var arrowLength = height/2 / Math.tan(Math.atan(arrow.slope))
+			var thickness =  arrow.thickness / 10 * arrowLength ;
+			arrowLength = 0;
 			
 			// set start x and y draw locations to 0
 			x = y = 0;			
 			
 			// arrow x and control coords
-			a_b_x = x  - roundness;  // bottom x coord					
-			a_t_x = x - roundness; // top point x coord
-			a_max_x = x;  // the furthest point of the arrow
+			a_b_x = x - arrowLength - roundness;  // bottom x coord					
+			a_t_x = x - arrowLength - roundness; // top point x coord
+			a_max_x = x  - arrowLength;  // the furthest point of the arrow
 		
 			// use bezier quadratic equation to calculate control point x coord
 			t = .5  // solve for end of arrow
@@ -68,11 +71,6 @@
 			
 			// bottom outer-line
 		    ctx.lineTo( a_b_x, a_b_y );
-		
-			
-			var sideLength = Math.sqrt( Math.pow((a_max_x - bs_slpe_x), 2) + Math.pow((a_b_y - bs_slpe_y), 2) );
-			var thickness =  arrow.thickness / 10 * sideLength ;
-			
 		
 			// front part of arrow
 		    ctx.quadraticCurveTo(a_ctrl_x, a_ctrl_y, a_t_x, a_t_y);
@@ -106,7 +104,7 @@
 			
 			// bottom uturn
 			ctx.bezierCurveTo(bs_ctrl_x-dX, bs_ctrl_y-dY, bs_ctrl_x, bs_ctrl_y,  bs_slpe_x, bs_slpe_y);
-			ctx.fill();
+//			ctx.fill();
 			
 		}
 

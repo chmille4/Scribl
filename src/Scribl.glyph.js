@@ -199,6 +199,34 @@ var Glyph = Class.extend({
 		return ( glyph.track.getHeight() );
 	},
 	
+	getStrokeStyle : function() {
+		var glyph = this;
+		var color;
+		var chartLevelGlyph = "this.track.chart." + glyph.type;		
+
+		// check if default color was ovewridden on a glyph level
+		if (glyph.borderColor != undefined)
+			color = glyph.borderColor
+		else if ( glyph.parent && glyph.parent.color != undefined )
+			color = glyph.parent.color;
+		else if ( eval(chartLevelGlyph).color != undefined)
+			color = eval(chartLevelGlyph).color;
+		else if (eval(chartLevelGlyph).linearGradient != undefined){
+			var lineargradient2 = glyph.ctx.createLinearGradient(glyph.length/2,0,glyph.length/2, glyph.getHeight()); 
+			for (var i = 0; i < eval(chartLevelGlyph).linearGradient.length ; i++ ) {
+				var colorPer = i / (eval(chartLevelGlyph).linearGradient.length - 1);
+				lineargradient2.addColorStop(colorPer, eval(chartLevelGlyph).linearGradient[i]);
+			}  
+				color = lineargradient2
+		} else if ( glyph.track.chart.glyph.borderColor != undefined)
+			color = glyph.track.chart.glyph.borderColor
+		else {
+			color = black;
+		}
+		
+		return ( color );
+	},
+	
 	getFillStyle : function() {
 		var glyph = this;
 		var color;
@@ -236,6 +264,11 @@ var Glyph = Class.extend({
 		return (this.parent != undefined);
 	},
 	
+	clearInside: function() {
+		var glyph = this;
+		glyph.ctx.clearRect(0,0, glyph.pixelLength(), glyph.getHeight());
+	},
+	
 	draw: function() {
 		var glyph = this;
 		
@@ -267,9 +300,12 @@ var Glyph = Class.extend({
 		// draw border color
 		if (glyph.borderColor != "none") {
 			if(glyph.color == 'none') {
-				glyph.ctx.clearRect(0,0, glyph.pixelLength(), glyph.getHeight());
+				glyph.clearInside();
 			}
+			var saveStrokeStyle = glyph.ctx.strokeStyle;
+			glyph.ctx.strokeStyle = glyph.getStrokeStyle();
 			glyph.ctx.stroke();
+			glyph.ctx.strokeStyle = saveStrokeStyle;
 		}
 		// draw fill color
 		if (glyph.color !="none") glyph.ctx.fill();

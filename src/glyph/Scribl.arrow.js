@@ -18,6 +18,19 @@
 			this.name = "";
 			this.thickness = 4.6
 		},
+		
+		pixelThickness: function() {
+			var arrow = this;
+			var height = arrow.getHeight();
+			var arrowLength = height/2 / Math.tan(Math.atan(arrow.slope))
+			return ( arrow.thickness / 10 * arrowLength );
+		},
+		
+		clearInside: function() {
+			var arrow = this;
+			var thickness =  arrow.pixelThickness();
+			arrow.ctx.clearRect( -thickness,0, thickness, arrow.getHeight() );
+		},
 
 		// Draw arrow method
 		_draw : function(ctx, length, height, roundness) {
@@ -30,9 +43,8 @@
 			var height = height || arrow.getHeight();
 			var roundness = roundness + 1 || arrow.getRoundness();
 			if (roundness != undefined) roundness -= 1;
-			var arrowLength = height/2 / Math.tan(Math.atan(arrow.slope))
-			var thickness =  arrow.thickness / 10 * arrowLength ;
-			arrowLength = 0;
+			var thickness =  arrow.pixelThickness();
+			var arrowLength = 0;
 			
 			// set start x and y draw locations to 0
 			x = y = 0;			

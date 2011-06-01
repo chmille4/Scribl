@@ -10,6 +10,7 @@
 		<script src="../src/Scribl.glyph.js" ></script>
 		<script src="../src/glyph/Scribl.blockarrow.js" ></script>
 		<script src="../src/glyph/Scribl.rect.js" ></script>
+		<script src="../src/glyph/Scribl.line.js" ></script>
 		<script src="../src/glyph/Scribl.spliced.js" ></script>		
 		<link rel="stylesheet" type="text/css" href="demos.css" />
 		
@@ -28,7 +29,11 @@
 					gene1 = chart1.addGene(900,  750 , '-');
 					gene2 = chart1.addGene(3500, 2500, '+') ;
 					gene3 = chart1.addGene(8100, 1000, '-') ;					
-					gene4 = chart1.addFeature( new Spliced('splice', 1500, 8000, '+', [[1500,500], [3500, 2000], [8500, 1000]]));
+
+                                        gene4 = chart1.addFeature( new Spliced('splice', 1500, 8000, '+', 
+                                                                              [[1500,2500], [3500, 2000], [8500, 1000]]));
+                                        gene4.setColor("rgba(100, 100, 255, 0.5)", "rgba(100, 100, 200, 1.0)");
+
 					gene5 = chart1.addFeature( new BlockArrow('mytype', 0, 400, '+'));
 					gene5.name = "5"
 					gene5.font.align = "left";
@@ -39,7 +44,7 @@
 					gene3.font.color = "yellow";
 					gene3.onMouseover = "lll";
 					chart1.mytype.text.align = "right";
-					gene4.onClick = "http://www.google.com";
+                                        gene4.onClick = function(obj){ alert('you clicked me'); };
 //					gene4.onMouseover = "test";
 					gene4.exons[1].onClick = "http://www.cnn.com";
 				

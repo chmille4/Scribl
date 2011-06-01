@@ -4,7 +4,6 @@
 	Chase Miller 2011
  */
 
-
 var Glyph = Class.extend({
 	/**
 	 * iniatilization method
@@ -34,7 +33,19 @@ var Glyph = Class.extend({
 		
 		
 	},
-	
+
+        setColor: function(color1, color2) {
+            if(! color2){
+                this.color = color1;
+                return;
+            }
+            var lineargradient = this.track.ctx.createLinearGradient(this.length/2, 0, this.length/2, this.getHeight());
+            lineargradient.addColorStop(0, color1);
+            lineargradient.addColorStop(1, color2);
+            this.color = lineargradient;
+
+        },
+
 	// returns the length position in pixels of the glyph
 	pixelLength: function() { 
 		var glyph = this;
@@ -206,10 +217,11 @@ var Glyph = Class.extend({
 		else if ( eval(chartLevelGlyph).color != undefined)
 			color = eval(chartLevelGlyph).color;
 		else if (eval(chartLevelGlyph).linearGradient != undefined){
+                        var lgradient = eval(chartLevelGlyph).linearGradient;
 			var lineargradient2 = glyph.ctx.createLinearGradient(glyph.length/2,0,glyph.length/2, glyph.getHeight()); 
-			for (var i = 0; i < eval(chartLevelGlyph).linearGradient.length ; i++ ) {
-				var colorPer = i / (eval(chartLevelGlyph).linearGradient.length - 1);
-				lineargradient2.addColorStop(colorPer, eval(chartLevelGlyph).linearGradient[i]);
+			for (var i = 0; i < lgradient.length ; i++ ) {
+				var colorPer = i / (lgradient.length - 1);
+				lineargradient2.addColorStop(colorPer, lgradient[i]);
 			}  
 				color = lineargradient2
 		} else if ( glyph.track.chart.glyph.color != undefined)

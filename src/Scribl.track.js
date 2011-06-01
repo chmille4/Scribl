@@ -6,6 +6,7 @@ var track = Class.extend({
 		// defaults
 		this.height = undefined;
 		this.features = [];
+                this.ctx = ctx
 	},
 	
 	addGene: function(position, length, strand) {

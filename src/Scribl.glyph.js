@@ -34,16 +34,17 @@ var Glyph = Class.extend({
 		
 	},
 
-        setColor: function(color1, color2) {
-            if(! color2){
-                this.color = color1;
+        setColorGradient: function(/*color1, color2, ... */) {
+            if(arguments.length == 1){
+                this.color = arguments[0];
                 return;
             }
             var lineargradient = this.track.ctx.createLinearGradient(this.length/2, 0, this.length/2, this.getHeight());
-            lineargradient.addColorStop(0, color1);
-            lineargradient.addColorStop(1, color2);
+            var color;
+            for(var i=0; color=arguments[i], i < arguments.length; i++){
+                lineargradient.addColorStop(i / arguments.length, color);
+            }
             this.color = lineargradient;
-
         },
 
 	// returns the length position in pixels of the glyph

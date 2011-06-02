@@ -6,6 +6,7 @@ var track = Class.extend({
 		// defaults
 		this.height = undefined;
 		this.features = [];
+                this.ctx = ctx
 	},
 	
 	addGene: function(position, length, strand) {
@@ -23,10 +24,8 @@ var track = Class.extend({
 		this.features.push(feature);
 		
 		// initialize hash containers for "type" level options
-		var chartLevel = "this.chart." + feature.type
-		if (!eval(chartLevel) ) {
-			eval(chartLevel + " = {}");
-			eval(chartLevel).text = {}
+		if (! this.chart[feature.type] ){
+            this.chart[feature.type] = {'text': {}}
 		}
 		
 		// determine chart absolute_min and absolute_max

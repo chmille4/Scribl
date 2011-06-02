@@ -4,7 +4,6 @@
 	Chase Miller 2011
  */
 
-
 var Glyph = Class.extend({
 	/**
 	 * iniatilization method
@@ -34,7 +33,20 @@ var Glyph = Class.extend({
 		
 		
 	},
-	
+
+        setColorGradient: function(/*color1, color2, ... */) {
+            if(arguments.length == 1){
+                this.color = arguments[0];
+                return;
+            }
+            var lineargradient = this.track.ctx.createLinearGradient(this.length/2, 0, this.length/2, this.getHeight());
+            var color;
+            for(var i=0; color=arguments[i], i < arguments.length; i++){
+                lineargradient.addColorStop(i / arguments.length, color);
+            }
+            this.color = lineargradient;
+        },
+
 	// returns the length position in pixels of the glyph
 	pixelLength: function() { 
 		var glyph = this;
@@ -56,43 +68,38 @@ var Glyph = Class.extend({
 	setTextOptions : function() {
 		// chart level overides defaults, type level overrides chart and defaults, and glyph level overrides everything		
 		var glyph = this;
-		var chartLevelGlyph = "this.track.chart." + glyph.type;
-		
+        var chartLevelGlyph = this.track.chart[glyph.type];
+
 		// set style
 		// determie correct hierarchical attribute level
 		if ( glyph.font.style != undefined)  // glyph level
 			glyph.font.style = glyph.font.style;
 		else if ( glyph.parent && glyph.parent.font.color != undefined)  // parent level
 			glyph.font.style = glyph.parent.font.color;
-		else if ( eval(chartLevelGlyph).text.font != undefined ) // type level
-			glyph.font.style = eval(chartLevelGlyph).text.font;
+       else if ( chartLevelGlyph.text.font != undefined ) // type level
+           glyph.font.style = chartLevelGlyph.text.font;
 		else if ( glyph.track.chart.glyph.text.font != undefined ) // chart level
 			glyph.font.style = glyph.track.chart.glyph.text.font;
-			
-		// if (glyph.font.style == undefined && eval(chartLevelGlyph).text.style != undefined )
-		// 	glyph.font.style = eval(chartLevelGlyph).text.font
-		// else if ( glyph.font.style == undefined && glyph.track.chart.glyph.text.font != undefined ) 
-		// 	glyph.font.style = glyph.track.chart.glyph.text.font
-		
+
 		// set font size
 		// determie correct hierarchical attribute level
 		if ( glyph.font.size != undefined)  // glyph level
 			glyph.font.size = glyph.font.size;
 		else if ( glyph.parent && glyph.parent.font.size != undefined)  // parent level
 			glyph.font.size = glyph.parent.font.size;
-		else if ( eval(chartLevelGlyph).text.size != undefined ) // type level
-			glyph.font.size = eval(chartLevelGlyph).text.size;
+       else if ( chartLevelGlyph.text.size != undefined ) // type level
+           glyph.font.size = chartLevelGlyph.text.size;
 		else if ( glyph.track.chart.glyph.text.size != undefined ) // chart level
 			glyph.font.size = glyph.track.chart.glyph.text.size;
-		
+
 		// set text color
 		// determie correct hierarchical attribute level
 		if ( glyph.font.color != undefined)  // glyph level
 			glyph.font.color = glyph.font.color;
 		else if ( glyph.parent && glyph.parent.font.color != undefined)  // parent level
 			glyph.font.color = glyph.parent.font.color;
-		else if ( eval(chartLevelGlyph).text.color != undefined ) // type level
-			glyph.font.color = eval(chartLevelGlyph).text.color;
+       else if ( chartLevelGlyph.text.color != undefined ) // type level
+           glyph.font.color = chartLevelGlyph.text.color;
 		else if ( glyph.track.chart.glyph.text.color != undefined ) // chart level
 			glyph.font.color = glyph.track.chart.glyph.text.color;
 			
@@ -102,8 +109,8 @@ var Glyph = Class.extend({
 			glyph.font.align = glyph.font.align;
 		else if ( glyph.parent && glyph.parent.font.align != undefined)  // parent level
 			glyph.font.align = glyph.parent.font.align;
-		else if ( eval(chartLevelGlyph).text.align != undefined ) // type level
-			glyph.font.align = eval(chartLevelGlyph).text.align;
+       else if ( chartLevelGlyph.text.align != undefined ) // type level
+           glyph.font.align = chartLevelGlyph.text.align;
 		else if ( glyph.track.chart.glyph.text.align != undefined ) // chart level
 			glyph.font.align = glyph.track.chart.glyph.text.align;
 	},
@@ -171,7 +178,7 @@ var Glyph = Class.extend({
 	getRoundness : function() { 
 		var roundness;
 		var glyph = this;
-		var chartLevel = "this.track.chart." + glyph.type
+		var chartLevel = this.track.chart[glyph.type];
 
 		// check if individual roundness was set
 		if ( glyph.roundness != undefined )
@@ -179,8 +186,8 @@ var Glyph = Class.extend({
 		else if ( glyph.parent && glyph.parent.roundness != undefined )
 				roundness = glyph.parent.roundness;
 		// check if custom chart level is set
-		else if (eval(chartLevel) != undefined && eval(chartLevel).roundness != undefined)
-			roundness = eval(chartLevel).roundness;
+		else if (chartLevel != undefined && chartLevel.roundness != undefined)
+			roundness = chartLevel.roundness;
 		// fall back to default behavior for all glyphs
 		else
 			roundness = glyph.track.chart.glyph.roundness;
@@ -196,21 +203,22 @@ var Glyph = Class.extend({
 	getFillStyle : function() {
 		var glyph = this;
 		var color;
-		var chartLevelGlyph = "this.track.chart." + glyph.type;		
+		var chartLevelGlyph = this.track.chart[glyph.type];
 
 		// check if default color was ovewridden on a glyph level
 		if (glyph.color != undefined)
 			color = glyph.color
 		else if ( glyph.parent && glyph.parent.color != undefined )
 			color = glyph.parent.color;
-		else if ( eval(chartLevelGlyph).color != undefined)
-			color = eval(chartLevelGlyph).color;
-		else if (eval(chartLevelGlyph).linearGradient != undefined){
-			var lineargradient2 = glyph.ctx.createLinearGradient(glyph.length/2,0,glyph.length/2, glyph.getHeight()); 
-			for (var i = 0; i < eval(chartLevelGlyph).linearGradient.length ; i++ ) {
-				var colorPer = i / (eval(chartLevelGlyph).linearGradient.length - 1);
-				lineargradient2.addColorStop(colorPer, eval(chartLevelGlyph).linearGradient[i]);
-			}  
+		else if ( chartLevelGlyph.color != undefined)
+			color = chartLevelGlyph.color;
+		else if (chartLevelGlyph.linearGradient != undefined){
+            var lgradient = chartLevelGlyph.linearGradient;
+			var lineargradient2 = glyph.ctx.createLinearGradient(glyph.length/2,0,glyph.length/2, glyph.getHeight());
+			for (var i = 0; i < lgradient.length ; i++ ) {
+				var colorPer = i / (lgradient.length - 1);
+				lineargradient2.addColorStop(colorPer, lgradient[i]);
+			}
 				color = lineargradient2
 		} else if ( glyph.track.chart.glyph.color != undefined)
 			color = glyph.track.chart.glyph.color

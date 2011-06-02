@@ -307,7 +307,7 @@ var Glyph = Class.extend({
 		glyph._draw();
 		// draw border color
 		if (glyph.borderColor != "none") {
-			if(glyph.color == 'none' && glyph.parent.glyphType == 'Spliced') {
+			if(glyph.color == 'none' && glyph.parent.glyphType == 'Complex') {
 				glyph.clearInside();
 			}
 			var saveStrokeStyle = glyph.ctx.strokeStyle;

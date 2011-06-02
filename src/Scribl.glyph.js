@@ -169,7 +169,15 @@ var Glyph = Class.extend({
 					break;
 				}
 			}
-
+			
+			// handle special case
+			if (glyph.glyphType == "Complex") {
+				var offset = 0;
+				var fontsize = /^\d+/.exec(ctx.font);
+				if (glyph.font.align == "center")
+					offset = -(ctx.measureText(text).width/2 + padding/2); 
+				ctx.clearRect(placement + offset, height/2 - fontsize/2, ctx.measureText(text).width + padding, fontsize);
+			}
 			ctx.fillText(text, placement, height/2);
 		}
 	},

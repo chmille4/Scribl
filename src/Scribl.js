@@ -131,6 +131,11 @@ var Scribl = Class.extend({
 		genbank(file, this);
 	},
 	
+	// loads bed file
+	loadBed: function(file) {
+		bed(file, this);
+	},
+	
 	// loads array of feature objects
 	loadFeatures: function(features) {
 		for ( var i=0; i < features.length; i++ )

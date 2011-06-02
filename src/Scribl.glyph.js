@@ -46,7 +46,7 @@ var Glyph = Class.extend({
             var lineargradient = this.track.ctx.createLinearGradient(this.length/2, 0, this.length/2, this.getHeight());
             var color;
             for(var i=0; color=arguments[i], i < arguments.length; i++){
-                lineargradient.addColorStop(i / arguments.length, color);
+                lineargradient.addColorStop(i / (arguments.length-1), color);
             }
             this.color = lineargradient;
         },

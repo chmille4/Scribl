@@ -1,6 +1,8 @@
 <!DOCTYPE HTML> 
 <html lang="en">
 	<head>
+		
+		<!-- FOR DEVELOPERS USE -->
 		<script src="../src/Scribl.class.js" ></script>
 		<script src="../src/Scribl.js" ></script>
 		<script src="../src/Scribl.track.js" ></script>
@@ -11,7 +13,7 @@
 		<script src="../src/glyph/Scribl.blockarrow.js" ></script>
 		<script src="../src/glyph/Scribl.rect.js" ></script>
 		<script src="../src/glyph/Scribl.line.js" ></script>
-		<script src="../src/glyph/Scribl.spliced.js" ></script>		
+		<script src="../src/glyph/Scribl.complex.js" ></script>		
 		<link rel="stylesheet" type="text/css" href="demos.css" />
 		
 		<script> 
@@ -31,9 +33,9 @@
                                         gene2.onClick = "http://www.cnn.com";
 					gene3 = chart1.addGene(8100, 1000, '-') ;					
 
-                                        gene4 = chart1.addFeature( new Spliced('splice', 1500, 8000, '+', 
+					gene4 = chart1.addFeature( new Spliced('splice', 1500, 8000, '+', 
                                                                               [[1500,2500], [3500, 2000], [8500, 1000]]));
-                                        gene4.setColorGradient("rgba(100, 100, 255, 0.5)", "rgba(100, 100, 200, 1.0)");
+					gene4.setColorGradient("rgba(100, 100, 255, 0.5)", "rgba(100, 100, 200, 1.0)");
 
 					gene5 = chart1.addFeature( new BlockArrow('mytype', 0, 400, '+'));
 					gene5.name = "5"
@@ -46,19 +48,14 @@
 					gene3.onMouseover = "lll";
 					chart1.mytype.text.align = "right";
 
-                                        gene4.onClick = function(obj){ alert('you clicked me'); };
-                                        gene4.name = "click me";
-//					gene4.onMouseover = "test";
-					//gene4.exons[1].onClick = "http://www.cnn.com";
+					gene4.onClick = function(obj){ alert('you clicked me'); };
+					gene4.name = "click me";
 				
-//					gene4.connectorThickness = 2;
-//					gene4.connectorColor = "black";
 					gene4.font.align = "left";
 					gene4.exons[1].name = "test";
 					gene4.exons[1].font.align = "end";
 					gene4.exons[1].font.color = "pink";
 					gene4.exons[2].name = "test2";
-//					gene4.exons[2].font.style = "gothic";
 					
 					gene4.roundness = 8;
 					// Draw Chart

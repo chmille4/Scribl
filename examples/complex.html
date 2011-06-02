@@ -1,19 +1,7 @@
 <!DOCTYPE HTML> 
 <html lang="en">
 	<head>
-		<!--<script src="../Scribl.min.js" ></script>-->
-		<script src="../src/Scribl.class.js" ></script>
-		<script src="../src/Scribl.js" ></script>
-		<script src="../src/Scribl.track.js" ></script>
-		<script src="../src/Scribl.events.js" ></script>
-		<script src="../src/Scribl.utils.js" ></script>
-		<script src="../src/Scribl.svg.js" ></script>
-		<script src="../src/Scribl.glyph.js" ></script>
-		<script src="../src/glyph/Scribl.blockarrow.js" ></script>
-		<script src="../src/glyph/Scribl.rect.js" ></script>
-		<script src="../src/glyph/Scribl.line.js" ></script>
-		<script src="../src/glyph/Scribl.arrow.js" ></script>
-		<script src="../src/glyph/Scribl.complex.js" ></script>
+		<script src="../Scribl.min.js" ></script>
 		<link rel="stylesheet" type="text/css" href="demos.css" />
 		
 		<script> 
@@ -68,10 +56,10 @@
 					]));
 
 					
-					// // set mouseover for whole gene
-					// gene1.onMouseover = "Gene 1";
-					// // override mouseover for second subfeature;
-					// gene1.subFeatures[1].onMouseover = "Exon 2";
+					// set mouseover for whole gene
+					gene1.onMouseover = "Gene 1";
+					// override mouseover for second subfeature;
+					gene1.subFeatures[1].onMouseover = "Exon 1";
 					
 					// remove line color so that it defaults to the gene color
 					gene1.line.color = "";
@@ -88,8 +76,8 @@
 	
 	<body onload="draw('canvas')">
 		<div id="description">
-			<h2>Exons</h2><br/>
-			display genes with exons, add events and attributes by gene and by exon
+			<h2>Complex Glyphs</h2><br/>
+			combine multiple glyphs to act as one
 		</div><br/>
 		<div id="container">
 			<canvas id="canvas" width="547" height="330"></canvas>  

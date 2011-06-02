@@ -27,6 +27,7 @@
 			
 			// Set starting draw position
 			x = y = 0;
+
 			ctx.beginPath();
 			ctx.moveTo(x, height/2 - line.thickness/2);
 			ctx.lineTo(x, height/2 + line.thickness/2);

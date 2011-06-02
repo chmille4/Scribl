@@ -2,7 +2,19 @@
 <html lang="en">
 	<head>
 		<title>Scribl - builder</title>
-		<script src="../Scribl.min.js" ></script>
+		<!--<script src="../Scribl.min.js" ></script>-->
+		<script src="../src/Scribl.class.js" ></script>
+		<script src="../src/Scribl.js" ></script>
+		<script src="../src/Scribl.track.js" ></script>
+		<script src="../src/Scribl.events.js" ></script>
+		<script src="../src/Scribl.utils.js" ></script>
+		<script src="../src/Scribl.svg.js" ></script>
+		<script src="../src/Scribl.glyph.js" ></script>
+		<script src="../src/glyph/Scribl.blockarrow.js" ></script>
+		<script src="../src/glyph/Scribl.rect.js" ></script>
+		<script src="../src/glyph/Scribl.arrow.js" ></script>
+		<script src="../src/glyph/Scribl.line.js" ></script>
+		<script src="../src/glyph/Scribl.complex.js" ></script>
 		<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
 		<link rel="stylesheet" type="text/css" href="demos.css" />
 	  	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
@@ -22,7 +34,7 @@
 		
 		<script>
 	  		$(document).ready(function() {
-	    		$("#shapeSlider").slider( { min: 0, max: 20, value: 6, slide: function(event, ui){ redraw() } });
+	    		$("#shapeSlider").slider( { min: 1, max: 20, value: 6, slide: function(event, ui){ redraw() } });
 	    		$("#trackSlider").slider( { min: 10, max: 200, value: 50, slide: function(event, ui){ redraw() } });
 				$("#rSlider1").slider( { min: 0, max: 260, value: 0, slide: function(event, ui){ redraw() } });
 				$("#bSlider1").slider( { min: 0, max: 260, value: 0, slide: function(event, ui){ redraw() } });	
@@ -54,7 +66,13 @@
 					gene7 = chart1.addGene( 2230, 1000, '+');
 					gene8 = chart1.addGene( 5000, 1500, '+');				
 					gene9 = chart1.addGene( 7230, 1000, '-');
-					gene10 = chart1.addFeature( new Spliced('splice', 1500, 8000, '+', [[1500,500], [3500, 2000], [8500, 1000]]));
+					gene10 = chart1.addFeature(
+						new Complex('gene', 1500, 5000, '+', [ 
+							new BlockArrow('gene',0,500, '+'), 
+							new Rect('gene',2000,500), 
+							new Arrow('gene',5000, '+')
+						])
+					);
 
 					// add name
 					gene3.name = "Gene 2";

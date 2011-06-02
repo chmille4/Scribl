@@ -33,10 +33,8 @@ var Glyph = Class.extend({
 		glyph.font.align = undefined; // default: 'middle'
 		
 		// set option attributes if any
-		for (var attribute in opts) {
-			if (typeof opts[attribute] == "string") opts[attribute] = "'" + opts[attribute] + "'";
-			eval("glyph." + attribute + "=" + opts[attribute]);
-		}
+		for (var attribute in opts)
+			glyph[attribute] = opts[attribute];
 		
 	},
 
@@ -217,20 +215,20 @@ var Glyph = Class.extend({
 	getStrokeStyle : function() {
 		var glyph = this;
 		var color;
-		var chartLevelGlyph = "this.track.chart." + glyph.type;		
+		var chartLevelGlyph = this.track.chart[glyph.type];			
 
 		// check if default color was ovewridden on a glyph level
 		if (glyph.borderColor != undefined)
 			color = glyph.borderColor
 		else if ( glyph.parent && glyph.parent.color != undefined )
 			color = glyph.parent.color;
-		else if ( eval(chartLevelGlyph).color != undefined)
-			color = eval(chartLevelGlyph).color;
-		else if (eval(chartLevelGlyph).linearGradient != undefined){
+		else if ( chartLevelGlyph.color != undefined)
+			color = chartLevelGlyph.color;
+		else if (chartLevelGlyph.linearGradient != undefined){
 			var lineargradient2 = glyph.ctx.createLinearGradient(glyph.length/2,0,glyph.length/2, glyph.getHeight()); 
-			for (var i = 0; i < eval(chartLevelGlyph).linearGradient.length ; i++ ) {
-				var colorPer = i / (eval(chartLevelGlyph).linearGradient.length - 1);
-				lineargradient2.addColorStop(colorPer, eval(chartLevelGlyph).linearGradient[i]);
+			for (var i = 0; i < chartLevelGlyph.linearGradient.length ; i++ ) {
+				var colorPer = i / (chartLevelGlyph.linearGradient.length - 1);
+				lineargradient2.addColorStop(colorPer, chartLevelGlyph.linearGradient[i]);
 			}  
 				color = lineargradient2
 		} else if ( glyph.track.chart.glyph.borderColor != undefined)

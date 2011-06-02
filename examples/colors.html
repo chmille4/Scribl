@@ -2,7 +2,15 @@
 <html lang="en">
 	<head>
 
-		<script src="../Scribl.min.js" ></script>
+                <script src="../src/Scribl.class.js" ></script>
+                <script src="../src/Scribl.js" ></script>
+                <script src="../src/Scribl.track.js" ></script>
+                <script src="../src/Scribl.events.js" ></script>
+                <script src="../src/Scribl.utils.js" ></script>
+                <script src="../src/Scribl.svg.js" ></script>
+                <script src="../src/Scribl.glyph.js" ></script>
+                <script src="../src/glyph/Scribl.blockarrow.js" ></script>
+
 		
 		<link rel="stylesheet" type="text/css" href="demos.css" />
 		
@@ -26,17 +34,10 @@
 
 				// Add Genes to Track 2
 				gene1 = track1.addGene( 5, 750 , '-');
-				var lineargradient = chart.ctx.createLinearGradient(gene1.length/2,0,gene1.length/2,gene1.getHeight());  
-				lineargradient.addColorStop(0,'rgb(204, 193, 208)');  
-				lineargradient.addColorStop(1,'rgb(96, 74, 123)');
-				gene1.color = lineargradient;
-
+                                gene1.setColorGradient('rgb(204, 193, 208)', 'rgb(96, 74, 123)');
 
 				gene2 = track1.addGene( 3500, 2500, '+');
-				var lineargradient = chart.ctx.createLinearGradient(gene2.length/2,0,gene2.length/2,gene2.getHeight());  
-				lineargradient.addColorStop(0,'rgb(230, 185, 184)');  
-				lineargradient.addColorStop(1,'rgb(149, 55, 53)');
-				gene2.color = lineargradient;
+                                gene2.setColorGradient('rgb(230, 255, 162)', 'rgb(230, 185, 184)', 'rgb(149, 55, 53)', 'rgba(0, 0, 0, 0.5)');
 				gene2.roundness = 18;
 
 				gene3 = track1.addGene( 8900, 500, '-');

@@ -25,12 +25,21 @@ var Glyph = Class.extend({
 		glyph.borderColor = "none";
 		
 		// initialize font variables
-		glyph.font = {};
+		glyph.text = {};
 		// unset defaults that can be used to override chart defaults for specific glyphs
-		glyph.font.style = undefined; // default: 'arial'
-		glyph.font.size = undefined;  // default: '15' in pixels 
-		glyph.font.color = undefined; // default: 'black'
-		glyph.font.align = undefined; // default: 'middle'
+		glyph.text.font = undefined; // default: 'arial'
+		glyph.text.size = undefined;  // default: '15' in pixels 
+		glyph.text.color = undefined; // default: 'black'
+		glyph.text.align = undefined; // default: 'middle'
+		
+		    /** deprecated */
+    		glyph.font = {};
+    		// unset defaults that can be used to override chart defaults for specific glyphs
+    		glyph.font.style = undefined; // default: 'arial'
+    		glyph.font.size = undefined;  // default: '15' in pixels 
+    		glyph.font.color = undefined; // default: 'black'
+    		glyph.font.align = undefined; // default: 'middle'
+    		/** deprecated */
 		
 		// set option attributes if any
 		for (var attribute in opts)
@@ -76,8 +85,8 @@ var Glyph = Class.extend({
 
 		// set style
 		// determie correct hierarchical attribute level
-		if ( glyph.font.style != undefined)  // glyph level
-			glyph.font.style = glyph.font.style;
+		if ( glyph.font.style != undefined || glyph.text.font != undefined )  // glyph level
+			glyph.font.style = glyph.font.style || glyph.text.font;
 		else if ( glyph.parent && glyph.parent.font.color != undefined)  // parent level
 			glyph.font.style = glyph.parent.font.color;
        else if ( chartLevelGlyph.text.font != undefined ) // type level
@@ -87,8 +96,8 @@ var Glyph = Class.extend({
 
 		// set font size
 		// determie correct hierarchical attribute level
-		if ( glyph.font.size != undefined)  // glyph level
-			glyph.font.size = glyph.font.size;
+		if ( glyph.font.size != undefined || glyph.text.size)  // glyph level
+			glyph.font.size = glyph.text.size || glyph.font.size;
 		else if ( glyph.parent && glyph.parent.font.size != undefined)  // parent level
 			glyph.font.size = glyph.parent.font.size;
        else if ( chartLevelGlyph.text.size != undefined ) // type level
@@ -98,8 +107,8 @@ var Glyph = Class.extend({
 
 		// set text color
 		// determie correct hierarchical attribute level
-		if ( glyph.font.color != undefined)  // glyph level
-			glyph.font.color = glyph.font.color;
+		if ( glyph.font.color != undefined || glyph.text.color != undefined)  // glyph level
+			glyph.font.color = glyph.text.color || glyph.font.color;
 		else if ( glyph.parent && glyph.parent.font.color != undefined)  // parent level
 			glyph.font.color = glyph.parent.font.color;
        else if ( chartLevelGlyph.text.color != undefined ) // type level
@@ -109,8 +118,8 @@ var Glyph = Class.extend({
 			
 		// set text align
 		// determie correct hierarchical attribute level
-		if ( glyph.font.align != undefined)  // glyph level
-			glyph.font.align = glyph.font.align;
+		if ( glyph.font.align != undefined || glyph.text.align != undefined)  // glyph level
+			glyph.font.align = glyph.text.align || glyph.font.align;
 		else if ( glyph.parent && glyph.parent.font.align != undefined)  // parent level
 			glyph.font.align = glyph.parent.font.align;
        else if ( chartLevelGlyph.text.align != undefined ) // type level

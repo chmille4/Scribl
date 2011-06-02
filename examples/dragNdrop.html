@@ -1,7 +1,22 @@
 <!DOCTYPE HTML> 
 <html lang="en">
 	<head>
-		<script src="../Scribl.min.js" ></script>
+		<!--<script src="../Scribl.min.js" ></script>-->
+		<script src="../src/parsers/bed.js" ></script>
+		<script src="../src/parsers/genbank.js" ></script>
+		<script src="../src/Scribl.class.js" ></script>
+		<script src="../src/Scribl.js" ></script>
+		<script src="../src/Scribl.track.js" ></script>
+		<script src="../src/Scribl.events.js" ></script>
+		<script src="../src/Scribl.utils.js" ></script>
+		<script src="../src/Scribl.svg.js" ></script>
+		<script src="../src/Scribl.glyph.js" ></script>
+		<script src="../src/glyph/Scribl.blockarrow.js" ></script>
+		<script src="../src/glyph/Scribl.rect.js" ></script>
+		<script src="../src/glyph/Scribl.line.js" ></script>
+		<script src="../src/glyph/Scribl.arrow.js" ></script>
+		<script src="../src/glyph/Scribl.complex.js" ></script>
+		
 		<link rel="stylesheet" type="text/css" href="demos.css" />
 
 	<!-- NOTE - This will only work as is in Firefox but IT IS MUCH FASTER IN CHROME! -->
@@ -10,7 +25,7 @@
 	</head>  
 	
 	<body> 
-		<div id="description"><h2>Genbank Drag and Drop</h2>
+		<div id="description"><h2>Drag and Drop</h2>
 			
 			<div id="content"></div>
 	   	<p id="log" style="color: gray"></p>
@@ -26,17 +41,22 @@
 			} else {
 			  // Page Layout
 			  content.innerHTML =
-			    '<p>Drag a Genbank file onto this area <input type="hidden" id="file" /></p>';
+			    '<p>Drag a Genbank(.gb) or BED(.bed) file onto this area <input type="hidden" id="file" /></p>';
 
 			  // Displays gene charts.
 			  function displayChart(file) {
 			    var reader = new FileReader();
+				var fileType = /[^.]+$/.exec(file.name);
 
 			   reader.onload = function(event) {
 					var canvas = document.getElementById('canvas');
 					chart = new Scribl(canvas, 810);
-					chart.trackSizes = 70;
-					chart.loadGenbank(event.target.result);
+					if (fileType == "bed") 
+						chart.loadBed(event.target.result);
+					else if (fileType == "gb")
+						chart.loadGenbank(event.target.result);
+					else
+					 	alert("File must have a .gb or .bed extension");
 					chart.draw();		
 			    };
 			    reader.readAsText(file);

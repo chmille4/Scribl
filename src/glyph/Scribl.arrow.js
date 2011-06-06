@@ -15,7 +15,6 @@
 			
 			// set defaults
 			this.slope = 1;
-			this.name = "";
 			this.glyphType = "Arrow";
 			this.thickness = 4.6
 		},

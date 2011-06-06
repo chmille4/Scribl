@@ -12,7 +12,6 @@
 			// call super init method to initialize glyph
 			this._super(type, position, length, strand, opts);
 			this.slope = 1;
-			this.name = "";
 			this.glyphType = "BlockArrow";
 		},
 

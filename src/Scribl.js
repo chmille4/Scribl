@@ -11,6 +11,7 @@ var Scribl = Class.extend({
 	init: function(canvas, width) {
 
 		// create canvas contexts
+		
 		var ctx = canvas.getContext("2d");  
 	
 		// chart defaults
@@ -143,13 +144,13 @@ var Scribl = Class.extend({
 	},
 	
 	// add gene to chart - syntatic sugar method
-	addGene: function (position, length, strand) {
-		return (this.addFeature( new BlockArrow("gene", position, length, strand) ));
+	addGene: function (position, length, strand, opts) {
+		return (this.addFeature( new BlockArrow("gene", position, length, strand, opts) ));
 	},
 	
 	// add protein to chart - syntatic sugar method
-	addProtein: function(position, length, strand) {
-		return (this.addFeature( new BlockArrow("protein", position, length, strand) ));
+	addProtein: function(position, length, strand, opts) {
+		return (this.addFeature( new BlockArrow("protein", position, length, strand, opts) ));
 	},
 	
 	// add's features using the least number of tracks without overlapping features

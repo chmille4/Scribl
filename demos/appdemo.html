@@ -1,0 +1,229 @@
+<!DOCTYPE HTML> 
+<html lang="en">
+	<head>
+		<title>Scribl - viewer</title>
+		<script  src="https://github.com/chmille4/Scribl/raw/v0.3.2/Scribl.min.js" ></script>
+		<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+		<link rel="stylesheet" type="text/css" href="../css/demos.css" />
+	  	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+	  	<script src="../js/jquery-ui.chase.min.js"></script>
+	
+		<style>
+		#demo-frame > div.demo { padding: 10px !important; };
+		</style>
+		
+		
+		
+		<script>		
+		
+		   $(document).ready(function() {
+	    		$("#shapeSlider").slider( { min: 1, max: 20, value: 6, slide: function(event, ui){ redraw() } });
+	    		$("#trackSlider").slider( { min: 1, max: 200, value: 50, slide: function(event, ui){ redraw() } });
+				$("#rSlider1").slider( { min: 0, max: 260, value: 0, slide: function(event, ui){ redraw() } });
+				$("#bSlider1").slider( { min: 0, max: 260, value: 0, slide: function(event, ui){ redraw() } });	
+				$("#gSlider1").slider( { min: 0, max: 260, value: 0, slide: function(event, ui){ redraw() } });	
+				$("#rSlider2").slider( { min: 0, max: 260, value: 0, slide: function(event, ui){ redraw() } });	
+				$("#bSlider2").slider( { min: 0, max: 260, value: 0, slide: function(event, ui){ redraw() } });	
+				$("#gSlider2").slider( { min: 0, max: 260, value: 0, slide: function(event, ui){ redraw() } });	
+	  		});
+	  		
+	  		
+   		function initChart(fileStr, filetype) {
+   		   var zoomCanvas = document.getElementById('canvas');
+      		origZoomChart = new Scribl(zoomCanvas, 810);
+      		origZoomChart.ctx.clearRect(0, 0, 900, 400);
+      		if (filetype == "gb")
+      		   origZoomChart.loadGenbank(fileStr);
+      		else if (fileType == 'bed')
+   		      origZoomChart.loadBed(fileStr);
+   		
+      		origZoomChart.glyph.color = "black";
+      		origZoomChart.draw();
+		
+   		   $(function() {
+      			$( "#slider-range" ).slider({
+      				range: true,
+      				min: 0,
+      				max: origZoomChart.scale.max,
+      				values: [ 0, origZoomChart.scale.max ],
+      				slide: function( event, ui ) {
+      					redraw();
+      				}
+      			});
+      			$( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
+      				" - $" + $( "#slider-range" ).slider( "values", 1 ) );
+      		});
+      	}
+		</script>
+		
+		<script type="text/javascript">
+		
+
+		  var _gaq = _gaq || [];
+		  _gaq.push(['_setAccount', 'UA-21069282-1']);
+		  _gaq.push(['_trackPageview']);
+
+		  (function() {
+		    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		  })();
+
+		</script>
+
+	</head>  
+	
+	<body>  
+		<div id="description"><h2>Simple Viewer</h2>
+			<div>(Best viewed in Chrome/Safari)</div>
+			<div id="content"></div>
+	   	<p id="log" style="color: gray"></p>
+		<br/><form>
+			<div style="margin-left: auto; margin-right: auto; width:50%">
+				<div style="font-size:.8em">Move End Sliders to Change Zoom <br/> Drag Middle to Scroll Left and Right</div>				
+				<div id="slider-range" class="slider" style="width:100%;"></div>
+				
+			</div>
+			
+		</div>
+		<div style="margin-left: auto; margin-right: auto; width:40%">
+			<div style="float:left; width:40%">
+				<span>Gene Shape</span><br/>
+				<div id="shapeSlider" class="slider"></div>
+				<!-- <input id="shapeSlider" type="range" min="0" max="20" value="6" onchange="redraw()" /> -->
+				<br/><span>Track Size</span><br/>
+				<div id="trackSlider" class ="slider"></div>
+				<!-- <input id="trackSlider" type="range" min="10" max="200" value="70" onchange="redraw()" /> -->
+			</div>
+			
+
+			<div style="float:right; width:60%">
+				<div style="float:left">
+					<span>Gene Color 1</span><br/>
+					<span>r</span><div id="rSlider1" class="slider"></div><br/>
+					<span>g</span><div id="gSlider1" class="slider"></div><br/>
+					<span>b</span><div id="bSlider1" class="slider"></div>
+					<!-- <input id="rSlider1" type="range" min="0" max="260" value="0" onchange="redraw()" /><br/>
+					<input id="gSlider1" type="range" min="0" max="260" value="0" onchange="redraw()" /><br/>
+					<input id="bSlider1" type="range" min="0" max="260" value="0" onchange="redraw()" /> -->
+				</div>
+				<div style="float:right; margin-left: 5px">
+					<span>Gene Color 2</span><br/>
+					<span>r</span><div id="rSlider2" class="slider"></div><br/>
+					<span>g</span><div id="gSlider2" class="slider"></div><br/>
+					<span>b</span><div id="bSlider2" class="slider"></div>
+					<!-- <input id="rSlider2" type="range" min="0" max="260" value="0" onchange="redraw()" /><br/>
+					<input id="gSlider2" type="range" min="0" max="260" value="0" onchange="redraw()" /><br/>
+					<input id="bSlider2" type="range" min="0" max="260" value="0" onchange="redraw()" /> -->
+				</div>
+			</div>
+
+			<div style="clear:both"></div> <br/>
+		</div>
+		<div id="container">
+			<canvas id="canvas" width="840" height="400"></canvas>  
+			<br/><a id="export">Export as PNG (right click Save As)</a>
+		</div>
+						
+		<script>
+		var content = document.getElementById('content');
+		if (!window.FileReader) {
+		  content.innerHTML = "<p>This browser doesnt support the File API</p>";
+		} else {
+		  // Page Layout
+		  content.innerHTML =
+		    '<p>Drag a Genbank(.gb) or BED(.bed) file onto this area <input type="hidden" id="file" /></p>';
+
+		  // Displays gene charts.
+		  function displayChart(file) {
+		    var reader = new FileReader();
+			var fileType = /[^.]+$/.exec(file.name);
+
+		   reader.onload = function(event) {
+				
+				
+				if (fileType == "bed" || fileType == "gb")
+				   initChart(event.target.result, fileType);
+				else
+				 	alert("File must have a .gb or .bed extension");
+
+		    };
+		    reader.readAsText(file);
+		  }		 
+
+		  // Input handler
+		  document.getElementById('file').onchange = function() {
+		    displayFile(this.files[0]);
+		  };
+
+		  // Reduce movement by adding invisible border
+		  content.style.border = '4px solid transparent';
+
+		  // Add dragging events
+		  content.ondragenter = function() {
+		    content.style.border = '4px solid #b1ecb3';
+		    return false;
+		  };
+
+		  content.ondragover = function() {
+		    return false;
+		  };
+
+		  content.ondragleave = function() {
+		    return false;
+		  };
+
+		  content.ondrop = function(event) {
+		    content.style.border = '4px solid transparent';
+		    displayChart(event.dataTransfer.files[0]);
+		    return false;
+		  };
+		}
+		</script>
+	<script>
+
+		
+		function redraw() {
+		   var newMin = $( "#slider-range" ).slider( "values", 0 );
+		   var newMax = $( "#slider-range" ).slider( "values", 1 );
+			newChart = origZoomChart.slice(newMin, newMax);
+			newChart.scale.off = true;
+			newChart.scale.pretty = false;
+			newChart.scale.offset = false;
+			origZoomChart.ctx.clearRect(0, 0, 900, 400);
+			
+			roundness = $("#shapeSlider").slider( "option", "value" );
+			trackSizes = $("#trackSlider").slider( "option", "value" );
+			r1 = $("#rSlider1").slider( "option", "value" );
+			g1 = $("#gSlider1").slider( "option", "value" );
+			b1 = $("#bSlider1").slider( "option", "value" );
+			r2 = $("#rSlider2").slider( "option", "value" );
+			g2 = $("#gSlider2").slider( "option", "value" );
+			b2 = $("#bSlider2").slider( "option", "value" );
+
+			
+			// set new values
+			newChart.gene.roundness = roundness;
+			newChart.trackSizes = parseInt(trackSizes);
+			
+			// assemble color
+			top_color = "rgb(" + r1 + ", " + g1 + ", " + b1 + ")";
+			bottom_color = "rgb(" + r2 + ", " + g2 + ", " + b2 + ")";	
+			
+			newChart.gene.linearGradient = [top_color, bottom_color];
+         
+         canvas = document.getElementById('canvas');
+			canvas.height = newChart.chartHeight() + 20;
+			newChart.redraw();
+			
+			// Create image of chart1
+			var img = newChart.canvas.toDataURL("image/png");
+			// Add link to download image
+			$("a#export").attr('href', img);
+		}
+
+	</script>
+		
+	</body>
+	
+</html>

@@ -8,10 +8,13 @@
 		<script> 
 			function getFeatures(url) {
 				var canvas = document.getElementById("canvas");
-				chart = new Scribl(canvas, 500);
+				chart = new Scribl(canvas, 900);
+				chart.ctx.clearRect(0,0,canvas.width, canvas.height);
+				chart.trackSizes = 15;
 //				chart.addGene(0, 10000, '+');
 //				chart.draw();
 				var types = ""
+				var track = chart.addTrack();
 				
 				JSDAS.features(url, function(response) {
 					var features = response.GFF.SEGMENT[0].FEATURE;
@@ -22,9 +25,9 @@
 						var length =  parseInt(f.END.textContent) - start;
 						if (f.ORIENTATION) {
 							orientation =  f.ORIENTATION.textContent;
-							var glyph = chart.addGene(start, length, orientation);
+							var glyph = track.addGene(start, length, orientation);
 						} else
-							var glyph = chart.addFeature( new Rect( "rect", start, length) );
+							var glyph = track.addFeature( new Rect( "rect", start, length) );
 
 						if (f.TYPE.textContent) glyph.name = f.TYPE.textContent;
 						if(f.LINK && f.LINK[0] && f.LINK[0].href) { 
@@ -32,6 +35,7 @@
 							glyph.onClick = f.LINK[0].href.replace(":8080", "");
 						}
 					}
+					chart.canvas.height = chart.chartHeight() + 20;
 					chart.draw();
 				});
 			}
@@ -58,7 +62,7 @@
 					<div id="results_content"></div> 
 				</div>
 		<div id="container">
-			<canvas id="canvas" width="547" height="10000"></canvas>  
+			<canvas id="canvas" width="950" height="100"></canvas>  
 			</br><a id="export">Export as PNG (right click Save As)</a>
 		</div>
 		

@@ -9,12 +9,12 @@ var track = Class.extend({
                 this.ctx = ctx
 	},
 	
-	addGene: function(position, length, strand) {
-		return (this.addFeature( new BlockArrow("gene", position, length, strand) ) );
+	addGene: function(position, length, strand, opts) {
+		return (this.addFeature( new BlockArrow("gene", position, length, strand, opts) ) );
 	},
 	
-	addProtein: function(position, length, strand) {
-		return (this.addFeature( new BlockArrow("protein", position, length, strand) ) );
+	addProtein: function(position, length, strand, opts) {
+		return (this.addFeature( new BlockArrow("protein", position, length, strand, opts) ) );
 	},
 	
 	addFeature: function( feature ) {

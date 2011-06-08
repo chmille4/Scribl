@@ -1,7 +1,20 @@
 <!DOCTYPE HTML> 
 <html lang="en">
 	<head>
-		<script src="../Scribl.min.js" ></script>
+		<!--<script src="../Scribl.min.js" ></script>-->
+		<script src="https://github.com/corbanbrook/webgl-2d/raw/master/webgl-2d.js"></script>
+		<script src="../src/Scribl.class.js" ></script>
+		<script src="../src/Scribl.js" ></script>
+		<script src="../src/Scribl.lane.js" ></script>
+		<script src="../src/Scribl.events.js" ></script>
+		<script src="../src/Scribl.utils.js" ></script>
+		<script src="../src/Scribl.svg.js" ></script>
+		<script src="../src/Scribl.glyph.js" ></script>
+		<script src="../src/glyph/Scribl.blockarrow.js" ></script>
+		<script src="../src/glyph/Scribl.arrow.js" ></script>
+		<script src="../src/glyph/Scribl.rect.js" ></script>
+		<script src="../src/glyph/Scribl.line.js" ></script>
+		<script src="../src/glyph/Scribl.complex.js" ></script>
 		<script src="../lib/Scribl.benchmark.js" ></script>
 		<link rel="stylesheet" type="text/css" href="demos.css" />
 		
@@ -9,10 +22,10 @@
 
 			function draw(canvasName) {  
 				var canvas = document.getElementById(canvasName);  	  
-				//ScriblFeatureSizeBenchmark(canvas, 1000, 1000, 630, 900, 20);
+				ScriblFeatureSizeBenchmark(canvas, 1000, 1000, 600, 600, 20);
 				//ScriblNumFeaturesBenchmark(canvas, 1000, 0, 1000, 10, 100);
 				//ScriblChartSizeBenchmark(canvas, 0, 1000, 5000, 100, 100);
-				ScriblPixelBenchmark(canvas, 1000, 24, 27, 500, 1);
+				//ScriblPixelBenchmark(canvas, 1000, 1000, 1000, 600, 1);
 			}
 				
 		</script>

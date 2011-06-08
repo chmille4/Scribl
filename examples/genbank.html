@@ -11,13 +11,19 @@
 				  	var canvas = document.getElementById(canvasName);  	
 					
 					// Create Chart
-					chart = new Scribl(canvas, 900);
+					chart = new Scribl(canvas, 650);
+					chart.laneSizes = 13;
 					
 					// parse and load genbank file
 					chart.loadGenbank(document.getElementById('ecoli').innerHTML);
 					
 					// Draw Chart
 					chart.draw();
+					
+					// Create image of chart1
+					var img = chart.canvas.toDataURL("image/png");
+					// Add link to download image
+					document.getElementById('export').href = img;
 
 			}
 				
@@ -31,6 +37,7 @@
 		</div>
 		<div id="container">
 			<canvas id="canvas" width="930" height="400"></canvas>  
+						</br><a id="export">Export as PNG (right click Save As)</a>
 		</div>
 		<div id="ecoli" style="display: none">
 			LOCUS       FR719195              359618 bp    DNA     linear   BCT 16-NOV-2010

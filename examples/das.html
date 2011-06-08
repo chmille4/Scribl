@@ -10,11 +10,14 @@
 				var canvas = document.getElementById("canvas");
 				chart = new Scribl(canvas, 900);
 				chart.ctx.clearRect(0,0,canvas.width, canvas.height);
-				chart.trackSizes = 15;
-//				chart.addGene(0, 10000, '+');
-//				chart.draw();
+				chart.laneSizes = 15;
 				var types = ""
-				var track = chart.addTrack();
+				var collapse = false;
+				var track;
+				if (collapse)
+				   track = chart.addTrack().addLane();
+				else
+				   track = chart.addTrack();
 				
 				JSDAS.features(url, function(response) {
 					var features = response.GFF.SEGMENT[0].FEATURE;
@@ -35,7 +38,7 @@
 							glyph.onClick = f.LINK[0].href.replace(":8080", "");
 						}
 					}
-					chart.canvas.height = chart.chartHeight() + 20;
+					chart.canvas.height = chart.getHeight() + 20;
 					chart.draw();
 				});
 			}

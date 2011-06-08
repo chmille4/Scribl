@@ -46,6 +46,7 @@ The {closure compiler}[http://code.google.com/closure/compiler/] is used to comb
 	--js src/Scribl.class.js \
 	--js src/Scribl.js \
 	--js src/Scribl.track.js \
+	--js src/Scribl.lane.js \
 	--js src/Scribl.events.js \
 	--js src/Scribl.utils.js \
 	--js src/Scribl.svg.js \

@@ -1,6 +1,6 @@
 /*
 	Scribl
-	Main File: sets defaults, defines how to add features to panel/chart, defines tracks, and some methods to help coordinate drawing
+	Main File: sets defaults, defines how to add features to chart/view, and some methods to help coordinate drawing
 	Chase Miller 2011
  */
 
@@ -16,8 +16,8 @@ var Scribl = Class.extend({
 	
 		// chart defaults
 		this.width = width;
-		this.trackSizes = 50;	
-		this.trackBuffer = 5;
+		this.laneSizes = 50;	
+		this.laneBuffer = 5;
 		this.offset = undefined;
 		this.canvas = canvas;
 		this.ctx = ctx;
@@ -81,9 +81,8 @@ var Scribl = Class.extend({
 		this.tooltips.style = "light";  // also a "dark" option
 	
 		// private variables
-		var tracks = [];
 		this.myMouseEventHandler = new MouseEventHandler(this);
-		this.tracks = tracks;
+		this.tracks = [];
 		var scaleSize = this.scale.size;
 		var scaleFontSize = this.scale.font.size
 	},
@@ -104,15 +103,21 @@ var Scribl = Class.extend({
 			return ( nts / this.width );
 	},
 	
-	getTrackSize: function() { return ( this.scale.size + this.scale.font.size ); },
+	// get height of just scale
+	getScaleHeight: function() {
+	    return (this.laneSizes);
+	    //return (this.tracks[0].getLaneSize());
+	},
 	
-	chartHeight: function() {
+    // get height of entire chart
+	getHeight: function() {
 		var wholeHeight = 0;
 		
-		wholeHeight += this.getTrackSize();
+		if (!this.scale.off) wholeHeight += this.tracks[0].getLaneSize();
+		var numTracks = this.tracks.length
 		
-		for (var i=0; i < this.tracks.length; i++) {
-			wholeHeight += this.trackBuffer;
+		for (var i=0; i < numTracks; i++) {
+			wholeHeight += this.laneBuffer;
 			wholeHeight += this.tracks[i].getHeight();
 		}
 		
@@ -121,10 +126,10 @@ var Scribl = Class.extend({
 		
 	// add a new track to the chart
 	addTrack: function() {
-		var track_new = new track(this.ctx);
-		track_new.chart = this;
-		this.tracks.push(track_new);
-		return track_new;
+		var track = new Track(this.ctx);
+		track.chart = this;
+		this.tracks.push(track);
+		return track;
 	},
 	
 	// loads genbank file
@@ -153,31 +158,12 @@ var Scribl = Class.extend({
 		return (this.addFeature( new BlockArrow("protein", position, length, strand, opts) ));
 	},
 	
-	// add's features using the least number of tracks without overlapping features
+	// add's features using the least number of lanes without overlapping features
 	addFeature: function( feature ) {
 		
-		var curr_track;
-		var new_track = true;
-
-		// try to add feature at lower tracks then move up
-		for (var j=0; j < this.tracks.length; j++) {
-			var prev_feature = this.tracks[j].features[ this.tracks[j].features.length - 1 ];
-
-			// check if new track is needed
-			if ( prev_feature != undefined && (feature.position - 3/this.pixelsPerNt()) > (prev_feature.position + prev_feature.length) ) {
-				new_track = false;
-				curr_track = this.tracks[j];
-				break;
-			}
-		}
-
-		// add new track if needed
-		if (new_track)
-			curr_track = this.addTrack();
-			
-		// add feature
-		curr_track.addFeature( feature );	
-		return feature;
+        var track = this.tracks[0] || this.addTrack();
+        track.addFeature(feature);
+        return feature;
 	},
 	
 	// return region or slice of chart as new chart
@@ -186,24 +172,30 @@ var Scribl = Class.extend({
 		var sliced_features = [];
 		
 		// iterate through tracks
-		for ( var i=0; i < this.tracks.length; i++ ) {
-			var s_features = this.tracks[i].features;
-			for (var k=0; k < s_features.length; k++ ) {
-				var end = s_features[k].position + s_features[k].length
-				var start = s_features[k].position
+		var numTracks = this.tracks.length;
+		
+		for ( var j=0; j < numTracks; j++) {
+		    var track = this.tracks[j];
+		    var numLanes = track.lanes.length;
+    		for ( var i=0; i < numLanes; i++ ) {
+    			var s_features = track.lanes[i].features;
+    			for (var k=0; k < s_features.length; k++ ) {
+    				var end = s_features[k].position + s_features[k].length
+    				var start = s_features[k].position
 
-				// determine if feature is in slice/region
-				if ( start >= from && start <= to )
-					sliced_features.push( s_features[k] )
-				else if ( end > from && end < to )
-					sliced_features.push( s_features[k] )				
-				else if ( start < from && end > to )
-					sliced_features.push( s_features[k] )				
-				else if ( start > from && end < to)
-					sliced_features.push( s_features[k] )				
-			}				
+    				// determine if feature is in slice/region
+    				if ( start >= from && start <= to )
+    					sliced_features.push( s_features[k] )
+    				else if ( end > from && end < to )
+    					sliced_features.push( s_features[k] )				
+    				else if ( start < from && end > to )
+    					sliced_features.push( s_features[k] )				
+    				else if ( start > from && end < to)
+    					sliced_features.push( s_features[k] )				
+    			}				
 			
-		}
+    		}
+	    }
 		
 		var newChart = new Scribl(this.canvas, this.width);
 		newChart.loadFeatures(sliced_features);
@@ -375,16 +367,12 @@ var Scribl = Class.extend({
 
 		ctx.save();
 		
-		// keep track of absolute height
-		var y =  this.getTrackSize() + this.trackBuffer;
+		// shift down size of scale
+		if (!this.scale.off) ctx.translate(0, this.getScaleHeight() + this.laneBuffer);
 
 		// draw tracks
-		ctx.translate(0, this.getTrackSize() + this.trackBuffer);
 		for (var i=0; i<tracks.length; i++) {
-			tracks[i].y = y;
 			tracks[i].draw();
-			ctx.translate(0, tracks[i].getHeight() + this.trackBuffer);
-			y = y + tracks[i].getHeight() + this.trackBuffer;
 		}
 		
 		ctx.restore();	

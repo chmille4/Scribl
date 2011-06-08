@@ -15,7 +15,7 @@
 					chart = new Scribl(canvas, 500);
 					
 					// Change TrackSizes
-					chart.trackSizes = 15;
+					chart.laneSizes = 15;
 
 					// Create Track 1
 					track1 = chart.addTrack();	
@@ -27,19 +27,21 @@
 					gene4 = track1.addGene( 6200, 1500, '+');
 			
 					// Create Track 2
-					track2 = chart.addTrack();
+					track2 = chart.addTrack();					
 				
 					// Add Genes to Track 2
 					gene5 = track2.addGene( 100, 1000, '-');		
 					gene6 = track2.addGene( 3500, 1500, '-');				
+					
+					// create Lane1 of Track2
 
-					// Create Track 3
-					track3 = chart.addTrack();
+					// Create Track with 1 lane
+					track3Lane1 = chart.addTrack().addLane();
 
-					// Add Genes to Track 3
-					gene7 = track3.addGene( 2230, 1000, '+');
-					gene8 = track3.addGene( 4500, 1500, '+');				
-					gene9 = track3.addGene( 7230, 1000, '-');
+					// Add Genes to single lane
+					gene7 = track3Lane1.addGene( 2230, 1000, '+');
+					gene8 = track3Lane1.addGene( 3300, 1500, '+');				
+					gene9 = track3Lane1.addGene( 4800, 1000, '-');
 					
 					// Draw Chart
 					chart.draw();
@@ -52,7 +54,7 @@
 	
 	<body onload="draw('canvas')">  
 		<div id="description"><h2>Custom Tracks</h2>
-			finer grain control of gene placement is possible by adding genes at the track level opposed to the gene level
+			finer grain control of features placement is possible by adding genes at the track or lane level
 		</div><br/>
 		<div id="container">
 			<canvas id="canvas" width="547" height="400"></canvas>  

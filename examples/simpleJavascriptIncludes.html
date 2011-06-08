@@ -6,6 +6,7 @@
 		<script src="../src/Scribl.class.js" ></script>
 		<script src="../src/Scribl.js" ></script>
 		<script src="../src/Scribl.track.js" ></script>
+		<script src="../src/Scribl.lane.js" ></script>
 		<script src="../src/Scribl.events.js" ></script>
 		<script src="../src/Scribl.utils.js" ></script>
 		<script src="../src/Scribl.svg.js" ></script>
@@ -25,48 +26,39 @@
 				  	var canvas = document.getElementById(canvasName);  	
 					
 					// Create Chart
-					chart1 = new Scribl(canvas, 500);
-					chart1.glyph.text.align = "left";
+					chart1 = new Scribl(canvas, 600);
+               // style chart
+               chart1.glyph.text.color = 'white';
+               chart1.laneSizes = 35;
+               chart1.scale.min = 0;
+               chart1.scale.max = 1000;
 
-					// Add Genes      position, length, orientation
-					gene1 = chart1.addGene(900,  750 , '-');
-					gene2 = chart1.addGene(3500, 2500, '+') ;
-                                        gene2.onClick = "http://www.cnn.com";
-					gene3 = chart1.addGene(8100, 1000, '-') ;					
+               // Add Features      position, length, orientation
+               // var gene1 = chart1.addFeature(
+               //    // parent features
+               //    new Complex('gene', 0, 6000, '+', [
+               //       // sub features
+               //       new Rect('exon', 0, 400, {'name' : 'PAZ', 'color' : 'green', 'onMouseover' : 'PAZ: 400nt'}),
+               //       new Rect('exon', 450, 400, {'name' : 'Piwi', 'color' : 'purple', 'roundness' : 20}),
+               //       new Rect('exon', 900, 400, {'name' : 'Piwi', 'color' : 'purple', 'roundness' : 20}),
+               //       new Arrow('unknown', 1800, '+', {'color':'red'}),
+               //       new Rect('exon', 2100, 380, {'name' : 'PAZ', 'color' : 'green'}),
+               //       new BlockArrow('exon', 2600, 700, '+', {'name' : 'GAGE', 'color' : 'rgb(149, 55,53)'}),
+               //       new BlockArrow('exon', 3500, 700, '+', {'color' : 'none', "borderColor" : 'black', 'roundness' : 19}),
+               //       new BlockArrow('exon', 5300, 700, '+', {'name' : 'GAGE', 'color' : 'rgb(149, 55,53)'}),
+               //       
+               //    ])
+               // );
 
-					gene4 = chart1.addFeature( new Spliced('splice', 1500, 8000, '+', 
-                                                                              [[1500,2500], [3500, 2000], [8500, 1000]]));
-					gene4.setColorGradient("rgba(100, 100, 255, 0.5)", "rgba(100, 100, 200, 1.0)");
+               // Draw Chart
+               chart1.draw();
 
-					gene5 = chart1.addFeature( new BlockArrow('mytype', 0, 400, '+'));
-					gene5.name = "5"
-					gene5.font.align = "left";
-					gene5 = chart1.addGene(0, 400, '+');
 
-					// add name
-					gene3.name = "Gen"; 
-					gene3.font.color = "yellow";
-					gene3.onMouseover = "lll";
-					chart1.mytype.text.align = "right";
-
-					gene4.onClick = function(obj){ alert('you clicked me'); };
-					gene4.name = "click me";
-				
-					gene4.font.align = "left";
-					gene4.exons[1].name = "test";
-					gene4.exons[1].font.align = "end";
-					gene4.exons[1].font.color = "pink";
-					gene4.exons[2].name = "test2";
-					
-					gene4.roundness = 8;
-					// Draw Chart
-					chart1.draw();
-					
-					// Create image of chart1
-					var img = chart1.canvas.toDataURL("image/png");
-					// Add link to download image
-					document.getElementById('export').href = img;
-			}
+               // Create image of chart1
+               var img = chart1.canvas.toDataURL("image/png");
+               // Add link to download image
+               document.getElementById('export').href = img;
+            }
 				
 		</script>
 
@@ -78,7 +70,7 @@
 			get up and running with minimal code
 		</div><br/>
 		<div id="container">
-			<canvas id="canvas" width="547" height="330"></canvas>  
+			<canvas id="canvas" width="650" height="330"></canvas>  
 			</br><a id="export">Export as PNG (right click Save As)</a>
 		</div>
 		

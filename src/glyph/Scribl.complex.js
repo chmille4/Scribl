@@ -47,15 +47,15 @@
 			x = y = 0;
 			
 			// draw connector line
-			complex.line.track = this.track;
+			complex.line.lane = this.lane;
 			complex.line.draw();
 						
 			// draw subFeatures
 			var numsubFeatures = complex.subFeatures.length
 			for (var i=0; i< numsubFeatures; i++) {				
-				// set subFeature to same track and draw
+				// set subFeature to same lane and draw
 				complex.subFeatures[i].parent = complex;
-				complex.subFeatures[i].track = complex.track;
+				complex.subFeatures[i].lane = complex.lane;
 				complex.subFeatures[i].draw();
 			}
 			

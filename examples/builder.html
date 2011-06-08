@@ -24,7 +24,7 @@
 		<script>
 	  		$(document).ready(function() {
 	    		$("#shapeSlider").slider( { min: 1, max: 20, value: 6, slide: function(event, ui){ redraw() } });
-	    		$("#trackSlider").slider( { min: 10, max: 200, value: 50, slide: function(event, ui){ redraw() } });
+	    		$("#laneSlider").slider( { min: 10, max: 200, value: 50, slide: function(event, ui){ redraw() } });
 				$("#rSlider1").slider( { min: 0, max: 260, value: 0, slide: function(event, ui){ redraw() } });
 				$("#bSlider1").slider( { min: 0, max: 260, value: 0, slide: function(event, ui){ redraw() } });	
 				$("#gSlider1").slider( { min: 0, max: 260, value: 0, slide: function(event, ui){ redraw() } });	
@@ -82,7 +82,7 @@
 			function redraw() {
 				// changeable options
 				roundness = $("#shapeSlider").slider( "option", "value" );
-				trackSizes = $("#trackSlider").slider( "option", "value" );
+				laneSizes = $("#laneSlider").slider( "option", "value" );
 				r1 = $("#rSlider1").slider( "option", "value" );
 				g1 = $("#gSlider1").slider( "option", "value" );
 				b1 = $("#bSlider1").slider( "option", "value" );
@@ -90,11 +90,11 @@
 				g2 = $("#gSlider2").slider( "option", "value" );
 				b2 = $("#bSlider2").slider( "option", "value" );
 				canvas = document.getElementById('canvas');
-				canvas.height = chart1.chartHeight() + 20;
+				canvas.height = chart1.getHeight() + 20;
 				
 				// set new values
 				chart1.glyph.roundness = roundness;
-				chart1.trackSizes = parseInt(trackSizes);
+				chart1.laneSizes = parseInt(laneSizes);
 				
 				// assemble color
 				top_color = "rgb(" + r1 + ", " + g1 + ", " + b1 + ")";
@@ -126,8 +126,8 @@
 					<div id="shapeSlider" class="slider"></div>
 					<!-- <input id="shapeSlider" type="range" min="0" max="20" value="6" onchange="redraw()" /> -->
 					<br/><span>Track Size</span><br/>
-					<div id="trackSlider" class ="slider"></div>
-					<!-- <input id="trackSlider" type="range" min="10" max="200" value="70" onchange="redraw()" /> -->
+					<div id="laneSlider" class ="slider"></div>
+					<!-- <input id="laneSlider" type="range" min="10" max="200" value="70" onchange="redraw()" /> -->
 				</div>
 				
 

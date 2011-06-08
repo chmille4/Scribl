@@ -1,0 +1,126 @@
+<!DOCTYPE HTML> 
+<html lang="en">
+	<head>
+		<!--<script src="../Scribl.min.js" ></script>-->
+		<script src="../src/Scribl.class.js" ></script>
+		<script src="../src/Scribl.js" ></script>
+		<script src="../src/Scribl.track.js" ></script>
+		<script src="../src/Scribl.lane.js" ></script>
+		<script src="../src/Scribl.events.js" ></script>
+		<script src="../src/Scribl.utils.js" ></script>
+		<script src="../src/Scribl.svg.js" ></script>
+		<script src="../src/Scribl.glyph.js" ></script>
+		<script src="../src/glyph/Scribl.blockarrow.js" ></script>
+		<script src="../src/glyph/Scribl.arrow.js" ></script>
+		<script src="../src/glyph/Scribl.rect.js" ></script>
+		<script src="../src/glyph/Scribl.line.js" ></script>
+		<script src="../src/glyph/Scribl.complex.js" ></script>		
+		
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+		<script src="../lib/jsdas.0.1.6.min.js" ></script>
+		<link rel="stylesheet" type="text/css" href="demos.css" />
+		<link rel="stylesheet" type="text/css" href="dasViewer.css" />
+		
+		<script type="text/javascript">
+		   var sources = [];
+		   var canvasWidth = 850;
+		   var regionStr = "1,100000";
+		   init();
+      	$(function() {
+      		$("#sourcePanel input").click( function(){
+      		   if( $(this).is(':checked') ) {
+      		      // get canval list
+      		      var canvasList = document.getElementById("canvasList");
+      		      var newCanvas = document.createElement("canvas");
+      		      newCanvas.width = canvasWidth + 30;
+      		      newCanvas.height = '20px';
+      		      newCanvas.className = "canvas";
+      		      newCanvas.id = this.nextSibling.data;
+      		      canvasList.appendChild(newCanvas);      		      
+      		      var chart = new Scribl(newCanvas, canvasWidth);				
+      		      chart.scale.off = "true";
+      				chart.laneSizes = 13;
+      				var region = regionStr.split(',');
+      				chart.scale.min = region[0];
+      				chart.scale.max = region[1];
+      				var url = $(this).val() + regionStr + ';type=refGene';
+      				JSDAS.features(url, function(response) { dasResponse(response, chart.addTrack().addLane(), chart) });
+
+      		   } else {
+      		      var canvas = document.getElementById(this.nextSibling.data);
+      		      canvas.style.display = 'none';
+      		   }
+
+            });
+      	});
+      	
+      	function init() {
+      	   document.getElementById("canvasList");
+      	  // var scale = document.createElement("canvas");
+      	//   scale.id = 'scale';
+      	 //  scale.className = 'canvas';
+      	//   $('#canvasList').prepend(scale);
+      	   var chart = new Scribl(document.getElementById('scale'), canvasWidth);
+//      	   var region = regionStr.split(',');
+				chart.scale.min = 0;//region[0];
+				chart.scale.max = 100000;//region[1];
+				chart.draw();
+      	}
+
+      </script>
+		
+		<script> 
+		   function dasResponse(response, track, chart) {
+				var features = response.GFF.SEGMENT[0].FEATURE;
+
+				for (var i=0; i < features.length; i++) {
+					var f = features[i];
+					var start = parseInt(f.START.textContent);
+					var length =  parseInt(f.END.textContent) - start;
+					if (f.ORIENTATION) {
+						orientation =  f.ORIENTATION.textContent;
+						var glyph = track.addGene(start, length, orientation);
+					} else
+						var glyph = track.addFeature( new Rect( "rect", start, length) );
+
+					if (f.TYPE.textContent) glyph.name = f.TYPE.textContent;
+					if(f.LINK && f.LINK[0] && f.LINK[0].href) { 
+						//glyph.onMouseover = f.TYPE.textContent + "\n" + f.LINK[0].textContent || f.LINK[0].href;
+						//glyph.onClick = f.LINK[0].href.replace(":8080", "");
+					}
+				}
+				chart.ctx.clearRect(0,0,chart.canvas.width, chart.canvas.height);
+				chart.canvas.height = chart.getHeight() - 30;
+				chart.draw();
+			}
+				
+		</script>
+
+	</head>  
+	
+	<body>
+      <div id="header">
+        <div>Scribl Das Viewer</div>
+      </div>
+	   <div id="sourcePanel">
+	      <br/>
+	      <a href="#" class="myButton">Add DAS</a>
+	      <ul>
+	       <li><input class="c" value="http://useast.ensembl.org/das/Homo_sapiens.NCBI36.transcript/features?segment=1:" type="checkbox">Homo sapiens NCBI36</input></li>
+	       <li><input value="http://genome.ucsc.edu/cgi-bin/das/hg16/features?segment=1:" type="checkbox">hg16</input></li>
+	      </ul>
+	   </div>
+      
+      <div id="contentPanel" style ="width:85%; float:right; text-align:center">                  
+         <div id="canvasList">
+            <canvas id="scale" width="100%" height="20px" class="canvas"></canvas>
+         </div>
+
+		</div>		
+
+			
+		<div id="footer"></div>
+      
+	</body>
+	
+</html>

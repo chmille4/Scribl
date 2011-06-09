@@ -6,17 +6,22 @@ html body {
 
 body {
 	background-color: white;
+	font: 13px arial;
 }
 
+.ui-icon {
+    background-image: url(ui-icons_d8e7f3_256x240.png);
+}
 
 #header {
     background: -moz-linear-gradient(top, #55aaee, #003366);
     background: -webkit-gradient(linear, left top, left bottom, from(rgb(167, 167, 167)), to(rgb(100,100,100)));
+    background: -webkit-gradient(linear, left top, left bottom, from(rgb(100, 100, 100)), to(rgb(30,30,30)));
     height:40px;
     font: bold 30px arial;
     text-align: center;
-    color: rgb(80, 80, 80);
-    text-shadow: 1px 1px 0px rgb(180, 180, 180);
+    text-shadow: 1px 1px 1px white;
+    color: rgb(200, 200, 200);
     box-shadow: 3px 3px 7px #777;
 }
 
@@ -24,13 +29,30 @@ body {
     color: rgb(80, 80, 80);
 }
 
-#sourcePanel {
-    width: 15%;
-    position:absolute;
-    height: 90%;
+#wrapper {
+    height: 580px;
+}
+
+#dasTitle {
+    font: bold 20px arial;
+    margin-top: 2em;
+    color: rgb(60, 60, 60);
+    text-shadow: 1px 1px 1px white;
+}
+
+.sidePanel {
+    width: 14%;
+    height:100%;
     float:left;
     border-right: 1px solid black;
     text-align: center;
+}
+
+#namePanel {
+    display: none;
+}
+#sourcePanel {    
+    background-color: rgb(230, 230, 230);
 }
 
 #sourcePanel ul {
@@ -40,77 +62,154 @@ body {
     padding-left: 2px;
 }
 
+#sourcePanel li {
+
+}
+
+#sourcePanel li:nth-child(even) {
+    background-color: rgb(180, 180, 180);
+}
+
+
 #contentPanel {
-    /*background-color: rgb(116, 220, 63);*/
+    width:85%;
+    float:right;
+    text-align:center;
+}
+
+#scaleDiv {
+    margin-left: 12px;
 }
 
 #canvasList {
     background-color: white;
     border-bottom: 1px solid rgb(150, 150, 150);
-    border-left: 0px;
-    width: 100%;
+    width: 98%;
+    height: 430px;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 60px;
-    height: 500px;
+    margin-top: 7px;
     -moz-border-radius:15px;
     border-radius:15px;
-    box-shadow: 0px 3px 3px rgb(220, 220, 220);
+    overflow: auto;
+}
+
+.canvas-label {
+    font: bold 12px arial;
 }
 
 .canvas {
-    margin-bottom: -1px;
-    margin-top: -1px;
-    margin-left: 2px;
-    padding: 0px;
-    border-radius:3px;
-    width: 100%;
+    margin-bottom: 0px;
+    margin-top: 0px;    
+    padding: 0px;    
 }
 
-.canvas:nth-child(odd) {
+.canvas-div {
+    margin-bottom: 1px;
+    border-radius:4px;
+    position:relative;
+}
+
+.canvas-div:nth-child(odd) {
     background-color: rgb(240, 248, 255);
 }
 
-.canvas:nth-child(even) {
+.canvas-div:nth-child(even) {
     background-color: white;
 }
 
-.canvas:hover {
-    background-color: rgb(196, 224, 255);
+.option-hover .ui-icon, .ui-state-focus .ui-icon {
+    background-image: url(ui-icons_ffffff_256x240.png);
+}
+
+.option-control {
+    position: absolute;
+    top: 0px;
+    left: 5px;
+    width:auto;
+    display:none;
+    border-radius: 2px;
+    background-color: rgb(138, 177, 230);
+}
+
+.option-control:hover {
+    border: 1px solid rgb(100, 100, 100);
+}
+
+ul.subnav {
+    list-style: none;
+    font: 10px arial;
+    margin: 0px;
+    margin-top: 2px;
+    padding: 0px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(174, 208, 255);
+    background-color: rgb(240, 240, 240);
+}
+
+ul.subnav a {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+}
+
+.slider {
+    margin-top: 60px;
+    width: 97%; 
+    height: 6px; 
+    font-size: 8px; 
+    display: inline-block;
 }
 
 
 .myButton {
-	-moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
-	-webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
-	box-shadow:inset 0px 1px 0px 0px #ffffff;
-	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ededed), color-stop(1, #dfdfdf) );
-	background:-moz-linear-gradient( center top, #ededed 5%, #dfdfdf 100% );
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#dfdfdf');
-	background-color:#ededed;
-	-moz-border-radius:6px;
-	-webkit-border-radius:6px;
-	border-radius:6px;
-	border:1px solid #dcdcdc;
-	display:inline-block;
-	color:#777777;
-	font-family:arial;
-	font-size:15px;
-	font-weight:bold;
-	padding:6px 24px;
-	text-decoration:none;
-	text-shadow:1px 1px 0px #ffffff;
+    -moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
+    -webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
+    box-shadow:inset 0px 1px 0px 0px #ffffff;
+    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ededed), color-stop(1, #dfdfdf) );
+    background:-moz-linear-gradient( center top, #ededed 5%, #dfdfdf 100% );
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#dfdfdf');
+    background-color:#ededed;
+    -moz-border-radius:6px;
+    -webkit-border-radius:6px;
+    border-radius:6px;
+    border:1px solid #dcdcdc;
+    display:inline-block;
+    color:#777777;
+    font-family:arial;
+    font-size:15px;
+    font-weight:bold;
+    padding:6px 24px;
+    text-decoration:none;
+    text-shadow:1px 1px 0px #ffffff;
 }.myButton:hover {
-	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #dfdfdf), color-stop(1, #ededed) );
-	background:-moz-linear-gradient( center top, #dfdfdf 5%, #ededed 100% );
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#dfdfdf', endColorstr='#ededed');
-	background-color:#dfdfdf;
+    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #dfdfdf), color-stop(1, #ededed) );
+    background:-moz-linear-gradient( center top, #dfdfdf 5%, #ededed 100% );
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#dfdfdf', endColorstr='#ededed');
+    background-color:#dfdfdf;
 }.myButton:active {
-	position:relative;
-	top:1px;
+    position:relative;
+    top:1px;
 }
 
+#sourcePanelToolbar {
+    height: 18px;
+    position: absolute;
+    width: 14%;
+    background-color: rgb(120, 120, 120);
+    bottom: 80px;
+    padding:0px;
+    color: #d8e7f3;
+    text-align: center;
+    text-decoration: none;
+}
 
+#sourcePanelToolbar a {
+    text-decoration: none;
+}
 #footer {
     height: 0px;
     position: absolute;
@@ -126,9 +225,9 @@ body {
     -moz-box-shadow: inset 0 1px 10px rgba(0, 0, 0, 0.6);
     box-shadow: inset 0 1px 10px rgba(0, 0, 0, 0.6);
     overflow: hidden;
+    text-align: center;
 }
 
-/* Columns */
 
 #footer .col {
   float: left;
@@ -147,21 +246,18 @@ body {
   width: 285px;
 }
 
-/* Logo */
 
 #footer .col:nth-child(1) > a {
   display: inline-block;
   margin-bottom: 24px;
 }
 
-/* Headers */
 
 #footer h1 {
   margin-bottom: 1em;
   font-weight: bold;
 }
 
-/* Nav */
 
 #footer ul {
   overflow: hidden;

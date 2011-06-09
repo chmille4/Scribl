@@ -17,62 +17,212 @@
 		<script src="../src/glyph/Scribl.complex.js" ></script>		
 		
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+		<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+      <script src="jquery-ui.chase.min.js"></script>
 		<script src="../lib/jsdas.0.1.6.min.js" ></script>
-		<link rel="stylesheet" type="text/css" href="demos.css" />
-		<link rel="stylesheet" type="text/css" href="dasViewer.css" />
+
+		 <link rel="stylesheet" type="text/css" href="dasViewer.css" />
 		
 		<script type="text/javascript">
 		   var sources = [];
-		   var canvasWidth = 850;
-		   var regionStr = "1,100000";
-		   init();
-      	$(function() {
-      		$("#sourcePanel input").click( function(){
-      		   if( $(this).is(':checked') ) {
-      		      // get canval list
-      		      var canvasList = document.getElementById("canvasList");
-      		      var newCanvas = document.createElement("canvas");
-      		      newCanvas.width = canvasWidth + 30;
-      		      newCanvas.height = '20px';
-      		      newCanvas.className = "canvas";
-      		      newCanvas.id = this.nextSibling.data;
-      		      canvasList.appendChild(newCanvas);      		      
-      		      var chart = new Scribl(newCanvas, canvasWidth);				
-      		      chart.scale.off = "true";
-      				chart.laneSizes = 13;
-      				var region = regionStr.split(',');
-      				chart.scale.min = region[0];
-      				chart.scale.max = region[1];
-      				var url = $(this).val() + regionStr + ';type=refGene';
-      				JSDAS.features(url, function(response) { dasResponse(response, chart.addTrack().addLane(), chart) });
+//		   var regionStr = "1,100000";
+		   var scriblMin = 1;
+		   var scriblMax = 150000;
+		   var viewerMin = 20000;
+		   var viewerMax = 80000;
+		   var scale;
+		   var dasPanelShowing = true;
+		   var canvi = new Array();
+		   
+		   $(document).ready(function() {
+		      
+		      
+		      initScale();	
+		      $( "#slider-range" ).slider({
+               range: true,
+               min: scriblMin,
+               max: scriblMax,
+               values: [ viewerMin, viewerMax ],
+               slide: function( event, ui ) {
+                  redraw(ui.values[ 0 ], ui.values[ 1 ]);
+               }
+            });	
+            
+		   });
+		   
 
-      		   } else {
-      		      var canvas = document.getElementById(this.nextSibling.data);
-      		      canvas.style.display = 'none';
-      		   }
+      	$(function() {$("#sourcePanel input").click( function() {handleDasSourceCheckbox(this)} ) }); 
+      		   
+   		function handleDasSourceCheckbox(checkbox) {
+   		   //var checkbox = this;
+   		   if( $(checkbox).is(':checked') ) {
+   		      // create elements
+   		      var canvasList = document.getElementById("canvasList");
+   		      var parentDiv = document.createElement('div');
+   		      parentDiv.className = "canvas-div";
+   		      var optionDiv = document.createElement('div');
+   		      optionDiv.className = "option-control";
+   		      var newCanvas = document.createElement("canvas");
+   		      newCanvas.id = getCheckBoxLabel(checkbox);
+   		      var label = document.createElement("span");
+   		      
+   		      
+   		      // associate elements
+   		      canvasList.appendChild(parentDiv);
+   		      parentDiv.appendChild(label);
+   		      parentDiv.appendChild(newCanvas);
+   		      parentDiv.appendChild(optionDiv);
+   		      
+   		      // create label
+   		      label.innerHTML = getCheckBoxLabel(checkbox);
+   		      label.className = "canvas-label";
+   		      
+   		      // handle option menu
+   		      parentDiv.onmouseover = function() {toggleOptionMenu(true, optionDiv)};
+   		      parentDiv.onmouseout = function() {toggleOptionMenu(false, optionDiv)};
+   		      parentDiv.id = getCheckBoxLabel(checkbox) + "-parentdiv";
+   		      
+   		      
+   		      // option menu buttons
+   		      // gear button
+   		      var gear = document.createElement('span');
+   		      gear.style.float = 'left';
+   		      gear.innerHTML = "<a style='float:left' href='#'><span class='ui-icon ui-icon-gear'></span></a><span class='ui-icon ui-icon-triangle-1-s'></span>";
+   		      gear.onmouseover = function() {$(gear).addClass('option-hover');};
+   		      gear.onmouseout = function() {$(gear).removeClass('option-hover');}   		      
+   		      optionDiv.appendChild(gear);
+   		      
+   		      
+   		      // close button
+   		      var close = document.createElement('span');
+   		      close.style.float = 'right';
+   		      close.innerHTML = "<a href='#'><span style='float:right; border-left: 1px solid white' class='ui-icon ui-icon-close'></span></a>";
+   		      close.onmouseover = function() {$(close).addClass('option-hover');};
+   		      close.onmouseout = function() {$(close).removeClass('option-hover');}
+   		      close.onclick = function() {removeCanvas(getCheckBoxLabel(checkbox));}
+   		      optionDiv.appendChild(close);
+   		      optionDiv.appendChild(document.createElement('br'));
+   		      
+   		      // menu panel
+   		      var menuPanel = document.createElement('ul');
+   		      menuPanel.className = 'subnav';
+   		      menuPanel.style.display = 'none';
+   		      var li = document.createElement('li');
+   		      li.onclick = function() { toggleExpand(newCanvas.id, li);}
+   		      li.innerHTML = "<a href='#'>Expand</a>";
+   		      menuPanel.appendChild(li);
+   		      optionDiv.appendChild(menuPanel);
+   		      
+   		      // handle additional events on menu
+   		      gear.onclick = function() { handleOptionMenuClick(menuPanel); };   		      
+   		      $(optionDiv).mouseleave(function() {$(menuPanel).slideUp('fast'); })
+   		      
+   		      // set canvas attributes
+   		      canvasWidth = $(window).width() * .84;
+   		      newCanvas.width = canvasWidth -30;
+   		      newCanvas.height = '20px';
+   		      newCanvas.className = "canvas";   		      
+   		      
+ 		         // create chart
+   		      var chart = new Scribl(newCanvas, canvasWidth-40);				
+   		      chart.scale.off = true;
+      			chart.scale.pretty = false;
+      			chart.scale.offset = false;
+   				chart.laneSizes = 13;
+   				chart.scale.min = scriblMin;
+   				chart.scale.max = scriblMax;
+   				
+   				// get DAS data
+   				var url = $(checkbox).val() + scriblMin + "," + scriblMax + ';type=refGene';
+   				JSDAS.features(url, function(response) { dasResponse(response, chart.addTrack().addLane(), chart, newCanvas.id) });
 
-            });
-      	});
+   		   } else {
+   		      removeCanvas(getCheckBoxLabel(checkbox));
+   		   }
+
+         }
       	
-      	function init() {
-      	   document.getElementById("canvasList");
-      	  // var scale = document.createElement("canvas");
-      	//   scale.id = 'scale';
-      	 //  scale.className = 'canvas';
-      	//   $('#canvasList').prepend(scale);
-      	   var chart = new Scribl(document.getElementById('scale'), canvasWidth);
-//      	   var region = regionStr.split(',');
-				chart.scale.min = 0;//region[0];
-				chart.scale.max = 100000;//region[1];
-				chart.draw();
+      	function getCheckBoxLabel(checkbox){
+      	   return ($(checkbox).next().text());
       	}
+      	
+      	function removeCanvas(canvasId){
+      	   var canvas = document.getElementById(canvasId);
+      	   document.getElementById(canvas.id + "-input").checked = false;
+      	   var toDel = document.getElementById(canvas.id + "-parentdiv");
+      	   $(toDel).remove();
+      	}
+      	
+      	function initScale() {
+            var canvas = document.createElement("canvas");
+            canvas.id = 'scale';
+            canvas.className = 'canvas';
+            canvasWidth = $(window).width() * .84;
+            canvas.height = 40;
+            canvas.width = canvasWidth;
+            $('#scaleDiv').prepend(canvas);
 
-      </script>
-		
-		<script> 
-		   function dasResponse(response, track, chart) {
+      	   scale = new Scribl(canvas, canvasWidth - 40);
+      	   scale.scale.font.size = 14;
+      	   scale.scale.auto = false;
+				scale.scale.min = viewerMin;
+				scale.scale.max = viewerMax;
+				scale.draw();
+      	}
+      	
+      	function handleOptionMenuClick(menu) {
+            $(menu).slideDown('fast').show(); //Drop down the subnav on click
+            // 
+            $(menu).mouseleave( function() {
+               $(menu).slideUp('slow'); //When the mouse hovers out of the subnav, move it back up
+            });
+            
+      	}
+      	
+      	function toggleOptionMenu(over, obj) {
+      	
+         	if (over) { 
+         	   obj.style.display = "inline";
+         	}
+         	else {
+               obj.style.display = "none";
+            }
+         }
+         
+         function toggleDasSources() {
+            if (dasPanelShowing) {
+               dasPanelShowing = false;
+               document.getElementById('sourcePanel').style.display = "none";
+               document.getElementById('namePanel').style.display = "inline";
+            } else {
+               dasPanelShowing = true;
+               document.getElementById('sourcePanel').style.display = "inline";
+               document.getElementById('namePanel').style.display = "none";
+            }
+         }
+         
+         function addDas() {
+            var li = document.createElement('li');
+            document.getElementById('source-list').appendChild(li);
+            var checkbox = document.createElement('input')
+            li.appendChild(checkbox);
+            var label = document.createElement('label');            
+            li.appendChild(label);
+            checkbox.type = "checkbox";
+            checkbox.value = $('#dassource').val() + "/features?segment=1:";
+            checkbox.id = $('#dasname').val() + '-input';
+            label.for = checkbox.id;
+            $(checkbox).next().text($('#dasname').val());
+            $(checkbox).click( function() {handleDasSourceCheckbox(checkbox)} );
+            toggleDasSources();
+         }
+   
+		   function dasResponse(response, track, chart, sourceid) {
 				var features = response.GFF.SEGMENT[0].FEATURE;
-
+            if (!features) {
+               // TODO add an error fetching message
+               return; 
+            }
 				for (var i=0; i < features.length; i++) {
 					var f = features[i];
 					var start = parseInt(f.START.textContent);
@@ -91,35 +241,117 @@
 				}
 				chart.ctx.clearRect(0,0,chart.canvas.width, chart.canvas.height);
 				chart.canvas.height = chart.getHeight() - 30;
-				chart.draw();
+				canvi[sourceid] = chart;
+				draw(chart, $( "#slider-range" ).slider( "values", 0 ), $( "#slider-range" ).slider( "values", 1 ));
+				//chart.draw();
 			}
-				
+			
+			function toggleExpand(canvasId, li) {
+			      var chart;   			   
+   			   for (i in canvi) {
+   			      if(canvi[i].canvas.id == canvasId) { 
+   			         chart = canvi[i];			         
+   			         break;
+   			      }
+   			   }
+			   // expand chart
+			   if (li.children[0].innerHTML == 'Expand') {
+   			   li.children[0].innerHTML = 'Collapse'
+   			   var features = chart.tracks[0].lanes[0].features;
+   			   chart.tracks = [];
+   			   chart.loadFeatures(features);
+			   } else { // collapse chart 
+			      li.children[0].innerHTML = 'Expand'
+			      var features = [];
+			      var numLanes = chart.tracks[0].lanes.length;
+			      for(var k=0; k<numLanes; k++){
+			         features = features.concat(chart.tracks[0].lanes[k].features)
+			      }
+			      chart.tracks = [];
+			      chart.addTrack().addLane().loadFeatures(features);
+			   }
+			   			   
+			   chart.ctx.clearRect(0, 0, chart.canvas.width, chart.canvas.height);
+			   chart.canvas.height = chart.getHeight() - 30;
+			   draw(chart, viewerMin, viewerMax);
+			}
+			
+         function draw(chart, newMin, newMax) {            
+            newChart = chart.slice(newMin, newMax);
+            newChart.scale.off = true;
+            newChart.scale.pretty = false;
+            newChart.scale.offset = false;
+            newChart.laneSizes = chart.laneSizes;
+            newChart.ctx.clearRect(0, 0, newChart.canvas.width, newChart.canvas.height);
+            newChart.scale.min = newMin;
+            newChart.scale.max = newMax;
+            newChart.draw();
+         }
+         
+         function redraw(min, max) {
+            // draw scale
+            scale.ctx.clearRect(0, 0, scale.canvas.width, scale.canvas.height);
+            // hack to fix scale bug
+            if (min == 1) min = 0;
+            scale.scale.min = min;
+            scale.scale.max = max;
+            scale.draw();
+            
+            // draw tracks
+            for (i in canvi) {
+               draw( canvi[i], min, max);
+            }
+         }
+		
 		</script>
 
 	</head>  
 	
-	<body>
+	<body>	   
       <div id="header">
         <div>Scribl Das Viewer</div>
       </div>
-	   <div id="sourcePanel">
-	      <br/>
-	      <a href="#" class="myButton">Add DAS</a>
-	      <ul>
-	       <li><input class="c" value="http://useast.ensembl.org/das/Homo_sapiens.NCBI36.transcript/features?segment=1:" type="checkbox">Homo sapiens NCBI36</input></li>
-	       <li><input value="http://genome.ucsc.edu/cgi-bin/das/hg16/features?segment=1:" type="checkbox">hg16</input></li>
-	      </ul>
-	   </div>
-      
-      <div id="contentPanel" style ="width:85%; float:right; text-align:center">                  
-         <div id="canvasList">
-            <canvas id="scale" width="100%" height="20px" class="canvas"></canvas>
+      <div id="wrapper" class="wrapper">
+         <div id="namePanel" class="sidePanel">
+            <br/>
+            <div>
+               DAS Source URL: <input id="dassource" type="text" name="dassource" /><br />
+               Source Name: <input id="dasname" type="text" name="dasname" />
+               <br/>
+               <a href="#" class="myButton" onClick="addDas()" alt="hi">Add</a>
+               <a href="#" class="myButton" onClick="toggleDasSources()" alt="hi">X</a>            
+            </div>
          </div>
+   	   <div id="sourcePanel" class="sidePanel">
+   	      <br/> 
+   	      <div id="dasTitle">DAS Sources</div>
+   	      <ul id="source-list">
+   	         <!-- id must be the same as text appended with input -->
+   	       <li><input id="Homo sapiens NCBI36-input" value="http://useast.ensembl.org/das/Homo_sapiens.NCBI36.transcript/features?segment=1:" type="checkbox"></input><label>Homo sapiens NCBI36-input</label></li>
+   	       <li><input id="hg16-input" value="http://genome.ucsc.edu/cgi-bin/das/hg16/features?segment=1:" type="checkbox"></input><label for="hg16-input">hg16</label></li>
+   	       <li><input id="hg18-input" value="http://genome.cse.ucsc.edu:80/cgi-bin/das/hg18/features?segment=1:" type="checkbox"></input><label for="hg18-input">hg18</label></li>
+             <li><input id ="ens_36_refseq-input" value="http://das.sanger.ac.uk/das/ens_36_refseq/features?segment=1:" type="checkbox"></input><label for="ens_36_refseq-input">ens_36_refseq</label></li>
+             <li><input id="MeDIP-chip Cervix-input" value="http://www.ebi.ac.uk/das-srv/genomicdas/das/batman_CX/features?segment=1:" type="checkbox"></input><label for="MeDIP-chip Cervix-input">MeDIP-chip Cervix-i</label></li>             
+   	      </ul>
+   	      
+            
+   	   </div>
+   	   
+      
+         <div id="contentPanel"> 
+            <div id="controls">
+               <div id="slider-range" class="slider"></div>
+            </div>         
+            <div id="scaleDiv"></div>        
+            <div id="canvasList">
 
-		</div>		
+            </div>
 
+   		</div>		
+      </div>
 			
-		<div id="footer"></div>
+		<div id="footer">Simple Das Viewer built on top of <a href="http://chmille4.github.com/Scribl/">Scibl</a></div> 
+		<a id="sourcePanelToolbar" href='#'><div  onClick="toggleDasSources();"><span style="margin-left: 15%; margin-bottom: -1.3em" class='ui-icon ui-icon-plus'></span> Add Source</div></a>
       
 	</body>
 	

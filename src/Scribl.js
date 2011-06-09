@@ -198,6 +198,7 @@ var Scribl = Class.extend({
 	    }
 		
 		var newChart = new Scribl(this.canvas, this.width);
+		newChart.laneSizes = this.laneSizes;
 		newChart.loadFeatures(sliced_features);
 		return newChart;
 	},
@@ -396,11 +397,15 @@ var Scribl = Class.extend({
 		this.ctx.font = this.scale.font.size + "px arial";
 		var numtimes = this.width/(this.ctx.measureText(this.getTickText(this.scale.max)).width + this.scale.font.buffer);
 
-		this.tick.major.size = Math.round( (this.scale.max - this.scale.min) / numtimes / this.tick.major.size + .4) * this.tick.major.size;
-		
-		digits = (this.tick.major.size + '').length;
-		places = Math.pow(10, digits);
-		first_digit = this.tick.major.size / places;
+        // figure out the base of the tick (e.g. 2120 => 2000)
+        var irregularTick = (this.scale.max - this.scale.min) / numtimes;
+        var baseNum =  Math.pow(10, parseInt(irregularTick).toString().length -1);
+        this.tick.major.size = Math.ceil(irregularTick / baseNum) * baseNum;		
+				
+		// round up to a 5* o 1* number (e.g 5000 or 10000)
+		var digits = (this.tick.major.size + '').length;
+		var places = Math.pow(10, digits);
+		var first_digit = this.tick.major.size / places;
 
 		if (first_digit > .1 && first_digit <= .5)
 			first_digit = .5;

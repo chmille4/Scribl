@@ -39,6 +39,12 @@ var Lane = Class.extend({
 		return feature;
 	},
 	
+	loadFeatures: function(features) {
+	  var featureNum = features.length;
+	  for(var i=0; i<featureNum; i++)
+        this.addFeature(features[i]);
+	},
+	
 	getHeight: function() {
 		if ( this.height != undefined )
 			return this.height;

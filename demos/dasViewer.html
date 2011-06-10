@@ -1,20 +1,20 @@
 <!DOCTYPE HTML> 
 <html lang="en">
 	<head>
-		<script src="https://raw.github.com/chmille4/Scribl/trackRefactor/Scribl.min.js" ></script>
-      <!-- <script src="../src/Scribl.class.js" ></script>
-      <script src="../src/Scribl.js" ></script>
-      <script src="../src/Scribl.track.js" ></script>
-      <script src="../src/Scribl.lane.js" ></script>
-      <script src="../src/Scribl.events.js" ></script>
-      <script src="../src/Scribl.utils.js" ></script>
-      <script src="../src/Scribl.svg.js" ></script>
-      <script src="../src/Scribl.glyph.js" ></script>
-      <script src="../src/glyph/Scribl.blockarrow.js" ></script>
-      <script src="../src/glyph/Scribl.arrow.js" ></script>
-      <script src="../src/glyph/Scribl.rect.js" ></script>
-      <script src="../src/glyph/Scribl.line.js" ></script>
-      <script src="../src/glyph/Scribl.complex.js" ></script> -->		
+	<!--       <script src="https://raw.github.com/chmille4/Scribl/trackRefactor/Scribl.min.js" ></script> -->
+      <script src="https://raw.github.com/chmille4/Scribl/trackRefactor/src/Scribl.class.js" ></script>
+      <script src="https://raw.github.com/chmille4/Scribl/trackRefactor/src/Scribl.js" ></script>
+      <script src="https://raw.github.com/chmille4/Scribl/trackRefactor/src/Scribl.track.js" ></script>
+      <script src="https://raw.github.com/chmille4/Scribl/trackRefactor/src/Scribl.lane.js" ></script>
+      <script src="https://raw.github.com/chmille4/Scribl/trackRefactor/src/Scribl.events.js" ></script>
+      <script src="https://raw.github.com/chmille4/Scribl/trackRefactor/src/Scribl.utils.js" ></script>
+      <script src="https://raw.github.com/chmille4/Scribl/trackRefactor/src/Scribl.svg.js" ></script>
+      <script src="https://raw.github.com/chmille4/Scribl/trackRefactor/src/Scribl.glyph.js" ></script>
+      <script src="https://raw.github.com/chmille4/Scribl/trackRefactor/src/glyph/Scribl.blockarrow.js" ></script>
+      <script src="https://raw.github.com/chmille4/Scribl/trackRefactor/src/glyph/Scribl.arrow.js" ></script>
+      <script src="https://raw.github.com/chmille4/Scribl/trackRefactor/src/glyph/Scribl.rect.js" ></script>
+      <script src="https://raw.github.com/chmille4/Scribl/trackRefactor/src/glyph/Scribl.line.js" ></script>
+      <script src="https://raw.github.com/chmille4/Scribl/trackRefactor/src/glyph/Scribl.complex.js" ></script>     
 		
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
 		<!-- <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/> -->
@@ -121,19 +121,18 @@
    		      $(optionDiv).mouseleave(function() {$(menuPanel).slideUp('fast'); })
    		      
    		      // set canvas attributes
-   		      canvasWidth = $(window).width() * .84;
-   		      newCanvas.width = canvasWidth -30;
+   		      newCanvas.width = getCanvasWidth() -30;
    		      newCanvas.height = '20px';
    		      newCanvas.className = "canvas";   		      
    		      
  		         // create chart
-   		      var chart = new Scribl(newCanvas, canvasWidth-40);				
-   		      chart.scale.off = true;
-      			chart.scale.pretty = false;
-      			chart.scale.offset = false;
-   				chart.laneSizes = 13;
-   				chart.scale.min = scriblMin;
-   				chart.scale.max = scriblMax;
+   		      var chart = new Scribl(newCanvas, getChartWidth());				
+  		         chart.scale.off = true;
+    			   //chart.scale.pretty = false;
+      			// chart.scale.offset = false;
+      			//                chart.laneSizes = 13;
+      			//                chart.scale.min = scriblMin;
+      			//                chart.scale.max = scriblMax;
    				
    				// get DAS data
    				var url = $(checkbox).val() + scriblMin + "," + scriblMax + ';type=refGene';
@@ -160,12 +159,11 @@
             var canvas = document.createElement("canvas");
             canvas.id = 'scale';
             canvas.className = 'canvas';
-            canvasWidth = $(window).width() * .84;
             canvas.height = 40;
-            canvas.width = canvasWidth;
+            canvas.width = getCanvasWidth();
             $('#scaleDiv').prepend(canvas);
 
-      	   scale = new Scribl(canvas, canvasWidth - 40);
+      	   scale = new Scribl(canvas, getChartWidth());
       	   scale.scale.font.size = 14;
       	   scale.scale.auto = false;
 				scale.scale.min = viewerMin;
@@ -274,7 +272,6 @@
 			      chart.addTrack().addLane().loadFeatures(features);
 			   }
 			   			   
-			   chart.ctx.clearRect(0, 0, chart.canvas.width, chart.canvas.height);
 			   chart.canvas.height = chart.getHeight() - 30;
 			   draw(chart, viewerMin, viewerMax);
 			}
@@ -284,7 +281,7 @@
             newChart.scale.off = true;
             newChart.scale.pretty = false;
             newChart.scale.offset = false;
-            newChart.laneSizes = chart.laneSizes;
+            newChart.laneSizes = 13;
             newChart.ctx.clearRect(0, 0, newChart.canvas.width, newChart.canvas.height);
             newChart.scale.min = newMin;
             newChart.scale.max = newMax;
@@ -292,6 +289,10 @@
          }
          
          function redraw(min, max) {
+            
+            if (max > scriblMax - 50000)
+               updateSources();
+            
             // draw scale
             scale.ctx.clearRect(0, 0, scale.canvas.width, scale.canvas.height);
             // hack to fix scale bug
@@ -305,6 +306,20 @@
                draw( canvi[i], min, max);
             }
          }
+         
+         function updateSources() {
+            var buffer = 50000;
+            scriblMax += buffer;
+            $( "#slider-range" ).slider('option', 'max', scriblMax);            
+            for (canvasId in canvi) {
+               var chart = new Scribl(canvi[canvasId].canvas, getChartWidth());
+               var url = document.getElementById(canvasId+'-input').value + scriblMin + "," + scriblMax + ';type=refGene';
+               JSDAS.features(url, function(response) { dasResponse(response, chart.addTrack().addLane(), chart, canvasId) });
+            }            
+         }
+         
+         function getCanvasWidth(){return($(window).width() * .84);}
+         function getChartWidth(){return ($(window).width() * .84 - 40); }
 		
 		</script>
 

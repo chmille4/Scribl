@@ -20,8 +20,10 @@ body {
     height:40px;
     font: bold 30px arial;
     text-align: center;
-    text-shadow: 1px 1px 1px white;
-    color: rgb(200, 200, 200);
+    text-shadow: 1px 1px 1px rgb(100, 100, 100);
+    color: #d8e7f3;
+/*    text-shadow: 1px 1px 1px rgb(120, 120, 120);
+    color: black; */
     box-shadow: 3px 3px 7px #777;
 }
 
@@ -163,8 +165,17 @@ ul.subnav a {
 .slider {    
     width: 97%; 
     height: 6px; 
-    font-size: 8px; 
+    font-size: 10px; 
     display: inline-block;
+    /*background: rgb(30, 30, 30);*/
+}
+
+.slider div {
+    background: #d8e7f3;
+}
+
+.slider div:hover {
+    background: rgb(138, 177, 230);
 }
 
 
@@ -208,11 +219,13 @@ ul.subnav a {
     color: #d8e7f3;
     text-align: center;
     text-decoration: none;
+    border-top: 1px solid rgb(105, 105, 105);
 }
 
-#sourcePanelToolbar a {
-    text-decoration: none;
+#sourcePanelToolbar:hover {
+    color: white;
 }
+
 #footer {
     height: 0px;
     position: absolute;
@@ -232,7 +245,9 @@ ul.subnav a {
 }
 
 #footer a {
-    color: #d8e7f3;
+    color: #e9e9e9;
+    font-size: 14px;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.8);;
 }
 
 

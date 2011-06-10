@@ -17,11 +17,12 @@
       <script src="../src/glyph/Scribl.complex.js" ></script> -->		
 		
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
-		<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+		<!-- <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/> -->
+		<link rel="stylesheet" type="text/css" href="../css/jquery-ui-1.8.13.redmond.css" />
       <script src="../js/jquery-ui.chase.min.js"></script>
 		<script src="../js/jsdas.0.1.6.min.js" ></script>
 
-		 <link rel="stylesheet" type="text/css" href="../css/dasViewer.css" />
+		<link rel="stylesheet" type="text/css" href="../css/dasViewer.css" />
 		
 		<script type="text/javascript">
 		   var sources = [];
@@ -46,7 +47,9 @@
                slide: function( event, ui ) {
                   redraw(ui.values[ 0 ], ui.values[ 1 ]);
                }
-            });	
+            });
+            
+            //$("#slider-range").children("div").css("background","red");	
             
 		   });
 		   
@@ -309,7 +312,7 @@
 	
 	<body>	   
       <div id="header">
-        <div>Scribl Das Viewer</div>
+        <div>DAS Viewer</div>
       </div>
       <div id="wrapper" class="wrapper">
          <div id="namePanel" class="sidePanel">
@@ -327,11 +330,11 @@
    	      <div id="dasTitle">DAS Sources</div>
    	      <ul id="source-list">
    	         <!-- id must be the same as text appended with input -->
-   	       <li><input id="Homo sapiens NCBI36-input" value="http://useast.ensembl.org/das/Homo_sapiens.NCBI36.transcript/features?segment=1:" type="checkbox"></input><label>Homo sapiens NCBI36-input</label></li>
+   	       <li><input id="Homo sapiens NCBI36-input" value="http://useast.ensembl.org/das/Homo_sapiens.NCBI36.transcript/features?segment=1:" type="checkbox"></input><label>Homo sapiens NCBI36</label></li>
    	       <li><input id="hg16-input" value="http://genome.ucsc.edu/cgi-bin/das/hg16/features?segment=1:" type="checkbox"></input><label for="hg16-input">hg16</label></li>
    	       <li><input id="hg18-input" value="http://genome.cse.ucsc.edu:80/cgi-bin/das/hg18/features?segment=1:" type="checkbox"></input><label for="hg18-input">hg18</label></li>
              <li><input id ="ens_36_refseq-input" value="http://das.sanger.ac.uk/das/ens_36_refseq/features?segment=1:" type="checkbox"></input><label for="ens_36_refseq-input">ens_36_refseq</label></li>
-             <li><input id="MeDIP-chip Cervix-input" value="http://www.ebi.ac.uk/das-srv/genomicdas/das/batman_CX/features?segment=1:" type="checkbox"></input><label for="MeDIP-chip Cervix-input">MeDIP-chip Cervix-i</label></li>             
+             <li><input id="MeDIP-chip Cervix-input" value="http://www.ebi.ac.uk/das-srv/genomicdas/das/batman_CX/features?segment=1:" type="checkbox"></input><label for="MeDIP-chip Cervix-input">MeDIP-chip Cervix</label></li>             
    	      </ul>
    	      
             
@@ -351,8 +354,11 @@
    		</div>		
       </div>
 			
-		<div id="footer">Simple Das Viewer built on top of <a href="http://chmille4.github.com/Scribl/">Scibl</a></div> 
-		<a id="sourcePanelToolbar" href='#'><div  onClick="toggleDasSources();"><span style="margin-left: 15%; margin-bottom: -1.3em" class='ui-icon ui-icon-plus'></span> Add Source</div></a>
+		<div id="footer">
+		   <div>Powered By <a href="http://chmille4.github.com/Scribl/">Scibl</a></div>
+		   <div style="float:right; margin-right:20px">&copy; <a href="http://github.com/chmille4">Chase Miller</a> 2011</div>
+		</div> 
+		<a id="sourcePanelToolbar" href='#'><div  onClick="toggleDasSources();"><span id="plus" style="margin-left: 15%; margin-bottom: -1.3em" class='ui-icon ui-icon-plus'></span> Add Source</div></a>
       
 	</body>
 	

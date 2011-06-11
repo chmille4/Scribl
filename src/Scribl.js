@@ -33,7 +33,7 @@ var Scribl = Class.extend({
 		this.scale.font = {};
 		this.scale.font.size = 15; // in pixels
 		this.scale.font.color = "black";
-		this.scale.font.buffer = 4; // in pixels - buffer between two scale numbers (e.g. 1k and 2k)
+		this.scale.font.buffer = 10; // in pixels - buffer between two scale numbers (e.g. 1k and 2k)
 	
 		// glyph defaults
 		this.glyph = {};
@@ -402,7 +402,7 @@ var Scribl = Class.extend({
 
 	determineMajorTick: function() {
 		this.ctx.font = this.scale.font.size + "px arial";
-		var numtimes = this.width/(this.ctx.measureText(this.getTickText(this.scale.max)).width + this.scale.font.buffer);
+		var numtimes = this.width/(this.ctx.measureText(this.getTickTextDecimalPlaces(this.scale.max)).width + this.scale.font.buffer);
 
         // figure out the base of the tick (e.g. 2120 => 2000)
         var irregularTick = (this.scale.max - this.scale.min) / numtimes;
@@ -424,16 +424,40 @@ var Scribl = Class.extend({
 		
 	},
 
+
+    // formats tick text when given a number
 	getTickText: function(tickNumber) {
 		if ( !this.tick.auto )
 			return tickNumber;
 		
 		var tickText = tickNumber;
-		if (tickNumber >= 1000000 )
-			tickText = tickText / 1000000 + 'm';
-		else if ( tickNumber >= 1000 )
-			tickText = tickText / 1000 + 'k';
+		if (tickNumber >= 1000000 ) {
+		    var decPlaces = 5;
+		    var base = Math.pow(10, decPlaces)
+			tickText = Math.round(tickText / 1000000 * base) / base + 'm'; // round to decPlaces
+		} else if ( tickNumber >= 1000 ) {
+		    var decPlaces = 2;
+		    var base = Math.pow(10, decPlaces)		    
+			tickText = Math.round(tickText / 1000 * base) / base + 'k';
+		}
 		
+		return tickText;
+	},
+	
+	// figures out the number of places to use for tick text
+	getTickTextDecimalPlaces: function(tickNumber){
+	    if ( !this.tick.auto )
+			return tickNumber;
+		
+		var tickText = tickNumber;
+		if (tickNumber >= 1000000 ) {
+		    var decPlaces = 5;
+			tickText = Math.round( tickText / (1000000 / Math.pow(10,decPlaces)) ) + 'm'; // round to 2 decimal places
+		} else if ( tickNumber >= 1000 ){
+		    var decPlaces = 2;
+			tickText = Math.round( tickText / (1000 / Math.pow(10,decPlaces)) ) + 'k';
+		}
+
 		return tickText;
 	},
 	

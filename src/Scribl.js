@@ -290,7 +290,7 @@ var Scribl = Class.extend({
 				this.tick.major.size = this.determineMajorTick();
 
 				// set minor tick interval
-				this.tick.minor.size = this.tick.major.size / 10;
+				this.tick.minor.size = Math.round(this.tick.major.size / 10);
 			}			
 		
 			// make scale end on major ticks
@@ -326,42 +326,49 @@ var Scribl = Class.extend({
 		ctx.fillStyle = this.scale.font.color;
 		
 		// draw scale
+		
 		if (!this.scale.off) {
-			for (var i = this.scale.min; i <= this.scale.max; i++ ) {
-			
-				var curr_pos = i*this.pixelsPerNt();
-			
-				ctx.beginPath();
-				if ( i % this.tick.major.size == 0) {
-					// create text
-					var tickText = this.getTickText(i);
-					ctx.textAlign = "center";
-					ctx.fillText( tickText , curr_pos, 0 );
-				
-					// create major tick
-					ctx.moveTo( curr_pos, tickStartPos );
-					ctx.lineTo( curr_pos, majorTickEndPos );
-					ctx.strokeStyle = this.tick.major.color;
-					ctx.stroke();
+    		
+    		var firstMinorTick;
+    		if (this.scale.min % this.tick.minor.size == 0)
+    		    firstMinorTick = this.scale.min
+    		else
+    		    firstMinorTick = this.scale.min - (this.scale.min % this.tick.minor.size) + this.tick.minor.size
+    		    
+    		for(var i = firstMinorTick; i<= this.scale.max; i += this.tick.minor.size){		    
+    		    ctx.beginPath();
+    		    var curr_pos = i*this.pixelsPerNt();
+    		    if ( i % this.tick.major.size == 0) {
+                     // create text
+                     var tickText = this.getTickText(i);
+                     ctx.textAlign = "center";
+                     ctx.fillText( tickText , curr_pos, 0 );
 
-				} else if ( i % this.tick.minor.size == 0 ) {				
-					ctx.moveTo( curr_pos, tickStartPos );
-				
-					// create half tick - tick between two major ticks
-					if ( i % (this.tick.major.size/2) == 0 ) {
-					    //console.log("S SS1: " + this.tick.halfColor);
-						ctx.strokeStyle = this.tick.halfColor; // jsa						
-						ctx.lineTo( curr_pos, halfTickEndPos );
-					}
-					// create minor tick
-					else{
-						ctx.strokeStyle = this.tick.minor.color;
-						ctx.lineTo( curr_pos, minorTickEndPos );
-					}
-					ctx.stroke();
-				}
-			}
-		}
+                     // create major tick
+                     ctx.moveTo( curr_pos, tickStartPos );
+                     ctx.lineTo( curr_pos, majorTickEndPos );
+                     ctx.strokeStyle = this.tick.major.color;
+                     ctx.stroke();
+
+                 } else { // draw minor tick
+                    ctx.moveTo( curr_pos, tickStartPos );
+
+                    // create half tick - tick between two major ticks
+                    if ( i % (this.tick.major.size/2) == 0 ) {
+                      //console.log("S SS1: " + this.tick.halfColor);
+                      ctx.strokeStyle = this.tick.halfColor; // jsa                       
+                      ctx.lineTo( curr_pos, halfTickEndPos );
+                    }
+                    // create minor tick
+                    else{
+                      ctx.strokeStyle = this.tick.minor.color;
+                      ctx.lineTo( curr_pos, minorTickEndPos );
+                    }
+                    ctx.stroke();
+                 }            
+    		}
+            
+    	}		
 		
 		// restore fillstyle
 		ctx.fillStyle = fillStyleRevert;

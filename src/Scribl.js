@@ -166,38 +166,75 @@ var Scribl = Class.extend({
         return feature;
 	},
 	
+	// collapses all the features into a single track
+	collapse: function() {
+	    
+	},
+	
 	// return region or slice of chart as new chart
-	slice: function(from, to) {
-		
+	// type: inclusive - includes any feature that has any part in region
+	// type: exclusive - includes only features that are entirely in the region,
+	// type: strict - if feature is partly in region, it'll cut that feature at the boundary and include the cut portion
+	slice: function(from, to, type) {
+		type = type || 'inclusive';
 		var sliced_features = [];
 		
 		// iterate through tracks
 		var numTracks = this.tracks.length;
+		var newChart = new Scribl(this.canvas, this.width);
 		
 		for ( var j=0; j < numTracks; j++) {
 		    var track = this.tracks[j];
+		    var newTrack = newChart.addTrack();
 		    var numLanes = track.lanes.length;
     		for ( var i=0; i < numLanes; i++ ) {
+    		    newLane = newTrack.addLane();
     			var s_features = track.lanes[i].features;
     			for (var k=0; k < s_features.length; k++ ) {
     				var end = s_features[k].position + s_features[k].length
     				var start = s_features[k].position
-
     				// determine if feature is in slice/region
-    				if ( start >= from && start <= to )
-    					sliced_features.push( s_features[k] )
-    				else if ( end > from && end < to )
-    					sliced_features.push( s_features[k] )				
-    				else if ( start < from && end > to )
-    					sliced_features.push( s_features[k] )				
-    				else if ( start > from && end < to)
-    					sliced_features.push( s_features[k] )				
+    				if(type == 'inclusive') {
+        				if ( start >= from && start <= to )
+        					newLane.addFeature( s_features[k] )
+        				else if ( end > from && end < to )
+        					newLane.addFeature( s_features[k] )				
+        				else if ( start < from && end > to )
+        					newLane.addFeature( s_features[k] )				
+        				else if ( start > from && end < to)
+        					newLane.addFeature( s_features[k] )				
+        			} else if (type == 'strict') {
+        			    if ( start >= from && start <= to){
+        			         if (end > from && end < to)
+        					    newLane.addFeature( s_features[k] )
+        					else {
+        					    var f = s_features[k].clone();
+        					    f.length = Math.abs(to - start);
+        					    newLane.addFeature( f );
+        					}
+        				} else if (end > from && end < to) {
+        				    var f = s_features[k].clone();
+        				    f.position = from;
+    					    f.length = Math.abs(end - from);
+    					    newLane.addFeature( f );
+        				}
+        				else if( start < from && end > to){
+        				    var f = s_features[k].clone();
+        				    f.position = from;
+    					    f.length = Math.abs(to - from);
+    					    newLane.addFeature( f );
+        				}
+        			} else if (type == 'exclusive') {
+        			    if ( start >= from && start <= to && end > from && end < to)
+        					newLane.addFeature( s_features[k] )
+    			    }
+        			
     			}				
 			
     		}
 	    }
 		
-		var newChart = new Scribl(this.canvas, this.width);
+		
 		newChart.laneSizes = this.laneSizes;
 		newChart.loadFeatures(sliced_features);
 		return newChart;

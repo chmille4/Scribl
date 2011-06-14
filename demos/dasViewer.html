@@ -307,7 +307,7 @@
                 checkbox.value = url;
                 checkbox.id = name + '-input';
                 checkbox.setAttribute('data-type', type);
-                label.for = checkbox.id;
+                label.setAttribute('for', checkbox.id);
                 $(checkbox).next().text(name);
                 $(checkbox).click( function() {handleDasSourceCheckbox(checkbox)} );               
              }             

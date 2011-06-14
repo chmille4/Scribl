@@ -176,7 +176,7 @@
 
        				// get DAS data
        				var baseurl = $(checkbox).val();
-       				var url = baseurl + '/features?segment=' + $('#chromosome').val() + ':' + scriblMin + "," + scriblMax + ';type=refGene';   				
+       				var url = baseurl + '/features?segment=' + $('#chromosome').val() + ':' + scriblMin + "," + scriblMax + ';type=' + $(checkbox).attr('data-type');   				
        				request.xhr = JSDAS.features(url, function(response, view) { dasResponse(response, view) }, function() {}, "", view);
        				
        		   } else {
@@ -288,11 +288,11 @@
              }
              
              function userAddDas() {
-                addDas($('#dasname').val(), $('#dassource').val());
+                addDas($('#dasname').val(), $('#dassource').val(), $('#dastype').val());
                 toggleDasSources();
              }
 
-             function addDas(name, url) {
+             function addDas(name, url, type) {
                 
                 // create uniform base url
                 url = url.replace(/\/$/,'');
@@ -306,6 +306,7 @@
                 checkbox.type = "checkbox";
                 checkbox.value = url;
                 checkbox.id = name + '-input';
+                checkbox.setAttribute('data-type', type);
                 label.for = checkbox.id;
                 $(checkbox).next().text(name);
                 $(checkbox).click( function() {handleDasSourceCheckbox(checkbox)} );               
@@ -461,8 +462,8 @@
                   var view = new View(charts[canvasId].chart.canvas);
                   view.dasRequests.push(request);
                   
-                  var baseurl = document.getElementById(canvasId+'-input').value
-                  var url = baseurl + '/features?segment=' + $('#chromosome').val() + ':'  + scriblMin + "," + scriblMax + ';type=refGene';
+                  var cb = document.getElementById(canvasId+'-input');
+                  var url = cb.value + '/features?segment=' + $('#chromosome').val() + ':'  + scriblMin + "," + scriblMax + ';type=' + $(cb).attr('data-type');
                   request.xhr = JSDAS.features(url, function(response, view) { dasResponse(response, view) }, function(){}, "", view);
                 }            
              }
@@ -512,6 +513,10 @@
                 var sourceNames = [];
                 checkboxes.each( function(index, value){sourceNames.push(value.id.replace(/-input$/,''))});
                 
+                // get types
+                var types = []
+                checkboxes.each( function(index,value){ types.push( checkboxes[index].getAttribute('data-type') ); } );
+                
                 var trackOptions = [];
                 for(var i=0; i< sourceNames.length; i++){
                    var expandOption = sourceNames[i] + '-expand-option';
@@ -537,6 +542,7 @@
                 queryStr += "&max=" + max;
                 queryStr += "&display=" + trackOptions.join(',');
                 queryStr += "&segment=" + chr;
+                queryStr += "&types=" + types.join(',');
                 
                 return (getBaseURL() + queryStr);                               
              }
@@ -571,8 +577,9 @@
                    // add Das sources                   
                    var urls = querys['urls'].split(',');
                    var names = querys['names'].split(',');
+                   var types = querys['types'].split(',');
                    for (var k=0; k < names.length; k++){
-                      addDas(names[k], urls[k]);
+                      addDas(names[k], urls[k], types[k]);
                    }
                 
                    // set display
@@ -616,8 +623,9 @@
     	   <div id="addSourcePanel">
             <br/>
             <div>
-               DAS Source URL: <input id="dassource" type="text" name="dassource" /><br />
-               Source Name: <input id="dasname" type="text" name="dasname" />
+               DAS Source URL:<br/><input id="dassource" type="text" name="dassource" /><br />
+               Source Name:<br/><input id="dasname" type="text" name="dasname" /> <br/>
+               Type:<br/><input id="dastype" type="text" value="refGene"/>
                <br/>
                <a href="#" class="myButton" onClick="userAddDas()" alt="hi">Add</a>
                <a href="#" class="myButton" onClick="toggleDasSources()" alt="hi">X</a>  
@@ -638,7 +646,7 @@
           <div id='splash'>
              <p>To get started <a href="#" onClick="toggleDasSources()">add DAS sources</a> to see annotation data</p>
              <p>Or</p>
-             <p>Try out a <a href='http://chmille4.github.com/Scribl/demos/dasViewer.html?urls=http://useast.ensembl.org/das/Homo_sapiens.NCBI36.transcript,http://genome.cse.ucsc.edu:80/cgi-bin/das/hg18,http://das.sanger.ac.uk/das/ens_36_refseq&names=Homo%20sapiens%20NCBI36,UCSC%20NCBI36/hg18,ens_NCBI36_refseq&min=1135445&max=1187569&display=Expand,Expand,Expand&segment=1' onClick='location.reload(true)'>demo</a> with pre-selected sources</p>
+             <p>Try out a <a href='http://chmille4.github.com/Scribl/demos/dasViewer.html?urls=http://useast.ensembl.org/das/Homo_sapiens.NCBI36.transcript,http://genome.cse.ucsc.edu:80/cgi-bin/das/hg18,http://das.sanger.ac.uk/das/ens_36_refseq,http://genome.cse.ucsc.edu:80/cgi-bin/das/hg18&names=Ensembl NCBI36/hg18,UCSC NCBI36/hg18 refGene,ens_NCBI36_refseq,UCSC NCBI36/hg18 snp130&min=1149729&max=1162457&display=Expand,Expand,Expand,Expand&segment=1&types=refGene,refGene,refGene,snp130' onClick='location.reload(true)'>demo</a> with pre-selected sources</p>
              <p style="font-size: 13px"><a href="#" onClick="toggleAbout()">About DAS Browser</a></p>
           </div>
              <div id='viewer'>   

@@ -554,13 +554,15 @@
                 if (querys != "" && Object.keys(querys).length > 0 && Object.keys(querys)[0] != "" ) {
                 
                    // set region
+                   var min = parseInt(querys['min']);
+                   var max = parseInt(querys['max'])
                    if(querys['min'] && querys['max']) {
-                      $('#slider-range').slider('values',0, parseInt(querys['min']));
-                      $('#slider-range').slider('values',1, parseInt(querys['max']));
-                      slideMin = scriblMin = Math.max(viewerMin - bufferSize,1);
-                      slideMax = scriblMax = parseInt(viewerMax + bufferSize);
+                      slideMin = scriblMin = Math.max(min - bufferSize,1);
+                      slideMax = scriblMax = parseInt(max + bufferSize);
                       $( "#slider-range" ).slider('option', 'min', slideMin);
                       $( "#slider-range" ).slider('option', 'max', slideMax);
+                      $('#slider-range').slider('values',0, min);
+                      $('#slider-range').slider('values',1, max);
                    }
                    
                    // set chromosome

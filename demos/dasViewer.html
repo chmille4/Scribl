@@ -131,7 +131,7 @@
        		      var gear = document.createElement('span');
        		      gear.style.float = 'left';
        		      //gear.innerHTML = "<a href='#'><span class='ui-icon ui-icon-gear'></a></span><span class='ui-icon ui-icon-triangle-1-s'></span>";
-                   gear.innerHTML = "<a style='float:left' href='#'><span class='ui-icon ui-icon-gear'></a></span><span class='ui-icon ui-icon-triangle-1-s'></span>";
+                   gear.innerHTML = "<a href='#'><span style='float:left' class='ui-icon ui-icon-gear'></a></span><span style='float:left' class='ui-icon ui-icon-triangle-1-s'></span>";
 
        		      gear.onmouseover = function() {$(gear).addClass('option-hover');};
        		      gear.onmouseout = function() {$(gear).removeClass('option-hover');}   		      
@@ -139,13 +139,13 @@
 
 
        		      // close button
-       		      var close = document.createElement('span');
-       		      close.style.float = 'right';
-       		      close.innerHTML = "<a href='#'><span style='float:right; border-left: 1px solid white' class='ui-icon ui-icon-close'></span></a>";
-       		      close.onmouseover = function() {$(close).addClass('option-hover');};
-       		      close.onmouseout = function() {$(close).removeClass('option-hover');}
-       		      close.onclick = function() {removeCanvas(getCheckBoxLabel(checkbox));}
-       		      optionDiv.appendChild(close);
+                  var close = document.createElement('span');
+                  close.style.float = 'left';
+                  close.innerHTML = "<a href='#'><span style='float:left; border-left: 1px solid white' class='ui-icon ui-icon-close'></span></a>";
+                  close.onmouseover = function() {$(close).addClass('option-hover');};
+                  close.onmouseout = function() {$(close).removeClass('option-hover');}
+                  close.onclick = function() {removeCanvas(getCheckBoxLabel(checkbox));}
+                  optionDiv.appendChild(close);
        		      optionDiv.appendChild(document.createElement('br'));
 
        		      // menu panel

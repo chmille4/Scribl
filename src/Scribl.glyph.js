@@ -78,6 +78,20 @@ var Glyph = Class.extend({
 		return (glyph.lane.y); 
 	},
 	
+	// shallow clone
+	clone: function() {
+        var glyph = this;
+        var newFeature = this;
+
+        if(f.orientation)
+            newFeature = eval( 'new' + f.glyphType + '(' + f.type + ',' + f.position + ',' + f.length + ',' + f.orientation)
+        else
+            newFeature = eval( 'new' + f.glyphType + '(' + f.type + ',' + f.position + ',' + f.length)
+
+        return( newFeature );
+	          
+	},
+	
 	setTextOptions : function() {
 		// chart level overides defaults, type level overrides chart and defaults, and glyph level overrides everything		
 		var glyph = this;

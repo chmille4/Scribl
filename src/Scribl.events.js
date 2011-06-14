@@ -172,10 +172,11 @@ var tooltips = Class.extend({
 		var height = fontSize + 10;
 		var length = dim.width + 10;
 		var vertical_offset = height - 4;
+		var horizontal_offset = this.chart.scale.min/(this.chart.scale.max-this.chart.scale.min)*this.chart.width;
 		var fillStyle;
 		var strokeStyle;
 		// Set Defaults
-		var x = obj.pixelPosition_x() + 10;
+		var x = obj.pixelPosition_x() + 10 - horizontal_offset;
 		var y = obj.pixelPosition_y() - vertical_offset;
 		
 		// linewrap text

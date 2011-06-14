@@ -12128,6 +12128,8 @@
 			newChart.scale.pretty = false;
 			newChart.scale.offset = false;
 			origZoomChart.ctx.clearRect(0, 0, 900, 400);
+			newChart.scale.min = newMin;
+			newChart.scale.max = newMax;
 			newChart.draw();
 		}
 

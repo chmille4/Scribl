@@ -51,7 +51,6 @@ var Track = Class.extend({
 	getHeight: function() {
 		var wholeHeight = 0;
 		
-		wholeHeight += this.getLaneSize();
 		var numLanes = this.lanes.length;
 		var laneBuffer = this.chart.laneBuffer;
 		

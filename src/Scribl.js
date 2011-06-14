@@ -105,8 +105,7 @@ var Scribl = Class.extend({
 	
 	// get height of just scale
 	getScaleHeight: function() {
-	    return (this.laneSizes);
-	    //return (this.tracks[0].getLaneSize());
+	    return (this.scale.font.size + this.scale.size);
 	},
 	
     // get height of entire chart
@@ -120,7 +119,7 @@ var Scribl = Class.extend({
 			wholeHeight += this.laneBuffer;
 			wholeHeight += this.tracks[i].getHeight();
 		}
-		
+
 		return wholeHeight;
 	},
 		
@@ -363,7 +362,6 @@ var Scribl = Class.extend({
 		ctx.fillStyle = this.scale.font.color;
 		
 		// draw scale
-		
 		if (!this.scale.off) {
     		
     		var firstMinorTick;
@@ -406,7 +404,6 @@ var Scribl = Class.extend({
     		}
             
     	}		
-		
 		// restore fillstyle
 		ctx.fillStyle = fillStyleRevert;
 

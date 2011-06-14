@@ -143,8 +143,7 @@ var MouseEventHandler = Class.extend({
       else if (obj && obj.parent && obj.parent.onClick != undefined)
          ctx.canvas.style.cursor = 'pointer';
       else
-         ctx.canvas.style.cursor = 'auto'; 		
-			
+         ctx.canvas.style.cursor = 'auto'; 					
    },
 
    /** **reset**

@@ -112,7 +112,7 @@ var Scribl = Class.extend({
 	getHeight: function() {
 		var wholeHeight = 0;
 		
-		if (!this.scale.off) wholeHeight += this.tracks[0].getLaneSize();
+		if (!this.scale.off) wholeHeight += this.getScaleHeight();
 		var numTracks = this.tracks.length
 		
 		for (var i=0; i < numTracks; i++) {

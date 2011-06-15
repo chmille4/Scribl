@@ -362,7 +362,8 @@
             function toggleLinkUrl() {
                if( $('#link-url').css('display') == 'none' ) {
                   $('#link-url-input').val(serializeToUrl());
-                  $('#link-url').css('display', 'inherit')
+                  $('#link-url').css('display', 'inherit');
+                  $('#embed-url-input').val(serializeToIframe());
                }
                else
                   $('#link-url').css('display', 'none')
@@ -504,6 +505,14 @@
                  return (queryStringList);
              }
              
+             function serializeToIframe() {
+                var iframeStr = '<iframe width="500" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="';
+                iframeStr += serializeToUrl();
+                iframeStr += '&embed=true"'
+                iframeStr += '></iframe>';
+                return iframeStr;
+             }
+             
              function serializeToUrl() {
                 var checkboxes = $('#source-list').find('input');
                                 
@@ -555,11 +564,29 @@
                  return baseURL;
              }
              
+             function maximizeViewer() {
+                // hide all other divs
+                $('#side').css('display', 'none');
+                $('#header').css('display', 'none');
+                $('#footer').css('display', 'none');
+                $('#sourcePanelToolbar').css('display', 'none');
+                
+                // restyle main
+                $('#main').css('width', '100%');
+                $('#main').css('top', '0px');
+                
+                // move pan title up
+                $('#pan').css('margin-top', '0px');
+             }
+             
              function loadUrlQuery() {
                 //parse url querys (if any)
-                var querys = getUrlQuerys();
+                var querys = getUrlQuerys();                                
                 
                 if (querys != "" && Object.keys(querys).length > 0 && Object.keys(querys)[0] != "" ) {
+                   
+                   if (querys['embed'])
+                     maximizeViewer();
                 
                    // set region
                    var min = parseInt(querys['min']);
@@ -672,7 +699,10 @@
           
              <div id="canvas-content">
                 <div id="canvasList"></div>
-                <div id="link-url">Link to current view<br/><input id="link-url-input"></input></div>
+                <div id="link-url">
+                   Link to current view<br/><input id="link-url-input"></input><br/>
+                   Embed in website<br/><input id="embed-url-input"></input>
+                </div>
              </div>
           </div>
           

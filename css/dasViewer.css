@@ -193,9 +193,14 @@ body
 }
 
 #link-url {
-    background-color: rgb(200,200,200);
+    background-color: rgb(240,240,240);
+    color: rgb(50,50,50);
     border: 1px solid rgb(160,160, 160);
     border-top: 0px;
+    border-bottom-left-radius:4px;
+    -moz-border-radius-bottomleft:4px;
+    border-bottom-right-radius:4px;
+    -moz-border-radius-bottomright:4px;
     width: 128px;
     float:right;
     margin-top: 0px;

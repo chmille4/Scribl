@@ -516,48 +516,53 @@
                 return iframeStr;
              }
              
-             function serializeToUrl() {
+             function serializeQuerys() {
                 var checkboxes = $('#source-list').find('input');
-                                
-                // get urls
-                var sourceUrls = [];
-                checkboxes.each( function(index, value){sourceUrls.push(value.value)});
-                
-                // get names
-                var sourceNames = [];
-                checkboxes.each( function(index, value){sourceNames.push(value.id.replace(/-input$/,''))});
-                
-                // get types
-                var types = []
-                checkboxes.each( function(index,value){ types.push( checkboxes[index].getAttribute('data-type') ); } );
-                
-                var trackOptions = [];
-                for(var i=0; i< sourceNames.length; i++){
-                   var expandOption = sourceNames[i] + '-expand-option';
-                   
-                   // check if source is being displayed
-                   var menu = document.getElementById(expandOption);
-                   if (menu)
-                     trackOptions.push(menu.children[0].innerHTML)
-                  else
-                     trackOptions.push('none');
-                }                
-                
-                // get min, max, chromosome
-                var min = $('#slider-range').slider('values',0);
-                var max = $('#slider-range').slider('values',1);
-                var chr = $('#chromosome').val();
-                
-                // construct query string
-                var queryStr = "?"
-                queryStr += "urls=" + sourceUrls.join(',');
-                queryStr += "&names=" + sourceNames.join(',');
-                queryStr += "&min=" + min;
-                queryStr += "&max=" + max;
-                queryStr += "&display=" + trackOptions.join(',');
-                queryStr += "&segment=" + chr;
-                queryStr += "&types=" + types.join(',');
-                
+
+                 // get urls
+                 var sourceUrls = [];
+                 checkboxes.each( function(index, value){sourceUrls.push(value.value)});
+
+                 // get names
+                 var sourceNames = [];
+                 checkboxes.each( function(index, value){sourceNames.push(value.id.replace(/-input$/,''))});
+
+                 // get types
+                 var types = []
+                 checkboxes.each( function(index,value){ types.push( checkboxes[index].getAttribute('data-type') ); } );
+
+                 var trackOptions = [];
+                 for(var i=0; i< sourceNames.length; i++){
+                    var expandOption = sourceNames[i] + '-expand-option';
+
+                    // check if source is being displayed
+                    var menu = document.getElementById(expandOption);
+                    if (menu)
+                      trackOptions.push(menu.children[0].innerHTML)
+                   else
+                      trackOptions.push('none');
+                 }                
+
+                 // get min, max, chromosome
+                 var min = $('#slider-range').slider('values',0);
+                 var max = $('#slider-range').slider('values',1);
+                 var chr = $('#chromosome').val();
+
+                 // construct query string
+                 var queryStr = "?"
+                 queryStr += "urls=" + sourceUrls.join(',');
+                 queryStr += "&names=" + sourceNames.join(',');
+                 queryStr += "&min=" + min;
+                 queryStr += "&max=" + max;
+                 queryStr += "&display=" + trackOptions.join(',');
+                 queryStr += "&segment=" + chr;
+                 queryStr += "&types=" + types.join(',');
+                 
+                 return queryStr;
+             }
+             
+             function serializeToUrl() {                
+                var queryStr = serializeQuerys();
                 return (getBaseURL() + queryStr);                               
              }
              
@@ -580,6 +585,11 @@
                 
                 // move pan title up
                 $('#pan').css('margin-top', '0px');
+             }
+             
+             function exportToFigureMaker() {
+                var figureMakerUrl = "file:///Users/chase/Desktop/tmp_workspace/figure_builder/index.html";
+                window.open(figureMakerUrl + serializeQuerys());
              }
              
              function loadUrlQuery() {
@@ -696,7 +706,7 @@
                          Jump To <input id="jump" style="width:10em" id='jump-to'></input>
                    </div>
                    <div style="float:right; margin-right:10px">
-                      <a href="#" onClick='toggleLinkUrl()' title="Link to current view"style="margin-right:10px">Link</a><a href='#' onClick="toggleAbout()">About</a>
+                      <a href="#" onClick='toggleLinkUrl()' title="Link to current view"style="margin-right:10px">Link</a><a href="#" onClick='exportToFigureMaker()' title="Export view to Figure Maker"style="margin-right:10px">Figurize</a><a href='#' onClick="toggleAbout()">About</a>
                    </div>
              </div>  
           

@@ -27,7 +27,7 @@
 	<body> 
 		<div id="description"><h2>Genbank Drag and Drop</h2>
 			<div>(Best viewed in Chrome/Safari)</div>
-			<div id="content"></div>
+			<div id="dropbox"></div>
 	   	<p id="log" style="color: gray"></p>
 		</div>
 		<div id="container">
@@ -35,12 +35,12 @@
 		</div>
 		
 		<script>
-		var content = document.getElementById('content');
+		var dropbox = document.getElementById('dropbox');
 		if (!window.FileReader) {
-		  content.innerHTML = "<p>This browser doesnt support the File API</p>";
+		  dropbox.innerHTML = "<p>This browser doesnt support the File API</p>";
 		} else {
 		  // Page Layout
-		  content.innerHTML =
+		  dropbox.innerHTML =
 		    '<p>Drag a Genbank(.gb) or BED(.bed) file onto this area <input type="hidden" id="file" /></p>';
 
 		  // Displays gene charts.
@@ -68,24 +68,24 @@
 		  };
 
 		  // Reduce movement by adding invisible border
-		  content.style.border = '4px solid transparent';
+		  dropbox.style.border = '4px solid transparent';
 
 		  // Add dragging events
-		  content.ondragenter = function() {
-		    content.style.border = '4px solid #b1ecb3';
+		  dropbox.ondragenter = function() {
+		    dropbox.style.border = '4px solid #b1ecb3';
 		    return false;
 		  };
 
-		  content.ondragover = function() {
+		  dropbox.ondragover = function() {
 		    return false;
 		  };
 
-		  content.ondragleave = function() {
+		  dropbox.ondragleave = function() {
 		    return false;
 		  };
 
-		  content.ondrop = function(event) {
-		    content.style.border = '4px solid transparent';
+		  dropbox.ondrop = function(event) {
+		    dropbox.style.border = '4px solid transparent';
 		    displayChart(event.dataTransfer.files[0]);
 		    return false;
 		  };

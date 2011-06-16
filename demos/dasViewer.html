@@ -159,7 +159,10 @@
        		      var li = document.createElement('li');
        		      li.id = newCanvas.id + '-expand-option'
        		      li.onclick = function() { toggleExpand(newCanvas.id, li);}
-       		      li.innerHTML = "<a href='#'>Expand</a>";
+       		      if (checkbox.getAttribute('data-display') == 'Expand')
+       		         li.innerHTML = "<a href='#'>Collapse</a>";
+       		      else
+       		         li.innerHTML = "<a href='#'>Expand</a>";
        		      menuPanel.appendChild(li);
        		      optionDiv.appendChild(menuPanel);
 
@@ -225,7 +228,7 @@
                 canvas.id = 'scale';
                 canvas.className = 'canvas';
                 canvas.height = 40;
-                canvas.width = getCanvasWidth()-1;
+                canvas.width = getCanvasWidth()-2;
                 $('#scaleDiv').prepend(canvas);
 
           	   scale = new Scribl(canvas, getChartWidth());
@@ -292,11 +295,11 @@
              }
              
              function userAddDas() {
-                addDas($('#dasname').val(), $('#dassource').val(), $('#dastype').val());
+                addDas($('#dasname').val(), $('#dassource').val(), $('#dastype').val(), 'Collapse');
                 toggleDasSources();
              }
 
-             function addDas(name, url, type) {
+             function addDas(name, url, type, display) {
                 
                 // create uniform base url
                 url = url.replace(/\/$/,'');
@@ -311,6 +314,7 @@
                 checkbox.value = url;
                 checkbox.id = name + '-input';
                 checkbox.setAttribute('data-type', type);
+                checkbox.setAttribute('data-display', display);
                 label.setAttribute('for', checkbox.id);
                 $(checkbox).next().text(name);
                 $(checkbox).click( function() {handleDasSourceCheckbox(checkbox)} );               
@@ -320,8 +324,8 @@
     		      var collapsed = view.collapsed;
     		      var expanded = view.expanded
     		      var chart = view.chart;
-    		      var track = chart.addTrack().addLane();
     		      var canvasId = chart.canvas.id
+    		      var track;
 
     				// check if chart is still visible
     				if(!charts.hasOwnProperty(canvasId)) {
@@ -333,6 +337,14 @@
                    // TODO add an error fetching message
                    return; 
                 }
+                
+               if( document.getElementById(canvasId + '-input').getAttribute('data-display') == "Expand") {
+     		         features.sort( function(a,b){ return(a.START.textContent - b.START.textContent); } );
+     		         track = chart.addTrack();    
+     		      }
+     		      else
+     		         track = chart.addTrack().addLane();
+                
     				for (var i=0; i < features.length; i++) {
     					var f = features[i];
     					var start = parseInt(f.START.textContent);
@@ -376,12 +388,14 @@
 
     			   // expand chart
     			   if (li.children[0].innerHTML == 'Expand') {
+    			      document.getElementById(canvasId + '-input').setAttribute('data-display', 'Expand');
        			   li.children[0].innerHTML = 'Collapse'
        			   var features = chart.tracks[0].lanes[0].features;
        			   chart.tracks = [];
        			   features.sort( function(a,b){ return(a.position - b.position); } );
        			   chart.loadFeatures(features);
     			   } else { // collapse chart 
+    			      document.getElementById(canvasId + '-input').setAttribute('data-display', 'Collapse');
     			      li.children[0].innerHTML = 'Expand'
     			      var features = [];
     			      var numLanes = chart.tracks[0].lanes.length;
@@ -391,7 +405,7 @@
     			      chart.tracks = [];
     			      chart.addTrack().addLane().loadFeatures(features);
     			   }
-
+               chart.laneSizes = 13;
     			   chart.canvas.height = chart.getHeight() - 30;
     			   draw(chart, $('#slider-range').slider('values',0), $('#slider-range').slider('values',1));
     			}
@@ -535,12 +549,16 @@
                  for(var i=0; i< sourceNames.length; i++){
                     var expandOption = sourceNames[i] + '-expand-option';
 
-                    // check if source is being displayed
-                    var menu = document.getElementById(expandOption);
-                    if (menu)
-                      trackOptions.push(menu.children[0].innerHTML)
+                 // check if source is being displayed
+                 var menu = document.getElementById(expandOption);
+                 if (menu){
+                   if (menu.children[0].innerHTML == "Expand")
+                     trackOptions.push("Collapse") // state is opposite of available action
                    else
-                      trackOptions.push('none');
+                     trackOptions.push("Expand")
+                 }
+                 else
+                   trackOptions.push('none');
                  }                
 
                  // get min, max, chromosome
@@ -620,12 +638,12 @@
                    var urls = querys['urls'].split(',');
                    var names = querys['names'].split(',');
                    var types = querys['types'].split(',');
+                   var displays = querys['display'].split(',');
                    for (var k=0; k < names.length; k++){
-                      addDas(names[k], urls[k], types[k]);
+                      addDas(names[k], urls[k], types[k], displays[k]);
                    }
                 
                    // set display
-                   var displays = querys['display'].split(',');
                    for (var i=0; i < displays.length; i++) {
                       if (displays[i] == 'Expand' || displays[i] == 'Collapse'){
                         var cb = document.getElementById(names[i] + '-input');
@@ -688,7 +706,7 @@
           <div id='splash'>
              <p>To get started <a href="#" onClick="toggleDasSources()">add DAS sources</a> to see annotation data</p>
              <p>Or</p>
-             <p>Try out a <a href='http://chmille4.github.com/Scribl/demos/dasViewer.html?urls=http://useast.ensembl.org/das/Homo_sapiens.NCBI36.transcript,http://genome.cse.ucsc.edu:80/cgi-bin/das/hg18,http://das.sanger.ac.uk/das/ens_36_refseq,http://genome.cse.ucsc.edu:80/cgi-bin/das/hg18&names=Ensembl NCBI36/hg18,UCSC NCBI36/hg18 refGene,ens_NCBI36_refseq,UCSC NCBI36/hg18 snp130&min=1149729&max=1162457&display=Expand,Expand,Expand,Expand&segment=1&types=refGene,refGene,refGene,snp130' onClick='location.reload(true)'>demo</a> with pre-selected sources</p>
+             <p>Try out a <a href='http://chmille4.github.com/Scribl/demos/dasViewer.html?urls=http://useast.ensembl.org/das/Homo_sapiens.NCBI36.transcript,http://genome.cse.ucsc.edu:80/cgi-bin/das/hg18,http://das.sanger.ac.uk/das/ens_36_refseq,http://genome.cse.ucsc.edu:80/cgi-bin/das/hg18&names=Ensembl NCBI36/hg18,UCSC NCBI36/hg18 refGene,ens_NCBI36_refseq,UCSC NCBI36/hg18 snp130&min=1149729&max=1162457&display=Collapse,Collapse,Collapse,Collapse&segment=1&types=refGene,refGene,refGene,snp130' onClick='location.reload(true)'>demo</a> with pre-selected sources</p>
              <p style="font-size: 13px"><a href="#" onClick="toggleAbout()">About DAS Browser</a></p>
           </div>
              <div id='viewer'>   

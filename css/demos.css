@@ -2,9 +2,10 @@ body {
 	background-color: #C3D3E4;
 }
 
-#description {
+#description{
 	margin-left:auto; 
 	margin-right:auto; 
+	padding: 20px;
 	width:700px;
 	font: 20px arial; 
 	color: rgb(64, 64, 64);

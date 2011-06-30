@@ -4,8 +4,8 @@
 <head> 
 
     <title></title> 
-    <script src="../Scribl.min.js"></script>
-    <!-- <script src="../src/Scribl.class.js" ></script>
+    <!-- <script src="../js/Scribl.min.js"></script> -->
+    <script src="../src/Scribl.class.js" ></script>
     <script src="../src/Scribl.js" ></script>
     <script src="../src/Scribl.track.js" ></script>
     <script src="../src/Scribl.lane.js" ></script>
@@ -17,14 +17,30 @@
     <script src="../src/glyph/Scribl.arrow.js" ></script>
     <script src="../src/glyph/Scribl.rect.js" ></script>
     <script src="../src/glyph/Scribl.line.js" ></script>
-    <script src="../src/glyph/Scribl.complex.js" ></script>      -->
+    <script src="../src/glyph/Scribl.complex.js" ></script>     
 		
    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
-   <!-- <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/> -->
    <link rel="stylesheet" type="text/css" href="../css/jquery-ui-1.8.13.redmond.css" />
    <link rel="stylesheet" type="text/css" href="../css/dasViewer.css" />
-   <script src="jquery-ui.chase.min.js"></script>
+   <link rel="stylesheet" type="text/css" href="../fonts/ChunkFive/stylesheet.css" />
+   
+   <script src="../examples/jquery-ui.chase.min.js"></script>
+   <script type="text/javascript" src="../lib/dragscrollable.js"></script>
    <script src="../lib/jsdas.0.1.6.js" ></script>
+   
+   <script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-21069282-1']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
     
     <script type="text/javascript">    
     		   var sources = [];
@@ -44,9 +60,17 @@
     		   var DasRequest = function() { this.xhr=undefined; this.min=undefined; this.max=undefined };
     		   var View = function(canvas) {
     		      this.expanded = new Scribl(canvas, getChartWidth());
-    		      this.collapsed = new Scribl(canvas, getChartWidth());;
-    		      this.chart = this.collapsed;
-    		      this.dasRequests=[] 
+    		      this.collapsed = new Scribl(canvas, getChartWidth());
+    		      this.chart = this.collapsed; // default is collapsed;
+    		      this.dasRequests=[] ;
+    		      this.addDasRequest = function(request) {
+    		         var numDasRequests = this.dasRequests.length;
+    		         if (numDasRequests > 0)
+    		            for ( var i=0; i<numDasRequests; i++)
+    		               this.dasRequests[i].abort();
+    		               
+    		         this.dasRequests = [request];
+    		      };
     		   };
     		   
 
@@ -86,6 +110,8 @@
                   }
                 });
                 
+              //  $('#canvasList').sortable();
+                
     		   });
 
        		function handleDasSourceCheckbox(checkbox) {
@@ -117,7 +143,7 @@
        		      parentDiv.appendChild(optionDiv);
 
        		      // create label
-       		      label.innerHTML = getCheckBoxLabel(checkbox);
+       		      label.innerHTML = "<span class='spinner'> <img src='../images/spinner.gif'/> retrieving from: </span>" + getCheckBoxLabel(checkbox);
        		      label.className = "canvas-label";
 
        		      // handle option menu
@@ -125,13 +151,12 @@
        		      parentDiv.onmouseout = function() {toggleOptionMenu(false, optionDiv)};
        		      parentDiv.id = getCheckBoxLabel(checkbox) + "-parentdiv";
 
-
        		      // option menu buttons
        		      // gear button
        		      var gear = document.createElement('span');
        		      gear.style.float = 'left';
        		      //gear.innerHTML = "<a href='#'><span class='ui-icon ui-icon-gear'></a></span><span class='ui-icon ui-icon-triangle-1-s'></span>";
-                   gear.innerHTML = "<a style='float:left' href='#'><span class='ui-icon ui-icon-gear'></a></span><span class='ui-icon ui-icon-triangle-1-s'></span>";
+                   gear.innerHTML = "<a href='#'><span style='float:left' class='ui-icon ui-icon-gear'></a></span><span style='float:left' class='ui-icon ui-icon-triangle-1-s'></span>";
 
        		      gear.onmouseover = function() {$(gear).addClass('option-hover');};
        		      gear.onmouseout = function() {$(gear).removeClass('option-hover');}   		      
@@ -139,13 +164,13 @@
 
 
        		      // close button
-       		      var close = document.createElement('span');
-       		      close.style.float = 'right';
-       		      close.innerHTML = "<a href='#'><span style='float:right; border-left: 1px solid white' class='ui-icon ui-icon-close'></span></a>";
-       		      close.onmouseover = function() {$(close).addClass('option-hover');};
-       		      close.onmouseout = function() {$(close).removeClass('option-hover');}
-       		      close.onclick = function() {removeCanvas(getCheckBoxLabel(checkbox));}
-       		      optionDiv.appendChild(close);
+                  var close = document.createElement('span');
+                  close.style.float = 'left';
+                  close.innerHTML = "<a href='#'><span style='float:left; border-left: 1px solid white' class='ui-icon ui-icon-close'></span></a>";
+                  close.onmouseover = function() {$(close).addClass('option-hover');};
+                  close.onmouseout = function() {$(close).removeClass('option-hover');}
+                  close.onclick = function() {removeCanvas(getCheckBoxLabel(checkbox));}
+                  optionDiv.appendChild(close);
        		      optionDiv.appendChild(document.createElement('br'));
 
        		      // menu panel
@@ -155,7 +180,10 @@
        		      var li = document.createElement('li');
        		      li.id = newCanvas.id + '-expand-option'
        		      li.onclick = function() { toggleExpand(newCanvas.id, li);}
-       		      li.innerHTML = "<a href='#'>Expand</a>";
+       		      if (checkbox.getAttribute('data-display') == 'Expand')
+       		         li.innerHTML = "<a href='#'>Collapse</a>";
+       		      else
+       		         li.innerHTML = "<a href='#'>Expand</a>";
        		      menuPanel.appendChild(li);
        		      optionDiv.appendChild(menuPanel);
 
@@ -172,11 +200,11 @@
        		      var request = new DasRequest;
    		         var view = new View(newCanvas);
    		         view.dasRequests.push(request);				
-   		         charts[newCanvas.id] = undefined;
+   		         charts[newCanvas.id] = view;
 
        				// get DAS data
        				var baseurl = $(checkbox).val();
-       				var url = baseurl + '/features?segment=' + $('#chromosome').val() + ':' + scriblMin + "," + scriblMax + ';type=refGene';   				
+       				var url = baseurl + '/features?segment=' + $('#chromosome').val() + ':' + scriblMin + "," + scriblMax + ';type=' + $(checkbox).attr('data-type');   				
        				request.xhr = JSDAS.features(url, function(response, view) { dasResponse(response, view) }, function() {}, "", view);
        				
        		   } else {
@@ -221,7 +249,7 @@
                 canvas.id = 'scale';
                 canvas.className = 'canvas';
                 canvas.height = 40;
-                canvas.width = getCanvasWidth()-1;
+                canvas.width = getCanvasWidth()-2;
                 $('#scaleDiv').prepend(canvas);
 
           	   scale = new Scribl(canvas, getChartWidth());
@@ -288,11 +316,11 @@
              }
              
              function userAddDas() {
-                addDas($('#dasname').val(), $('#dassource').val());
+                addDas($('#dasname').val(), $('#dassource').val(), $('#dastype').val(), 'Collapse');
                 toggleDasSources();
              }
 
-             function addDas(name, url) {
+             function addDas(name, url, type, display) {
                 
                 // create uniform base url
                 url = url.replace(/\/$/,'');
@@ -306,91 +334,153 @@
                 checkbox.type = "checkbox";
                 checkbox.value = url;
                 checkbox.id = name + '-input';
-                label.for = checkbox.id;
+                checkbox.setAttribute('data-type', type);
+                checkbox.setAttribute('data-display', display);
+                label.setAttribute('for', checkbox.id);
                 $(checkbox).next().text(name);
                 $(checkbox).click( function() {handleDasSourceCheckbox(checkbox)} );               
              }             
 
-    		   function dasResponse(response, view) {
+    		   function dasResponse(xmlDoc, view) {
+    		      // check if response is no longer relevant to where the user is currently and if so don't waste time parsing it
+    		      var matches = xmlDoc.URL.match(/.*segment=\d:(\d+),(\d+).*/);
+    		      var responseMin = matches[1];
+    		      var responseMax = matches[2];    		   
+    		      var viewerMin = $('#slider-range').slider('values', 0);
+    		      var viewerMax = $('#slider-range').slider('values', 1);
+               if (viewerMax < responseMin || viewerMin > responseMax)
+    		         return;
+    		      
     		      var collapsed = view.collapsed;
     		      var expanded = view.expanded
-    		      var chart = view.chart;
-    		      var track = chart.addTrack().addLane();
-    		      var canvasId = chart.canvas.id
+    		      var canvasId = collapsed.canvas.id;
+    		      var display = document.getElementById(canvasId + '-input').getAttribute('data-display');
 
     				// check if chart is still visible
-    				if(!charts.hasOwnProperty(canvasId)) {
+    				if(!charts[canvasId]) {
     				   return;
     				}
 
-    				var features = response.GFF.SEGMENT[0].FEATURE;
-                if (!features) {
+    				var xmlFeatures = xmlDoc.getElementsByTagName('FEATURE');
+                if (!xmlFeatures) {
                    // TODO add an error fetching message
                    return; 
                 }
-    				for (var i=0; i < features.length; i++) {
-    					var f = features[i];
-    					var start = parseInt(f.START.textContent);
-    					var length =  parseInt(f.END.textContent) - start;
-    					if (f.ORIENTATION) {
-    						orientation =  f.ORIENTATION.textContent;
-    						var glyph = track.addGene(start, length, orientation);
-    					} else
-    						var glyph = track.addFeature( new Rect( "rect", start, length) );
+               
+               // convert features to array and sort
+               var features=[];
+               for(var i=0,n; n=xmlFeatures[i]; ++i) features.push(n);
+               features.sort( function(a,b){ return(a.getElementsByTagName('START')[0].textContent - b.getElementsByTagName('START')[0].textContent); } );
 
-    					if (f.TYPE.textContent) glyph.name = f.TYPE.textContent;
-    					if(f.LINK && f.LINK[0] && f.LINK[0].href) { 
-    						//glyph.onMouseover = f.TYPE.textContent + "\n" + f.LINK[0].textContent || f.LINK[0].href;
-    						//glyph.onClick = f.LINK[0].href.replace(":8080", "");
+     		      var track = expanded.addTrack();    
+               var lane = collapsed.addTrack().addLane();
+                
+               var numFeatures = features.length; 
+    				for (var i=0; i < numFeatures; i++) {
+    					var f = features[i];
+    					var start = parseInt(f.getElementsByTagName('START')[0].textContent);
+    					var end = parseInt(f.getElementsByTagName('END')[0].textContent);
+    					var length = end - start;
+    					
+    					var orientation = f.getElementsByTagName('ORIENTATION')[0].textContent;
+                  var type = f.getElementsByTagName('TYPE')[0].textContent;
+    					var lastFeature = lane.features[lane.features.length-1];    					    					
+    					
+    					if (orientation) {	
+                     var glyphT = track.addGene(start, length, orientation);
+                     if ( i > 0 && lastFeature.getEnd() >= start) {
+       					   lastFeature.length = Math.max(end, lastFeature.getEnd()) - lastFeature.position;
+       					   lastFeature.name = "";
+       					}
+       					else {
+                        var glyphL = lane.addGene(start, length, orientation);
+                        glyphL.name = type;
+                     }
+    					} else {
+    						var glyphT = track.addFeature( new Rect( "rect", start, length) );
+    						if ( i > 0 && lastFeature.getEnd() >= start) 
+       					   lastFeature.length = Math.max(end, lastFeature.getEnd()) - lastFeature.position;
+       					else
+                        var glyphL = lane.addFeature( new Rect( "rect", start, length) );
     					}
+                     
+    					if (type) {
+    					   glyphT.name = type;
+    					}
+                  // if(f.LINK && f.LINK[0] && f.LINK[0].href) { 
+                  //    //glyph.onMouseover = f.TYPE.textContent + "\n" + f.LINK[0].textContent || f.LINK[0].href;
+                  //    //glyph.onClick = f.LINK[0].href.replace(":8080", "");
+                  // }
     				}
-    				chart.ctx.clearRect(0,0,chart.canvas.width, chart.canvas.height);
-    				chart.laneSizes = 13; // set lanesizes so getHeight will be accurate
-    				chart.canvas.height = chart.getHeight() - 30;
+    				collapsed.ctx.clearRect(0,0,collapsed.canvas.width, collapsed.canvas.height);
+    				collapsed.laneSizes = 13; // set lanesizes so getHeight will be accurate
+    				collapsed.canvas.height = collapsed.getHeight() - 30;
 
     				// check again for race cases
     				if(!charts.hasOwnProperty(canvasId))
     				   return;
+    				   
+    				// keep track of views
     				charts[canvasId] = view;
-    				draw(chart, $( "#slider-range" ).slider( "values", 0 ), $( "#slider-range" ).slider( "values", 1 ));
-    				//chart.draw();
+    				
+    				// turn spinner off
+    				var idAttrSel = "\'[id=" + canvasId + "-parentdiv]\'"; // have to do it this way b\c there are spaces in the id
+               $(idAttrSel).find('.spinner').css('display', 'none')
+               
+    				// draw chart
+    				draw(collapsed, $( "#slider-range" ).slider( "values", 0 ), $( "#slider-range" ).slider( "values", 1 ));
+    				
     			}
     
             function toggleLinkUrl() {
                if( $('#link-url').css('display') == 'none' ) {
                   $('#link-url-input').val(serializeToUrl());
-                  $('#link-url').css('display', 'inherit')
+                  $('#link-url').css('display', 'inherit');
+                  $('#embed-url-input').val(serializeToIframe());
                }
                else
                   $('#link-url').css('display', 'none')
             }
 
     			function toggleExpand(canvasId, li) {
-    			      var chart = charts[canvasId].chart;   			   
+    			      var view = charts[canvasId];   			   
 
     			   // expand chart
     			   if (li.children[0].innerHTML == 'Expand') {
-       			   li.children[0].innerHTML = 'Collapse'
-       			   var features = chart.tracks[0].lanes[0].features;
-       			   chart.tracks = [];
-       			   features.sort( function(a,b){ return(a.position - b.position); } );
-       			   chart.loadFeatures(features);
+                  document.getElementById(canvasId + '-input').setAttribute('data-display', 'Expand');
+                  li.children[0].innerHTML = 'Collapse'
+                  //                   var features = chart.tracks[0].lanes[0].features;
+                  //                   chart.tracks = [];
+                  //                   features.sort( function(a,b){ return(a.position - b.position); } );
+                  //                   chart.loadFeatures(features);
+                  view.chart = view.expanded
     			   } else { // collapse chart 
-    			      li.children[0].innerHTML = 'Expand'
-    			      var features = [];
-    			      var numLanes = chart.tracks[0].lanes.length;
-    			      for(var k=0; k<numLanes; k++){
-    			         features = features.concat(chart.tracks[0].lanes[k].features)
-    			      }
-    			      chart.tracks = [];
-    			      chart.addTrack().addLane().loadFeatures(features);
+    			      view.chart = view.collapsed
+                  document.getElementById(canvasId + '-input').setAttribute('data-display', 'Collapse');
+                  li.children[0].innerHTML = 'Expand'
+                  // var features = [];
+                  // var numLanes = chart.tracks[0].lanes.length;
+                  // for(var k=0; k<numLanes; k++){
+                  //    features = features.concat(chart.tracks[0].lanes[k].features)
+                  // }
+                  // chart.tracks = [];
+                  // chart.addTrack().addLane().loadFeatures(features);
     			   }
-
-    			   chart.canvas.height = chart.getHeight() - 30;
-    			   draw(chart, $('#slider-range').slider('values',0), $('#slider-range').slider('values',1));
+               view.chart.laneSizes = 13;
+    			   view.chart.canvas.height = view.chart.getHeight() - 30;
+    			   draw(view.chart, $('#slider-range').slider('values',0), $('#slider-range').slider('values',1));
     			}
 
-             function draw(chart, newMin, newMax) {            
+             function draw(chart, newMin, newMax) {   
+                // chart.scrollable = true;
+                // chart.scrollValues = (newMin, newMax);
+                // chart.scale.off = true;
+                // chart.scale.pretty = false;
+                // chart.laneSizes = 13;
+                // chart.ctx.clearRect(0, 0, chart.canvas.width, chart.canvas.height);
+                // 
+                // chart.draw();
+                         
                 newChart = chart.slice(newMin, newMax);
                 newChart.scale.off = true;
                 newChart.scale.pretty = false;
@@ -457,12 +547,17 @@
 
                 // grab new coordinates for sources
                 for (canvasId in charts) {
+                  // show spinner
+                  var idAttrSel = "\'[id=" + canvasId + "-parentdiv]\'"; // have to do it this way b\c there are spaces in the id
+                  $(idAttrSel).find('.spinner').css('display', 'inherit') 
+                   
                   var request = new DasRequest;
                   var view = new View(charts[canvasId].chart.canvas);
-                  view.dasRequests.push(request);
+                  view.addDasRequest(request);
+                  charts[canvasId] = view;
                   
-                  var baseurl = document.getElementById(canvasId+'-input').value
-                  var url = baseurl + '/features?segment=' + $('#chromosome').val() + ':'  + scriblMin + "," + scriblMax + ';type=refGene';
+                  var cb = document.getElementById(canvasId+'-input');
+                  var url = cb.value + '/features?segment=' + $('#chromosome').val() + ':'  + scriblMin + "," + scriblMax + ';type=' + $(cb).attr('data-type');
                   request.xhr = JSDAS.features(url, function(response, view) { dasResponse(response, view) }, function(){}, "", view);
                 }            
              }
@@ -501,43 +596,66 @@
                  return (queryStringList);
              }
              
-             function serializeToUrl() {
+             function serializeToIframe() {
+                var iframeStr = '<iframe width="500" height="315" style="border:1px solid rgb(220,220,220); border-radius: 4px" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="';
+                iframeStr += serializeToUrl();
+                iframeStr += '&embed=true"'
+                iframeStr += '></iframe>';
+                iframeStr += '<br/><small>Powered by <a href="http://chmille4.github.com/Scribl" style="color:#0000FF;text-align:left">Scribl</a></small>';
+                return iframeStr;
+             }
+             
+             function serializeQuerys() {
                 var checkboxes = $('#source-list').find('input');
-                                
-                // get urls
-                var sourceUrls = [];
-                checkboxes.each( function(index, value){sourceUrls.push(value.value)});
-                
-                // get names
-                var sourceNames = [];
-                checkboxes.each( function(index, value){sourceNames.push(value.id.replace(/-input$/,''))});
-                
-                var trackOptions = [];
-                for(var i=0; i< sourceNames.length; i++){
-                   var expandOption = sourceNames[i] + '-expand-option';
-                   
-                   // check if source is being displayed
-                   var menu = document.getElementById(expandOption);
-                   if (menu)
-                     trackOptions.push(menu.children[0].innerHTML)
-                  else
-                     trackOptions.push('none');
-                }                
-                
-                // get min, max, chromosome
-                var min = $('#slider-range').slider('values',0);
-                var max = $('#slider-range').slider('values',1);
-                var chr = $('#chromosome').val();
-                
-                // construct query string
-                var queryStr = "?"
-                queryStr += "urls=" + sourceUrls.join(',');
-                queryStr += "&names=" + sourceNames.join(',');
-                queryStr += "&min=" + min;
-                queryStr += "&max=" + max;
-                queryStr += "&display=" + trackOptions.join(',');
-                queryStr += "&segment=" + chr;
-                
+
+                 // get urls
+                 var sourceUrls = [];
+                 checkboxes.each( function(index, value){sourceUrls.push(value.value)});
+
+                 // get names
+                 var sourceNames = [];
+                 checkboxes.each( function(index, value){sourceNames.push(value.id.replace(/-input$/,''))});
+
+                 // get types
+                 var types = []
+                 checkboxes.each( function(index,value){ types.push( checkboxes[index].getAttribute('data-type') ); } );
+
+                 var trackOptions = [];
+                 for(var i=0; i< sourceNames.length; i++){
+                    var expandOption = sourceNames[i] + '-expand-option';
+
+                 // check if source is being displayed
+                 var menu = document.getElementById(expandOption);
+                 if (menu){
+                   if (menu.children[0].innerHTML == "Expand")
+                     trackOptions.push("Collapse") // state is opposite of available action
+                   else
+                     trackOptions.push("Expand")
+                 }
+                 else
+                   trackOptions.push('none');
+                 }                
+
+                 // get min, max, chromosome
+                 var min = $('#slider-range').slider('values',0);
+                 var max = $('#slider-range').slider('values',1);
+                 var chr = $('#chromosome').val();
+
+                 // construct query string
+                 var queryStr = "?"
+                 queryStr += "urls=" + sourceUrls.join(',');
+                 queryStr += "&names=" + sourceNames.join(',');
+                 queryStr += "&min=" + min;
+                 queryStr += "&max=" + max;
+                 queryStr += "&display=" + trackOptions.join(',');
+                 queryStr += "&segment=" + chr;
+                 queryStr += "&types=" + types.join(',');
+                 
+                 return queryStr;
+             }
+             
+             function serializeToUrl() {                
+                var queryStr = serializeQuerys();
                 return (getBaseURL() + queryStr);                               
              }
              
@@ -547,20 +665,45 @@
                  return baseURL;
              }
              
+             function maximizeViewer() {
+                // hide all other divs
+                $('#side').css('display', 'none');
+                $('#header').css('display', 'none');
+                $('#footer').css('display', 'none');
+                $('#sourcePanelToolbar').css('display', 'none');
+                
+                // restyle main
+                $('#main').css('width', '100%');
+                $('#main').css('top', '0px');
+                
+                // move pan title up
+                $('#pan').css('margin-top', '0px');
+             }
+             
+             function exportToFigureMaker() {
+                var figureMakerUrl = "http://chmille4.github.com/figureMaker/index.html";
+                window.open(figureMakerUrl + serializeQuerys());
+             }
+             
              function loadUrlQuery() {
                 //parse url querys (if any)
-                var querys = getUrlQuerys();
+                var querys = getUrlQuerys();                                
                 
                 if (querys != "" && Object.keys(querys).length > 0 && Object.keys(querys)[0] != "" ) {
+                   
+                   if (querys['embed'])
+                     maximizeViewer();
                 
                    // set region
+                   var min = parseInt(querys['min']);
+                   var max = parseInt(querys['max'])
                    if(querys['min'] && querys['max']) {
-                      $('#slider-range').slider('values',0, parseInt(querys['min']));
-                      $('#slider-range').slider('values',1, parseInt(querys['max']));
-                      slideMin = scriblMin = Math.max(viewerMin - bufferSize,1);
-                      slideMax = scriblMax = parseInt(viewerMax + bufferSize);
+                      slideMin = scriblMin = Math.max(min - bufferSize,1);
+                      slideMax = scriblMax = parseInt(max + bufferSize);
                       $( "#slider-range" ).slider('option', 'min', slideMin);
                       $( "#slider-range" ).slider('option', 'max', slideMax);
+                      $('#slider-range').slider('values',0, min);
+                      $('#slider-range').slider('values',1, max);
                    }
                    
                    // set chromosome
@@ -569,12 +712,13 @@
                    // add Das sources                   
                    var urls = querys['urls'].split(',');
                    var names = querys['names'].split(',');
+                   var types = querys['types'].split(',');
+                   var displays = querys['display'].split(',');
                    for (var k=0; k < names.length; k++){
-                      addDas(names[k], urls[k]);
+                      addDas(names[k], urls[k], types[k], displays[k]);
                    }
                 
                    // set display
-                   var displays = querys['display'].split(',');
                    for (var i=0; i < displays.length; i++) {
                       if (displays[i] == 'Expand' || displays[i] == 'Collapse'){
                         var cb = document.getElementById(names[i] + '-input');
@@ -593,7 +737,9 @@
 <body> 
 
     <div id="header">
-       DAS Browser
+       <div style="margin-top: 9px">
+          DAS Browser
+       </div>
     </div> 
      
     <div id="content"> 
@@ -614,8 +760,9 @@
     	   <div id="addSourcePanel">
             <br/>
             <div>
-               DAS Source URL: <input id="dassource" type="text" name="dassource" /><br />
-               Source Name: <input id="dasname" type="text" name="dasname" />
+               DAS Source URL:<br/><input id="dassource" type="text" name="dassource" /><br />
+               Source Name:<br/><input id="dasname" type="text" name="dasname" /> <br/>
+               Type:<br/><input id="dastype" type="text" value="refGene"/>
                <br/>
                <a href="#" class="myButton" onClick="userAddDas()" alt="hi">Add</a>
                <a href="#" class="myButton" onClick="toggleDasSources()" alt="hi">X</a>  
@@ -636,7 +783,7 @@
           <div id='splash'>
              <p>To get started <a href="#" onClick="toggleDasSources()">add DAS sources</a> to see annotation data</p>
              <p>Or</p>
-             <p>Try out a <a href='file:///Users/chase/Desktop/tmp_workspace/Scribl/demos/dasViewer.html?urls=http://useast.ensembl.org/das/Homo_sapiens.NCBI36.transcript/,http://genome.ucsc.edu/cgi-bin/das/hg16/,http://genome.cse.ucsc.edu:80/cgi-bin/das/hg18/,http://das.sanger.ac.uk/das/ens_36_refseq/,http://www.ebi.ac.uk/das-srv/genomicdas/das/batman_CX/&names=Homo%20sapiens%20NCBI36,hg16,hg18,ens_36_refseq,MeDIP-chip%20Cervix&min=20000&max=80000&display=Expand,none,none,none,none&segment=1' onClick='location.reload(true)'>demo</a> with pre-selected sources</p>
+             <p>Try out a <a href='file:///Users/chase/Desktop/tmp_workspace/Scribl/demos/dasViewer.html?urls=http://useast.ensembl.org/das/Homo_sapiens.NCBI36.transcript,http://genome.cse.ucsc.edu:80/cgi-bin/das/hg18,http://das.sanger.ac.uk/das/ens_36_refseq,http://genome.cse.ucsc.edu:80/cgi-bin/das/hg18&names=Ensembl NCBI36/hg18,UCSC NCBI36/hg18 refGene,ens_NCBI36_refseq,UCSC NCBI36/hg18 snp130&min=1149729&max=1162457&display=Collapse,Collapse,Collapse,Collapse&segment=1&types=refGene,refGene,refGene,snp130' onClick='location.reload(true)'>demo</a> with pre-selected sources</p>
              <p style="font-size: 13px"><a href="#" onClick="toggleAbout()">About DAS Browser</a></p>
           </div>
              <div id='viewer'>   
@@ -654,13 +801,16 @@
                          Jump To <input id="jump" style="width:10em" id='jump-to'></input>
                    </div>
                    <div style="float:right; margin-right:10px">
-                      <a href="#" onClick='toggleLinkUrl()' title="Link to current view"style="margin-right:10px">Link</a><a href='#' onClick="toggleAbout()">About</a>
+                      <a href="#" onClick='toggleLinkUrl()' title="Link to current view"style="margin-right:10px">Link</a><a href="#" onClick='exportToFigureMaker()' title="Export view to Figure Maker"style="margin-right:10px">Figurize</a><a href='#' onClick="toggleAbout()">About</a>
                    </div>
              </div>  
           
              <div id="canvas-content">
                 <div id="canvasList"></div>
-                <div id="link-url">Link to current view<br/><input id="link-url-input"></input></div>
+                <div id="link-url">
+                   Link to current view<br/><input id="link-url-input"></input><br/>
+                   Embed in website<br/><input id="embed-url-input"></input>
+                </div>
              </div>
           </div>
           

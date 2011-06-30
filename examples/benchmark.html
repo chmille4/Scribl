@@ -2,9 +2,9 @@
 <html lang="en">
 	<head>
 		<!--<script src="../Scribl.min.js" ></script>-->
-		<script src="https://github.com/corbanbrook/webgl-2d/raw/master/webgl-2d.js"></script>
 		<script src="../src/Scribl.class.js" ></script>
 		<script src="../src/Scribl.js" ></script>
+		<script src="../src/Scribl.track.js" ></script>
 		<script src="../src/Scribl.lane.js" ></script>
 		<script src="../src/Scribl.events.js" ></script>
 		<script src="../src/Scribl.utils.js" ></script>
@@ -22,8 +22,8 @@
 
 			function draw(canvasName) {  
 				var canvas = document.getElementById(canvasName);  	  
-				ScriblFeatureSizeBenchmark(canvas, 1000, 1000, 600, 600, 20);
-				//ScriblNumFeaturesBenchmark(canvas, 1000, 0, 1000, 10, 100);
+				//ScriblFeatureSizeBenchmark(canvas, 1000, 1000, 600, 600, 20);
+				ScriblNumFeaturesBenchmark(canvas, 1000, 6000, 6000, 500, 100);
 				//ScriblChartSizeBenchmark(canvas, 0, 1000, 5000, 100, 100);
 				//ScriblPixelBenchmark(canvas, 1000, 1000, 1000, 600, 1);
 			}

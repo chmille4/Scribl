@@ -19,11 +19,11 @@ body
     width:100%; 
     height:40px; 
     position:absolute; 
-    background: -moz-linear-gradient(top, rgb(100, 100, 100), rgb(30, 30, 30));
-    background: -webkit-gradient(linear, left top, left bottom, from(rgb(100, 100, 100)), to(rgb(30,30,30)));
-    text-shadow: 1px 1px 1px rgb(100, 100, 100);
+    background: -moz-linear-gradient(top, rgb(50, 50, 50), rgb(100,100,100));
+    background: -webkit-gradient(linear, left top, left bottom, from(rgb(50, 50, 50)), to(rgb(100,100,100)));
+    text-shadow: 1px 1px 4px rgb(10, 10, 10);
     color: #d8e7f3;
-    font: bold 30px arial;
+    font: 28px ChunkFiveRegular;
     text-align: center;
 
 /*       background: -webkit-gradient(linear, left top, left bottom, from(rgb(160, 160, 160)), to(rgb(110,110,110)));
@@ -193,9 +193,14 @@ body
 }
 
 #link-url {
-    background-color: rgb(200,200,200);
+    background-color: rgb(240,240,240);
+    color: rgb(50,50,50);
     border: 1px solid rgb(160,160, 160);
     border-top: 0px;
+    border-bottom-left-radius:4px;
+    -moz-border-radius-bottomleft:4px;
+    border-bottom-right-radius:4px;
+    -moz-border-radius-bottomright:4px;
     width: 128px;
     float:right;
     margin-top: 0px;
@@ -244,7 +249,6 @@ body
 }
 
 .canvas-div {
-    margin-bottom: 10px;
     border-radius:4px;
     position:relative;
 }

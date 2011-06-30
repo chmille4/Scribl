@@ -3,13 +3,17 @@
 	Main File: sets defaults, defines how to add features to chart/view, and some methods to help coordinate drawing
 	Chase Miller 2011
  */
+ 
+ 
+ 
 
 var Scribl = Class.extend({
+
 	/**
 	 * @constructor
 	 */
 	init: function(canvas, width) {
-
+        this.scrolled = false;
 		// create canvas contexts
 		
 		var ctx = canvas.getContext("2d");  
@@ -79,6 +83,10 @@ var Scribl = Class.extend({
 		this.tooltips.roundness = 5;  // in pixels
 		this.tooltips.fade = false;
 		this.tooltips.style = "light";  // also a "dark" option
+		
+		// scroll defaults
+        this.scrollable = false;
+        this.scrollValues = [0, undefined]; // values in nts where scroll should start at when loaded
 	
 		// private variables
 		this.myMouseEventHandler = new MouseEventHandler(this);
@@ -244,77 +252,89 @@ var Scribl = Class.extend({
 		theChart.draw(); 
 	},
 	
-	// function   : zooms chart in or out
-	// startMin   = where the min (left) scale starts the zoom
-	// stopMin    = where the min scale ends the zoom
-	// startMax   = where the max (right) scale starts the zoom 
-	// stopMax    = where the max scale ends the zoom
-	// drawRate   = the delay (in milliseconds) between each draw (e.g. 1000 would be a 1s/frame draw rate)
-	// smoothness = the number of pixels changed between frames ( lower = smoother but slower )
-	// zoom: function(startMin, startMax, stopMin, stopMax, drawRate, smoothness) {
-	// 	
-	// 	var newChart = undefined;
-	// 	var delay = 0;
-	// 	var pxlsToChange = smoothness;
-	// 	var currMax = startMax;
-	// 	var currMin = startMin;
-	// 	
-	// 	// loop till the zoom is done
-	// 	while(currMin != stopMin || currMax != stopMax) {
-	// 
-	// 		// create new chart as a region of the original chart
-	// 		newChart = this.slice(currMin, currMax);
-	// 		
-	// 		// turn off auto scale stuff
-	// 		newChart.scale.off = true;
-	// 		newChart.scale.auto = false;
-	// 		newChart.scale.min = currMin;
-	// 		newChart.scale.max = currMax;
-	// 		newChart.scale.pretty = false;
-	// 		
-	// 		// set delay amount
-	// 		delay += drawRate;
-	// 		
-	// 		// schedule current chart to be drawn with some delay
-	// 		setTimeout(this.delayed_draw, delay, newChart );
-	// 		
-	// 		// determine number of nts to change min/max scales
-	// 		var maxNtsToChange = newChart.ntsPerPixel((currMax - stopMax)) * pxlsToChange;
-	// 		var minNtsToChange = newChart.ntsPerPixel((currMin - stopMin)) * pxlsToChange;
-	// 		
-	// 		// check if zoom is close enough stopMin
-	// 		if ( Math.abs(minNtsToChange) < .05 )
-	// 			currMin = stopMin;
-	// 		else
-	// 			currMin -= minNtsToChange;
-	// 
-	// 		// check if zoom is close enough to stopMax
-	// 		if ( Math.abs(maxNtsToChange) < .05 )
-	// 			currMax = stopMax
-	// 		else
-	// 			currMax -= maxNtsToChange;	
-	// 		
-	// 	}
-	// 
-	// 	// draw final zoomed chart with scale on
-	// 	// get final slice
-	// 	newChart = this.slice(stopMin, stopMax);
-	// 
-	// 	// set scale
-	// 	newChart.scale.max = stopMax;
-	// 	newChart.scale.min = stopMin;
-	// 	newChart.tick.major.size = 1000;
-	// 	
-	// 	// schedule final chart to be drawn at 1 millisecond after zoom completes
-	// 	setTimeout(this.delayed_draw, delay + 1, newChart);
-	// 
-	// },
-	
 	// draws chart
 	draw: function() {
 		// initalize variables
 		var ctx = this.ctx;
 		var tracks = this.tracks;
+		
+		// check if scrollable
+		if (this.scrollable == true) {		    
+		    var scrollStartMin;
+		    
+            if (!this.scrolled){
+    		    // create divs
+    		    var parentDiv = document.createElement('div');
+    		    var canvasContainer = document.createElement('div');
+    		    var sliderDiv = document.createElement('div');
+    		    sliderDiv.id = "scribl-zoom-slider";
+    		    sliderDiv.className = 'slider';
+    		    sliderDiv.style.float = 'left';
+    		    sliderDiv.style.height = (new String(this.canvas.height * .5)) + 'px';
+    		    sliderDiv.style.margin = "30px auto auto -20px"
+            
+                // grab css styling from canavs
+                parentDiv.style.cssText = this.canvas.style.cssText;
+                this.canvas.style.cssText = '';
+                parentWidth = parseInt(this.canvas.width) + 25;
+                parentDiv.style.width = parentWidth + 'px';
+                canvasContainer.style.width = this.canvas.width + 'px';
+                canvasContainer.style.overflow = 'auto';
+                canvasContainer.id = 'scroll-wrapper';                     
+
+
+
+                this.canvas.parentNode.replaceChild(parentDiv, this.canvas);
+                parentDiv.appendChild(sliderDiv);
+                canvasContainer.appendChild(this.canvas);
+                parentDiv.appendChild(canvasContainer);
+                $(canvasContainer).dragscrollable({dragSelector: 'canvas:first', acceptPropagatedEvent: false});      
+            }
+                    
+            var totalNts =  this.scale.max - this.scale.min;
+            var scrollStartMax = this.scrollValues[1] || this.scale.max - totalNts * .35;
+            if( this.scrollValues[0] != undefined)
+                scrollStartMin = this.scrollValues[0];
+            else
+                scrollStartMin = this.scale.max + totalNts * .35;            
+            var viewNts = scrollStartMax - scrollStartMin;            
+            var viewNtsPerPixel = viewNts / document.getElementById('scroll-wrapper').style.width.split('px')[0];
+            var canvasWidth = totalNts / viewNtsPerPixel;
+            this.canvas.width = canvasWidth;
+            this.width = canvasWidth - 30;
+            schart = this;
+            $(sliderDiv).slider({
+          			orientation: "vertical",
+          			range: "min",
+          			min: 1,
+          			max: 100,
+          			value: 60,
+          			slide: function( event, ui ) {
+          			    var totalNts = schart.scale.max - schart.scale.min;
+          			    var width = ui['value'] / 100 * totalNts;
+          			    var widthPixels = ui['value'] / 100 * schart.canvas.width;
+                        var canvasContainer = document.getElementById('scroll-wrapper');
+                        var center = canvasContainer.scrollLeft + parseInt(canvasContainer.style.width.split('px')[0]) / 2;
+                        
+                        // get min max pixels
+                        var minPixel = center - widthPixels/2;
+                        var maxPixel = center + widthPixels/2;
+                        
+                        // convert to nt
+                        var min = minPixel / schart.canvas.width * totalNts;
+                        var max = maxPixel / schart.canvas.width * totalNts;
+                        
+                        schart.scrollValues = [min, max];
+          			    schart.ctx.clearRect(0, 0, schart.canvas.width, schart.canvas.height);
+          			    schart.draw();
+          			}
+          		});
+            
+
+            var startingPixel = (scrollStartMin - this.scale.min) / totalNts * this.canvas.width;        
+            document.getElementById('scroll-wrapper').scrollLeft = startingPixel
+            this.scrolled = true;
+		}
 		
 		ctx.save();
 		// make scale pretty by starting and ending the scale at major ticks and choosing best tick distances
@@ -534,5 +554,6 @@ var Scribl = Class.extend({
 			this.canvas.addEventListener('click', function(event) { chart.handleMouseEvent(event, "click") }, false);
 		this.events.added = true;
 	}
+	
 	
 });

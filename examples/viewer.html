@@ -2,30 +2,30 @@
 <html lang="en">
 	<head>
 		<title>Scribl - viewer</title>
-		<script src="../Scribl.min.js" ></script>		
+      <!-- <script src="../Scribl.min.js" ></script>      -->
+      <script src="../src/Scribl.class.js" ></script>
+		<script src="../src/Scribl.js" ></script>
+		<script src="../src/Scribl.track.js" ></script>
+		<script src="../src/Scribl.lane.js" ></script>
+		<script src="../src/Scribl.events.js" ></script>
+		<script src="../src/Scribl.utils.js" ></script>
+		<script src="../src/Scribl.svg.js" ></script>
+		<script src="../src/Scribl.glyph.js" ></script>
+		<script src="../src/glyph/Scribl.blockarrow.js" ></script>
+		<script src="../src/glyph/Scribl.arrow.js" ></script>
+		<script src="../src/glyph/Scribl.rect.js" ></script>
+		<script src="../src/glyph/Scribl.line.js" ></script>
+		<script src="../src/glyph/Scribl.complex.js" ></script>		
+		<script src="../src/parsers/genbank.js" ></script>		
+		
 		<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
 		<link rel="stylesheet" type="text/css" href="demos.css" />
 	  	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
-	  	<script src="jquery-ui.chase.min.js"></script>
-	
-		<style>
-		#demo-frame > div.demo { padding: 10px !important; };
-		</style>
-		<script>
-		$(function() {
-			$( "#slider-range" ).slider({
-				range: true,
-				min: 0,
-				max: 360000,
-				values: [ 100000, 250000 ],
-				slide: function( event, ui ) {
-					changeScale( ui.values[ 0 ], ui.values[ 1 ] );
-				}
-			});
-			$( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
-				" - $" + $( "#slider-range" ).slider( "values", 1 ) );
-		});
-		</script>
+	  	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js"></script>
+      <!-- <script src="jquery-ui.chase.min.js"></script>
+       -->
+       <script type="text/javascript" src="../lib/dragscrollable.js"></script> 
+	  	
 		
 		
 		<script type="text/javascript">
@@ -45,22 +45,22 @@
 
 	</head>  
 	
-	<body>  
+	<body>  	   				
 		<div id="description"><h2>Simple Viewer</h2>
 			<div>(Best viewed in Chrome/Safari)</div>
 		<br/><form>
 			<div style="margin-left: auto; margin-right: auto; width:50%">
 				<div>Viewing 360kb region of Ecoli Genome</div><br/>
 				<div style="font-size:.8em">Move End Sliders to Change Zoom <br/> Drag Middle to Scroll Left and Right</div>				
-				<div id="slider-range" class="slider" style="width:100%;"></div>
 				
 			</div>
 			
 		</div>
 		<div id="container">
-			<canvas id="canvas" width="840" height="400"></canvas>  
+		            <canvas id="canvas" width="940px" height="400px"  style="margin-left:auto; margin-right:auto"></canvas>  
 		</div>
-							<div id="ecoli" style="display: none">
+
+		<div id="ecoli" style="display: none">
 		LOCUS       FR719195              359618 bp    DNA     linear   BCT 16-NOV-2010
 		DEFINITION  Erwinia amylovora ATCC BAA-2158, whole genome shotgun sequence,
 		            contig 15.
@@ -12118,22 +12118,12 @@
 	<script>
 
 		var zoomCanvas = document.getElementById('canvas');
-		origZoomChart = new Scribl(zoomCanvas, 810);
+		origZoomChart = new Scribl(zoomCanvas, 900);
 		origZoomChart.loadGenbank(document.getElementById('ecoli').innerHTML);
-		changeScale(100000, 250000);
+      origZoomChart.scrollable = true;
+	   origZoomChart.scrollValues = [200000, 250000];
+		origZoomChart.draw();
 		
-		function changeScale(newMin, newMax) {
-			newChart = origZoomChart.slice(newMin, newMax);
-			newChart.scale.off = true;
-			newChart.scale.pretty = false;
-		//	newChart.scale.offset = false;
-		   newChart.scale.auto = false;
-			newChart.scale.min = newMin;
-			newChart.scale.max = newMax;
-			origZoomChart.ctx.clearRect(0, 0, 900, 400);
-			newChart.draw();
-		}
-
 	</script>
 		
 	</body>

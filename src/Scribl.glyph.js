@@ -78,6 +78,11 @@ var Glyph = Class.extend({
 		return (glyph.lane.y); 
 	},
 	
+	// get end
+	getEnd: function() {
+        return (this.position + this.length);
+	},
+	
 	// shallow clone
 	clone: function() {
         var glyph = this;
@@ -184,7 +189,7 @@ var Glyph = Class.extend({
 
 		// test if text size is too big and if so make it smaller
 		var dim = ctx.measureText(text);
-		if (text != "") {
+		if (text && text != "") {
 			while ( (length-dim.width) < 4 ) {
 				fontSize = /^\d+/.exec(ctx.font);
 				fontSize--;

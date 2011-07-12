@@ -67,10 +67,10 @@ var Scribl = Class.extend({
 		this.tick = {};
 		this.tick.auto = true;
 		this.tick.major = {};
-		this.tick.major.size = 10; // in nucleotides
+		this.tick.major.size = 10; // width between major ticks in nucleotides
 		this.tick.major.color = "black";
 		this.tick.minor = {};
-		this.tick.minor.size = 1; // in nucleotides
+		this.tick.minor.size = 1; // width between minor ticks in nucleotides
 		this.tick.minor.color = "rgb(55,55,55)";
 		this.tick.halfColor = "rgb(10,10,10)";
 	
@@ -135,6 +135,8 @@ var Scribl = Class.extend({
 	addTrack: function() {
 		var track = new Track(this.ctx);
 		track.chart = this;
+      if (this.tracks.length == 1 && this.tracks[0] == undefined)
+         this.tracks = [];
 		this.tracks.push(track);
 		return track;
 	},
@@ -463,7 +465,7 @@ var Scribl = Class.extend({
         var baseNum =  Math.pow(10, parseInt(irregularTick).toString().length -1);
         this.tick.major.size = Math.ceil(irregularTick / baseNum) * baseNum;		
 				
-		// round up to a 5* o 1* number (e.g 5000 or 10000)
+		// round up to a 5* or 1* number (e.g 5000 or 10000)
 		var digits = (this.tick.major.size + '').length;
 		var places = Math.pow(10, digits);
 		var first_digit = this.tick.major.size / places;

@@ -2,69 +2,10 @@
 
 <html> 
 <head> 
-	<title>Dragscrollable and scrollsync plugins demo</title> 
- 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
- 
-	<script type="text/javascript" src="../lib/scrollsync.js"></script> 
-	<script type="text/javascript" src="../lib/dragscrollable.js"></script> 
- 
-<script type="text/javascript"> 
-  $(function() {
-	
-	// Set header viewport to follow viewport scroll on x axis
-   // $('#viewport, #header_viewport').
-   //    scrollsync({targetSelector: '#viewport', axis : 'x'});
-	
-	// Set drag scroll on first descendant of class dragger on both selected elements
-	$('#viewport').
-		dragscrollable({dragSelector: '.dragger:first', acceptPropagatedEvent: false});
-	 
-  });
- 
-</script> 
-	<style> 
-	
-		* {
-			margin:0;
-			padding:0;
-			border:none;
-		}
-		
-		#viewport {
-			position: relative;  /* to enable further positioned divs inside content area */
-			border: 1px solid #777;
-			background: white;
-			width:540px;
-			height:450px;
-			overflow: auto;
-		}
-		
 
- 
-	</style> 
 </head> 
  
 <body> 
-
-	<div id="viewport"> 
-		
-				<div class="dragger"> 
-					Lorem ipsum dolor sit amet, consectetuer adipiscing elit. In nisi arcu, viverra vitae, cursus non, pretium eget, leo. Praesent euismod, nisl at sollicitudin pharetra, nisi sapien mattis massa, non volutpat lacus magna aliquam sem. Cras cursus velit in diam. Duis porttitor hendrerit nisl. Proin iaculis vehicula augue. Curabitur placerat nulla sit amet lorem. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec eget orci eget mauris molestie condimentum. Curabitur suscipit. Integer metus leo, lacinia sollicitudin, euismod ac, tempus at, nibh. Phasellus suscipit, massa quis euismod eleifend, pede sapien euismod justo, a convallis lacus ante in magna. Curabitur tincidunt orci non leo. Sed augue elit, cursus sed, fringilla ac, laoreet vel, tellus. Maecenas tristique, pede sed consequat convallis, lorem sem congue purus, at gravida risus tortor id ligula. Nam sollicitudin.
-	
-					Vestibulum a purus vitae velit laoreet eleifend. Nullam condimentum scelerisque lacus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur risus ipsum, molestie nec, mollis tempus, hendrerit vel, augue. Fusce at nisi non mauris gravida rutrum. Vivamus porttitor. Nunc ligula. Integer vestibulum, libero vel lacinia iaculis, felis lorem facilisis est, in tempor tortor erat ac leo. Nullam volutpat mattis metus. Morbi euismod lacinia libero. Morbi pretium ligula sed sapien venenatis feugiat.
-					
-					Duis pellentesque, metus in egestas lobortis, purus felis dictum erat, et dignissim urna ligula nec augue. Sed eleifend elit. Nam fermentum congue tortor. Nunc ipsum. Nam vestibulum massa eu dolor. Donec justo sapien, convallis in, tincidunt in, tempor nec, felis. Morbi tristique. Quisque accumsan, erat a tristique sagittis, metus lorem dignissim nibh, sagittis fermentum velit risus quis turpis. In porta luctus eros. Donec justo dolor, molestie sit amet, interdum sed, ultricies nec, felis. Ut porta risus eu nulla. In venenatis consequat mauris. Nullam urna.
-					
-					Ut eget diam. Sed orci elit, tincidunt et, adipiscing at, tristique eu, lorem. Suspendisse blandit quam nec erat ultrices euismod. Mauris nec mauris in leo consectetuer viverra. Aliquam congue interdum nibh. Proin posuere ornare libero. Donec posuere lacus ac massa. Nulla a ligula. Fusce pretium tempus ipsum. Mauris laoreet. Donec diam. Curabitur at quam. Suspendisse potenti. Vivamus nisi. Fusce vulputate dui non tellus. 
-				</div> 
-
-	</div> <!-- viewport --> 
-	
-	<br/> 
-	
-	<p> 
-		Scroll bars are left visible in the example but they can be removed by setting overflow:hidden for the viewport
-	</p> 
+ <iframe width="500" height="315" style="border:1px solid rgb(220,220,220); border-radius: 4px" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="file:///Users/chase/Desktop/tmp_workspace/Scribl/demos/dasViewer.html?urls=http://useast.ensembl.org/das/Homo_sapiens.NCBI36.transcript,http://genome.cse.ucsc.edu:80/cgi-bin/das/hg18,http://das.sanger.ac.uk/das/ens_36_refseq,http://genome.cse.ucsc.edu:80/cgi-bin/das/hg18&names=Ensembl NCBI36/hg18,UCSC NCBI36/hg18 refGene,ens_NCBI36_refseq,UCSC NCBI36/hg18 snp130&min=1110173.611111111&max=1130434.0277777778&display=Collapse,none,Collapse,none&segment=1&types=refGene,refGene,refGene,snp130&embed=true"></iframe><br/><small>Powered by <a href="http://chmille4.github.com/Scribl" style="color:#0000FF;text-align:left">Scribl</a></small>
   </body> 
 </html>

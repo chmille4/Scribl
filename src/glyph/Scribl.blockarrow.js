@@ -25,7 +25,7 @@
 			var ctx = ctx || blockarrow.ctx;
 			var length = length || blockarrow.pixelLength();
 			var height = height || blockarrow.getHeight();
-			var roundness = roundness + 1 || blockarrow.getRoundness();
+			var roundness = roundness + 1 || blockarrow.calcRoundness();
 			if (roundness != undefined) roundness -= 1;
 			var side = length*.75;
 			

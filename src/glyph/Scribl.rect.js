@@ -24,7 +24,7 @@
 			var ctx = ctx || rect.ctx;
 			var length = length || rect.pixelLength();
 			var height = height || rect.getHeight();
-			var roundness = roundness + 1 || rect.getRoundness();
+			var roundness = roundness + 1 || rect.calcRoundness();
 			if (roundness != undefined) roundness -= 1
 		
 			// Set starting draw position

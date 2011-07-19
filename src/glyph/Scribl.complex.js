@@ -40,7 +40,7 @@
 			var ctx = ctx || complex.ctx;
 			var length = length || complex.pixelLength();
 			var height = height || complex.getHeight();
-			var roundness = roundness + 1 || complex.getRoundness();
+			var roundness = roundness + 1 || complex.calcRoundness();
 			if (roundness != undefined) roundness -= 1;
 		
 			// set start x and y draw locations to 0

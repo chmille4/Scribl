@@ -41,7 +41,7 @@
 			// see if optional parameters are set and get chart specific info
 			var ctx = ctx || arrow.ctx;
 			var height = height || arrow.getHeight();
-			var roundness = roundness + 1 || arrow.getRoundness();
+			var roundness = roundness + 1 || arrow.calcRoundness();
 			if (roundness != undefined) roundness -= 1;
 			var thickness =  arrow.pixelThickness();
 			var arrowLength = 0;

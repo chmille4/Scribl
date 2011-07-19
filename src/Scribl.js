@@ -271,7 +271,7 @@ var Scribl = Class.extend({
     		    var sliderDiv = document.createElement('div');
     		    sliderDiv.id = "scribl-zoom-slider";
     		    sliderDiv.className = 'slider';
-    		    sliderDiv.style.float = 'left';
+    		    sliderDiv.style.cssFloat = 'left';
     		    sliderDiv.style.height = (new String(this.canvas.height * .5)) + 'px';
     		    sliderDiv.style.margin = "30px auto auto -20px"
             
@@ -553,6 +553,7 @@ var Scribl = Class.extend({
 		if ( this.events.mouseovers.length > 0)
 			this.canvas.addEventListener('mousemove', function(event) { chart.handleMouseEvent(event, "mouseover") }, false);
 		if ( this.events.clicks.length > 0 )
+		   //$(this.canvas).bind('click', function(e) {chart.handleMouseEvent(e, "click")})
 			this.canvas.addEventListener('click', function(event) { chart.handleMouseEvent(event, "click") }, false);
 		this.events.added = true;
 	}

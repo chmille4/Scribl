@@ -69,13 +69,14 @@ var MouseEventHandler = Class.extend({
                 var onClick;
 		
 		if (obj != undefined && obj.onClick != undefined)
-                        onClick = obj.onClick
+         onClick = obj.onClick
 		else if (obj && obj.parent && obj.parent.onClick)
-                        onClick = obj.parent.onClick
-                if(onClick){
-                    if      (typeof(onClick) == "string"){ window.open(onClick); }
-                    else if (typeof(onClick) == "function"){ onClick(obj); }
-                }
+         onClick = obj.parent.onClick
+      
+      if(onClick){
+        if      (typeof(onClick) == "string"){ window.open(onClick); }
+        else if (typeof(onClick) == "function"){ onClick(obj); }
+      }
 	},
 
 	

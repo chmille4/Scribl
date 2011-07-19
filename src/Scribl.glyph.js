@@ -23,6 +23,7 @@ var Glyph = Class.extend({
 		
 		glyph.name = "";
 		glyph.borderColor = "none";
+		glyph.borderWidth = undefined;
 		
 		// initialize font variables
 		glyph.text = {};
@@ -32,14 +33,17 @@ var Glyph = Class.extend({
 		glyph.text.color = undefined; // default: 'black'
 		glyph.text.align = undefined; // default: 'middle'
 		
-		    /** deprecated */
-    		glyph.font = {};
-    		// unset defaults that can be used to override chart defaults for specific glyphs
-    		glyph.font.style = undefined; // default: 'arial'
-    		glyph.font.size = undefined;  // default: '15' in pixels 
-    		glyph.font.color = undefined; // default: 'black'
-    		glyph.font.align = undefined; // default: 'middle'
-    		/** deprecated */
+		/** depreccated **/
+ 		glyph.font = {};
+ 		// unset defaults that can be used to override chart defaults for specific glyphs
+ 		glyph.font.style = undefined; // default: 'arial'
+ 		glyph.font.size = undefined;  // default: '15' in pixels 
+ 		glyph.font.color = undefined; // default: 'black'
+ 		glyph.font.align = undefined; // default: 'middle'
+ 		/** deprecated **/
+ 		
+ 		glyph.onClick = undefined;
+
 		
 		// set option attributes if any
 		for (var attribute in opts)
@@ -65,6 +69,13 @@ var Glyph = Class.extend({
 		var glyph = this;
 		return (glyph.length * glyph.lane.chart.pixelsPerNt() || 1 ); 
 	},
+	
+	// returns the height position in pixels of the glyph
+	pixelHeight: function() { 
+		var glyph = this;
+		return (glyph.getHeight() * glyph.lane.chart.pixelsPerNt() || 1 ); 
+	},
+	
 	
 	// returns the x position in pixels of the glyph relative to the left of the chart
 	pixelPosition_x: function() { 
@@ -147,6 +158,28 @@ var Glyph = Class.extend({
 			glyph.font.align = glyph.lane.chart.glyph.text.align;
 	},
 	
+	setOnClickOptions: function() {
+	   // ctype level overrides chart and defaults, and glyph level overrides everything		
+	   var onClick = undefined;
+		var glyph = this;
+		var chartLevel = this.lane.chart[glyph.type];
+
+		// check if individual featurea has a onClick
+		if ( glyph.onClick != undefined )
+			return
+		else if ( glyph.parent && glyph.parent.onClick != undefined )
+				onClick = glyph.parent.onClick;
+		// check if custom chart level is set
+		else if (chartLevel != undefined && chartLevel.onClick != undefined)
+			onClick = chartLevel.onClick;
+		// fall back to default behavior for all glyphs
+		else
+			onClick = glyph.lane.chart.glyph.onClick;
+			
+		glyph.onClick = onClick;
+		
+	},
+	
 	drawText : function(text) {
 		// initialize
 		var glyph = this;
@@ -215,6 +248,8 @@ var Glyph = Class.extend({
 		}
 	},
 	
+	calcRoundness : function() {return (this.getHeight() * this.getRoundness()/100);},
+	
 	getRoundness : function() { 
 		var roundness;
 		var glyph = this;
@@ -232,7 +267,7 @@ var Glyph = Class.extend({
 		else
 			roundness = glyph.lane.chart.glyph.roundness;
 			
-		return (glyph.getHeight() * roundness/100); 
+		return (roundness); 
 	},
 	
 	getHeight : function() {
@@ -248,10 +283,10 @@ var Glyph = Class.extend({
 		// check if default color was ovewridden on a glyph level
 		if (glyph.borderColor != undefined)
 			color = glyph.borderColor
-		else if ( glyph.parent && glyph.parent.color != undefined )
-			color = glyph.parent.color;
-		else if ( chartLevelGlyph.color != undefined)
-			color = chartLevelGlyph.color;
+		else if ( glyph.parent && glyph.parent.borderColor != undefined )
+			color = glyph.parent.borderColor;
+		else if ( chartLevelGlyph.borderColor != undefined)
+			color = chartLevelGlyph.borderColor;
 		else if (chartLevelGlyph.linearGradient != undefined){
 			var lineargradient2 = glyph.ctx.createLinearGradient(glyph.length/2,0,glyph.length/2, glyph.getHeight()); 
 			for (var i = 0; i < chartLevelGlyph.linearGradient.length ; i++ ) {
@@ -266,6 +301,27 @@ var Glyph = Class.extend({
 		}
 		
 		return ( color );
+	},
+	
+	getLineWidth : function() {
+	   var glyph = this;
+		var width;
+		var chartLevelGlyph = this.lane.chart[glyph.type];			
+		
+	  	// check if default width was ovewridden on a glyph level
+		if (glyph.borderWidth != undefined)
+			width = glyph.borderWidth
+		else if ( glyph.parent && glyph.parent.borderWidth != undefined )
+			width = glyph.parent.borderWidth;
+		else if ( chartLevelGlyph.borderWidth != undefined)
+			width = chartLevelGlyph.borderWidth;
+      else if ( glyph.lane.chart.glyph.borderWidth != undefined)
+			width = glyph.lane.chart.glyph.borderWidth
+		else {
+			width = 1;
+		} 
+		
+		return (width);
 	},
 	
 	getFillStyle : function() {
@@ -314,8 +370,9 @@ var Glyph = Class.extend({
 	draw: function() {
 		var glyph = this;
 		
-		// check if chart level text options were set
+		// check if chart level options were set
 		glyph.setTextOptions();
+		glyph.setOnClickOptions();
 		
 		// set ctx
 		glyph.ctx = glyph.lane.chart.ctx;
@@ -345,9 +402,12 @@ var Glyph = Class.extend({
 				glyph.clearInside();
 			}
 			var saveStrokeStyle = glyph.ctx.strokeStyle;
+			var saveLineWidth = glyph.ctx.lineWidth;
 			glyph.ctx.strokeStyle = glyph.getStrokeStyle();
+			glyph.ctx.lineWidth = glyph.getLineWidth()
 			glyph.ctx.stroke();
 			glyph.ctx.strokeStyle = saveStrokeStyle;
+			glyph.ctx.lineWidth = saveLineWidth;
 		}
 		// draw fill color
 		if (glyph.color !="none") glyph.ctx.fill();

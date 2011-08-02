@@ -6,9 +6,10 @@ var Lane = Class.extend({
 		// defaults
 		this.height = undefined;
 		this.features = [];
-        this.ctx = ctx;
-        this.track = track;
-        this.chart = track.chart;
+      this.ctx = ctx;
+      this.track = track;
+      this.chart = track.chart;
+      this.uid = _uniqueId('lane');
 	},
 	
 	addGene: function(position, length, strand, opts) {
@@ -50,6 +51,19 @@ var Lane = Class.extend({
 			return this.height;
 		else
 			return this.chart.laneSizes;
+	},
+	
+	pixelPosition_y: function() {
+	   var lane = this;
+	   var y = lane.track.pixelPosition_y();
+	   var laneHeight = lane.getHeight();
+	   for( var i=0; i < lane.track.lanes.length; i++ ) {
+	      y += lane.track.chart.laneBuffer;
+	      if (lane.uid == lane.track.lanes[i].uid) break;
+         y += laneHeight;
+	   }
+	   
+	   return y;
 	},
 	
 	// draw lane

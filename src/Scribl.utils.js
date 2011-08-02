@@ -36,3 +36,10 @@ function ScriblWrapLines(max, text) {
 	lines.push(temp)
 	return ([lines, linecount]); // sends value of temp back
 }
+
+
+var idCounter = 0;
+_uniqueId = function(prefix) {
+  var id = idCounter++;
+  return prefix ? prefix + id : id;
+};

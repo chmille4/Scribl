@@ -19,6 +19,8 @@
 		<link rel="stylesheet" type="text/css" href="demos.css" />
 		
 		<script> 
+		
+
 
 			function draw(canvasName) {  
 					
@@ -29,36 +31,47 @@
 					chart1 = new Scribl(canvas, 600);
                // style chart
                chart1.glyph.text.color = 'white';
-               chart1.laneSizes = 35;
+               chart1.glyph.onClick = function(feature) { 
+                  alert(feature.name);
+               };
+               chart1.laneSizes = 15;
                chart1.scale.min = 0;
                chart1.scale.max = 1000;
-
-               // Add Features      position, length, orientation
-               // var gene1 = chart1.addFeature(
-               //    // parent features
-               //    new Complex('gene', 0, 6000, '+', [
-               //       // sub features
-               //       new Rect('exon', 0, 400, {'name' : 'PAZ', 'color' : 'green', 'onMouseover' : 'PAZ: 400nt'}),
-               //       new Rect('exon', 450, 400, {'name' : 'Piwi', 'color' : 'purple', 'roundness' : 20}),
-               //       new Rect('exon', 900, 400, {'name' : 'Piwi', 'color' : 'purple', 'roundness' : 20}),
-               //       new Arrow('unknown', 1800, '+', {'color':'red'}),
-               //       new Rect('exon', 2100, 380, {'name' : 'PAZ', 'color' : 'green'}),
-               //       new BlockArrow('exon', 2600, 700, '+', {'name' : 'GAGE', 'color' : 'rgb(149, 55,53)'}),
-               //       new BlockArrow('exon', 3500, 700, '+', {'color' : 'none', "borderColor" : 'black', 'roundness' : 19}),
-               //       new BlockArrow('exon', 5300, 700, '+', {'name' : 'GAGE', 'color' : 'rgb(149, 55,53)'}),
-               //       
-               //    ])
-               // );
+               
+               var track1 = chart1.addTrack();               
+               track1.drawStyle = 'line';
+               var gene3 = track1.addGene(0, 1000, '+');
+               var gene6 = track1.addGene(0, 1000, '+');
+               gene3.name = 3;
+               //addBorder(gene3);
+               var gene4 = track1.addGene(1200, 1000, '+');
+               gene4.name = 4;
+               var gene5 = track1.addGene(2400, 1000, '+');
+               gene5.name = 5;
+               
+               var track2 = chart1.addTrack();               
+               
+               var gene13 = track2.addGene(0, 1000, '+');
+               var gene16 = track2.addGene(0, 1000, '+');
+               gene13.name = 13;
+               //addBorder(gene3);
+               var gene14 = track2.addGene(1200, 1000, '+');
+               gene14.name = 14;
+               var gene15 = track2.addGene(2400, 1000, '+');
+               gene15.name = 15;
+               
 
                // Draw Chart
+//               chart1.tracks[0].drawStyle = 'line';
                chart1.draw();
-
 
                // Create image of chart1
                var img = chart1.canvas.toDataURL("image/png");
                // Add link to download image
                document.getElementById('export').href = img;
             }
+            
+
 				
 		</script>
 

@@ -85,8 +85,11 @@ var Scribl = Class.extend({
 		this.tooltips.style = "light";  // also a "dark" option
 		
 		// scroll defaults
-        this.scrollable = false;
-        this.scrollValues = [0, undefined]; // values in nts where scroll should start at when loaded
+      this.scrollable = false;
+      this.scrollValues = [0, undefined]; // values in nts where scroll should start at when loaded
+      
+      // draw defaults
+      this.drawStyle = 'expand';  
 	
 		// private variables
 		this.myMouseEventHandler = new MouseEventHandler(this);
@@ -195,6 +198,7 @@ var Scribl = Class.extend({
 		for ( var j=0; j < numTracks; j++) {
 		    var track = this.tracks[j];
 		    var newTrack = newChart.addTrack();
+		    newTrack.drawStyle = track.drawStyle;
 		    var numLanes = track.lanes.length;
     		for ( var i=0; i < numLanes; i++ ) {
     		    newLane = newTrack.addLane();
@@ -245,6 +249,7 @@ var Scribl = Class.extend({
 		
 		
 		newChart.laneSizes = this.laneSizes;
+		newChart.drawStyle = this.drawStyle;
 		newChart.loadFeatures(sliced_features);
 		return newChart;
 	},
@@ -365,7 +370,7 @@ var Scribl = Class.extend({
 		else
 			this.offset = ctx.measureText("0").width/2 + 10;
 			
-		ctx.translate(this.offset, 0);
+	//	ctx.translate(this.offset, 0);
 		
 		// determine tick vertical sizes and vertical tick positions
 		var tickStartPos = this.scale.font.size + this.scale.size;
@@ -375,7 +380,7 @@ var Scribl = Class.extend({
 		
 		// translate canvas to compensate for bug where scale draws from 0 regardless of scale.min, TODO fix this 
 		ctx.save();
-		ctx.translate( -this.scale.min*this.pixelsPerNt(), 0);
+	//	ctx.translate( -this.scale.min*this.pixelsPerNt(), 0);
 		
 		// set scale defaults
 		ctx.font = this.scale.font.size + "px arial";
@@ -394,7 +399,7 @@ var Scribl = Class.extend({
     		    
     		for(var i = firstMinorTick; i<= this.scale.max; i += this.tick.minor.size){		    
     		    ctx.beginPath();
-    		    var curr_pos = i*this.pixelsPerNt();
+    		    var curr_pos = (i - this.scale.min)*this.pixelsPerNt() + this.offset;
     		    if ( i % this.tick.major.size == 0) {
                      // create text
                      var tickText = this.getTickText(i);

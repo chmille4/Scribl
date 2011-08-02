@@ -14,6 +14,9 @@ var Glyph = Class.extend({
 	init: function(type, pos, length, strand, opts) {
 		var glyph = this;
 		
+		// set unique id
+		this.uid = _uniqueId('feature');
+		
 		// set variables
 		glyph.position = pos;
 		glyph.length = length;
@@ -70,23 +73,18 @@ var Glyph = Class.extend({
 		return (glyph.length * glyph.lane.chart.pixelsPerNt() || 1 ); 
 	},
 	
-	// returns the height position in pixels of the glyph
-	pixelHeight: function() { 
-		var glyph = this;
-		return (glyph.getHeight() * glyph.lane.chart.pixelsPerNt() || 1 ); 
-	},
-	
 	
 	// returns the x position in pixels of the glyph relative to the left of the chart
 	pixelPosition_x: function() { 
 		var glyph = this;
-		return ( glyph.position * glyph.lane.chart.pixelsPerNt() ); 
+		var offset = parseInt(glyph.lane.track.chart.offset) || 0; 
+		return ( (glyph.position - glyph.lane.track.chart.scale.min) * glyph.lane.chart.pixelsPerNt() + offset); 
 	},
 
 	// returns the y position in pixels of the glyph relative to the top of the chart
 	pixelPosition_y : function() { 
-		var glyph = this;
-		return (glyph.lane.y); 
+	   var glyph = this;
+		return (glyph.lane.pixelPosition_y()); 
 	},
 	
 	// get end
@@ -250,6 +248,19 @@ var Glyph = Class.extend({
 	
 	calcRoundness : function() {return (this.getHeight() * this.getRoundness()/100);},
 	
+	isContainedWithinRect : function(selectionTlX, selectionTlY, selectionBrX, selectionBrY) {
+      var glyph = this;
+      var y = glyph.pixelPosition_y();
+      var tlX = glyph.pixelPosition_x();
+      var tlY = y
+      var brX = glyph.pixelPosition_x() + glyph.pixelLength();
+      var brY = y + glyph.getHeight(); 
+      return tlX >= selectionTlX
+        && brX <= selectionBrX
+        && tlY >= selectionTlY
+        && brY <= selectionBrY;
+   },
+	
 	getRoundness : function() { 
 		var roundness;
 		var glyph = this;
@@ -390,6 +401,7 @@ var Glyph = Class.extend({
 		(height < fontSizeMin) ? glyph.ctx.font = fontSizeMin + "px " + font : glyph.ctx.font = height *.9 + "px " + font;					
 		
 		// setup ctx so the glyph will be drawn at the right position and right direction
+
 		glyph.ctx.translate(position, 0);	
 		if (glyph.strand == '-' && !glyph.isSubFeature()) 
 			glyph.ctx.transform(-1, 0, 0, 1, glyph.pixelLength(), 0);

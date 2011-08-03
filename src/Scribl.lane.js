@@ -1,7 +1,22 @@
+/**
+	Scribl::Lane
+	
+	_A lane is used to draw features on a single y position_
+	
+	Chase Miller 2011
+  */
+
+
 var Lane = Class.extend({
-	/**
-	 * @constructor
-	 */
+	/** **init**
+
+    * _Constructor, gets called by `new Lane()`_
+    * to create new Tracks use `Scribl.addTrack()`;
+
+    * @param {Object} ctx - the canvas.context object
+    * @param {Object} track - track that this lane belongs to
+    * @api private
+    */
 	init: function(ctx, track) {
 		// defaults
 		this.height = undefined;
@@ -12,14 +27,48 @@ var Lane = Class.extend({
       this.uid = _uniqueId('lane');
 	},
 	
+	
+	/** **addGene**
+   
+    * _syntactic sugar function to add a feature with the gene type to this Lane_
+   
+    * @param {Int} position - start position of the gene
+    * @param {Int} length - length of the gene
+    * @param {String} strand - '+' or '-' strand
+    * @param {Hash} [opts] - optional hash of options that can be applied to gene  
+    * @return {Object} gene - a feature with the 'gene' type      
+    * @api public
+    */
 	addGene: function(position, length, strand, opts) {
 		return (this.addFeature( new BlockArrow("gene", position, length, strand, opts) ) );
 	},
 	
+	/** **addProtein**
+   
+    * _syntactic sugar function to add a feature with the protein type to this Lane_
+   
+    * @param {Int} position - start position of the protein
+    * @param {Int} length - length of the protein
+    * @param {String} strand - '+' or '-' strand
+    * @param {Hash} [opts] - optional hash of options that can be applied to protein  
+    * @return {Object} protein - a feature with the 'protein' type
+    * @api public
+    */
 	addProtein: function(position, length, strand, opts) {
 		return (this.addFeature( new BlockArrow("protein", position, length, strand, opts) ) );
 	},
 	
+	/** **addFeature**
+   
+    * _addFeature to this Lane, allowing potential overlaps_
+    
+    * example:
+    * `lane.addFeature( new Rect('complex',3500, 2000) );`
+   
+    * @param {Object} feature - any of the derived Glyph classes (e.g. Rect, Arrow, etc..)
+    * @return {Object} feature - new feature
+    * @api public        
+    */
 	addFeature: function( feature ) {
 		
 		// create feature
@@ -40,12 +89,26 @@ var Lane = Class.extend({
 		return feature;
 	},
 	
+	/** **loadFeatures**
+   
+    * _adds the features to this Lane_
+   
+    * @param {Array} features - array of features, which can be any of the derived Glyph classes (e.g. Rect, Arrow, etc..)
+    * @api public
+    */	
 	loadFeatures: function(features) {
 	  var featureNum = features.length;
 	  for(var i=0; i<featureNum; i++)
         this.addFeature(features[i]);
 	},
-	
+		
+	/** **getHeight**
+   
+    * _returns the height of this lane in pixels_
+   
+    * @return {Int} height
+    * @api public        
+    */	
 	getHeight: function() {
 		if ( this.height != undefined )
 			return this.height;
@@ -53,9 +116,16 @@ var Lane = Class.extend({
 			return this.chart.laneSizes;
 	},
 	
-	pixelPosition_y: function() {
+	/** **getPixelPositionY**
+   
+    * _gets the number of pixels from the top of the chart to the top of this lane_
+   
+    * @return {Int} pixelPositionY
+    * @api public        
+    */	
+	getPixelPositionY: function() {
 	   var lane = this;
-	   var y = lane.track.pixelPosition_y();
+	   var y = lane.track.getPixelPositionY();
 	   var laneHeight = lane.getHeight();
 	   for( var i=0; i < lane.track.lanes.length; i++ ) {
 	      y += lane.track.chart.laneBuffer;
@@ -66,7 +136,12 @@ var Lane = Class.extend({
 	   return y;
 	},
 	
-	// draw lane
+	/** **draw**
+   
+    * _draws lane_
+   
+    * @api private
+    */
 	draw: function() {
 		for (var i=0; i< this.features.length; i++)
 			this.features[i].draw();

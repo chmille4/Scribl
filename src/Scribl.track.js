@@ -1,7 +1,21 @@
+/**
+	Scribl::Track
+	
+	_Tracks are used to segregrate different sequence data_
+	
+	Chase Miller 2011
+  */
+
+
 var Track = Class.extend({
-	/**
-	 * @constructor
-	 */
+	/** **init**
+
+    * _Constructor, gets called by `new Track()`_
+    * to create new Tracks use Scribl.addTrack();
+
+    * @param {Object} ctx - the canvas.context object
+    * @api private
+    */
 	init: function(ctx) {
 		// defaults
 		this.lanes = [];
@@ -14,20 +28,60 @@ var Track = Class.extend({
       this.maxDepth = 0; // highest depth for this track;
 	},
 	
+	/** **addLane**
+
+    * _creates a new Lane associated with this Track_
+
+    * @return {Object} Lane - a Lane object
+    * @api public
+    */
 	addLane: function() {
 	    var lane = new Lane(this.ctx, this);
 		this.lanes.push(lane);
 		return lane;
 	},
 	
+	/** **addGene**
+   
+    * _syntactic sugar function to add a feature with the gene type to this Track_
+   
+    * @param {Int} position - start position of the gene
+    * @param {Int} length - length of the gene
+    * @param {String} strand - '+' or '-' strand
+    * @param {Hash} [opts] - optional hash of options that can be applied to gene  
+    * @return {Object} gene - a feature with the 'gene' type
+    * @api public
+    */
 	addGene: function(position, length, strand, opts) {
 		return (this.addFeature( new BlockArrow("gene", position, length, strand, opts) ) );
 	},
 	
+	/** **addProtein**
+   
+    * _syntactic sugar function to add a feature with the protein type to this Track_
+   
+    * @param {Int} position - start position of the protein
+    * @param {Int} length - length of the protein
+    * @param {String} strand - '+' or '-' strand
+    * @param {Hash} [opts] - optional hash of options that can be applied to protein  
+    * @return {Object} protein - a feature with the 'protein' type
+    * @api public
+    */
 	addProtein: function(position, length, strand, opts) {
 		return (this.addFeature( new BlockArrow("protein", position, length, strand, opts) ) );
 	},
 	
+	/** **addFeature**
+   
+    * _addFeature to this Track and let Scribl manage lane placement to avoid overlaps_
+    
+    * example:
+    * `track.addFeature( new Rect('complex',3500, 2000) );`
+   
+    * @param {Object} feature - any of the derived Glyph classes (e.g. Rect, Arrow, etc..)
+    * @return {Object} feature - new feature
+    * @api public        
+    */
 	addFeature: function( feature ) {
 		
 		var curr_lane;
@@ -38,7 +92,7 @@ var Track = Class.extend({
 			var prev_feature = this.lanes[j].features[ this.lanes[j].features.length - 1 ];
 
 			// check if new lane is needed
-			if ( prev_feature != undefined && (feature.position - 3/this.chart.pixelsPerNt()) > (prev_feature.position + prev_feature.length) ) {
+			if ( prev_feature != undefined && (feature.position - 3/this.chart.pixelsToNts()) > (prev_feature.position + prev_feature.length) ) {
 				new_lane = false;
 				curr_lane = this.lanes[j];
 				break;
@@ -54,6 +108,13 @@ var Track = Class.extend({
 		return feature;
 	},
 	
+	/** **getDrawStyle**
+   
+    * _returns the draw style associated with this track_
+   
+    * @return {String} drawStyle - the style this track will be drawn e.g. expand, collapse, line     
+    * @api public        
+    */
 	getDrawStyle: function() {
 	  if (this.drawStyle)
        return this.drawStyle
@@ -61,6 +122,13 @@ var Track = Class.extend({
 	    return this.chart.drawStyle;
 	},
 	
+	/** **getHeight**
+   
+    * _returns the height of this track in pixels_
+   
+    * @return {Int} height
+    * @api public        
+    */
 	getHeight: function() {
 		var wholeHeight = 0;
 		
@@ -78,7 +146,14 @@ var Track = Class.extend({
 		return wholeHeight;
 	},
 	
-	pixelPosition_y: function() {
+	/** **getPixelPositionY**
+   
+    * _gets the number of pixels from the top of the chart to the top of this track_
+   
+    * @return {Int} pixelPositionY
+    * @api public        
+    */
+	getPixelPositionY: function() {
 	   var track = this;
 	   var y = track.chart.getScaleHeight();
 	   var trackHeight = track.getHeight();
@@ -91,17 +166,20 @@ var Track = Class.extend({
 	   return y; 
 	},
 	
-	getLaneSize: function() { return ( this.chart.scale.size + this.chart.scale.font.size ); },
-	
-	// generate line data from feature data
+	/** **calcCoverageData**
+   
+    * _calculates the coverage (the number of features) at each pixel_
+   
+    * @api private    
+    */
 	calcCoverageData: function() {
       var lanes = this.lanes 
 	   // determine feature locations
       for (var i=0; i<lanes.length; i++) {
          for (var k=0; k<lanes[i].features.length; k++) {
             var feature = lanes[i].features[k];
-            var from = Math.round( feature.pixelPosition_x() );
-            var to =  Math.round( from + feature.pixelLength() );
+            var from = Math.round( feature.getPixelPositionX() );
+            var to =  Math.round( from + feature.getPixelLength() );
             for (var j=from; j <= to; j++) { 
                this.coverageData[j] = this.coverageData[j] + 1 || 1; 
                this.maxDepth = Math.max(this.coverageData[j], this.maxDepth);
@@ -110,7 +188,12 @@ var Track = Class.extend({
       }     
 	},
 	
-	// draw lane
+	/** **draw**
+   
+    * _draws Track_
+   
+    * @api private        
+    */
 	draw: function() {
 	   var track = this;
 	   var style = track.getDrawStyle();
@@ -120,7 +203,7 @@ var Track = Class.extend({
 		var y =  laneSize + laneBuffer;
 		var ctx = track.ctx;
 
-		// draw tracks
+		// draw lanes
 		
 		// draw expanded/default style
 		if ( style == undefined || style == 'expand' ) {
@@ -132,17 +215,20 @@ var Track = Class.extend({
    			ctx.translate(0, height + laneBuffer);
    			y = y + height + laneBuffer;
    		}
-   	} else if ( style == 'collapse' ) {
+   	} else if ( style == 'collapse' ) { // draw collapse style (i.e. single lane)
          var features = []
+         // concat all features into single array
          for (var i=0; i<lanes.length; i++) {
             var features = features.concat(lanes[i].features);
          }
+         // sort features so the minimal number of lanes are used
          features.sort( function(a,b){ return(a.position - b.position); } );
          for (var j=0; j<features.length; j++) {
             var originalLength = features[j].length;
             var originalName = features[j].name;
             var m = undefined;
             for( m=j+1; m < features.length; m++) {
+               // if a feature is overlapping change length to draw as a single feature
                if (features[j].getEnd() >= features[m].position) {
                   features[j].length = Math.max(features[j].getEnd(), features[m].getEnd()) - features[j].position;
                   features[j].name = "";
@@ -156,8 +242,10 @@ var Track = Class.extend({
             // update j to skip features that were merged
             j = m-1;
          }
+         // translate down to next lane to draw
          ctx.translate(0, lanes[0].getHeight() + laneBuffer);
-                  
+   
+      // draw as a line chart of the coverage
    	} else if ( style == 'line' ) {
    	   if (track.coverageData.length == 0) track.calcCoverageData();
    	   

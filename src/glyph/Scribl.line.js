@@ -22,7 +22,7 @@
 			
 			// see if optional parameters
 			var ctx = ctx || line.ctx;
-			var length = length || line.pixelLength();
+			var length = length || line.getPixelLength();
 			var height = height || line.getHeight();
 			
 			// Set starting draw position

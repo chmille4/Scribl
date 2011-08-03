@@ -23,7 +23,7 @@
 			
 			// see if optional parameters are set and get chart specific info
 			var ctx = ctx || blockarrow.ctx;
-			var length = length || blockarrow.pixelLength();
+			var length = length || blockarrow.getPixelLength();
 			var height = height || blockarrow.getHeight();
 			var roundness = roundness + 1 || blockarrow.calcRoundness();
 			if (roundness != undefined) roundness -= 1;

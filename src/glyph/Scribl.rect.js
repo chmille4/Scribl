@@ -22,7 +22,7 @@
 			
 			// see if optional parameters are set
 			var ctx = ctx || rect.ctx;
-			var length = length || rect.pixelLength();
+			var length = length || rect.getPixelLength();
 			var height = height || rect.getHeight();
 			var roundness = roundness + 1 || rect.calcRoundness();
 			if (roundness != undefined) roundness -= 1

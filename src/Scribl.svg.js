@@ -1,3 +1,8 @@
+/** 
+ * utility functions for converting canvas to svg
+ */
+ 
+
 var CanvasToSVG = {
 	idCounter: 0,
 	convert: function(sourceCanvas, targetSVG, x, y) {
@@ -25,14 +30,7 @@ var CanvasToSVG = {
 		targetSVG.appendChild(svgimg);
 	}
 }
-// var shortFloat = function(val) {
-// 	var digits = 2;//= save_options.round_digits;
-// 	if(!isNaN(val)) {
-// 		return Number(Number(val).toFixed(digits));
-// 	} else if($.isArray(val)) {
-// 		return shortFloat(val[0]) + ',' + shortFloat(val[1]);
-// 	}
-// };
+
 
 var toXml = function(str) {
 	return $('<p/>').text(str).html();
@@ -43,6 +41,7 @@ var toXml = function(str) {
 //
 // Returns: 
 // String containing the SVG image for output
+
 var svgToString = function(svgcontent) {
 	// keep calling it until there are none to remove
 	while (removeUnusedDefElems() > 0) {};

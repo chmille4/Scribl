@@ -7,6 +7,7 @@
 		<script src="../src/Scribl.js" ></script>
 		<script src="../src/Scribl.track.js" ></script>
 		<script src="../src/Scribl.lane.js" ></script>
+		<script src="../src/Scribl.tooltips.js" ></script>		
 		<script src="../src/Scribl.events.js" ></script>
 		<script src="../src/Scribl.utils.js" ></script>
 		<script src="../src/Scribl.svg.js" ></script>
@@ -31,6 +32,7 @@
 					chart1 = new Scribl(canvas, 600);
                // style chart
                chart1.glyph.text.color = 'white';
+               chart1.glyph.text.align = 'left';
                chart1.glyph.onClick = function(feature) { 
                   alert(feature.name);
                };
@@ -43,6 +45,7 @@
                var gene3 = track1.addGene(0, 1000, '+');
                var gene6 = track1.addGene(0, 1000, '+');
                gene3.name = 3;
+
                //addBorder(gene3);
                var gene4 = track1.addGene(1200, 1000, '+');
                gene4.name = 4;
@@ -54,6 +57,9 @@
                var gene13 = track2.addGene(0, 1000, '+');
                var gene16 = track2.addGene(0, 1000, '+');
                gene13.name = 13;
+               gene13.text.align = 'right';
+               gene13.borderColor = ['red', 'green'];
+               gene13.borderWidth = 10;
                //addBorder(gene3);
                var gene14 = track2.addGene(1200, 1000, '+');
                gene14.name = 14;

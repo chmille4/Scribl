@@ -38,7 +38,7 @@
 
 			// see if optional parameters are set and get chart specific info
 			var ctx = ctx || complex.ctx;
-			var length = length || complex.pixelLength();
+			var length = length || complex.getPixelLength();
 			var height = height || complex.getHeight();
 			var roundness = roundness + 1 || complex.calcRoundness();
 			if (roundness != undefined) roundness -= 1;

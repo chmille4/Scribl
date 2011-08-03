@@ -2,6 +2,16 @@
 	Scribl::Utils
 	Chase Miller 2011
  */
+ 
+/** **ScriblWrapLines**
+
+* _transforms text to fit in a column of given width_
+
+* @param {Int} max - column width in letters
+* @param {String} text
+* @return {String} formatted text
+* @api private
+*/
 function ScriblWrapLines(max, text) {
 	var lines = [];
 	text = "" + text;
@@ -38,6 +48,7 @@ function ScriblWrapLines(max, text) {
 }
 
 
+/** create unique ids */
 var idCounter = 0;
 _uniqueId = function(prefix) {
   var id = idCounter++;

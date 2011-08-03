@@ -1,16 +1,25 @@
 /*
 	Scribl::Glyph
-	Generic glyph class that all other glyphs inherit from
+	
+	Generic glyph class that should not be used directly. 
+	All feature classes (e.g. Rect, arrow, etc..) inherit from this class
+	
 	Chase Miller 2011
  */
 
 var Glyph = Class.extend({
-	/**
-	 * iniatilization method
-	 * This method must be called in all subclasses like so this._super(type, pos, length, strand) )
-	 * Parameters: position of glyph, length of glyph, strand
-	 * @constructor
-	 */
+   /** **init**
+
+    * _Constructor, gets called by `new Glyph()`_
+    * This method must be called in all feature subclasses like so `this._super(type, pos, length, strand, opts)` 
+    
+    * @param {String} type - a tag to associate this feature with
+    * @param {Int} position - start position of the feature
+    * @param {Int} length - length of the feature
+    * @param {String} strand - '+' or '-' strand
+    * @param {Hash} [opts] - optional hash of attributes that can be applied to feature  
+    * @api private
+    */
 	init: function(type, pos, length, strand, opts) {
 		var glyph = this;
 		
@@ -37,16 +46,15 @@ var Glyph = Class.extend({
 		glyph.text.align = undefined; // default: 'middle'
 		
 		/** depreccated **/
- 		glyph.font = {};
- 		// unset defaults that can be used to override chart defaults for specific glyphs
- 		glyph.font.style = undefined; // default: 'arial'
- 		glyph.font.size = undefined;  // default: '15' in pixels 
- 		glyph.font.color = undefined; // default: 'black'
- 		glyph.font.align = undefined; // default: 'middle'
+      // glyph.font = {};
+      // // unset defaults that can be used to override chart defaults for specific glyphs
+      // glyph.font.style = undefined; // default: 'arial'
+      // glyph.font.size = undefined;  // default: '15' in pixels 
+      // glyph.font.color = undefined; // default: 'black'
+      // glyph.font.align = undefined; // default: 'middle'
  		/** deprecated **/
  		
  		glyph.onClick = undefined;
-
 		
 		// set option attributes if any
 		for (var attribute in opts)
@@ -54,45 +62,82 @@ var Glyph = Class.extend({
 		
 	},
 
-        setColorGradient: function(/*color1, color2, ... */) {
-            if(arguments.length == 1){
-                this.color = arguments[0];
-                return;
-            }
-            var lineargradient = this.lane.ctx.createLinearGradient(this.length/2, 0, this.length/2, this.getHeight());
-            var color;
-            for(var i=0; color=arguments[i], i < arguments.length; i++){
-                lineargradient.addColorStop(i / (arguments.length-1), color);
-            }
-            this.color = lineargradient;
-        },
+   /** **setColorGradient**
 
-	// returns the length position in pixels of the glyph
-	pixelLength: function() { 
+    * _creates a gradient given a list of colors_
+    
+    * @param {List} colors - takes as many colors as you like
+    * @api public
+    */
+   setColorGradient: function(/*color1, color2, ... */) {
+      if(arguments.length == 1){
+          this.color = arguments[0];
+          return;
+      }
+      var lineargradient = this.lane.ctx.createLinearGradient(this.length/2, 0, this.length/2, this.getHeight());
+      var color;
+      for(var i=0; color=arguments[i], i < arguments.length; i++){
+          lineargradient.addColorStop(i / (arguments.length-1), color);
+      }
+      this.color = lineargradient;
+   },
+
+	/** **getPixelLength**
+   
+    * _gets the length of the glyph/feature in pixels_
+   
+    * @return {Int} length - in pixels
+    * @api public        
+    */
+	getPixelLength: function() { 
 		var glyph = this;
-		return (glyph.length * glyph.lane.chart.pixelsPerNt() || 1 ); 
+		return ( glyph.lane.chart.pixelsToNts(glyph.length) || 1 ); 
 	},
 	
 	
-	// returns the x position in pixels of the glyph relative to the left of the chart
-	pixelPosition_x: function() { 
+   /** **getPixelPositionx**
+   
+    * _gets the number of pixels from the left of the chart to the left of this glyph/feature_
+   
+    * @return {Int} positionX - in pixels
+    * @api public        
+    */	
+	getPixelPositionX: function() { 
 		var glyph = this;
 		var offset = parseInt(glyph.lane.track.chart.offset) || 0; 
-		return ( (glyph.position - glyph.lane.track.chart.scale.min) * glyph.lane.chart.pixelsPerNt() + offset); 
+		return ( glyph.lane.chart.pixelsToNts( glyph.position - glyph.lane.track.chart.scale.min ) + offset); 
 	},
 
-	// returns the y position in pixels of the glyph relative to the top of the chart
-	pixelPosition_y : function() { 
+	/** **getPixelPositionY**
+   
+    * _gets the number of pixels from the top of the chart to the top of this glyph/feature_
+   
+    * @return {Int} positionY - in pixels
+    * @api public        
+    */
+	getPixelPositionY : function() { 
 	   var glyph = this;
-		return (glyph.lane.pixelPosition_y()); 
+		return (glyph.lane.getPixelPositionY()); 
 	},
 	
-	// get end
+   /** **getEnd**
+   
+    * _gets the nucleotide/amino acid end point of this glyph/feature_
+   
+    * @return {Int} end - in nucleotides/amino acids
+    * @api public        
+    */
 	getEnd: function() {
         return (this.position + this.length);
 	},
 	
-	// shallow clone
+	/** **clone**
+   
+    * _shallow copy_
+   
+    * @return {Int} copy - shallow copy of this glyph/feature
+    * @api public        
+    */
 	clone: function() {
         var glyph = this;
         var newFeature = this;
@@ -106,116 +151,76 @@ var Glyph = Class.extend({
 	          
 	},
 	
-	setTextOptions : function() {
-		// chart level overides defaults, type level overrides chart and defaults, and glyph level overrides everything		
+	getAttr : function(attr) {
 		var glyph = this;
-        var chartLevelGlyph = this.lane.chart[glyph.type];
+      var attrs = attr.split('-');
 
-		// set style
-		// determie correct hierarchical attribute level
-		if ( glyph.font.style != undefined || glyph.text.font != undefined )  // glyph level
-			glyph.font.style = glyph.font.style || glyph.text.font;
-		else if ( glyph.parent && glyph.parent.font.color != undefined)  // parent level
-			glyph.font.style = glyph.parent.font.color;
-       else if ( chartLevelGlyph.text.font != undefined ) // type level
-           glyph.font.style = chartLevelGlyph.text.font;
-		else if ( glyph.lane.chart.glyph.text.font != undefined ) // chart level
-			glyph.font.style = glyph.lane.chart.glyph.text.font;
-
-		// set font size
-		// determie correct hierarchical attribute level
-		if ( glyph.font.size != undefined || glyph.text.size)  // glyph level
-			glyph.font.size = glyph.text.size || glyph.font.size;
-		else if ( glyph.parent && glyph.parent.font.size != undefined)  // parent level
-			glyph.font.size = glyph.parent.font.size;
-       else if ( chartLevelGlyph.text.size != undefined ) // type level
-           glyph.font.size = chartLevelGlyph.text.size;
-		else if ( glyph.lane.chart.glyph.text.size != undefined ) // chart level
-			glyph.font.size = glyph.lane.chart.glyph.text.size;
-
-		// set text color
-		// determie correct hierarchical attribute level
-		if ( glyph.font.color != undefined || glyph.text.color != undefined)  // glyph level
-			glyph.font.color = glyph.text.color || glyph.font.color;
-		else if ( glyph.parent && glyph.parent.font.color != undefined)  // parent level
-			glyph.font.color = glyph.parent.font.color;
-       else if ( chartLevelGlyph.text.color != undefined ) // type level
-           glyph.font.color = chartLevelGlyph.text.color;
-		else if ( glyph.lane.chart.glyph.text.color != undefined ) // chart level
-			glyph.font.color = glyph.lane.chart.glyph.text.color;
-			
-		// set text align
-		// determie correct hierarchical attribute level
-		if ( glyph.font.align != undefined || glyph.text.align != undefined)  // glyph level
-			glyph.font.align = glyph.text.align || glyph.font.align;
-		else if ( glyph.parent && glyph.parent.font.align != undefined)  // parent level
-			glyph.font.align = glyph.parent.font.align;
-       else if ( chartLevelGlyph.text.align != undefined ) // type level
-           glyph.font.align = chartLevelGlyph.text.align;
-		else if ( glyph.lane.chart.glyph.text.align != undefined ) // chart level
-			glyph.font.align = glyph.lane.chart.glyph.text.align;
+      // glyph level
+      var glyphLevel = glyph
+      for( var k=0; k < attrs.length; k++) { glyphLevel = glyphLevel[attrs[k]]; }
+      if (glyphLevel) return glyphLevel
+      
+      // parent level
+      if (glyph.parent) {
+         var parentLevel = glyph.parent;
+         for( var k=0; k < attrs.length; k++) { parentLevel = parentLevel[attrs[k]]; }
+         if (parentLevel) return parentLevel;
+      }
+      
+      // type level
+      var typeLevel = this.lane.chart[glyph.type];
+      for( var k=0; k < attrs.length; k++) { typeLevel = typeLevel[attrs[k]]; }
+      if (typeLevel) return typeLevel;
+      
+      // chart level
+      var chartLevel = glyph.lane.chart.glyph;
+      for( var k=0; k < attrs.length; k++) { chartLevel = chartLevel[attrs[k]]; }
+      if (chartLevel) return chartLevel;
+      
+      // nothing
+      return undefined;
 	},
-	
-	setOnClickOptions: function() {
-	   // ctype level overrides chart and defaults, and glyph level overrides everything		
-	   var onClick = undefined;
-		var glyph = this;
-		var chartLevel = this.lane.chart[glyph.type];
-
-		// check if individual featurea has a onClick
-		if ( glyph.onClick != undefined )
-			return
-		else if ( glyph.parent && glyph.parent.onClick != undefined )
-				onClick = glyph.parent.onClick;
-		// check if custom chart level is set
-		else if (chartLevel != undefined && chartLevel.onClick != undefined)
-			onClick = chartLevel.onClick;
-		// fall back to default behavior for all glyphs
-		else
-			onClick = glyph.lane.chart.glyph.onClick;
-			
-		glyph.onClick = onClick;
-		
-	},
+   
 	
 	drawText : function(text) {
 		// initialize
 		var glyph = this;
 		var ctx = glyph.lane.chart.ctx;
 		var padding = 5;
-		var length = glyph.pixelLength();
+		var length = glyph.getPixelLength();
 		var height = glyph.getHeight();
-		var fontSize = glyph.font.size;
+		var fontSize = glyph.getAttr('text-size');
 		var fontSizeMin = 8;
-		var fontStyle = glyph.font.style;
+		var fontStyle = glyph.getAttr('text-style');
 		// set ctx
 		ctx.font = fontSize + "px " + fontStyle;
 		ctx.textBaseline = "middle";
-		ctx.fillStyle = glyph.font.color;
+		ctx.fillStyle = glyph.getAttr('text-color');
 		
 
 		// align text properly
 		var placement = undefined
 
 		// handle relative text alignment based on glyph orientation
-		if ( glyph.font.align == "start")
+		var align = glyph.getAttr('text-align');
+		if ( align == "start")
 			if ( glyph.strand == '+' )
-				glyph.font.align = 'left';
+				align = 'left';
 			else
-				glyph.font.align = 'right';
-		else if ( glyph.font.align == "end" ) 
+				align = 'right';
+		else if ( align == "end" ) 
 			if ( glyph.strand == '+' )
-				glyph.font.align = 'right';
+				align = 'right';
 			else
-				glyph.font.align = 'left';
+				align = 'left';
 
 		// handle absolute text alignment	
-		ctx.textAlign = glyph.font.align;
-		if (ctx.textAlign == 'left')
+		ctx.textAlign = align;
+		if (align == 'left')
 			placement = 0 + padding;
-		else if ( ctx.textAlign == 'center' )
+		else if ( align == 'center' )
 			placement = length/2;
-		else if ( ctx.textAlign == "right" )
+		else if ( align == "right" )
 			placement = length - padding;
 
 		// test if text size is too big and if so make it smaller
@@ -238,7 +243,7 @@ var Glyph = Class.extend({
 			if (glyph.glyphType == "Complex") {
 				var offset = 0;
 				var fontsize = /^\d+/.exec(ctx.font);
-				if (glyph.font.align == "center")
+				if (align == "center")
 					offset = -(ctx.measureText(text).width/2 + padding/2); 
 				ctx.clearRect(placement + offset, height/2 - fontsize/2, ctx.measureText(text).width + padding, fontsize);
 			}
@@ -246,14 +251,14 @@ var Glyph = Class.extend({
 		}
 	},
 	
-	calcRoundness : function() {return (this.getHeight() * this.getRoundness()/100);},
+	calcRoundness : function() {return (this.getHeight() * this.getAttr('roundness')/100);},
 	
 	isContainedWithinRect : function(selectionTlX, selectionTlY, selectionBrX, selectionBrY) {
       var glyph = this;
-      var y = glyph.pixelPosition_y();
-      var tlX = glyph.pixelPosition_x();
+      var y = glyph.getPixelPositionY();
+      var tlX = glyph.getPixelPositionX();
       var tlY = y
-      var brX = glyph.pixelPosition_x() + glyph.pixelLength();
+      var brX = glyph.getPixelPositionX() + glyph.getPixelLength();
       var brY = y + glyph.getHeight(); 
       return tlX >= selectionTlX
         && brX <= selectionBrX
@@ -261,112 +266,39 @@ var Glyph = Class.extend({
         && brY <= selectionBrY;
    },
 	
-	getRoundness : function() { 
-		var roundness;
-		var glyph = this;
-		var chartLevel = this.lane.chart[glyph.type];
-
-		// check if individual roundness was set
-		if ( glyph.roundness != undefined )
-			roundness = glyph.roundness
-		else if ( glyph.parent && glyph.parent.roundness != undefined )
-				roundness = glyph.parent.roundness;
-		// check if custom chart level is set
-		else if (chartLevel != undefined && chartLevel.roundness != undefined)
-			roundness = chartLevel.roundness;
-		// fall back to default behavior for all glyphs
-		else
-			roundness = glyph.lane.chart.glyph.roundness;
-			
-		return (roundness); 
-	},
-	
 	getHeight : function() {
 		var glyph = this;
 		return ( glyph.lane.getHeight() );
 	},
 	
-	getStrokeStyle : function() {
-		var glyph = this;
-		var color;
-		var chartLevelGlyph = this.lane.chart[glyph.type];			
-
-		// check if default color was ovewridden on a glyph level
-		if (glyph.borderColor != undefined)
-			color = glyph.borderColor
-		else if ( glyph.parent && glyph.parent.borderColor != undefined )
-			color = glyph.parent.borderColor;
-		else if ( chartLevelGlyph.borderColor != undefined)
-			color = chartLevelGlyph.borderColor;
-		else if (chartLevelGlyph.linearGradient != undefined){
-			var lineargradient2 = glyph.ctx.createLinearGradient(glyph.length/2,0,glyph.length/2, glyph.getHeight()); 
-			for (var i = 0; i < chartLevelGlyph.linearGradient.length ; i++ ) {
-				var colorPer = i / (chartLevelGlyph.linearGradient.length - 1);
-				lineargradient2.addColorStop(colorPer, chartLevelGlyph.linearGradient[i]);
-			}  
-				color = lineargradient2
-		} else if ( glyph.lane.chart.glyph.borderColor != undefined)
-			color = glyph.lane.chart.glyph.borderColor
-		else {
-			color = black;
-		}
-		
-		return ( color );
-	},
-	
-	getLineWidth : function() {
-	   var glyph = this;
-		var width;
-		var chartLevelGlyph = this.lane.chart[glyph.type];			
-		
-	  	// check if default width was ovewridden on a glyph level
-		if (glyph.borderWidth != undefined)
-			width = glyph.borderWidth
-		else if ( glyph.parent && glyph.parent.borderWidth != undefined )
-			width = glyph.parent.borderWidth;
-		else if ( chartLevelGlyph.borderWidth != undefined)
-			width = chartLevelGlyph.borderWidth;
-      else if ( glyph.lane.chart.glyph.borderWidth != undefined)
-			width = glyph.lane.chart.glyph.borderWidth
-		else {
-			width = 1;
-		} 
-		
-		return (width);
-	},
-	
 	getFillStyle : function() {
 		var glyph = this;
-		var color;
-		var chartLevelGlyph = this.lane.chart[glyph.type];
-
-		// check if default color was ovewridden on a glyph level
-		if (glyph.color != undefined)
-			color = glyph.color
-		else if ( glyph.parent && glyph.parent.color != undefined )
-			color = glyph.parent.color;
-		else if ( chartLevelGlyph.color != undefined)
-			color = chartLevelGlyph.color;
-		else if (chartLevelGlyph.linearGradient != undefined){
-            var lgradient = chartLevelGlyph.linearGradient;
-			var lineargradient2 = glyph.ctx.createLinearGradient(glyph.length/2,0,glyph.length/2, glyph.getHeight());
-			for (var i = 0; i < lgradient.length ; i++ ) {
-				var colorPer = i / (lgradient.length - 1);
-				lineargradient2.addColorStop(colorPer, lgradient[i]);
-			}
-				color = lineargradient2
-		} else if ( glyph.lane.chart.glyph.color != undefined)
-			color = glyph.lane.chart.glyph.color
-		else {
-			var lineargradient2 = glyph.ctx.createLinearGradient(glyph.length/2,0,glyph.length/2, glyph.getHeight()); 
-			for (var i = 0; i < glyph.lane.chart.glyph.linearGradient.length ; i++ ) {
-				var colorPer = i / (glyph.lane.chart.glyph.linearGradient.length - 1);
-				lineargradient2.addColorStop(colorPer, glyph.lane.chart.glyph.linearGradient[i]);
-			}  
-				color = lineargradient2
-		}
+		var color = glyph.getAttr('color');
 		
-		return ( color );
+		if (typeof(color) == "object") {
+		   var lineargradient = this.lane.ctx.createLinearGradient(this.length/2, 0, this.length/2, this.getHeight());
+         var currColor;
+         for(var i=0; currColor=color[i], i < color.length; i++){
+             lineargradient.addColorStop(i / (color.length-1), currColor);
+         }
+   		return lineargradient
+		} else 
+		   return color;
+	},
+	
+	getStrokeStyle : function() {
+		var glyph = this;
+		var color = glyph.getAttr('borderColor');
+		
+		if (typeof(color) == "object") {
+		   var lineargradient = this.lane.ctx.createLinearGradient(this.length/2, 0, this.length/2, this.getHeight());
+         var currColor;
+         for(var i=0; currColor=color[i], i < color.length; i++){
+             lineargradient.addColorStop(i / (color.length-1), currColor);
+         }
+   		return lineargradient
+		} else 
+		   return color;
 	},
 	
 	isSubFeature: function() {
@@ -375,15 +307,11 @@ var Glyph = Class.extend({
 	
 	clearInside: function() {
 		var glyph = this;
-		glyph.ctx.clearRect(0,0, glyph.pixelLength(), glyph.getHeight());
+		glyph.ctx.clearRect(0,0, glyph.getPixelLength(), glyph.getHeight());
 	},
 	
 	draw: function() {
 		var glyph = this;
-		
-		// check if chart level options were set
-		glyph.setTextOptions();
-		glyph.setOnClickOptions();
 		
 		// set ctx
 		glyph.ctx = glyph.lane.chart.ctx;
@@ -393,9 +321,10 @@ var Glyph = Class.extend({
 		var fontSize = /^\d+/.exec(glyph.ctx.font);
 		var font = /\S+$/.exec(glyph.ctx.font);
 		var fontSizeMin = 10;
+		glyph.onClick = glyph.getAttr('onClick');
 		glyph.ctx.fillStyle = glyph.getFillStyle();
 		var fillStyle = glyph.ctx.fillStyle;
-		var position = glyph.pixelPosition_x();
+		var position = glyph.getPixelPositionX();
 		var height = glyph.getHeight();
 		
 		(height < fontSizeMin) ? glyph.ctx.font = fontSizeMin + "px " + font : glyph.ctx.font = height *.9 + "px " + font;					
@@ -404,7 +333,7 @@ var Glyph = Class.extend({
 
 		glyph.ctx.translate(position, 0);	
 		if (glyph.strand == '-' && !glyph.isSubFeature()) 
-			glyph.ctx.transform(-1, 0, 0, 1, glyph.pixelLength(), 0);
+			glyph.ctx.transform(-1, 0, 0, 1, glyph.getPixelLength(), 0);
 		
 		// draw glyph with subclass specific draw
 		glyph._draw();
@@ -416,7 +345,7 @@ var Glyph = Class.extend({
 			var saveStrokeStyle = glyph.ctx.strokeStyle;
 			var saveLineWidth = glyph.ctx.lineWidth;
 			glyph.ctx.strokeStyle = glyph.getStrokeStyle();
-			glyph.ctx.lineWidth = glyph.getLineWidth()
+			glyph.ctx.lineWidth = glyph.getAttr('borderWidth');
 			glyph.ctx.stroke();
 			glyph.ctx.strokeStyle = saveStrokeStyle;
 			glyph.ctx.lineWidth = saveLineWidth;
@@ -426,7 +355,7 @@ var Glyph = Class.extend({
 		
 		// explicity change transformation matrix back -- it's faster than save restore!
 		if (glyph.strand == '-' && !glyph.isSubFeature()) 
-			glyph.ctx.transform(-1, 0, 0, 1, glyph.pixelLength(), 0);
+			glyph.ctx.transform(-1, 0, 0, 1, glyph.getPixelLength(), 0);
 
 		// draw text
 		glyph.drawText(glyph.name);

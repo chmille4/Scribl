@@ -46,10 +46,14 @@
 			// set start x and y draw locations to 0
 			x = y = 0;
 			
+			// translate back the length of the complex glyph
+			// so sub glyphs will be placed correctly
+			ctx.translate(-complex.getPixelPositionX(), 0);
+			
 			// draw connector line
-			complex.line.lane = this.lane;
+			complex.line.lane = this.lane;						
 			complex.line.draw();
-						
+			
 			// draw subFeatures
 			var numsubFeatures = complex.subFeatures.length
 			for (var i=0; i< numsubFeatures; i++) {				
@@ -58,6 +62,9 @@
 				complex.subFeatures[i].lane = complex.lane;
 				complex.subFeatures[i].draw();
 			}
+			
+			// redo translate so the next glyphs will be placed correctly
+			ctx.translate(complex.getPixelPositionX(), 0);
 			
 			// end path so it doesn't get redrawn when parent tries to draw
 			ctx.beginPath();					

@@ -28,6 +28,7 @@ var Scribl = Class.extend({
       this.width = width;
       this.laneSizes = 50;	
       this.laneBuffer = 5;
+      this.trackBuffer = 25;
       this.offset = undefined;
       this.canvas = canvas;
       this.ctx = ctx;
@@ -133,7 +134,7 @@ var Scribl = Class.extend({
       var numTracks = this.tracks.length
 		
       for (var i=0; i < numTracks; i++) {
-         wholeHeight += this.laneBuffer;
+         wholeHeight += this.trackBuffer;
          wholeHeight += this.tracks[i].getHeight();
       }
 

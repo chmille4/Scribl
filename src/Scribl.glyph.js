@@ -105,7 +105,11 @@ var Glyph = Class.extend({
 	getPixelPositionX: function() { 
 		var glyph = this;
 		var offset = parseInt(glyph.lane.track.chart.offset) || 0; 
-		return ( glyph.lane.chart.pixelsToNts( glyph.position - glyph.lane.track.chart.scale.min ) + offset); 
+		if (glyph.parent)
+		   var position = glyph.position + glyph.parent.position - glyph.lane.track.chart.scale.min;
+		else 
+		   var position = glyph.position - glyph.lane.track.chart.scale.min;
+		return ( glyph.lane.chart.pixelsToNts( position ) + offset); 
 	},
 
 	/** **getPixelPositionY**
@@ -151,12 +155,20 @@ var Glyph = Class.extend({
 	          
 	},
 	
+	/** **getAttr**
+   
+    * _determine and retrieve the appropriate value for each attribute, checks parent, default, type, and glyph levels in the appropriate order_
+    
+    * @param {*} attribute
+    * @return {*} attribute
+    * @api public        
+    */
 	getAttr : function(attr) {
 		var glyph = this;
       var attrs = attr.split('-');
 
       // glyph level
-      var glyphLevel = glyph
+      var glyphLevel = glyph;
       for( var k=0; k < attrs.length; k++) { glyphLevel = glyphLevel[attrs[k]]; }
       if (glyphLevel) return glyphLevel
       
@@ -169,8 +181,10 @@ var Glyph = Class.extend({
       
       // type level
       var typeLevel = this.lane.chart[glyph.type];
-      for( var k=0; k < attrs.length; k++) { typeLevel = typeLevel[attrs[k]]; }
-      if (typeLevel) return typeLevel;
+      if (typeLevel) {
+         for( var k=0; k < attrs.length; k++) { typeLevel = typeLevel[attrs[k]]; }
+         if (typeLevel) return typeLevel;
+      }
       
       // chart level
       var chartLevel = glyph.lane.chart.glyph;
@@ -181,7 +195,13 @@ var Glyph = Class.extend({
       return undefined;
 	},
    
-	
+	/** **drawText**
+   
+    * _draws the text for a glyph/feature
+    _    
+    * @param {String} text
+    * @api private 
+    */
 	drawText : function(text) {
 		// initialize
 		var glyph = this;
@@ -251,8 +271,26 @@ var Glyph = Class.extend({
 		}
 	},
 	
+	/** **calcRoundness**
+   
+    * _determines a roundness value based on the height of the glyph feature, so roundness looks consistent as lane size changes_    
+
+    * @return {Int} roundness
+    * @api private
+    */	
 	calcRoundness : function() {return (this.getHeight() * this.getAttr('roundness')/100);},
 	
+	/** **isContainedWithinRect**
+   
+    * _determines if this glyph/feature is contained within a box with the given coordinates_    
+    
+    * @param {Int} selectionTlX - top left X coordinate of bounding box
+    * @param {Int} selectionTlY - top left Y coordinate of bounding box
+    * @param {Int} selectionBrX - bottom right X coordinate of bounding box
+    * @param {Int} selectionBrY - bottom right Y coordinate of bounding box
+    * @return {Boolean} isContained
+    * @api public        
+    */
 	isContainedWithinRect : function(selectionTlX, selectionTlY, selectionBrX, selectionBrY) {
       var glyph = this;
       var y = glyph.getPixelPositionY();
@@ -266,11 +304,25 @@ var Glyph = Class.extend({
         && brY <= selectionBrY;
    },
 	
+	/** **getHeight**
+   
+    * _returns the height of this glyph/feature in pixels_
+   
+    * @return {Int} height
+    * @api public        
+    */		
 	getHeight : function() {
 		var glyph = this;
 		return ( glyph.lane.getHeight() );
 	},
 	
+	/** **getFillStyle**
+   
+    * _converts glyph.color into the format taken by canvas.context.fillStyle_
+   
+    * @return {Sting/Object} fillStyle
+    * @api public        
+    */
 	getFillStyle : function() {
 		var glyph = this;
 		var color = glyph.getAttr('color');
@@ -286,6 +338,13 @@ var Glyph = Class.extend({
 		   return color;
 	},
 	
+	/** **getStrokeStyle**
+   
+    * _converts glyph.borderColor into the format taken by canvas.context.fillStyle_
+   
+    * @return {Sting/Object} fillStyle
+    * @api public        
+    */
 	getStrokeStyle : function() {
 		var glyph = this;
 		var color = glyph.getAttr('borderColor');
@@ -301,15 +360,37 @@ var Glyph = Class.extend({
 		   return color;
 	},
 	
+	/** **isSubFeature**
+   
+    * _checks if glyph/feature has a parent_
+   
+    * @return {Boolean} isSubFeature? 
+    * @api public        
+    */
 	isSubFeature: function() {
 		return (this.parent != undefined);
 	},
 	
-	clearInside: function() {
+	/** **erase**
+   
+    * _erase this glyph/feature_
+   
+    * @api public 
+    */
+	erase: function() {
 		var glyph = this;
-		glyph.ctx.clearRect(0,0, glyph.getPixelLength(), glyph.getHeight());
+		glyph.ctx.save();
+      glyph.ctx.setTransform(1,0,0,1,0,0);
+      glyph.ctx.clearRect(glyph.getPixelPositionX(), glyph.getPixelPositionY(), glyph.getPixelLength(), glyph.getHeight());
+      glyph.ctx.restore();
 	},
 	
+	/** **draw**
+   
+    * _draws the glyph_
+   
+    * @api private        
+    */
 	draw: function() {
 		var glyph = this;
 		
@@ -329,14 +410,14 @@ var Glyph = Class.extend({
 		
 		(height < fontSizeMin) ? glyph.ctx.font = fontSizeMin + "px " + font : glyph.ctx.font = height *.9 + "px " + font;					
 		
-		// setup ctx so the glyph will be drawn at the right position and right direction
-
-		glyph.ctx.translate(position, 0);	
+		// setup ctx position and orientation
+		glyph.ctx.translate(position, 0);			
 		if (glyph.strand == '-' && !glyph.isSubFeature()) 
 			glyph.ctx.transform(-1, 0, 0, 1, glyph.getPixelLength(), 0);
 		
 		// draw glyph with subclass specific draw
 		glyph._draw();
+		
 		// draw border color
 		if (glyph.borderColor != "none") {
 			if(glyph.color == 'none' && glyph.parent.glyphType == 'Complex') {
@@ -350,6 +431,7 @@ var Glyph = Class.extend({
 			glyph.ctx.strokeStyle = saveStrokeStyle;
 			glyph.ctx.lineWidth = saveLineWidth;
 		}
+		
 		// draw fill color
 		if (glyph.color !="none") glyph.ctx.fill();
 		

@@ -142,6 +142,8 @@ var Track = Class.extend({
 			wholeHeight += laneBuffer;
 			wholeHeight += this.lanes[i].getHeight();
 		}
+		// subtract 1 laneBuffer b\c laneBuffers are between lanes
+		wholeHeight -= laneBuffer;
 		
 		return wholeHeight;
 	},
@@ -155,12 +157,12 @@ var Track = Class.extend({
     */
 	getPixelPositionY: function() {
 	   var track = this;
-	   var y = track.chart.getScaleHeight();
-	   var trackHeight = track.getHeight();
+	   var y = track.chart.getScaleHeight() + track.chart.laneBuffer;
+//	   var trackHeight = track.getHeight();
 	   for( var i=0; i < track.chart.tracks.length; i++ ) {
-         y += track.chart.laneBuffer;
          if (track.uid == track.chart.tracks[i].uid) break;
-	      y += trackHeight;
+         y += track.chart.trackBuffer;
+	      y += track.chart.tracks[i].getHeight();
 	   }
 	   
 	   return y; 
@@ -198,16 +200,16 @@ var Track = Class.extend({
 	   var track = this;
 	   var style = track.getDrawStyle();
 		var laneSize = track.chart.laneSizes;
-		var lanes = track.lanes
-		var laneBuffer = track.chart.laneBuffer
-		var y =  laneSize + laneBuffer;
+		var lanes = track.lanes;
+		var laneBuffer = track.chart.laneBuffer;
+		var trackBuffer = track.chart.trackBuffer;
+		var y =  laneSize + trackBuffer;
 		var ctx = track.ctx;
-
+		
 		// draw lanes
 		
 		// draw expanded/default style
-		if ( style == undefined || style == 'expand' ) {
-   		ctx.translate(0,laneBuffer);
+		if ( style == undefined || style == 'expand' ) {   		
    		for (var i=0; i<lanes.length; i++) {
    			lanes[i].y = y;
    			lanes[i].draw();
@@ -263,6 +265,9 @@ var Track = Class.extend({
 		   ctx.stroke();
 		   ctx.translate(0, lanes[0].getHeight() + laneBuffer);
    	}
+   	
+		// add track buffer - extra laneBuffer
+		ctx.translate(0,trackBuffer-laneBuffer);
 		
 	}
 });

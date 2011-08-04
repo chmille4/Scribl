@@ -127,9 +127,9 @@ var Lane = Class.extend({
 	   var lane = this;
 	   var y = lane.track.getPixelPositionY();
 	   var laneHeight = lane.getHeight();
-	   for( var i=0; i < lane.track.lanes.length; i++ ) {
-	      y += lane.track.chart.laneBuffer;
+	   for( var i=0; i < lane.track.lanes.length; i++ ) {	      
 	      if (lane.uid == lane.track.lanes[i].uid) break;
+	      y += lane.track.chart.laneBuffer;
          y += laneHeight;
 	   }
 	   

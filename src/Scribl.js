@@ -1,18 +1,17 @@
 /**
-	Scribl Class
-	sets defaults, 
-	defines how to add features to chart/view, 
-	and some methods to help coordinate drawing
-	
-	Chase Miller 2011
-  */
-  
-
+ * **Scribl Class**
+ *
+ * _sets defaults, defines how to add features
+ * to chart/view and some methods to help
+ * coordinate drawing_
+ * 
+ * Chase Miller 2011
+ */
 var Scribl = Class.extend({
    	 
    /** **init**
 
-    * _ Constructor, gets called by `new Scribl()`_
+    * _ Constructor, call this with `new Scribl()`_
 
     * @param {Object} canvasHTML object
     * @param {Int} width of chart in pixels
@@ -474,7 +473,7 @@ var Scribl = Class.extend({
    
     * @param {Int} [pixels] optional - if not given, the ratio of pixels/nts will be returned
     * @return {Int} nucleotides or pixels/nts ratio
-    * @api private    
+    * @api internal    
     */
 	pixelsToNts: function(pixels) { 
       if (pixels == undefined)
@@ -489,7 +488,7 @@ var Scribl = Class.extend({
    
     * @param {Int} [nucleotides] optional - if not given, the ratio of nts/pixel will be returned
     * @return {Int} pixels or nts/pixel ratio
-    * @api private
+    * @api internal
     */
 	ntsToPixels: function(nts) { 
       if (nts == undefined) 
@@ -502,7 +501,7 @@ var Scribl = Class.extend({
    
     * _turns static chart into scrollable chart_
    
-    * @api private
+    * @api internal
     */
 	initScrollable: function() {
       var scrollStartMin;
@@ -587,7 +586,7 @@ var Scribl = Class.extend({
     * _intelligently determines a major tick interval based on size of the chart/view and size of the numbers on the scale_
    
     * @return {Int} major tick interval
-    * @api private
+    * @api internal
     */
 	determineMajorTick: function() {
       this.ctx.font = this.scale.font.size + 'px arial';
@@ -619,7 +618,7 @@ var Scribl = Class.extend({
    
     * @param {Int} tickNumber - the tick number that needs to be abbreviated
     * @return {String} abbreviated tickNumber
-    * @api private
+    * @api internal
     */
 	getTickText: function(tickNumber) {
       if ( !this.tick.auto )
@@ -645,7 +644,7 @@ var Scribl = Class.extend({
    
     * @param {Int} tickNumber - the tick number that needs to be abbreviated
     * @return {String} abbreviated tickNumber
-    * @api private
+    * @api internal
     */
 	getTickTextDecimalPlaces: function(tickNumber){
       if ( !this.tick.auto )
@@ -669,7 +668,7 @@ var Scribl = Class.extend({
    
     * @param {Object} event - triggered event
     * @param {String} type - type of event
-    * @api private
+    * @api internal
     */
 	handleMouseEvent: function(e, type) {
       this.myMouseEventHandler.setMousePosition(e);
@@ -716,7 +715,7 @@ var Scribl = Class.extend({
    
     * _adds event listerners_
    
-    * @api private
+    * @api internal
     */
 	registerEventListeners: function() {
       var chart = this;

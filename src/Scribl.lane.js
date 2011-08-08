@@ -1,31 +1,32 @@
 /**
-	Scribl::Lane
-	
-	_A lane is used to draw features on a single y position_
-	
-	Chase Miller 2011
-  */
+ * **Scribl::Lane**
+ *
+ * _A lane is used to draw features on a single y position_
+ *
+ * Chase Miller 2011
+ */
 
 
 var Lane = Class.extend({
 	/** **init**
 
-    * _Constructor, gets called by `new Lane()`_
-    * to create new Tracks use `Scribl.addTrack()`;
-
+    * _Constructor_
+    *
+    * This is called with `new Lane()`, but to create new Lanes associated with a chart use `track.addLane()`
+    *
     * @param {Object} ctx - the canvas.context object
     * @param {Object} track - track that this lane belongs to
-    * @api private
+    * @api internal
     */
 	init: function(ctx, track) {
-		// defaults
-		this.height = undefined;
-		this.features = [];
+      // defaults
+      this.height = undefined;
+      this.features = [];
       this.ctx = ctx;
       this.track = track;
       this.chart = track.chart;
       this.uid = _uniqueId('lane');
-	},
+   },
 	
 	
 	/** **addGene**
@@ -39,9 +40,9 @@ var Lane = Class.extend({
     * @return {Object} gene - a feature with the 'gene' type      
     * @api public
     */
-	addGene: function(position, length, strand, opts) {
-		return (this.addFeature( new BlockArrow("gene", position, length, strand, opts) ) );
-	},
+   addGene: function(position, length, strand, opts) {
+      return (this.addFeature( new BlockArrow("gene", position, length, strand, opts) ) );
+   },
 	
 	/** **addProtein**
    
@@ -55,8 +56,8 @@ var Lane = Class.extend({
     * @api public
     */
 	addProtein: function(position, length, strand, opts) {
-		return (this.addFeature( new BlockArrow("protein", position, length, strand, opts) ) );
-	},
+      return (this.addFeature( new BlockArrow("protein", position, length, strand, opts) ) );
+   },
 	
 	/** **addFeature**
    
@@ -71,23 +72,23 @@ var Lane = Class.extend({
     */
 	addFeature: function( feature ) {
 		
-		// create feature
-		feature.lane = this;
-		this.features.push(feature);
-		
-		// initialize hash containers for "type" level options
-		if (! this.chart[feature.type] ){
-            this.chart[feature.type] = {'text': {}}
-		}
-		
-		// determine chart absolute_min and absolute_max
-		if ( feature.length + feature.position > this.chart.scale.max || this.chart.scale.max == undefined )
-			this.chart.scale.max = feature.length + feature.position;
-		if ( feature.position < this.chart.scale.min || this.chart.scale.min == undefined )
-			this.chart.scale.min = feature.position;				
-			
-		return feature;
-	},
+      // create feature
+      feature.lane = this;
+      this.features.push(feature);
+      
+      // initialize hash containers for "type" level options
+      if (! this.chart[feature.type] ){
+         this.chart[feature.type] = {'text': {}}
+      }
+      
+      // determine chart absolute_min and absolute_max
+      if ( feature.length + feature.position > this.chart.scale.max || this.chart.scale.max == undefined )
+         this.chart.scale.max = feature.length + feature.position;
+      if ( feature.position < this.chart.scale.min || this.chart.scale.min == undefined )
+         this.chart.scale.min = feature.position;				
+      	
+      return feature;
+   },
 	
 	/** **loadFeatures**
    
@@ -97,10 +98,10 @@ var Lane = Class.extend({
     * @api public
     */	
 	loadFeatures: function(features) {
-	  var featureNum = features.length;
-	  for(var i=0; i<featureNum; i++)
-        this.addFeature(features[i]);
-	},
+      var featureNum = features.length;
+      for(var i=0; i<featureNum; i++)
+         this.addFeature(features[i]);
+   },
 		
 	/** **getHeight**
    
@@ -110,11 +111,11 @@ var Lane = Class.extend({
     * @api public        
     */	
 	getHeight: function() {
-		if ( this.height != undefined )
-			return this.height;
-		else
-			return this.chart.laneSizes;
-	},
+      if ( this.height != undefined )
+         return this.height;
+      else
+         return this.chart.laneSizes;
+   },
 	
 	/** **getPixelPositionY**
    
@@ -124,26 +125,26 @@ var Lane = Class.extend({
     * @api public        
     */	
 	getPixelPositionY: function() {
-	   var lane = this;
-	   var y = lane.track.getPixelPositionY();
-	   var laneHeight = lane.getHeight();
-	   for( var i=0; i < lane.track.lanes.length; i++ ) {	      
-	      if (lane.uid == lane.track.lanes[i].uid) break;
-	      y += lane.track.chart.laneBuffer;
+      var lane = this;
+      var y = lane.track.getPixelPositionY();
+      var laneHeight = lane.getHeight();
+      for( var i=0; i < lane.track.lanes.length; i++ ) {	      
+         if (lane.uid == lane.track.lanes[i].uid) break;
+         y += lane.track.chart.laneBuffer;
          y += laneHeight;
-	   }
-	   
-	   return y;
-	},
+      }
+      
+      return y;
+   },
 	
 	/** **draw**
    
     * _draws lane_
    
-    * @api private
+    * @api internal
     */
 	draw: function() {
-		for (var i=0; i< this.features.length; i++)
-			this.features[i].draw();
-	}
+      for (var i=0; i< this.features.length; i++)
+         this.features[i].draw();
+   }
 });

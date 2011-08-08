@@ -1,6 +1,7 @@
-/*
-	Scribl::Utils
-	Chase Miller 2011
+/**
+ * **Scribl::Utils**
+ *
+ * Chase Miller 2011
  */
  
 /** **ScriblWrapLines**
@@ -10,7 +11,7 @@
 * @param {Int} max - column width in letters
 * @param {String} text
 * @return {String} formatted text
-* @api private
+* @api internal
 */
 function ScriblWrapLines(max, text) {
 	var lines = [];

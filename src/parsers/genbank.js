@@ -1,5 +1,6 @@
-
-
+/**
+ * Genbank parser
+ */
 function genbank(file, bchart) {
 	
 	var lines = file.split("\n");

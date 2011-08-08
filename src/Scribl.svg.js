@@ -163,20 +163,20 @@ var svgToString = function(elem, indent) {
 					if(attr.localName === "class" && attrVal.indexOf('se_') === 0) continue;
 					out.push(" "); 
 					if(attr.localName === 'd') attrVal = pathActions.convertPath(elem, true);
-					/*if(!isNaN(attrVal)) {
-						attrVal = shortFloat(attrVal);
-					}*/
+					//if(!isNaN(attrVal)) {
+					//	attrVal = shortFloat(attrVal);
+					//}
 					
 					// Embed images when saving 
-					/*if(save_options.apply
-						&& elem.nodeName === 'image' 
-						&& attr.localName === 'href'
-						&& save_options.images
-						&& save_options.images === 'embed') 
-					{
-						var img = encodableImages[attrVal];
-						if(img) attrVal = img;
-					}*/
+               // if(save_options.apply
+               //    && elem.nodeName === 'image' 
+               //    && attr.localName === 'href'
+               //    && save_options.images
+               //    && save_options.images === 'embed') 
+               // {
+               //    var img = encodableImages[attrVal];
+               //    if(img) attrVal = img;
+               // }
 					
 					// map various namespaces to our fixed namespace prefixes
 					// (the default xmlns attribute itself does not get a prefix)

@@ -1,3 +1,6 @@
+/**
+ * Bed parser
+ */
 function bed(file, chart) {
 	var lines = file.split("\n");
 	var features = [];

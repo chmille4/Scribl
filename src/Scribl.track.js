@@ -1,28 +1,29 @@
 /**
-	Scribl::Track
-	
-	_Tracks are used to segregrate different sequence data_
-	
-	Chase Miller 2011
-  */
+ * Scribl::Track
+ *
+ * _Tracks are used to segregrate different sequence data_
+ *
+ * Chase Miller 2011
+ */
 
 
 var Track = Class.extend({
 	/** **init**
 
-    * _Constructor, gets called by `new Track()`_
-    * to create new Tracks use Scribl.addTrack();
-
+    * _Constructor_
+    *
+    * This is called with `new Track()`, but to create new Tracks associated with a chart use `Scribl.addTrack()`
+    *
     * @param {Object} ctx - the canvas.context object
-    * @api private
+    * @api internal
     */
 	init: function(ctx) {
-		// defaults
-		this.lanes = [];
-		this.ctx = ctx;
+      // defaults
+      this.lanes = [];
+      this.ctx = ctx;
       this.uid = _uniqueId('track');      
       this.drawStyle = undefined;
-
+      
       // coverage variables
       this.coverageData = [];  // number of features at any given pixel;
       this.maxDepth = 0; // highest depth for this track;
@@ -36,10 +37,10 @@ var Track = Class.extend({
     * @api public
     */
 	addLane: function() {
-	    var lane = new Lane(this.ctx, this);
-		this.lanes.push(lane);
-		return lane;
-	},
+      var lane = new Lane(this.ctx, this);
+      this.lanes.push(lane);
+      return lane;
+   },
 	
 	/** **addGene**
    
@@ -53,8 +54,8 @@ var Track = Class.extend({
     * @api public
     */
 	addGene: function(position, length, strand, opts) {
-		return (this.addFeature( new BlockArrow("gene", position, length, strand, opts) ) );
-	},
+      return (this.addFeature( new BlockArrow("gene", position, length, strand, opts) ) );
+   },
 	
 	/** **addProtein**
    
@@ -68,8 +69,8 @@ var Track = Class.extend({
     * @api public
     */
 	addProtein: function(position, length, strand, opts) {
-		return (this.addFeature( new BlockArrow("protein", position, length, strand, opts) ) );
-	},
+      return (this.addFeature( new BlockArrow("protein", position, length, strand, opts) ) );
+   },
 	
 	/** **addFeature**
    
@@ -84,29 +85,29 @@ var Track = Class.extend({
     */
 	addFeature: function( feature ) {
 		
-		var curr_lane;
-		var new_lane = true;
+      var curr_lane;
+      var new_lane = true;
+      
+      // try to add feature at lower lanes then move up
+      for (var j=0; j < this.lanes.length; j++) {
+         var prev_feature = this.lanes[j].features[ this.lanes[j].features.length - 1 ];
 
-		// try to add feature at lower lanes then move up
-		for (var j=0; j < this.lanes.length; j++) {
-			var prev_feature = this.lanes[j].features[ this.lanes[j].features.length - 1 ];
+         // check if new lane is needed
+         if ( prev_feature != undefined && (feature.position - 3/this.chart.pixelsToNts()) > (prev_feature.position + prev_feature.length) ) {
+            new_lane = false;
+            curr_lane = this.lanes[j];
+            break;
+         }
+      }
 
-			// check if new lane is needed
-			if ( prev_feature != undefined && (feature.position - 3/this.chart.pixelsToNts()) > (prev_feature.position + prev_feature.length) ) {
-				new_lane = false;
-				curr_lane = this.lanes[j];
-				break;
-			}
-		}
-
-		// add new lane if needed
-		if (new_lane)
-			curr_lane = this.addLane();
+      // add new lane if needed
+      if (new_lane)
+         curr_lane = this.addLane();
 			
-		// add feature
-		curr_lane.addFeature( feature );	
-		return feature;
-	},
+      // add feature
+      curr_lane.addFeature( feature );	
+      return feature;
+   },
 	
 	/** **getDrawStyle**
    
@@ -115,12 +116,12 @@ var Track = Class.extend({
     * @return {String} drawStyle - the style this track will be drawn e.g. expand, collapse, line     
     * @api public        
     */
-	getDrawStyle: function() {
-	  if (this.drawStyle)
-       return this.drawStyle
-	  else
-	    return this.chart.drawStyle;
-	},
+   getDrawStyle: function() {
+      if (this.drawStyle)
+         return this.drawStyle
+      else
+         return this.chart.drawStyle;
+   },
 	
 	/** **getHeight**
    
@@ -130,23 +131,23 @@ var Track = Class.extend({
     * @api public        
     */
 	getHeight: function() {
-		var wholeHeight = 0;
+      var wholeHeight = 0;
 		
-		var numLanes = this.lanes.length;
-		var laneBuffer = this.chart.laneBuffer;
-		var drawStyle = this.getDrawStyle();
-		if (drawStyle == 'line' || drawStyle == 'collapse')
-		   numLanes = 1;
+      var numLanes = this.lanes.length;
+      var laneBuffer = this.chart.laneBuffer;
+      var drawStyle = this.getDrawStyle();
+      if (drawStyle == 'line' || drawStyle == 'collapse')
+         numLanes = 1;
 		
-		for (var i=0; i < numLanes; i++) {
-			wholeHeight += laneBuffer;
-			wholeHeight += this.lanes[i].getHeight();
-		}
-		// subtract 1 laneBuffer b\c laneBuffers are between lanes
-		wholeHeight -= laneBuffer;
+      for (var i=0; i < numLanes; i++) {
+         wholeHeight += laneBuffer;
+         wholeHeight += this.lanes[i].getHeight();
+      }
+      // subtract 1 laneBuffer b\c laneBuffers are between lanes
+      wholeHeight -= laneBuffer;
 		
-		return wholeHeight;
-	},
+      return wholeHeight;
+   },
 	
 	/** **getPixelPositionY**
    
@@ -155,27 +156,28 @@ var Track = Class.extend({
     * @return {Int} pixelPositionY
     * @api public        
     */
-	getPixelPositionY: function() {
-	   var track = this;
-	   var y = track.chart.getScaleHeight() + track.chart.laneBuffer;
-//	   var trackHeight = track.getHeight();
-	   for( var i=0; i < track.chart.tracks.length; i++ ) {
+   getPixelPositionY: function() {
+      var track = this;
+      var y = track.chart.getScaleHeight() + track.chart.laneBuffer;
+
+      for( var i=0; i < track.chart.tracks.length; i++ ) {
          if (track.uid == track.chart.tracks[i].uid) break;
          y += track.chart.trackBuffer;
-	      y += track.chart.tracks[i].getHeight();
-	   }
-	   
-	   return y; 
-	},
+         y += track.chart.tracks[i].getHeight();
+      }
+   
+      return y; 
+   },
 	
 	/** **calcCoverageData**
    
     * _calculates the coverage (the number of features) at each pixel_
-   
-    * @api private    
+    *
+    * @api internal    
     */
-	calcCoverageData: function() {
+   calcCoverageData: function() {
       var lanes = this.lanes 
+	   
 	   // determine feature locations
       for (var i=0; i<lanes.length; i++) {
          for (var k=0; k<lanes[i].features.length; k++) {
@@ -188,36 +190,36 @@ var Track = Class.extend({
             }
          }
       }     
-	},
+   },
 	
 	/** **draw**
    
     * _draws Track_
    
-    * @api private        
+    * @api internal   
     */
 	draw: function() {
-	   var track = this;
-	   var style = track.getDrawStyle();
-		var laneSize = track.chart.laneSizes;
-		var lanes = track.lanes;
-		var laneBuffer = track.chart.laneBuffer;
-		var trackBuffer = track.chart.trackBuffer;
-		var y =  laneSize + trackBuffer;
-		var ctx = track.ctx;
-		
-		// draw lanes
-		
-		// draw expanded/default style
-		if ( style == undefined || style == 'expand' ) {   		
-   		for (var i=0; i<lanes.length; i++) {
-   			lanes[i].y = y;
-   			lanes[i].draw();
-   			var height = lanes[i].getHeight();
-   			ctx.translate(0, height + laneBuffer);
-   			y = y + height + laneBuffer;
-   		}
-   	} else if ( style == 'collapse' ) { // draw collapse style (i.e. single lane)
+      var track = this;
+      var style = track.getDrawStyle();
+      var laneSize = track.chart.laneSizes;
+      var lanes = track.lanes;
+      var laneBuffer = track.chart.laneBuffer;
+      var trackBuffer = track.chart.trackBuffer;
+      var y =  laneSize + trackBuffer;
+      var ctx = track.ctx;
+      
+      // draw lanes
+      
+      // draw expanded/default style
+      if ( style == undefined || style == 'expand' ) {   		
+         for (var i=0; i<lanes.length; i++) {
+            lanes[i].y = y;
+            lanes[i].draw();
+            var height = lanes[i].getHeight();
+            ctx.translate(0, height + laneBuffer);
+            y = y + height + laneBuffer;
+         }
+      } else if ( style == 'collapse' ) { // draw collapse style (i.e. single lane)
          var features = []
          // concat all features into single array
          for (var i=0; i<lanes.length; i++) {
@@ -248,26 +250,26 @@ var Track = Class.extend({
          ctx.translate(0, lanes[0].getHeight() + laneBuffer);
    
       // draw as a line chart of the coverage
-   	} else if ( style == 'line' ) {
-   	   if (track.coverageData.length == 0) track.calcCoverageData();
+      } else if ( style == 'line' ) {
+         if (track.coverageData.length == 0) track.calcCoverageData();
    	   
-   	   var normalizationFactor = this.maxDepth;
+         var normalizationFactor = this.maxDepth;
 
          ctx.beginPath();
 //         ctx.moveTo(this.chart.offset, laneSize);
-		   for (var k=this.chart.offset; k <= this.chart.width + this.chart.offset; k++) {
-		      var normalizedPt = track.coverageData[k] / normalizationFactor * laneSize || 0;
-		      normalizedPt = laneSize - normalizedPt;
-		      ctx.lineTo(k, normalizedPt);
-		   }
-		   ctx.lineTo(this.chart.width + this.chart.offset, laneSize)
+         for (var k=this.chart.offset; k <= this.chart.width + this.chart.offset; k++) {
+            var normalizedPt = track.coverageData[k] / normalizationFactor * laneSize || 0;
+            normalizedPt = laneSize - normalizedPt;
+            ctx.lineTo(k, normalizedPt);
+         }
+         ctx.lineTo(this.chart.width + this.chart.offset, laneSize)
 //		   ctx.lineTo(this.chart.offset, laneSize);
-		   ctx.stroke();
-		   ctx.translate(0, lanes[0].getHeight() + laneBuffer);
-   	}
+         ctx.stroke();
+         ctx.translate(0, lanes[0].getHeight() + laneBuffer);
+      }
    	
-		// add track buffer - extra laneBuffer
-		ctx.translate(0,trackBuffer-laneBuffer);
+      // add track buffer - extra laneBuffer
+      ctx.translate(0,trackBuffer-laneBuffer);
 		
-	}
+   }
 });

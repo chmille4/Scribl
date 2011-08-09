@@ -547,12 +547,14 @@ var Scribl = Class.extend({
       this.canvas.width = canvasWidth;
       this.width = canvasWidth - 30;
       schart = this;
+      var zoomValue = (scrollStartMax - scrollStartMin) / (this.scale.max - this.scale.min) * 100;
+
       $(sliderDiv).slider({
          orientation: 'vertical',
          range: 'min',
          min: 1,
          max: 100,
-         value: 60,
+         value: zoomValue,
          slide: function( event, ui ) {
             var totalNts = schart.scale.max - schart.scale.min;
             var width = ui['value'] / 100 * totalNts;

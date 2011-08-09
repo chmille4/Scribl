@@ -64,8 +64,51 @@ var MouseEventHandler = Class.extend({
       }		
 	},
 
-
    /** **setMousePosition**
+
+    * _sets the mouse position relative to the canvas_
+
+    * @param {Object} e - event
+    * @api internal
+    */
+	setMousePosition: function(e) {
+      if (e!=null) {
+         var rect = this.chart.canvas.getBoundingClientRect();
+         this.mouseX = e.clientX - rect.left;
+         this.mouseY = e.clientY - rect.top;
+      }
+   },
+	
+	/** **handleClick**
+
+    * _gets called when there is a click and determines how to handle it_
+
+    * @param {Object} chart - Scribl object
+    * @api internal
+    */
+	handleClick: function(chart) {
+      var me = chart.myMouseEventHandler;
+      var clicked = me.eventElement;
+                var onClick;
+      
+      // check if the click occured on a feature/object with an onClick property
+      if (clicked != undefined && clicked.onClick != undefined)
+         onClick = clicked.onClick
+      else if (clicked && clicked.parent && clicked.parent.onClick)
+         onClick = clicked.parent.onClick
+      
+      if(onClick){
+         // open window if string
+         if (typeof(onClick) == "string"){ window.open(onClick); }
+         // if function run function with feature as argument
+         else if (typeof(onClick) == "function"){ onClick(clicked); }
+      }
+   },
+
+	
+	/** **handleMouseover**
+
+    * _gets called when there is a mouseover and fires tooltip if necessary_
 
     * _sets the mouse position relative to the canvas_
 
@@ -143,7 +186,7 @@ var MouseEventHandler = Class.extend({
       else if (obj && obj.parent && obj.parent.onClick != undefined)
          ctx.canvas.style.cursor = 'pointer';
       else
-         ctx.canvas.style.cursor = 'auto'; 					
+         ctx.canvas.style.cursor = 'auto'; 		
    },
 
    /** **reset**

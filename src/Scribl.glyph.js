@@ -319,7 +319,7 @@ var Glyph = Class.extend({
       var glyph = this;
       var color = glyph.getAttr('color');
 		
-      if (typeof(color) == "object") {
+      if (color instanceof Array) {
          var lineargradient = this.lane.ctx.createLinearGradient(this.length/2, 0, this.length/2, this.getHeight());
          var currColor;
          for(var i=0; currColor=color[i], i < color.length; i++)
@@ -430,7 +430,7 @@ var Glyph = Class.extend({
          glyph.ctx.transform(-1, 0, 0, 1, glyph.getPixelLength(), 0);
 
       // draw text
-      glyph.drawText(glyph.name);
+      glyph.drawText(glyph.getAttr('name'));
 		
       // explicity change transformation matrix back -- it's faster than save restore!
       glyph.ctx.translate(-position, 0);

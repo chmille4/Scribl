@@ -47,6 +47,7 @@ var Glyph = Class.extend({
       glyph.text.align = undefined; // default: 'middle'		
       
       glyph.onClick = undefined;
+      glyph.onMouseover = undefined;
       
       // set option attributes if any
       for (var attribute in opts)
@@ -393,6 +394,7 @@ var Glyph = Class.extend({
       var font = /\S+$/.exec(glyph.ctx.font);
       var fontSizeMin = 10;
       glyph.onClick = glyph.getAttr('onClick');
+      glyph.onMouseover = glyph.getAttr('onMouseover');
       glyph.ctx.fillStyle = glyph.getFillStyle();
       var fillStyle = glyph.ctx.fillStyle;
       var position = glyph.getPixelPositionX();

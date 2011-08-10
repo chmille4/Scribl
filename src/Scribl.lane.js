@@ -136,6 +136,17 @@ var Lane = Class.extend({
       
       return y;
    },
+   
+   /** **erase**
+   
+    * _erases this lane_
+    *
+    * @api internal    
+    */
+   erase: function() {
+      var lane = this;
+      lane.chart.ctx.clearRect(0, lane.getPixelPositionY(), lane.track.chart.width, lane.getHeight());
+   },
 	
 	/** **draw**
    

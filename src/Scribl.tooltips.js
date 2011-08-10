@@ -128,8 +128,13 @@ var tooltips = Class.extend({
          this.chart.tooltips.text.color = "white";
       }
 		
+		this.chart.LastToolTip = { 
+		   'pixels' : this.ctx.getImageData(x-1, y-1, length+2, height+2),
+		   'x' : x-1,
+		   'y' : y-1
+		};
+		
       this.ctx.fillStyle = fillStyle;
-      
       
       this.ctx.beginPath();
       
@@ -167,10 +172,11 @@ var tooltips = Class.extend({
       trc_wdth_x = x + length;				// vertical point
       trc_wdth_y = y + roundness;
 
+
       // draw lines
-      
+   
       // top left corner
-      this.ctx.moveTo(tlc_lgth_x, tlc_lgth_y); 
+      this.ctx.moveTo(tlc_lgth_x, tlc_lgth_y);       
       this.ctx.quadraticCurveTo(tlc_ctrl_x, tlc_ctrl_y, tlc_wdth_x, tlc_wdth_y);
       
       // bottom left corner
@@ -199,7 +205,7 @@ var tooltips = Class.extend({
          var dim = this.ctx.measureText(textlines[i]);
          this.ctx.fillText(textlines[i], x + 5  , y + fontSize*(i+1));
       }
-		
+
       this.ctx.restore();
 		
    }

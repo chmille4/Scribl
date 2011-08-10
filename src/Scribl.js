@@ -674,20 +674,49 @@ var Scribl = Class.extend({
     */
 	handleMouseEvent: function(e, type) {
       this.myMouseEventHandler.setMousePosition(e);
-      this.redraw();
+      var positionY = this.myMouseEventHandler.mouseY;
+      var lane;
+      
+      for( var i=0; i < this.tracks.length; i++) {
+         for( var k=0; k < this.tracks[i].lanes.length; k++) {
+            var yt = this.tracks[i].lanes[k].getPixelPositionY();
+            var yb = yt + this.tracks[i].lanes[k].getHeight();
+            if (positionY >= yt && positionY <= yb ) {
+               lane = this.tracks[i].lanes[k];
+               break;
+            }
+         }
+      }
+      
+      // if mouse is not on any tracks then return
+      if (!lane) return;
+      
+      this.ctx.save(); 
+      lane.erase();
+      this.ctx.translate(0, lane.getPixelPositionY());
+      lane.draw();
+      var LastToolTip = this.LastToolTip;
+      if (LastToolTip) {
+         this.ctx.putImageData(LastToolTip.pixels, LastToolTip.x, LastToolTip.y )
+      }
+      this.ctx.restore();
+      
+      //this.redraw();
       var chart = this;
 		
       if (type == 'click') {
          var clicksFns = chart.events.clicks;
          for (var i = 0; i < clicksFns.length; i++)
-         clicksFns[i](chart);
+            clicksFns[i](chart);
       } else {
          var mouseoverFns = chart.events.mouseovers;
          for (var i = 0; i < mouseoverFns.length; i++) 
-         mouseoverFns[i](chart);								    
+            mouseoverFns[i](chart);								    
       }
 		
       this.myMouseEventHandler.reset(chart);
+      
+
 	},
 	
 	

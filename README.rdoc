@@ -1,13 +1,13 @@
 = Scribl
 
-Scribl is a bioinformatic canvas-based charting library that makes it easy to create charts of alignment and assembly data
+Scribl is a HTML5 canvas-based genomics graphics library
 
 == Usage
 
  <!DOCTYPE HTML> 
  <html lang="en">
 	<head>
-		<script src="https://github.com/chmille4/Scribl/raw/v0.2.3/Scribl.min.js" ></script>
+		<script src="Scribl.min.js" ></script>
 		
 		<script> 
 
@@ -41,23 +41,7 @@ http://chmille4.github.com/Scribl/
 == Documentation
 https://github.com/chmille4/Scribl/wiki/Documentation
 == Minification
-The {closure compiler}[http://code.google.com/closure/compiler/] is used to combine and minify multiple javascript files.
- java -jar ~/Tools/google-closure/compiler.jar  \  
-	--js src/Scribl.class.js \
-	--js src/Scribl.js \
-	--js src/Scribl.track.js \
-	--js src/Scribl.lane.js \
-	--js src/Scribl.events.js \
-	--js src/Scribl.utils.js \
-	--js src/Scribl.svg.js \
-	--js src/Scribl.glyph.js \
-	--js src/glyph/Scribl.blockarrow.js \
-	--js src/glyph/Scribl.rect.js \
-	--js src/glyph/Scribl.line.js \	
-	--js src/glyph/Scribl.complex.js \
-	--js src/glyph/Scribl.arrow.js \
-	--js src/parsers/genbank.js \	
-	--js src/parsers/bed.js \	
-	--js_output_file Scribl.min.js
+The {closure compiler}[http://code.google.com/closure/compiler/] is used to combine and minify multiple javascript files. To compile the library yourself install google closure compiler, set the correct path for the closure compiler in compile.sh and then run compile.sh
+ ./compile.sh
 == License
 MIT License

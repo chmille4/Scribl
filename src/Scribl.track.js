@@ -191,6 +191,17 @@ var Track = Class.extend({
          }
       }     
    },
+   
+   /** **erase**
+   
+    * _erases this track_
+    *
+    * @api internal    
+    */
+   erase: function() {
+      var track = this;
+      track.chart.ctx.clearRect(0, track.getPixelPositionY(), track.chart.width, track.getHeight());
+   },
 	
 	/** **draw**
    

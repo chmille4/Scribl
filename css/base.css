@@ -49,6 +49,8 @@
 	-moz-border-radius-topright: 10px;
 	-moz-border-radius-bottomright: 10px;
 	text-align: center;
+	box-shadow: inset 4px 1px 1px black;
+	box-shadow: 1px 1px 6px rgb(20,20,20);
  }
 
  #updates div {

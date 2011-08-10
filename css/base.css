@@ -48,18 +48,14 @@
 	border-bottom-right-radius: 10px;
 	-moz-border-radius-topright: 10px;
 	-moz-border-radius-bottomright: 10px;
- }
-
- #updates span {
-	font-weight: bold;
-	font-size: 16px;
-    color: #EC007B;
-	margin: 8px;
+	text-align: center;
  }
 
  #updates div {
-	color: white;
-	margin: 10px;
+	color: rgb(150,150,150);
+	font-weight: bold;
+	text-shadow: 1px 1px 4px rgb(40,40,40);
+	margin: 8px;
 	font-size: 15px;
 }
 
@@ -156,4 +152,8 @@
 	margin-left: auto;
 	margin-right: auto;
 	width: 286px;
+ }
+ 
+ .asterisk {
+   font: bold 50px arial;
  }

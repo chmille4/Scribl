@@ -2,77 +2,72 @@
 <html lang="en">
 	<head>
 		<title>Scribl - tracks demo</title>
-		<script  src="../js/Scriblv0.3.3.min.js" ></script>
+		<script  src="../js/Scribl.1.0.min.js" ></script>
 		<link rel="stylesheet" type="text/css" href="../css/demos.css" />
 		
-		<script type="text/javascript">
+      		<script> 
 
-		  var _gaq = _gaq || [];
-		  _gaq.push(['_setAccount', 'UA-21069282-1']);
-		  _gaq.push(['_trackPageview']);
+      				function draw(canvasName) {  
 
-		  (function() {
-		    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-		    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-		    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-		  })();
+      					// Get Canvas and Create Chart
+      				  	var canvas = document.getElementById(canvasName);  	
 
-		</script>
-		
-		<script> 
+      					// Create Chart
+      					chart = new Scribl(canvas, 500);
 
-				function draw(canvasName) {  
-					
-					// Get Canvas and Create Chart
-				  	var canvas = document.getElementById(canvasName);  	
-					
-					// Create Chart
-					chart = new Scribl(canvas, 500);
-					
-					// Change TrackSizes
-					chart.trackSizes = 15;
+      					// Change laneSizes and buffers
+      					chart.laneSizes = 18;
+      					chart.laneBuffer = 2;
+      					chart.trackBuffer = 40;
 
-					// Create Track 1
-					track1 = chart.addTrack();	
-			
-					// Add Genes to Track 1
-					gene1 = track1.addGene( 5, 750 , '-');
-					gene2 = track1.addGene( 3500, 2500, '+');
-					gene3 = track1.addGene( 8100, 1000, '-');
-					gene4 = track1.addGene( 6200, 1500, '+');
-			
-					// Create Track 2
-					track2 = chart.addTrack();
-				
-					// Add Genes to Track 2
-					gene5 = track2.addGene( 100, 1000, '-');		
-					gene6 = track2.addGene( 3500, 1500, '-');				
+      					// change text color		
+      					chart.glyph.text.color = 'white';			
 
-					// Create Track 3
-					track3 = chart.addTrack();
+      					// Create Track 1
+      					track1 = chart.addTrack();	
 
-					// Add Genes to Track 3
-					gene7 = track3.addGene( 2230, 1000, '+');
-					gene8 = track3.addGene( 4500, 1500, '+');				
-					gene9 = track3.addGene( 7230, 1000, '-');
-					
-					// Draw Chart
-					chart.draw();
+      					// Add Genes to Track 1
+      					gene1 = track1.addFeature( new BlockArrow('track1', 5, 750 , '-') );
+      					gene2 = track1.addFeature( new BlockArrow('track1', 3500, 2500, '+') );
+      					gene3 = track1.addFeature( new BlockArrow('track1', 8100, 1000, '-') );
+      					gene4 = track1.addFeature( new BlockArrow('track1', 6200, 1500, '+') );
+      					chart.track1.name = 'track 1';
 
-			}
-				
-		</script>
+      					// Create Track 2
+      					track2 = chart.addTrack();					
 
-	</head>  
-	
-	<body onload="draw('canvas')">  
-		<div id="description"><h2>Custom Tracks</h2>
-			<div>(Best viewed in Chrome/Safari)</div>
-			finer grain control of gene placement is possible by adding genes at the track level opposed to the gene level
-		</div><br/>
-		<div id="container">
-			<canvas id="canvas" width="547" height="400"></canvas>  
-		</div>
-	</body>
-	
-</html>
+      					// Add Genes to Track 2
+      					gene5 = track2.addFeature( new BlockArrow('track2', 100, 1000, '-') );
+      					gene6 = track2.addFeature( new BlockArrow('track2', 3500, 1500, '-') );
+      					chart.track2.name = 'track 2';
+
+      					// create Lane1 of Track2
+
+      					// Create Track with 1 lane
+      					track3Lane1 = chart.addTrack().addLane();
+
+      					// Add Genes to single lane
+      					gene7 = track3Lane1.addFeature( new BlockArrow('track3', 2230, 1000, '+') );
+      					gene8 = track3Lane1.addFeature( new BlockArrow('track3',3300, 1500, '+') );				
+      					gene9 = track3Lane1.addFeature( new BlockArrow('track3', 4800, 1000, '-') );
+      					chart.track3.name = 'track 3';
+
+      					// Draw Chart
+      					chart.draw();
+
+      			}
+
+      		</script>
+
+      	</head>  
+
+      	<body onload="draw('canvas')">  
+      		<div id="description"><h2>Custom Tracks</h2>
+      			finer grain control of features placement is possible by adding genes at the track or lane level
+      		</div><br/>
+      		<div id="container">
+      			<canvas id="canvas" width="547" height="400"></canvas>  
+      		</div>
+      	</body>
+
+      </html>

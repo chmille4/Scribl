@@ -39,12 +39,13 @@ Scribl is a HTML5 canvas-based genomics graphics library
 
 ## Examples
 http://chmille4.github.com/Scribl/
-## Usage Guide
-https://github.com/chmille4/Scribl/wiki/Documentation
-## Annotated Source Code
-http://chmille4.github.com/Scribl/source.html
+
+## Documentation
+* [Usage Guide](https://github.com/chmille4/Scribl/wiki/Documentation)
+* [Annotated Source Code](http://chmille4.github.com/Scribl/source.html)
+
 ## Minification
-The {closure compiler}[http://code.google.com/closure/compiler/] is used to combine and minify multiple javascript files. To compile the library yourself install google closure compiler, set the correct path for the closure compiler in compile.sh and then run compile.sh
+The [closure compiler](http://code.google.com/closure/compiler/) is used to combine and minify multiple javascript files. To compile the library yourself install google closure compiler, set the correct path for the closure compiler in compile.sh and then run compile.sh
  ./compile.sh
 ## License
 MIT License

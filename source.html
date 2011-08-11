@@ -108,7 +108,7 @@ code .this { color: #19469D; }</style>
 		</script>
 	</head>
 	<body>
-<table id="source"><tbody><tr><td><h1>Scribl</h1><p>HTML5 Canvas Genomics Graphics Library</p></td><td></td></tr><tr class="filename"><td><h2 id="src/Scribl.js"><a href="#">Scribl</a></h2></td><td>src/Scribl.js</td></tr><tr class="code">
+<table id="source"><tbody><tr><td><h1>Scribl</h1><p>HTML5 Canvas Genomics Graphics Library</p></td><td></td></tr><tr class="filename"><td><h2 id="Scribl.js"><a href="#">Scribl</a></h2></td><td>Scribl.js</td></tr><tr class="code">
 <td class="docs">
 <p><strong>Scribl Class</strong></p>
 
@@ -258,7 +258,7 @@ coordinate drawing</em></p>
       <span class="keyword">if</span> (!<span class="this">this</span>.<span class="variable">scale</span>.<span class="variable">off</span>) <span class="variable">wholeHeight</span> += <span class="this">this</span>.<span class="variable">getScaleHeight</span>();
       <span class="keyword">var</span> <span class="variable">numTracks</span> = <span class="this">this</span>.<span class="variable">tracks</span>.<span class="variable">length</span>
 		
-      <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">i</span> &<span class="variable">lt</span>; <span class="variable">numTracks</span>; <span class="variable">i</span>++) {
+      <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">i</span> &lt; <span class="variable">numTracks</span>; <span class="variable">i</span>++) {
          <span class="variable">wholeHeight</span> += <span class="this">this</span>.<span class="variable">trackBuffer</span>;
          <span class="variable">wholeHeight</span> += <span class="this">this</span>.<span class="variable">tracks</span>[<span class="variable">i</span>].<span class="variable">getHeight</span>();
       }
@@ -281,7 +281,7 @@ coordinate drawing</em></p>
 <pre><code><span class="variable">addTrack</span>: <span class="keyword">function</span>() {
       <span class="keyword">var</span> <span class="variable">track</span> = <span class="keyword">new</span> <span class="class">Track</span>(<span class="this">this</span>.<span class="variable">ctx</span>);
       <span class="variable">track</span>.<span class="variable">chart</span> = <span class="this">this</span>;
-      <span class="keyword">if</span> (<span class="this">this</span>.<span class="variable">tracks</span>.<span class="variable">length</span> == <span class="number integer">1</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="this">this</span>.<span class="variable">tracks</span>[<span class="number integer">0</span>] == <span class="variable">undefined</span>)
+      <span class="keyword">if</span> (<span class="this">this</span>.<span class="variable">tracks</span>.<span class="variable">length</span> == <span class="number integer">1</span> &amp;&amp; <span class="this">this</span>.<span class="variable">tracks</span>[<span class="number integer">0</span>] == <span class="variable">undefined</span>)
          <span class="this">this</span>.<span class="variable">tracks</span> = [];
       <span class="this">this</span>.<span class="variable">tracks</span>.<span class="variable">push</span>(<span class="variable">track</span>);
       <span class="keyword">return</span> <span class="variable">track</span>;
@@ -332,7 +332,7 @@ coordinate drawing</em></p>
 </td>
 <td class="code">
 <pre><code><span class="variable">loadFeatures</span>: <span class="keyword">function</span>(<span class="variable">features</span>) {
-      <span class="keyword">for</span> ( <span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">i</span> &<span class="variable">lt</span>; <span class="variable">features</span>.<span class="variable">length</span>; <span class="variable">i</span>++ )
+      <span class="keyword">for</span> ( <span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">i</span> &lt; <span class="variable">features</span>.<span class="variable">length</span>; <span class="variable">i</span>++ )
          <span class="this">this</span>.<span class="variable">addFeature</span>( <span class="variable">features</span>[<span class="variable">i</span>] );
    },</code></pre>
 </td>
@@ -413,50 +413,50 @@ coordinate drawing</em></p>
       <span class="keyword">var</span> <span class="variable">numTracks</span> = <span class="this">this</span>.<span class="variable">tracks</span>.<span class="variable">length</span>;
       <span class="keyword">var</span> <span class="variable">newChart</span> = <span class="keyword">new</span> <span class="class">Scribl</span>(<span class="this">this</span>.<span class="variable">canvas</span>, <span class="this">this</span>.<span class="variable">width</span>);
 		
-      <span class="keyword">for</span> ( <span class="keyword">var</span> <span class="variable">j</span>=<span class="number integer">0</span>; <span class="variable">j</span> &<span class="variable">lt</span>; <span class="variable">numTracks</span>; <span class="variable">j</span>++) {
+      <span class="keyword">for</span> ( <span class="keyword">var</span> <span class="variable">j</span>=<span class="number integer">0</span>; <span class="variable">j</span> &lt; <span class="variable">numTracks</span>; <span class="variable">j</span>++) {
          <span class="keyword">var</span> <span class="variable">track</span> = <span class="this">this</span>.<span class="variable">tracks</span>[<span class="variable">j</span>];
          <span class="keyword">var</span> <span class="variable">newTrack</span> = <span class="variable">newChart</span>.<span class="variable">addTrack</span>();
          <span class="variable">newTrack</span>.<span class="variable">drawStyle</span> = <span class="variable">track</span>.<span class="variable">drawStyle</span>;
          <span class="keyword">var</span> <span class="variable">numLanes</span> = <span class="variable">track</span>.<span class="variable">lanes</span>.<span class="variable">length</span>;
-         <span class="keyword">for</span> ( <span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">i</span> &<span class="variable">lt</span>; <span class="variable">numLanes</span>; <span class="variable">i</span>++ ) {
+         <span class="keyword">for</span> ( <span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">i</span> &lt; <span class="variable">numLanes</span>; <span class="variable">i</span>++ ) {
             <span class="variable">newLane</span> = <span class="variable">newTrack</span>.<span class="variable">addLane</span>();
             <span class="keyword">var</span> <span class="variable">s_features</span> = <span class="variable">track</span>.<span class="variable">lanes</span>[<span class="variable">i</span>].<span class="variable">features</span>;
-            <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">k</span>=<span class="number integer">0</span>; <span class="variable">k</span> &<span class="variable">lt</span>; <span class="variable">s_features</span>.<span class="variable">length</span>; <span class="variable">k</span>++ ) {
+            <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">k</span>=<span class="number integer">0</span>; <span class="variable">k</span> &lt; <span class="variable">s_features</span>.<span class="variable">length</span>; <span class="variable">k</span>++ ) {
                <span class="keyword">var</span> <span class="variable">end</span> = <span class="variable">s_features</span>[<span class="variable">k</span>].<span class="variable">position</span> + <span class="variable">s_features</span>[<span class="variable">k</span>].<span class="variable">length</span>
                <span class="keyword">var</span> <span class="variable">start</span> = <span class="variable">s_features</span>[<span class="variable">k</span>].<span class="variable">position</span>
                <span class="comment">// determine if feature is in slice/region</span>
                <span class="keyword">if</span>(<span class="variable">type</span> == <span class="string">'inclusive'</span>) {
-                  <span class="keyword">if</span> ( <span class="variable">start</span> &<span class="variable">gt</span>;= <span class="variable">from</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">start</span> &<span class="variable">lt</span>;= <span class="variable">to</span> )
+                  <span class="keyword">if</span> ( <span class="variable">start</span> &gt;= <span class="variable">from</span> &amp;&amp; <span class="variable">start</span> &lt;= <span class="variable">to</span> )
                      <span class="variable">newLane</span>.<span class="variable">addFeature</span>( <span class="variable">s_features</span>[<span class="variable">k</span>] )
-                  <span class="keyword">else</span> <span class="keyword">if</span> ( <span class="variable">end</span> &<span class="variable">gt</span>; <span class="variable">from</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">end</span> &<span class="variable">lt</span>; <span class="variable">to</span> )
+                  <span class="keyword">else</span> <span class="keyword">if</span> ( <span class="variable">end</span> &gt; <span class="variable">from</span> &amp;&amp; <span class="variable">end</span> &lt; <span class="variable">to</span> )
                      <span class="variable">newLane</span>.<span class="variable">addFeature</span>( <span class="variable">s_features</span>[<span class="variable">k</span>] )				
-                  <span class="keyword">else</span> <span class="keyword">if</span> ( <span class="variable">start</span> &<span class="variable">lt</span>; <span class="variable">from</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">end</span> &<span class="variable">gt</span>; <span class="variable">to</span> )
+                  <span class="keyword">else</span> <span class="keyword">if</span> ( <span class="variable">start</span> &lt; <span class="variable">from</span> &amp;&amp; <span class="variable">end</span> &gt; <span class="variable">to</span> )
                      <span class="variable">newLane</span>.<span class="variable">addFeature</span>( <span class="variable">s_features</span>[<span class="variable">k</span>] )				
-                  <span class="keyword">else</span> <span class="keyword">if</span> ( <span class="variable">start</span> &<span class="variable">gt</span>; <span class="variable">from</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">end</span> &<span class="variable">lt</span>; <span class="variable">to</span>)
+                  <span class="keyword">else</span> <span class="keyword">if</span> ( <span class="variable">start</span> &gt; <span class="variable">from</span> &amp;&amp; <span class="variable">end</span> &lt; <span class="variable">to</span>)
                      <span class="variable">newLane</span>.<span class="variable">addFeature</span>( <span class="variable">s_features</span>[<span class="variable">k</span>] )				
                } <span class="keyword">else</span> <span class="keyword">if</span> (<span class="variable">type</span> == <span class="string">'strict'</span>) {
-                  <span class="keyword">if</span> ( <span class="variable">start</span> &<span class="variable">gt</span>;= <span class="variable">from</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">start</span> &<span class="variable">lt</span>;= <span class="variable">to</span>){
-                     <span class="keyword">if</span> (<span class="variable">end</span> &<span class="variable">gt</span>; <span class="variable">from</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">end</span> &<span class="variable">lt</span>; <span class="variable">to</span>)
+                  <span class="keyword">if</span> ( <span class="variable">start</span> &gt;= <span class="variable">from</span> &amp;&amp; <span class="variable">start</span> &lt;= <span class="variable">to</span>){
+                     <span class="keyword">if</span> (<span class="variable">end</span> &gt; <span class="variable">from</span> &amp;&amp; <span class="variable">end</span> &lt; <span class="variable">to</span>)
                         <span class="variable">newLane</span>.<span class="variable">addFeature</span>( <span class="variable">s_features</span>[<span class="variable">k</span>] )
                      <span class="keyword">else</span> {
                         <span class="keyword">var</span> <span class="variable">f</span> = <span class="variable">s_features</span>[<span class="variable">k</span>].<span class="variable">clone</span>();
                         <span class="variable">f</span>.<span class="variable">length</span> = <span class="class">Math</span>.<span class="variable">abs</span>(<span class="variable">to</span> - <span class="variable">start</span>);
                         <span class="variable">newLane</span>.<span class="variable">addFeature</span>( <span class="variable">f</span> );
                      }
-                  } <span class="keyword">else</span> <span class="keyword">if</span> (<span class="variable">end</span> &<span class="variable">gt</span>; <span class="variable">from</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">end</span> &<span class="variable">lt</span>; <span class="variable">to</span>) {
+                  } <span class="keyword">else</span> <span class="keyword">if</span> (<span class="variable">end</span> &gt; <span class="variable">from</span> &amp;&amp; <span class="variable">end</span> &lt; <span class="variable">to</span>) {
                      <span class="keyword">var</span> <span class="variable">f</span> = <span class="variable">s_features</span>[<span class="variable">k</span>].<span class="variable">clone</span>();
                      <span class="variable">f</span>.<span class="variable">position</span> = <span class="variable">from</span>;
                      <span class="variable">f</span>.<span class="variable">length</span> = <span class="class">Math</span>.<span class="variable">abs</span>(<span class="variable">end</span> - <span class="variable">from</span>);
                      <span class="variable">newLane</span>.<span class="variable">addFeature</span>( <span class="variable">f</span> );
                   }
-                  <span class="keyword">else</span> <span class="keyword">if</span>( <span class="variable">start</span> &<span class="variable">lt</span>; <span class="variable">from</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">end</span> &<span class="variable">gt</span>; <span class="variable">to</span>){
+                  <span class="keyword">else</span> <span class="keyword">if</span>( <span class="variable">start</span> &lt; <span class="variable">from</span> &amp;&amp; <span class="variable">end</span> &gt; <span class="variable">to</span>){
                      <span class="keyword">var</span> <span class="variable">f</span> = <span class="variable">s_features</span>[<span class="variable">k</span>].<span class="variable">clone</span>();
                      <span class="variable">f</span>.<span class="variable">position</span> = <span class="variable">from</span>;
                      <span class="variable">f</span>.<span class="variable">length</span> = <span class="class">Math</span>.<span class="variable">abs</span>(<span class="variable">to</span> - <span class="variable">from</span>);
                      <span class="variable">newLane</span>.<span class="variable">addFeature</span>( <span class="variable">f</span> );
                   }
                } <span class="keyword">else</span> <span class="keyword">if</span> (<span class="variable">type</span> == <span class="string">'exclusive'</span>) {
-                  <span class="keyword">if</span> ( <span class="variable">start</span> &<span class="variable">gt</span>;= <span class="variable">from</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">start</span> &<span class="variable">lt</span>;= <span class="variable">to</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">end</span> &<span class="variable">gt</span>; <span class="variable">from</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">end</span> &<span class="variable">lt</span>; <span class="variable">to</span>)
+                  <span class="keyword">if</span> ( <span class="variable">start</span> &gt;= <span class="variable">from</span> &amp;&amp; <span class="variable">start</span> &lt;= <span class="variable">to</span> &amp;&amp; <span class="variable">end</span> &gt; <span class="variable">from</span> &amp;&amp; <span class="variable">end</span> &lt; <span class="variable">to</span>)
                      <span class="variable">newLane</span>.<span class="variable">addFeature</span>( <span class="variable">s_features</span>[<span class="variable">k</span>] )
                }
         			
@@ -537,7 +537,7 @@ coordinate drawing</em></p>
       <span class="keyword">if</span> (!<span class="this">this</span>.<span class="variable">scale</span>.<span class="variable">off</span>) <span class="variable">ctx</span>.<span class="variable">translate</span>(<span class="number integer">0</span>, <span class="this">this</span>.<span class="variable">getScaleHeight</span>() + <span class="this">this</span>.<span class="variable">laneBuffer</span>);
 
       <span class="comment">// draw tracks</span>
-      <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">i</span>&<span class="variable">lt</span>;<span class="variable">tracks</span>.<span class="variable">length</span>; <span class="variable">i</span>++)
+      <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">i</span>&lt;<span class="variable">tracks</span>.<span class="variable">length</span>; <span class="variable">i</span>++)
          <span class="variable">tracks</span>[<span class="variable">i</span>].<span class="variable">draw</span>();
 		
       <span class="variable">ctx</span>.<span class="variable">restore</span>();	
@@ -561,7 +561,7 @@ coordinate drawing</em></p>
 <td class="code">
 <pre><code><span class="variable">redraw</span>: <span class="keyword">function</span>(){
       <span class="this">this</span>.<span class="variable">ctx</span>.<span class="variable">clearRect</span>(<span class="number integer">0</span>,<span class="number integer">0</span>,<span class="this">this</span>.<span class="variable">canvas</span>.<span class="variable">width</span>, <span class="this">this</span>.<span class="variable">canvas</span>.<span class="variable">height</span>);
-      <span class="keyword">if</span> (<span class="this">this</span>.<span class="variable">tracks</span>.<span class="variable">length</span> &<span class="variable">gt</span>; <span class="number integer">0</span>)
+      <span class="keyword">if</span> (<span class="this">this</span>.<span class="variable">tracks</span>.<span class="variable">length</span> &gt; <span class="number integer">0</span>)
          <span class="this">this</span>.<span class="variable">draw</span>();
 	},</code></pre>
 </td>
@@ -598,7 +598,7 @@ coordinate drawing</em></p>
             + <span class="this">this</span>.<span class="variable">tick</span>.<span class="variable">minor</span>.<span class="variable">size</span>;
  		    
       <span class="comment">// draw</span>
-      <span class="keyword">for</span>(<span class="keyword">var</span> <span class="variable">i</span> = <span class="variable">firstMinorTick</span>; <span class="variable">i</span> &<span class="variable">lt</span>;= <span class="this">this</span>.<span class="variable">scale</span>.<span class="variable">max</span>; <span class="variable">i</span> += <span class="this">this</span>.<span class="variable">tick</span>.<span class="variable">minor</span>.<span class="variable">size</span>){		    
+      <span class="keyword">for</span>(<span class="keyword">var</span> <span class="variable">i</span> = <span class="variable">firstMinorTick</span>; <span class="variable">i</span> &lt;= <span class="this">this</span>.<span class="variable">scale</span>.<span class="variable">max</span>; <span class="variable">i</span> += <span class="this">this</span>.<span class="variable">tick</span>.<span class="variable">minor</span>.<span class="variable">size</span>){		    
          <span class="variable">ctx</span>.<span class="variable">beginPath</span>();
          <span class="keyword">var</span> <span class="variable">curr_pos</span> = <span class="this">this</span>.<span class="variable">pixelsToNts</span>(<span class="variable">i</span> - <span class="this">this</span>.<span class="variable">scale</span>.<span class="variable">min</span>) + <span class="this">this</span>.<span class="variable">offset</span>;
          <span class="keyword">if</span> ( <span class="variable">i</span> % <span class="this">this</span>.<span class="variable">tick</span>.<span class="variable">major</span>.<span class="variable">size</span> == <span class="number integer">0</span>) { <span class="comment">// draw major tick</span>
@@ -784,9 +784,9 @@ coordinate drawing</em></p>
       <span class="keyword">var</span> <span class="variable">places</span> = <span class="class">Math</span>.<span class="variable">pow</span>(<span class="number integer">10</span>, <span class="variable">digits</span>);
       <span class="keyword">var</span> <span class="variable">first_digit</span> = <span class="this">this</span>.<span class="variable">tick</span>.<span class="variable">major</span>.<span class="variable">size</span> / <span class="variable">places</span>;
       
-      <span class="keyword">if</span> (<span class="variable">first_digit</span> &<span class="variable">gt</span>; .<span class="number integer">1</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">first_digit</span> &<span class="variable">lt</span>;= .<span class="number integer">5</span>)
+      <span class="keyword">if</span> (<span class="variable">first_digit</span> &gt; .<span class="number integer">1</span> &amp;&amp; <span class="variable">first_digit</span> &lt;= .<span class="number integer">5</span>)
       	<span class="variable">first_digit</span> = .<span class="number integer">5</span>;
-      <span class="keyword">else</span> <span class="keyword">if</span> (<span class="variable">first_digit</span> &<span class="variable">gt</span>; .<span class="number integer">5</span>)
+      <span class="keyword">else</span> <span class="keyword">if</span> (<span class="variable">first_digit</span> &gt; .<span class="number integer">5</span>)
       	<span class="variable">first_digit</span> = <span class="number integer">1</span>;
       
       <span class="comment">// return major tick interval</span>
@@ -810,11 +810,11 @@ coordinate drawing</em></p>
          <span class="keyword">return</span> <span class="variable">tickNumber</span>;
 		
       <span class="keyword">var</span> <span class="variable">tickText</span> = <span class="variable">tickNumber</span>;
-      <span class="keyword">if</span> (<span class="variable">tickNumber</span> &<span class="variable">gt</span>;= <span class="number integer">1000000</span> ) {
+      <span class="keyword">if</span> (<span class="variable">tickNumber</span> &gt;= <span class="number integer">1000000</span> ) {
          <span class="keyword">var</span> <span class="variable">decPlaces</span> = <span class="number integer">5</span>;
          <span class="keyword">var</span> <span class="variable">base</span> = <span class="class">Math</span>.<span class="variable">pow</span>(<span class="number integer">10</span>, <span class="variable">decPlaces</span>)
          <span class="variable">tickText</span> = <span class="class">Math</span>.<span class="variable">round</span>(<span class="variable">tickText</span> <span class="regexp">/ 1000000 * base) /</span> <span class="variable">base</span> + <span class="string">'m'</span>; <span class="comment">// round to decPlaces</span>
-      } <span class="keyword">else</span> <span class="keyword">if</span> ( <span class="variable">tickNumber</span> &<span class="variable">gt</span>;= <span class="number integer">1000</span> ) {
+      } <span class="keyword">else</span> <span class="keyword">if</span> ( <span class="variable">tickNumber</span> &gt;= <span class="number integer">1000</span> ) {
          <span class="keyword">var</span> <span class="variable">decPlaces</span> = <span class="number integer">2</span>;
          <span class="keyword">var</span> <span class="variable">base</span> = <span class="class">Math</span>.<span class="variable">pow</span>(<span class="number integer">10</span>, <span class="variable">decPlaces</span>)		    
          <span class="variable">tickText</span> = <span class="class">Math</span>.<span class="variable">round</span>(<span class="variable">tickText</span> <span class="regexp">/ 1000 * base) /</span> <span class="variable">base</span> + <span class="string">'k'</span>;
@@ -840,10 +840,10 @@ coordinate drawing</em></p>
          <span class="keyword">return</span> <span class="variable">tickNumber</span>;
 		
       <span class="keyword">var</span> <span class="variable">tickText</span> = <span class="variable">tickNumber</span>;
-      <span class="keyword">if</span> (<span class="variable">tickNumber</span> &<span class="variable">gt</span>;= <span class="number integer">1000000</span> ) {
+      <span class="keyword">if</span> (<span class="variable">tickNumber</span> &gt;= <span class="number integer">1000000</span> ) {
          <span class="keyword">var</span> <span class="variable">decPlaces</span> = <span class="number integer">5</span>;
          <span class="variable">tickText</span> = <span class="class">Math</span>.<span class="variable">round</span>( <span class="variable">tickText</span> <span class="regexp">/ (1000000 /</span> <span class="class">Math</span>.<span class="variable">pow</span>(<span class="number integer">10</span>,<span class="variable">decPlaces</span>)) ) + <span class="string">'m'</span>; <span class="comment">// round to 2 decimal places</span>
-      } <span class="keyword">else</span> <span class="keyword">if</span> ( <span class="variable">tickNumber</span> &<span class="variable">gt</span>;= <span class="number integer">1000</span> ){
+      } <span class="keyword">else</span> <span class="keyword">if</span> ( <span class="variable">tickNumber</span> &gt;= <span class="number integer">1000</span> ){
          <span class="keyword">var</span> <span class="variable">decPlaces</span> = <span class="number integer">2</span>;
          <span class="variable">tickText</span> = <span class="class">Math</span>.<span class="variable">round</span>( <span class="variable">tickText</span> <span class="regexp">/ (1000 /</span> <span class="class">Math</span>.<span class="variable">pow</span>(<span class="number integer">10</span>,<span class="variable">decPlaces</span>)) ) + <span class="string">'k'</span>;
       }
@@ -868,11 +868,11 @@ coordinate drawing</em></p>
       <span class="keyword">var</span> <span class="variable">positionY</span> = <span class="this">this</span>.<span class="variable">myMouseEventHandler</span>.<span class="variable">mouseY</span>;
       <span class="keyword">var</span> <span class="variable">lane</span>;
       
-      <span class="keyword">for</span>( <span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">i</span> &<span class="variable">lt</span>; <span class="this">this</span>.<span class="variable">tracks</span>.<span class="variable">length</span>; <span class="variable">i</span>++) {
-         <span class="keyword">for</span>( <span class="keyword">var</span> <span class="variable">k</span>=<span class="number integer">0</span>; <span class="variable">k</span> &<span class="variable">lt</span>; <span class="this">this</span>.<span class="variable">tracks</span>[<span class="variable">i</span>].<span class="variable">lanes</span>.<span class="variable">length</span>; <span class="variable">k</span>++) {
+      <span class="keyword">for</span>( <span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">i</span> &lt; <span class="this">this</span>.<span class="variable">tracks</span>.<span class="variable">length</span>; <span class="variable">i</span>++) {
+         <span class="keyword">for</span>( <span class="keyword">var</span> <span class="variable">k</span>=<span class="number integer">0</span>; <span class="variable">k</span> &lt; <span class="this">this</span>.<span class="variable">tracks</span>[<span class="variable">i</span>].<span class="variable">lanes</span>.<span class="variable">length</span>; <span class="variable">k</span>++) {
             <span class="keyword">var</span> <span class="variable">yt</span> = <span class="this">this</span>.<span class="variable">tracks</span>[<span class="variable">i</span>].<span class="variable">lanes</span>[<span class="variable">k</span>].<span class="variable">getPixelPositionY</span>();
             <span class="keyword">var</span> <span class="variable">yb</span> = <span class="variable">yt</span> + <span class="this">this</span>.<span class="variable">tracks</span>[<span class="variable">i</span>].<span class="variable">lanes</span>[<span class="variable">k</span>].<span class="variable">getHeight</span>();
-            <span class="keyword">if</span> (<span class="variable">positionY</span> &<span class="variable">gt</span>;= <span class="variable">yt</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">positionY</span> &<span class="variable">lt</span>;= <span class="variable">yb</span> ) {
+            <span class="keyword">if</span> (<span class="variable">positionY</span> &gt;= <span class="variable">yt</span> &amp;&amp; <span class="variable">positionY</span> &lt;= <span class="variable">yb</span> ) {
                <span class="variable">lane</span> = <span class="this">this</span>.<span class="variable">tracks</span>[<span class="variable">i</span>].<span class="variable">lanes</span>[<span class="variable">k</span>];
                <span class="keyword">break</span>;
             }
@@ -897,11 +897,11 @@ coordinate drawing</em></p>
 		
       <span class="keyword">if</span> (<span class="variable">type</span> == <span class="string">'click'</span>) {
          <span class="keyword">var</span> <span class="variable">clicksFns</span> = <span class="variable">chart</span>.<span class="variable">events</span>.<span class="variable">clicks</span>;
-         <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span> = <span class="number integer">0</span>; <span class="variable">i</span> &<span class="variable">lt</span>; <span class="variable">clicksFns</span>.<span class="variable">length</span>; <span class="variable">i</span>++)
+         <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span> = <span class="number integer">0</span>; <span class="variable">i</span> &lt; <span class="variable">clicksFns</span>.<span class="variable">length</span>; <span class="variable">i</span>++)
             <span class="variable">clicksFns</span>[<span class="variable">i</span>](<span class="variable">chart</span>);
       } <span class="keyword">else</span> {
          <span class="keyword">var</span> <span class="variable">mouseoverFns</span> = <span class="variable">chart</span>.<span class="variable">events</span>.<span class="variable">mouseovers</span>;
-         <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span> = <span class="number integer">0</span>; <span class="variable">i</span> &<span class="variable">lt</span>; <span class="variable">mouseoverFns</span>.<span class="variable">length</span>; <span class="variable">i</span>++) 
+         <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span> = <span class="number integer">0</span>; <span class="variable">i</span> &lt; <span class="variable">mouseoverFns</span>.<span class="variable">length</span>; <span class="variable">i</span>++) 
             <span class="variable">mouseoverFns</span>[<span class="variable">i</span>](<span class="variable">chart</span>);								    
       }
 		
@@ -954,9 +954,9 @@ coordinate drawing</em></p>
 <td class="code">
 <pre><code><span class="variable">registerEventListeners</span>: <span class="keyword">function</span>() {
       <span class="keyword">var</span> <span class="variable">chart</span> = <span class="this">this</span>;
-      <span class="keyword">if</span> ( <span class="this">this</span>.<span class="variable">events</span>.<span class="variable">mouseovers</span>.<span class="variable">length</span> &<span class="variable">gt</span>; <span class="number integer">0</span>)
+      <span class="keyword">if</span> ( <span class="this">this</span>.<span class="variable">events</span>.<span class="variable">mouseovers</span>.<span class="variable">length</span> &gt; <span class="number integer">0</span>)
          <span class="this">this</span>.<span class="variable">canvas</span>.<span class="variable">addEventListener</span>(<span class="string">'mousemove'</span>, <span class="keyword">function</span>(<span class="variable">event</span>) { <span class="variable">chart</span>.<span class="variable">handleMouseEvent</span>(<span class="variable">event</span>, <span class="string">'mouseover'</span>) }, <span class="variable">false</span>);
-      <span class="keyword">if</span> ( <span class="this">this</span>.<span class="variable">events</span>.<span class="variable">clicks</span>.<span class="variable">length</span> &<span class="variable">gt</span>; <span class="number integer">0</span> )
+      <span class="keyword">if</span> ( <span class="this">this</span>.<span class="variable">events</span>.<span class="variable">clicks</span>.<span class="variable">length</span> &gt; <span class="number integer">0</span> )
          <span class="comment">//$(this.canvas).bind('click', function(e) {chart.handleMouseEvent(e, 'click')})</span>
          <span class="this">this</span>.<span class="variable">canvas</span>.<span class="variable">addEventListener</span>(<span class="string">'click'</span>, <span class="keyword">function</span>(<span class="variable">event</span>) { <span class="variable">chart</span>.<span class="variable">handleMouseEvent</span>(<span class="variable">event</span>, <span class="string">'click'</span>) }, <span class="variable">false</span>);
       <span class="this">this</span>.<span class="variable">events</span>.<span class="variable">added</span> = <span class="variable">true</span>;
@@ -966,7 +966,7 @@ coordinate drawing</em></p>
 });
 </code></pre>
 </td>
-</tr><tr class="filename"><td><h2 id="src/Scribl.track.js"><a href="#">Scribl.track</a></h2></td><td>src/Scribl.track.js</td></tr><tr class="code">
+</tr><tr class="filename"><td><h2 id="Scribl.track.js"><a href="#">Scribl.track</a></h2></td><td>Scribl.track.js</td></tr><tr class="code">
 <td class="docs">
 <h2>Scribl:Track</h2>
 
@@ -1035,7 +1035,7 @@ coordinate drawing</em></p>
 </td>
 <td class="code">
 <pre><code><span class="variable">addGene</span>: <span class="keyword">function</span>(<span class="variable">position</span>, <span class="variable">length</span>, <span class="variable">strand</span>, <span class="variable">opts</span>) {
-      <span class="keyword">return</span> (<span class="this">this</span>.<span class="variable">addFeature</span>( <span class="keyword">new</span> <span class="class">BlockArrow</span>(&<span class="variable">quot</span>;<span class="variable">gene</span>&<span class="variable">quot</span>;, <span class="variable">position</span>, <span class="variable">length</span>, <span class="variable">strand</span>, <span class="variable">opts</span>) ) );
+      <span class="keyword">return</span> (<span class="this">this</span>.<span class="variable">addFeature</span>( <span class="keyword">new</span> <span class="class">BlockArrow</span>(&quot;<span class="variable">gene</span>&quot;, <span class="variable">position</span>, <span class="variable">length</span>, <span class="variable">strand</span>, <span class="variable">opts</span>) ) );
    },</code></pre>
 </td>
 </tr>
@@ -1051,7 +1051,7 @@ coordinate drawing</em></p>
 </td>
 <td class="code">
 <pre><code><span class="variable">addProtein</span>: <span class="keyword">function</span>(<span class="variable">position</span>, <span class="variable">length</span>, <span class="variable">strand</span>, <span class="variable">opts</span>) {
-      <span class="keyword">return</span> (<span class="this">this</span>.<span class="variable">addFeature</span>( <span class="keyword">new</span> <span class="class">BlockArrow</span>(&<span class="variable">quot</span>;<span class="variable">protein</span>&<span class="variable">quot</span>;, <span class="variable">position</span>, <span class="variable">length</span>, <span class="variable">strand</span>, <span class="variable">opts</span>) ) );
+      <span class="keyword">return</span> (<span class="this">this</span>.<span class="variable">addFeature</span>( <span class="keyword">new</span> <span class="class">BlockArrow</span>(&quot;<span class="variable">protein</span>&quot;, <span class="variable">position</span>, <span class="variable">length</span>, <span class="variable">strand</span>, <span class="variable">opts</span>) ) );
    },</code></pre>
 </td>
 </tr>
@@ -1075,11 +1075,11 @@ coordinate drawing</em></p>
       <span class="keyword">var</span> <span class="variable">new_lane</span> = <span class="variable">true</span>;
       
       <span class="comment">// try to add feature at lower lanes then move up</span>
-      <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">j</span>=<span class="number integer">0</span>; <span class="variable">j</span> &<span class="variable">lt</span>; <span class="this">this</span>.<span class="variable">lanes</span>.<span class="variable">length</span>; <span class="variable">j</span>++) {
+      <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">j</span>=<span class="number integer">0</span>; <span class="variable">j</span> &lt; <span class="this">this</span>.<span class="variable">lanes</span>.<span class="variable">length</span>; <span class="variable">j</span>++) {
          <span class="keyword">var</span> <span class="variable">prev_feature</span> = <span class="this">this</span>.<span class="variable">lanes</span>[<span class="variable">j</span>].<span class="variable">features</span>[ <span class="this">this</span>.<span class="variable">lanes</span>[<span class="variable">j</span>].<span class="variable">features</span>.<span class="variable">length</span> - <span class="number integer">1</span> ];
 
          <span class="comment">// check if new lane is needed</span>
-         <span class="keyword">if</span> ( <span class="variable">prev_feature</span> != <span class="variable">undefined</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; (<span class="variable">feature</span>.<span class="variable">position</span> - <span class="number integer">3</span>/<span class="this">this</span>.<span class="variable">chart</span>.<span class="variable">pixelsToNts</span>()) &<span class="variable">gt</span>; (<span class="variable">prev_feature</span>.<span class="variable">position</span> + <span class="variable">prev_feature</span>.<span class="variable">length</span>) ) {
+         <span class="keyword">if</span> ( <span class="variable">prev_feature</span> != <span class="variable">undefined</span> &amp;&amp; (<span class="variable">feature</span>.<span class="variable">position</span> - <span class="number integer">3</span>/<span class="this">this</span>.<span class="variable">chart</span>.<span class="variable">pixelsToNts</span>()) &gt; (<span class="variable">prev_feature</span>.<span class="variable">position</span> + <span class="variable">prev_feature</span>.<span class="variable">length</span>) ) {
             <span class="variable">new_lane</span> = <span class="variable">false</span>;
             <span class="variable">curr_lane</span> = <span class="this">this</span>.<span class="variable">lanes</span>[<span class="variable">j</span>];
             <span class="keyword">break</span>;
@@ -1135,7 +1135,7 @@ coordinate drawing</em></p>
       <span class="keyword">if</span> (<span class="variable">drawStyle</span> == <span class="string">'line'</span> || <span class="variable">drawStyle</span> == <span class="string">'collapse'</span>)
          <span class="variable">numLanes</span> = <span class="number integer">1</span>;
 		
-      <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">i</span> &<span class="variable">lt</span>; <span class="variable">numLanes</span>; <span class="variable">i</span>++) {
+      <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">i</span> &lt; <span class="variable">numLanes</span>; <span class="variable">i</span>++) {
          <span class="variable">wholeHeight</span> += <span class="variable">laneBuffer</span>;
          <span class="variable">wholeHeight</span> += <span class="this">this</span>.<span class="variable">lanes</span>[<span class="variable">i</span>].<span class="variable">getHeight</span>();
       }
@@ -1161,7 +1161,7 @@ coordinate drawing</em></p>
       <span class="keyword">var</span> <span class="variable">track</span> = <span class="this">this</span>;
       <span class="keyword">var</span> <span class="variable">y</span> = <span class="variable">track</span>.<span class="variable">chart</span>.<span class="variable">getScaleHeight</span>() + <span class="variable">track</span>.<span class="variable">chart</span>.<span class="variable">laneBuffer</span>;
 
-      <span class="keyword">for</span>( <span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">i</span> &<span class="variable">lt</span>; <span class="variable">track</span>.<span class="variable">chart</span>.<span class="variable">tracks</span>.<span class="variable">length</span>; <span class="variable">i</span>++ ) {
+      <span class="keyword">for</span>( <span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">i</span> &lt; <span class="variable">track</span>.<span class="variable">chart</span>.<span class="variable">tracks</span>.<span class="variable">length</span>; <span class="variable">i</span>++ ) {
          <span class="keyword">if</span> (<span class="variable">track</span>.<span class="variable">uid</span> == <span class="variable">track</span>.<span class="variable">chart</span>.<span class="variable">tracks</span>[<span class="variable">i</span>].<span class="variable">uid</span>) <span class="keyword">break</span>;
          <span class="variable">y</span> += <span class="variable">track</span>.<span class="variable">chart</span>.<span class="variable">trackBuffer</span>;
          <span class="variable">y</span> += <span class="variable">track</span>.<span class="variable">chart</span>.<span class="variable">tracks</span>[<span class="variable">i</span>].<span class="variable">getHeight</span>();
@@ -1184,12 +1184,12 @@ coordinate drawing</em></p>
       <span class="keyword">var</span> <span class="variable">lanes</span> = <span class="this">this</span>.<span class="variable">lanes</span> 
 	   
 	   <span class="comment">// determine feature locations</span>
-      <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">i</span>&<span class="variable">lt</span>;<span class="variable">lanes</span>.<span class="variable">length</span>; <span class="variable">i</span>++) {
-         <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">k</span>=<span class="number integer">0</span>; <span class="variable">k</span>&<span class="variable">lt</span>;<span class="variable">lanes</span>[<span class="variable">i</span>].<span class="variable">features</span>.<span class="variable">length</span>; <span class="variable">k</span>++) {
+      <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">i</span>&lt;<span class="variable">lanes</span>.<span class="variable">length</span>; <span class="variable">i</span>++) {
+         <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">k</span>=<span class="number integer">0</span>; <span class="variable">k</span>&lt;<span class="variable">lanes</span>[<span class="variable">i</span>].<span class="variable">features</span>.<span class="variable">length</span>; <span class="variable">k</span>++) {
             <span class="keyword">var</span> <span class="variable">feature</span> = <span class="variable">lanes</span>[<span class="variable">i</span>].<span class="variable">features</span>[<span class="variable">k</span>];
             <span class="keyword">var</span> <span class="variable">from</span> = <span class="class">Math</span>.<span class="variable">round</span>( <span class="variable">feature</span>.<span class="variable">getPixelPositionX</span>() );
             <span class="keyword">var</span> <span class="variable">to</span> =  <span class="class">Math</span>.<span class="variable">round</span>( <span class="variable">from</span> + <span class="variable">feature</span>.<span class="variable">getPixelLength</span>() );
-            <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">j</span>=<span class="variable">from</span>; <span class="variable">j</span> &<span class="variable">lt</span>;= <span class="variable">to</span>; <span class="variable">j</span>++) { 
+            <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">j</span>=<span class="variable">from</span>; <span class="variable">j</span> &lt;= <span class="variable">to</span>; <span class="variable">j</span>++) { 
                <span class="this">this</span>.<span class="variable">coverageData</span>[<span class="variable">j</span>] = <span class="this">this</span>.<span class="variable">coverageData</span>[<span class="variable">j</span>] + <span class="number integer">1</span> || <span class="number integer">1</span>; 
                <span class="this">this</span>.<span class="variable">maxDepth</span> = <span class="class">Math</span>.<span class="variable">max</span>(<span class="this">this</span>.<span class="variable">coverageData</span>[<span class="variable">j</span>], <span class="this">this</span>.<span class="variable">maxDepth</span>);
             }
@@ -1236,7 +1236,7 @@ coordinate drawing</em></p>
       
       <span class="comment">// draw expanded/default style</span>
       <span class="keyword">if</span> ( <span class="variable">style</span> == <span class="variable">undefined</span> || <span class="variable">style</span> == <span class="string">'expand'</span> ) {   		
-         <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">i</span>&<span class="variable">lt</span>;<span class="variable">lanes</span>.<span class="variable">length</span>; <span class="variable">i</span>++) {
+         <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">i</span>&lt;<span class="variable">lanes</span>.<span class="variable">length</span>; <span class="variable">i</span>++) {
             <span class="variable">lanes</span>[<span class="variable">i</span>].<span class="variable">y</span> = <span class="variable">y</span>;
             <span class="variable">lanes</span>[<span class="variable">i</span>].<span class="variable">draw</span>();
             <span class="keyword">var</span> <span class="variable">height</span> = <span class="variable">lanes</span>[<span class="variable">i</span>].<span class="variable">getHeight</span>();
@@ -1246,20 +1246,20 @@ coordinate drawing</em></p>
       } <span class="keyword">else</span> <span class="keyword">if</span> ( <span class="variable">style</span> == <span class="string">'collapse'</span> ) { <span class="comment">// draw collapse style (i.e. single lane)</span>
          <span class="keyword">var</span> <span class="variable">features</span> = []
          <span class="comment">// concat all features into single array</span>
-         <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">i</span>&<span class="variable">lt</span>;<span class="variable">lanes</span>.<span class="variable">length</span>; <span class="variable">i</span>++) {
+         <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">i</span>&lt;<span class="variable">lanes</span>.<span class="variable">length</span>; <span class="variable">i</span>++) {
             <span class="keyword">var</span> <span class="variable">features</span> = <span class="variable">features</span>.<span class="variable">concat</span>(<span class="variable">lanes</span>[<span class="variable">i</span>].<span class="variable">features</span>);
          }
          <span class="comment">// sort features so the minimal number of lanes are used</span>
          <span class="variable">features</span>.<span class="variable">sort</span>( <span class="keyword">function</span>(<span class="variable">a</span>,<span class="variable">b</span>){ <span class="keyword">return</span>(<span class="variable">a</span>.<span class="variable">position</span> - <span class="variable">b</span>.<span class="variable">position</span>); } );
-         <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">j</span>=<span class="number integer">0</span>; <span class="variable">j</span>&<span class="variable">lt</span>;<span class="variable">features</span>.<span class="variable">length</span>; <span class="variable">j</span>++) {
+         <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">j</span>=<span class="number integer">0</span>; <span class="variable">j</span>&lt;<span class="variable">features</span>.<span class="variable">length</span>; <span class="variable">j</span>++) {
             <span class="keyword">var</span> <span class="variable">originalLength</span> = <span class="variable">features</span>[<span class="variable">j</span>].<span class="variable">length</span>;
             <span class="keyword">var</span> <span class="variable">originalName</span> = <span class="variable">features</span>[<span class="variable">j</span>].<span class="variable">name</span>;
             <span class="keyword">var</span> <span class="variable">m</span> = <span class="variable">undefined</span>;
-            <span class="keyword">for</span>( <span class="variable">m</span>=<span class="variable">j</span>+<span class="number integer">1</span>; <span class="variable">m</span> &<span class="variable">lt</span>; <span class="variable">features</span>.<span class="variable">length</span>; <span class="variable">m</span>++) {
+            <span class="keyword">for</span>( <span class="variable">m</span>=<span class="variable">j</span>+<span class="number integer">1</span>; <span class="variable">m</span> &lt; <span class="variable">features</span>.<span class="variable">length</span>; <span class="variable">m</span>++) {
                <span class="comment">// if a feature is overlapping change length to draw as a single feature</span>
-               <span class="keyword">if</span> (<span class="variable">features</span>[<span class="variable">j</span>].<span class="variable">getEnd</span>() &<span class="variable">gt</span>;= <span class="variable">features</span>[<span class="variable">m</span>].<span class="variable">position</span>) {
+               <span class="keyword">if</span> (<span class="variable">features</span>[<span class="variable">j</span>].<span class="variable">getEnd</span>() &gt;= <span class="variable">features</span>[<span class="variable">m</span>].<span class="variable">position</span>) {
                   <span class="variable">features</span>[<span class="variable">j</span>].<span class="variable">length</span> = <span class="class">Math</span>.<span class="variable">max</span>(<span class="variable">features</span>[<span class="variable">j</span>].<span class="variable">getEnd</span>(), <span class="variable">features</span>[<span class="variable">m</span>].<span class="variable">getEnd</span>()) - <span class="variable">features</span>[<span class="variable">j</span>].<span class="variable">position</span>;
-                  <span class="variable">features</span>[<span class="variable">j</span>].<span class="variable">name</span> = &<span class="variable">quot</span>;&<span class="variable">quot</span>;;
+                  <span class="variable">features</span>[<span class="variable">j</span>].<span class="variable">name</span> = &quot;&quot;;
                } <span class="keyword">else</span> <span class="keyword">break</span>;
             }               
             <span class="comment">// draw</span>
@@ -1281,7 +1281,7 @@ coordinate drawing</em></p>
 
          <span class="variable">ctx</span>.<span class="variable">beginPath</span>();
 <span class="comment">//         ctx.moveTo(this.chart.offset, laneSize);</span>
-         <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">k</span>=<span class="this">this</span>.<span class="variable">chart</span>.<span class="variable">offset</span>; <span class="variable">k</span> &<span class="variable">lt</span>;= <span class="this">this</span>.<span class="variable">chart</span>.<span class="variable">width</span> + <span class="this">this</span>.<span class="variable">chart</span>.<span class="variable">offset</span>; <span class="variable">k</span>++) {
+         <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">k</span>=<span class="this">this</span>.<span class="variable">chart</span>.<span class="variable">offset</span>; <span class="variable">k</span> &lt;= <span class="this">this</span>.<span class="variable">chart</span>.<span class="variable">width</span> + <span class="this">this</span>.<span class="variable">chart</span>.<span class="variable">offset</span>; <span class="variable">k</span>++) {
             <span class="keyword">var</span> <span class="variable">normalizedPt</span> = <span class="variable">track</span>.<span class="variable">coverageData</span>[<span class="variable">k</span>] / <span class="variable">normalizationFactor</span> * <span class="variable">laneSize</span> || <span class="number integer">0</span>;
             <span class="variable">normalizedPt</span> = <span class="variable">laneSize</span> - <span class="variable">normalizedPt</span>;
             <span class="variable">ctx</span>.<span class="variable">lineTo</span>(<span class="variable">k</span>, <span class="variable">normalizedPt</span>);
@@ -1299,7 +1299,7 @@ coordinate drawing</em></p>
 });
 </code></pre>
 </td>
-</tr><tr class="filename"><td><h2 id="src/Scribl.lane.js"><a href="#">Scribl.lane</a></h2></td><td>src/Scribl.lane.js</td></tr><tr class="code">
+</tr><tr class="filename"><td><h2 id="Scribl.lane.js"><a href="#">Scribl.lane</a></h2></td><td>Scribl.lane.js</td></tr><tr class="code">
 <td class="docs">
 <p><strong>Scribl::Lane</strong></p>
 
@@ -1348,7 +1348,7 @@ coordinate drawing</em></p>
 </td>
 <td class="code">
 <pre><code><span class="variable">addGene</span>: <span class="keyword">function</span>(<span class="variable">position</span>, <span class="variable">length</span>, <span class="variable">strand</span>, <span class="variable">opts</span>) {
-      <span class="keyword">return</span> (<span class="this">this</span>.<span class="variable">addFeature</span>( <span class="keyword">new</span> <span class="class">BlockArrow</span>(&<span class="variable">quot</span>;<span class="variable">gene</span>&<span class="variable">quot</span>;, <span class="variable">position</span>, <span class="variable">length</span>, <span class="variable">strand</span>, <span class="variable">opts</span>) ) );
+      <span class="keyword">return</span> (<span class="this">this</span>.<span class="variable">addFeature</span>( <span class="keyword">new</span> <span class="class">BlockArrow</span>(&quot;<span class="variable">gene</span>&quot;, <span class="variable">position</span>, <span class="variable">length</span>, <span class="variable">strand</span>, <span class="variable">opts</span>) ) );
    },</code></pre>
 </td>
 </tr>
@@ -1364,7 +1364,7 @@ coordinate drawing</em></p>
 </td>
 <td class="code">
 <pre><code><span class="variable">addProtein</span>: <span class="keyword">function</span>(<span class="variable">position</span>, <span class="variable">length</span>, <span class="variable">strand</span>, <span class="variable">opts</span>) {
-      <span class="keyword">return</span> (<span class="this">this</span>.<span class="variable">addFeature</span>( <span class="keyword">new</span> <span class="class">BlockArrow</span>(&<span class="variable">quot</span>;<span class="variable">protein</span>&<span class="variable">quot</span>;, <span class="variable">position</span>, <span class="variable">length</span>, <span class="variable">strand</span>, <span class="variable">opts</span>) ) );
+      <span class="keyword">return</span> (<span class="this">this</span>.<span class="variable">addFeature</span>( <span class="keyword">new</span> <span class="class">BlockArrow</span>(&quot;<span class="variable">protein</span>&quot;, <span class="variable">position</span>, <span class="variable">length</span>, <span class="variable">strand</span>, <span class="variable">opts</span>) ) );
    },</code></pre>
 </td>
 </tr>
@@ -1394,9 +1394,9 @@ coordinate drawing</em></p>
       }
       
       <span class="comment">// determine chart absolute_min and absolute_max</span>
-      <span class="keyword">if</span> ( <span class="variable">feature</span>.<span class="variable">length</span> + <span class="variable">feature</span>.<span class="variable">position</span> &<span class="variable">gt</span>; <span class="this">this</span>.<span class="variable">chart</span>.<span class="variable">scale</span>.<span class="variable">max</span> || <span class="this">this</span>.<span class="variable">chart</span>.<span class="variable">scale</span>.<span class="variable">max</span> == <span class="variable">undefined</span> )
+      <span class="keyword">if</span> ( <span class="variable">feature</span>.<span class="variable">length</span> + <span class="variable">feature</span>.<span class="variable">position</span> &gt; <span class="this">this</span>.<span class="variable">chart</span>.<span class="variable">scale</span>.<span class="variable">max</span> || <span class="this">this</span>.<span class="variable">chart</span>.<span class="variable">scale</span>.<span class="variable">max</span> == <span class="variable">undefined</span> )
          <span class="this">this</span>.<span class="variable">chart</span>.<span class="variable">scale</span>.<span class="variable">max</span> = <span class="variable">feature</span>.<span class="variable">length</span> + <span class="variable">feature</span>.<span class="variable">position</span>;
-      <span class="keyword">if</span> ( <span class="variable">feature</span>.<span class="variable">position</span> &<span class="variable">lt</span>; <span class="this">this</span>.<span class="variable">chart</span>.<span class="variable">scale</span>.<span class="variable">min</span> || <span class="this">this</span>.<span class="variable">chart</span>.<span class="variable">scale</span>.<span class="variable">min</span> == <span class="variable">undefined</span> )
+      <span class="keyword">if</span> ( <span class="variable">feature</span>.<span class="variable">position</span> &lt; <span class="this">this</span>.<span class="variable">chart</span>.<span class="variable">scale</span>.<span class="variable">min</span> || <span class="this">this</span>.<span class="variable">chart</span>.<span class="variable">scale</span>.<span class="variable">min</span> == <span class="variable">undefined</span> )
          <span class="this">this</span>.<span class="variable">chart</span>.<span class="variable">scale</span>.<span class="variable">min</span> = <span class="variable">feature</span>.<span class="variable">position</span>;				
       	
       <span class="keyword">return</span> <span class="variable">feature</span>;
@@ -1416,7 +1416,7 @@ coordinate drawing</em></p>
 <td class="code">
 <pre><code><span class="variable">loadFeatures</span>: <span class="keyword">function</span>(<span class="variable">features</span>) {
       <span class="keyword">var</span> <span class="variable">featureNum</span> = <span class="variable">features</span>.<span class="variable">length</span>;
-      <span class="keyword">for</span>(<span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">i</span>&<span class="variable">lt</span>;<span class="variable">featureNum</span>; <span class="variable">i</span>++)
+      <span class="keyword">for</span>(<span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">i</span>&lt;<span class="variable">featureNum</span>; <span class="variable">i</span>++)
          <span class="this">this</span>.<span class="variable">addFeature</span>(<span class="variable">features</span>[<span class="variable">i</span>]);
    },</code></pre>
 </td>
@@ -1455,7 +1455,7 @@ coordinate drawing</em></p>
       <span class="keyword">var</span> <span class="variable">lane</span> = <span class="this">this</span>;
       <span class="keyword">var</span> <span class="variable">y</span> = <span class="variable">lane</span>.<span class="variable">track</span>.<span class="variable">getPixelPositionY</span>();
       <span class="keyword">var</span> <span class="variable">laneHeight</span> = <span class="variable">lane</span>.<span class="variable">getHeight</span>();
-      <span class="keyword">for</span>( <span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">i</span> &<span class="variable">lt</span>; <span class="variable">lane</span>.<span class="variable">track</span>.<span class="variable">lanes</span>.<span class="variable">length</span>; <span class="variable">i</span>++ ) {	      
+      <span class="keyword">for</span>( <span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">i</span> &lt; <span class="variable">lane</span>.<span class="variable">track</span>.<span class="variable">lanes</span>.<span class="variable">length</span>; <span class="variable">i</span>++ ) {	      
          <span class="keyword">if</span> (<span class="variable">lane</span>.<span class="variable">uid</span> == <span class="variable">lane</span>.<span class="variable">track</span>.<span class="variable">lanes</span>[<span class="variable">i</span>].<span class="variable">uid</span>) <span class="keyword">break</span>;
          <span class="variable">y</span> += <span class="variable">lane</span>.<span class="variable">track</span>.<span class="variable">chart</span>.<span class="variable">laneBuffer</span>;
          <span class="variable">y</span> += <span class="variable">laneHeight</span>;
@@ -1490,13 +1490,13 @@ coordinate drawing</em></p>
 </td>
 <td class="code">
 <pre><code><span class="variable">draw</span>: <span class="keyword">function</span>() {
-      <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">i</span>&<span class="variable">lt</span>; <span class="this">this</span>.<span class="variable">features</span>.<span class="variable">length</span>; <span class="variable">i</span>++)
+      <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">i</span>&lt; <span class="this">this</span>.<span class="variable">features</span>.<span class="variable">length</span>; <span class="variable">i</span>++)
          <span class="this">this</span>.<span class="variable">features</span>[<span class="variable">i</span>].<span class="variable">draw</span>();
    }
 });
 </code></pre>
 </td>
-</tr><tr class="filename"><td><h2 id="src/Scribl.glyph.js"><a href="#">Scribl.glyph</a></h2></td><td>src/Scribl.glyph.js</td></tr><tr class="code">
+</tr><tr class="filename"><td><h2 id="Scribl.glyph.js"><a href="#">Scribl.glyph</a></h2></td><td>Scribl.glyph.js</td></tr><tr class="code">
 <td class="docs">
 <p><strong>Scribl::Glyph</strong></p>
 
@@ -1536,8 +1536,8 @@ This method must be called in all feature subclasses like so <code>this._super(t
       <span class="comment">// this is used for all attributes at the chart level (e.g. chart.gene.color = &quot;blue&quot; )</span>
       <span class="this">this</span>.<span class="variable">type</span> = <span class="variable">type</span>;
       
-      <span class="variable">glyph</span>.<span class="variable">name</span> = &<span class="variable">quot</span>;&<span class="variable">quot</span>;;
-      <span class="variable">glyph</span>.<span class="variable">borderColor</span> = &<span class="variable">quot</span>;<span class="variable">none</span>&<span class="variable">quot</span>;;
+      <span class="variable">glyph</span>.<span class="variable">name</span> = &quot;&quot;;
+      <span class="variable">glyph</span>.<span class="variable">borderColor</span> = &quot;<span class="variable">none</span>&quot;;
       <span class="variable">glyph</span>.<span class="variable">borderWidth</span> = <span class="variable">undefined</span>;
       
       <span class="comment">// initialize font variables</span>
@@ -1576,7 +1576,7 @@ This method must be called in all feature subclasses like so <code>this._super(t
       }
       <span class="keyword">var</span> <span class="variable">lineargradient</span> = <span class="this">this</span>.<span class="variable">lane</span>.<span class="variable">ctx</span>.<span class="variable">createLinearGradient</span>(<span class="this">this</span>.<span class="regexp">/2, 0, this.length/</span><span class="number integer">2</span>, <span class="this">this</span>.<span class="variable">getHeight</span>());
       <span class="keyword">var</span> <span class="variable">color</span>;
-      <span class="keyword">for</span>(<span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">color</span>=<span class="variable">arguments</span>[<span class="variable">i</span>], <span class="variable">i</span> &<span class="variable">lt</span>; <span class="variable">arguments</span>.<span class="variable">length</span>; <span class="variable">i</span>++){
+      <span class="keyword">for</span>(<span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">color</span>=<span class="variable">arguments</span>[<span class="variable">i</span>], <span class="variable">i</span> &lt; <span class="variable">arguments</span>.<span class="variable">length</span>; <span class="variable">i</span>++){
           <span class="variable">lineargradient</span>.<span class="variable">addColorStop</span>(<span class="variable">i</span> / (<span class="variable">arguments</span>.<span class="variable">length</span>-<span class="number integer">1</span>), <span class="variable">color</span>);
       }
       <span class="this">this</span>.<span class="variable">color</span> = <span class="variable">lineargradient</span>;
@@ -1697,26 +1697,26 @@ This method must be called in all feature subclasses like so <code>this._super(t
       
       <span class="comment">// glyph level</span>
       <span class="keyword">var</span> <span class="variable">glyphLevel</span> = <span class="variable">glyph</span>;
-      <span class="keyword">for</span>( <span class="keyword">var</span> <span class="variable">k</span>=<span class="number integer">0</span>; <span class="variable">k</span> &<span class="variable">lt</span>; <span class="variable">attrs</span>.<span class="variable">length</span>; <span class="variable">k</span>++) { <span class="variable">glyphLevel</span> = <span class="variable">glyphLevel</span>[<span class="variable">attrs</span>[<span class="variable">k</span>]]; }
+      <span class="keyword">for</span>( <span class="keyword">var</span> <span class="variable">k</span>=<span class="number integer">0</span>; <span class="variable">k</span> &lt; <span class="variable">attrs</span>.<span class="variable">length</span>; <span class="variable">k</span>++) { <span class="variable">glyphLevel</span> = <span class="variable">glyphLevel</span>[<span class="variable">attrs</span>[<span class="variable">k</span>]]; }
       <span class="keyword">if</span> (<span class="variable">glyphLevel</span>) <span class="keyword">return</span> <span class="variable">glyphLevel</span>
       
       <span class="comment">// parent level</span>
       <span class="keyword">if</span> (<span class="variable">glyph</span>.<span class="variable">parent</span>) {
          <span class="keyword">var</span> <span class="variable">parentLevel</span> = <span class="variable">glyph</span>.<span class="variable">parent</span>;
-         <span class="keyword">for</span>( <span class="keyword">var</span> <span class="variable">k</span>=<span class="number integer">0</span>; <span class="variable">k</span> &<span class="variable">lt</span>; <span class="variable">attrs</span>.<span class="variable">length</span>; <span class="variable">k</span>++) { <span class="variable">parentLevel</span> = <span class="variable">parentLevel</span>[<span class="variable">attrs</span>[<span class="variable">k</span>]]; }
+         <span class="keyword">for</span>( <span class="keyword">var</span> <span class="variable">k</span>=<span class="number integer">0</span>; <span class="variable">k</span> &lt; <span class="variable">attrs</span>.<span class="variable">length</span>; <span class="variable">k</span>++) { <span class="variable">parentLevel</span> = <span class="variable">parentLevel</span>[<span class="variable">attrs</span>[<span class="variable">k</span>]]; }
          <span class="keyword">if</span> (<span class="variable">parentLevel</span>) <span class="keyword">return</span> <span class="variable">parentLevel</span>;
       }
       
       <span class="comment">// type level</span>
       <span class="keyword">var</span> <span class="variable">typeLevel</span> = <span class="this">this</span>.<span class="variable">lane</span>.<span class="variable">chart</span>[<span class="variable">glyph</span>.<span class="variable">type</span>];
       <span class="keyword">if</span> (<span class="variable">typeLevel</span>) {
-         <span class="keyword">for</span>( <span class="keyword">var</span> <span class="variable">k</span>=<span class="number integer">0</span>; <span class="variable">k</span> &<span class="variable">lt</span>; <span class="variable">attrs</span>.<span class="variable">length</span>; <span class="variable">k</span>++) { <span class="variable">typeLevel</span> = <span class="variable">typeLevel</span>[<span class="variable">attrs</span>[<span class="variable">k</span>]]; }
+         <span class="keyword">for</span>( <span class="keyword">var</span> <span class="variable">k</span>=<span class="number integer">0</span>; <span class="variable">k</span> &lt; <span class="variable">attrs</span>.<span class="variable">length</span>; <span class="variable">k</span>++) { <span class="variable">typeLevel</span> = <span class="variable">typeLevel</span>[<span class="variable">attrs</span>[<span class="variable">k</span>]]; }
          <span class="keyword">if</span> (<span class="variable">typeLevel</span>) <span class="keyword">return</span> <span class="variable">typeLevel</span>;
       }
       
       <span class="comment">// chart level</span>
       <span class="keyword">var</span> <span class="variable">chartLevel</span> = <span class="variable">glyph</span>.<span class="variable">lane</span>.<span class="variable">chart</span>.<span class="variable">glyph</span>;
-      <span class="keyword">for</span>( <span class="keyword">var</span> <span class="variable">k</span>=<span class="number integer">0</span>; <span class="variable">k</span> &<span class="variable">lt</span>; <span class="variable">attrs</span>.<span class="variable">length</span>; <span class="variable">k</span>++) { <span class="variable">chartLevel</span> = <span class="variable">chartLevel</span>[<span class="variable">attrs</span>[<span class="variable">k</span>]]; }
+      <span class="keyword">for</span>( <span class="keyword">var</span> <span class="variable">k</span>=<span class="number integer">0</span>; <span class="variable">k</span> &lt; <span class="variable">attrs</span>.<span class="variable">length</span>; <span class="variable">k</span>++) { <span class="variable">chartLevel</span> = <span class="variable">chartLevel</span>[<span class="variable">attrs</span>[<span class="variable">k</span>]]; }
       <span class="keyword">if</span> (<span class="variable">chartLevel</span>) <span class="keyword">return</span> <span class="variable">chartLevel</span>;
       
       <span class="comment">// nothing</span>
@@ -1745,8 +1745,8 @@ This method must be called in all feature subclasses like so <code>this._super(t
       <span class="keyword">var</span> <span class="variable">fontSizeMin</span> = <span class="number integer">8</span>;
       <span class="keyword">var</span> <span class="variable">fontStyle</span> = <span class="variable">glyph</span>.<span class="variable">getAttr</span>(<span class="string">'text-style'</span>);
       <span class="comment">// set ctx</span>
-      <span class="variable">ctx</span>.<span class="variable">font</span> = <span class="variable">fontSize</span> + &<span class="variable">quot</span>;<span class="variable">px</span> &<span class="variable">quot</span>; + <span class="variable">fontStyle</span>;
-      <span class="variable">ctx</span>.<span class="variable">textBaseline</span> = &<span class="variable">quot</span>;<span class="variable">middle</span>&<span class="variable">quot</span>;;
+      <span class="variable">ctx</span>.<span class="variable">font</span> = <span class="variable">fontSize</span> + &quot;<span class="variable">px</span> &quot; + <span class="variable">fontStyle</span>;
+      <span class="variable">ctx</span>.<span class="variable">textBaseline</span> = &quot;<span class="variable">middle</span>&quot;;
       <span class="variable">ctx</span>.<span class="variable">fillStyle</span> = <span class="variable">glyph</span>.<span class="variable">getAttr</span>(<span class="string">'text-color'</span>);
       
       
@@ -1755,12 +1755,12 @@ This method must be called in all feature subclasses like so <code>this._super(t
       
       <span class="comment">// handle relative text alignment based on glyph orientation</span>
       <span class="keyword">var</span> <span class="variable">align</span> = <span class="variable">glyph</span>.<span class="variable">getAttr</span>(<span class="string">'text-align'</span>);
-      <span class="keyword">if</span> ( <span class="variable">align</span> == &<span class="variable">quot</span>;<span class="variable">start</span>&<span class="variable">quot</span>;)
+      <span class="keyword">if</span> ( <span class="variable">align</span> == &quot;<span class="variable">start</span>&quot;)
          <span class="keyword">if</span> ( <span class="variable">glyph</span>.<span class="variable">strand</span> == <span class="string">'+'</span> )
             <span class="variable">align</span> = <span class="string">'left'</span>;
          <span class="keyword">else</span>
             <span class="variable">align</span> = <span class="string">'right'</span>;
-      <span class="keyword">else</span> <span class="keyword">if</span> ( <span class="variable">align</span> == &<span class="variable">quot</span>;<span class="variable">end</span>&<span class="variable">quot</span>; ) 
+      <span class="keyword">else</span> <span class="keyword">if</span> ( <span class="variable">align</span> == &quot;<span class="variable">end</span>&quot; ) 
          <span class="keyword">if</span> ( <span class="variable">glyph</span>.<span class="variable">strand</span> == <span class="string">'+'</span> )
             <span class="variable">align</span> = <span class="string">'right'</span>;
          <span class="keyword">else</span>
@@ -1772,30 +1772,30 @@ This method must be called in all feature subclasses like so <code>this._super(t
          <span class="variable">placement</span> = <span class="number integer">0</span> + <span class="variable">padding</span>;
       <span class="keyword">else</span> <span class="keyword">if</span> ( <span class="variable">align</span> == <span class="string">'center'</span> )
          <span class="variable">placement</span> = <span class="variable">length</span>/<span class="number integer">2</span>;
-      <span class="keyword">else</span> <span class="keyword">if</span> ( <span class="variable">align</span> == &<span class="variable">quot</span>;<span class="variable">right</span>&<span class="variable">quot</span>; )
+      <span class="keyword">else</span> <span class="keyword">if</span> ( <span class="variable">align</span> == &quot;<span class="variable">right</span>&quot; )
 			<span class="variable">placement</span> = <span class="variable">length</span> - <span class="variable">padding</span>;
 
       <span class="comment">// test if text size is too big and if so make it smaller</span>
       <span class="keyword">var</span> <span class="variable">dim</span> = <span class="variable">ctx</span>.<span class="variable">measureText</span>(<span class="variable">text</span>);
-      <span class="keyword">if</span> (<span class="variable">text</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">text</span> != &<span class="variable">quot</span>;&<span class="variable">quot</span>;) {
-         <span class="keyword">while</span> ( (<span class="variable">length</span>-<span class="variable">dim</span>.<span class="variable">width</span>) &<span class="variable">lt</span>; <span class="number integer">4</span> ) {
+      <span class="keyword">if</span> (<span class="variable">text</span> &amp;&amp; <span class="variable">text</span> != &quot;&quot;) {
+         <span class="keyword">while</span> ( (<span class="variable">length</span>-<span class="variable">dim</span>.<span class="variable">width</span>) &lt; <span class="number integer">4</span> ) {
             <span class="variable">fontSize</span> = <span class="regexp">/^\d+/</span>.<span class="variable">exec</span>(<span class="variable">ctx</span>.<span class="variable">font</span>);
             <span class="variable">fontSize</span>--;
             <span class="variable">dim</span> = <span class="variable">ctx</span>.<span class="variable">measureText</span>(<span class="variable">text</span>);
-            <span class="variable">ctx</span>.<span class="variable">font</span> = <span class="variable">fontSize</span> +  &<span class="variable">quot</span>;<span class="variable">px</span> &<span class="variable">quot</span>; + <span class="variable">fontStyle</span>;
+            <span class="variable">ctx</span>.<span class="variable">font</span> = <span class="variable">fontSize</span> +  &quot;<span class="variable">px</span> &quot; + <span class="variable">fontStyle</span>;
 			
             <span class="comment">// Check if font is getting too small</span>
-            <span class="keyword">if</span> (<span class="variable">fontSize</span> &<span class="variable">lt</span>;= <span class="variable">fontSizeMin</span>) {
-               <span class="variable">text</span> = &<span class="variable">quot</span>;&<span class="variable">quot</span>;;  <span class="comment">// set name to blank if glyph is too small to display text</span>
+            <span class="keyword">if</span> (<span class="variable">fontSize</span> &lt;= <span class="variable">fontSizeMin</span>) {
+               <span class="variable">text</span> = &quot;&quot;;  <span class="comment">// set name to blank if glyph is too small to display text</span>
                <span class="keyword">break</span>;
             }
          }
 			
          <span class="comment">// handle special case</span>
-         <span class="keyword">if</span> (<span class="variable">glyph</span>.<span class="variable">glyphType</span> == &<span class="variable">quot</span>;<span class="class">Complex</span>&<span class="variable">quot</span>;) {
+         <span class="keyword">if</span> (<span class="variable">glyph</span>.<span class="variable">glyphType</span> == &quot;<span class="class">Complex</span>&quot;) {
             <span class="keyword">var</span> <span class="variable">offset</span> = <span class="number integer">0</span>;
             <span class="keyword">var</span> <span class="variable">fontsize</span> = <span class="regexp">/^\d+/</span>.<span class="variable">exec</span>(<span class="variable">ctx</span>.<span class="variable">font</span>);
-            <span class="keyword">if</span> (<span class="variable">align</span> == &<span class="variable">quot</span>;<span class="variable">center</span>&<span class="variable">quot</span>;)
+            <span class="keyword">if</span> (<span class="variable">align</span> == &quot;<span class="variable">center</span>&quot;)
                <span class="variable">offset</span> = -(<span class="variable">ctx</span>.<span class="variable">measureText</span>(<span class="variable">text</span>).<span class="regexp">/2 + padding/</span><span class="number integer">2</span>); 
             <span class="variable">ctx</span>.<span class="variable">clearRect</span>(<span class="variable">placement</span> + <span class="variable">offset</span>, <span class="regexp">/2 - fontsize/</span><span class="number integer">2</span>, <span class="variable">ctx</span>.<span class="variable">measureText</span>(<span class="variable">text</span>).<span class="variable">width</span> + <span class="variable">padding</span>, <span class="variable">fontsize</span>);
          }
@@ -1836,10 +1836,10 @@ This method must be called in all feature subclasses like so <code>this._super(t
       <span class="keyword">var</span> <span class="variable">tlY</span> = <span class="variable">y</span>
       <span class="keyword">var</span> <span class="variable">brX</span> = <span class="variable">glyph</span>.<span class="variable">getPixelPositionX</span>() + <span class="variable">glyph</span>.<span class="variable">getPixelLength</span>();
       <span class="keyword">var</span> <span class="variable">brY</span> = <span class="variable">y</span> + <span class="variable">glyph</span>.<span class="variable">getHeight</span>(); 
-      <span class="keyword">return</span> <span class="variable">tlX</span> &<span class="variable">gt</span>;= <span class="variable">selectionTlX</span>
-         &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">brX</span> &<span class="variable">lt</span>;= <span class="variable">selectionBrX</span>
-         &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">tlY</span> &<span class="variable">gt</span>;= <span class="variable">selectionTlY</span>
-         &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">brY</span> &<span class="variable">lt</span>;= <span class="variable">selectionBrY</span>;
+      <span class="keyword">return</span> <span class="variable">tlX</span> &gt;= <span class="variable">selectionTlX</span>
+         &amp;&amp; <span class="variable">brX</span> &lt;= <span class="variable">selectionBrX</span>
+         &amp;&amp; <span class="variable">tlY</span> &gt;= <span class="variable">selectionTlY</span>
+         &amp;&amp; <span class="variable">brY</span> &lt;= <span class="variable">selectionBrY</span>;
    },</code></pre>
 </td>
 </tr>
@@ -1878,7 +1878,7 @@ This method must be called in all feature subclasses like so <code>this._super(t
       <span class="keyword">if</span> (<span class="variable">color</span> <span class="variable">instanceof</span> <span class="class">Array</span>) {
          <span class="keyword">var</span> <span class="variable">lineargradient</span> = <span class="this">this</span>.<span class="variable">lane</span>.<span class="variable">ctx</span>.<span class="variable">createLinearGradient</span>(<span class="this">this</span>.<span class="regexp">/2, 0, this.length/</span><span class="number integer">2</span>, <span class="this">this</span>.<span class="variable">getHeight</span>());
          <span class="keyword">var</span> <span class="variable">currColor</span>;
-         <span class="keyword">for</span>(<span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">currColor</span>=<span class="variable">color</span>[<span class="variable">i</span>], <span class="variable">i</span> &<span class="variable">lt</span>; <span class="variable">color</span>.<span class="variable">length</span>; <span class="variable">i</span>++)
+         <span class="keyword">for</span>(<span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">currColor</span>=<span class="variable">color</span>[<span class="variable">i</span>], <span class="variable">i</span> &lt; <span class="variable">color</span>.<span class="variable">length</span>; <span class="variable">i</span>++)
             <span class="variable">lineargradient</span>.<span class="variable">addColorStop</span>(<span class="variable">i</span> / (<span class="variable">color</span>.<span class="variable">length</span>-<span class="number integer">1</span>), <span class="variable">currColor</span>);
          <span class="keyword">return</span> <span class="variable">lineargradient</span>
       } <span class="keyword">else</span> 
@@ -1901,10 +1901,10 @@ This method must be called in all feature subclasses like so <code>this._super(t
       <span class="keyword">var</span> <span class="variable">glyph</span> = <span class="this">this</span>;
       <span class="keyword">var</span> <span class="variable">color</span> = <span class="variable">glyph</span>.<span class="variable">getAttr</span>(<span class="string">'borderColor'</span>);
 		
-      <span class="keyword">if</span> (<span class="keyword">typeof</span>(<span class="variable">color</span>) == &<span class="variable">quot</span>;<span class="variable">object</span>&<span class="variable">quot</span>;) {
+      <span class="keyword">if</span> (<span class="keyword">typeof</span>(<span class="variable">color</span>) == &quot;<span class="variable">object</span>&quot;) {
          <span class="keyword">var</span> <span class="variable">lineargradient</span> = <span class="this">this</span>.<span class="variable">lane</span>.<span class="variable">ctx</span>.<span class="variable">createLinearGradient</span>(<span class="this">this</span>.<span class="regexp">/2, 0, this.length/</span><span class="number integer">2</span>, <span class="this">this</span>.<span class="variable">getHeight</span>());
          <span class="keyword">var</span> <span class="variable">currColor</span>;
-         <span class="keyword">for</span>(<span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">currColor</span>=<span class="variable">color</span>[<span class="variable">i</span>], <span class="variable">i</span> &<span class="variable">lt</span>; <span class="variable">color</span>.<span class="variable">length</span>; <span class="variable">i</span>++)
+         <span class="keyword">for</span>(<span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">currColor</span>=<span class="variable">color</span>[<span class="variable">i</span>], <span class="variable">i</span> &lt; <span class="variable">color</span>.<span class="variable">length</span>; <span class="variable">i</span>++)
             <span class="variable">lineargradient</span>.<span class="variable">addColorStop</span>(<span class="variable">i</span> / (<span class="variable">color</span>.<span class="variable">length</span>-<span class="number integer">1</span>), <span class="variable">currColor</span>);
          <span class="keyword">return</span> <span class="variable">lineargradient</span>
       } <span class="keyword">else</span> 
@@ -1973,19 +1973,19 @@ This method must be called in all feature subclasses like so <code>this._super(t
       <span class="keyword">var</span> <span class="variable">position</span> = <span class="variable">glyph</span>.<span class="variable">getPixelPositionX</span>();
       <span class="keyword">var</span> <span class="variable">height</span> = <span class="variable">glyph</span>.<span class="variable">getHeight</span>();
       
-      (<span class="variable">height</span> &<span class="variable">lt</span>; <span class="variable">fontSizeMin</span>) ? <span class="variable">glyph</span>.<span class="variable">ctx</span>.<span class="variable">font</span> = <span class="variable">fontSizeMin</span> + &<span class="variable">quot</span>;<span class="variable">px</span> &<span class="variable">quot</span>; + <span class="variable">font</span> : <span class="variable">glyph</span>.<span class="variable">ctx</span>.<span class="variable">font</span> = <span class="variable">height</span> *.<span class="number integer">9</span> + &<span class="variable">quot</span>;<span class="variable">px</span> &<span class="variable">quot</span>; + <span class="variable">font</span>;					
+      (<span class="variable">height</span> &lt; <span class="variable">fontSizeMin</span>) ? <span class="variable">glyph</span>.<span class="variable">ctx</span>.<span class="variable">font</span> = <span class="variable">fontSizeMin</span> + &quot;<span class="variable">px</span> &quot; + <span class="variable">font</span> : <span class="variable">glyph</span>.<span class="variable">ctx</span>.<span class="variable">font</span> = <span class="variable">height</span> *.<span class="number integer">9</span> + &quot;<span class="variable">px</span> &quot; + <span class="variable">font</span>;					
       
       <span class="comment">// setup ctx position and orientation</span>
       <span class="variable">glyph</span>.<span class="variable">ctx</span>.<span class="variable">translate</span>(<span class="variable">position</span>, <span class="number integer">0</span>);			
-      <span class="keyword">if</span> (<span class="variable">glyph</span>.<span class="variable">strand</span> == <span class="string">'-'</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; !<span class="variable">glyph</span>.<span class="variable">isSubFeature</span>()) 
+      <span class="keyword">if</span> (<span class="variable">glyph</span>.<span class="variable">strand</span> == <span class="string">'-'</span> &amp;&amp; !<span class="variable">glyph</span>.<span class="variable">isSubFeature</span>()) 
          <span class="variable">glyph</span>.<span class="variable">ctx</span>.<span class="variable">transform</span>(-<span class="number integer">1</span>, <span class="number integer">0</span>, <span class="number integer">0</span>, <span class="number integer">1</span>, <span class="variable">glyph</span>.<span class="variable">getPixelLength</span>(), <span class="number integer">0</span>);
       
       <span class="comment">// draw glyph with subclass specific draw</span>
       <span class="variable">glyph</span>.<span class="variable">_draw</span>();
       
       <span class="comment">// draw border color</span>
-      <span class="keyword">if</span> (<span class="variable">glyph</span>.<span class="variable">borderColor</span> != &<span class="variable">quot</span>;<span class="variable">none</span>&<span class="variable">quot</span>;) {
-         <span class="keyword">if</span>(<span class="variable">glyph</span>.<span class="variable">color</span> == <span class="string">'none'</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">glyph</span>.<span class="variable">parent</span>.<span class="variable">glyphType</span> == <span class="string">'Complex'</span>) {
+      <span class="keyword">if</span> (<span class="variable">glyph</span>.<span class="variable">borderColor</span> != &quot;<span class="variable">none</span>&quot;) {
+         <span class="keyword">if</span>(<span class="variable">glyph</span>.<span class="variable">color</span> == <span class="string">'none'</span> &amp;&amp; <span class="variable">glyph</span>.<span class="variable">parent</span>.<span class="variable">glyphType</span> == <span class="string">'Complex'</span>) {
             <span class="variable">glyph</span>.<span class="variable">erase</span>();
          }
          <span class="keyword">var</span> <span class="variable">saveStrokeStyle</span> = <span class="variable">glyph</span>.<span class="variable">ctx</span>.<span class="variable">strokeStyle</span>;
@@ -1998,10 +1998,10 @@ This method must be called in all feature subclasses like so <code>this._super(t
       }
 		
 		<span class="comment">// draw fill color</span>
-      <span class="keyword">if</span> (<span class="variable">glyph</span>.<span class="variable">color</span> !=&<span class="variable">quot</span>;<span class="variable">none</span>&<span class="variable">quot</span>;) <span class="variable">glyph</span>.<span class="variable">ctx</span>.<span class="variable">fill</span>();
+      <span class="keyword">if</span> (<span class="variable">glyph</span>.<span class="variable">color</span> !=&quot;<span class="variable">none</span>&quot;) <span class="variable">glyph</span>.<span class="variable">ctx</span>.<span class="variable">fill</span>();
 		
       <span class="comment">// explicity change transformation matrix back -- it's faster than save restore!</span>
-      <span class="keyword">if</span> (<span class="variable">glyph</span>.<span class="variable">strand</span> == <span class="string">'-'</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; !<span class="variable">glyph</span>.<span class="variable">isSubFeature</span>()) 
+      <span class="keyword">if</span> (<span class="variable">glyph</span>.<span class="variable">strand</span> == <span class="string">'-'</span> &amp;&amp; !<span class="variable">glyph</span>.<span class="variable">isSubFeature</span>()) 
          <span class="variable">glyph</span>.<span class="variable">ctx</span>.<span class="variable">transform</span>(-<span class="number integer">1</span>, <span class="number integer">0</span>, <span class="number integer">0</span>, <span class="number integer">1</span>, <span class="variable">glyph</span>.<span class="variable">getPixelLength</span>(), <span class="number integer">0</span>);
 
       <span class="comment">// draw text</span>
@@ -2018,7 +2018,7 @@ This method must be called in all feature subclasses like so <code>this._super(t
 });
 </code></pre>
 </td>
-</tr><tr class="filename"><td><h2 id="src/Scribl.events.js"><a href="#">Scribl.events</a></h2></td><td>src/Scribl.events.js</td></tr><tr class="code">
+</tr><tr class="filename"><td><h2 id="Scribl.events.js"><a href="#">Scribl.events</a></h2></td><td>Scribl.events.js</td></tr><tr class="code">
 <td class="docs">
 <p><strong>Scribl::Events</strong></p>
 
@@ -2069,28 +2069,28 @@ This method must be called in all feature subclasses like so <code>this._super(t
       <span class="keyword">var</span> <span class="variable">me</span> = <span class="variable">chart</span>.<span class="variable">myMouseEventHandler</span>;
       
       <span class="comment">// check if any features use onmouseover and if so register an event listener if not already done</span>
-      <span class="keyword">if</span> (<span class="variable">feature</span>.<span class="variable">onMouseover</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; !<span class="variable">chart</span>.<span class="variable">events</span>.<span class="variable">hasMouseover</span>) {
+      <span class="keyword">if</span> (<span class="variable">feature</span>.<span class="variable">onMouseover</span> &amp;&amp; !<span class="variable">chart</span>.<span class="variable">events</span>.<span class="variable">hasMouseover</span>) {
       	<span class="variable">chart</span>.<span class="variable">addMouseoverEventListener</span>(<span class="variable">chart</span>.<span class="variable">myMouseEventHandler</span>.<span class="variable">handleMouseover</span>);
       	<span class="variable">chart</span>.<span class="variable">events</span>.<span class="variable">hasMouseover</span> = <span class="variable">true</span>;
       } 
-      <span class="keyword">else</span> <span class="keyword">if</span> (<span class="variable">feature</span>.<span class="variable">parent</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">feature</span>.<span class="variable">parent</span>.<span class="variable">onMouseover</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; !<span class="variable">chart</span>.<span class="variable">events</span>.<span class="variable">hasMouseover</span>) {
+      <span class="keyword">else</span> <span class="keyword">if</span> (<span class="variable">feature</span>.<span class="variable">parent</span> &amp;&amp; <span class="variable">feature</span>.<span class="variable">parent</span>.<span class="variable">onMouseover</span> &amp;&amp; !<span class="variable">chart</span>.<span class="variable">events</span>.<span class="variable">hasMouseover</span>) {
       	<span class="variable">chart</span>.<span class="variable">addMouseoverEventListener</span>(<span class="variable">chart</span>.<span class="variable">myMouseEventHandler</span>.<span class="variable">handleMouseover</span>);
       	<span class="variable">chart</span>.<span class="variable">events</span>.<span class="variable">hasMouseover</span> = <span class="variable">true</span>;
       }
       	
       <span class="comment">// check if any features use onclick and if so register event listeners if not already done</span>
-      <span class="keyword">if</span> (<span class="variable">feature</span>.<span class="variable">onClick</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; !<span class="variable">chart</span>.<span class="variable">events</span>.<span class="variable">hasClick</span>) {
+      <span class="keyword">if</span> (<span class="variable">feature</span>.<span class="variable">onClick</span> &amp;&amp; !<span class="variable">chart</span>.<span class="variable">events</span>.<span class="variable">hasClick</span>) {
       	<span class="variable">chart</span>.<span class="variable">addClickEventListener</span>(<span class="variable">chart</span>.<span class="variable">myMouseEventHandler</span>.<span class="variable">handleClick</span>);
       	<span class="variable">chart</span>.<span class="variable">addMouseoverEventListener</span>(<span class="variable">chart</span>.<span class="variable">myMouseEventHandler</span>.<span class="variable">handleMouseStyle</span>);
       	<span class="variable">chart</span>.<span class="variable">events</span>.<span class="variable">hasClick</span> = <span class="variable">true</span>;
-      } <span class="keyword">else</span> <span class="keyword">if</span> (<span class="variable">feature</span>.<span class="variable">parent</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">feature</span>.<span class="variable">parent</span>.<span class="variable">onClick</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; !<span class="variable">chart</span>.<span class="variable">events</span>.<span class="variable">hasClick</span>) {
+      } <span class="keyword">else</span> <span class="keyword">if</span> (<span class="variable">feature</span>.<span class="variable">parent</span> &amp;&amp; <span class="variable">feature</span>.<span class="variable">parent</span>.<span class="variable">onClick</span> &amp;&amp; !<span class="variable">chart</span>.<span class="variable">events</span>.<span class="variable">hasClick</span>) {
       	<span class="variable">chart</span>.<span class="variable">addClickEventListener</span>(<span class="variable">chart</span>.<span class="variable">myMouseEventHandler</span>.<span class="variable">handleClick</span>);
       	<span class="variable">chart</span>.<span class="variable">addMouseoverEventListener</span>(<span class="variable">chart</span>.<span class="variable">myMouseEventHandler</span>.<span class="variable">handleMouseStyle</span>);
       	<span class="variable">chart</span>.<span class="variable">events</span>.<span class="variable">hasClick</span> = <span class="variable">true</span>;
       }
       
       <span class="comment">// determine if cursor is currently in a drawn object (feature)</span>
-      <span class="keyword">if</span> (!<span class="variable">me</span>.<span class="variable">isEventDetected</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">ctx</span>.<span class="variable">isPointInPath_mozilla</span>(<span class="variable">me</span>.<span class="variable">mouseX</span>,<span class="variable">me</span>.<span class="variable">mouseY</span>)) {
+      <span class="keyword">if</span> (!<span class="variable">me</span>.<span class="variable">isEventDetected</span> &amp;&amp; <span class="variable">ctx</span>.<span class="variable">isPointInPath_mozilla</span>(<span class="variable">me</span>.<span class="variable">mouseX</span>,<span class="variable">me</span>.<span class="variable">mouseY</span>)) {
       	<span class="variable">me</span>.<span class="variable">eventElement</span> = <span class="variable">feature</span>;
       	<span class="variable">me</span>.<span class="variable">isEventDetected</span> = <span class="variable">true</span>;
       }		
@@ -2134,16 +2134,16 @@ This method must be called in all feature subclasses like so <code>this._super(t
                 <span class="keyword">var</span> <span class="variable">onClick</span>;
       
       <span class="comment">// check if the click occured on a feature/object with an onClick property</span>
-      <span class="keyword">if</span> (<span class="variable">clicked</span> != <span class="variable">undefined</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">clicked</span>.<span class="variable">onClick</span> != <span class="variable">undefined</span>)
+      <span class="keyword">if</span> (<span class="variable">clicked</span> != <span class="variable">undefined</span> &amp;&amp; <span class="variable">clicked</span>.<span class="variable">onClick</span> != <span class="variable">undefined</span>)
          <span class="variable">onClick</span> = <span class="variable">clicked</span>.<span class="variable">onClick</span>
-      <span class="keyword">else</span> <span class="keyword">if</span> (<span class="variable">clicked</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">clicked</span>.<span class="variable">parent</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">clicked</span>.<span class="variable">parent</span>.<span class="variable">onClick</span>)
+      <span class="keyword">else</span> <span class="keyword">if</span> (<span class="variable">clicked</span> &amp;&amp; <span class="variable">clicked</span>.<span class="variable">parent</span> &amp;&amp; <span class="variable">clicked</span>.<span class="variable">parent</span>.<span class="variable">onClick</span>)
          <span class="variable">onClick</span> = <span class="variable">clicked</span>.<span class="variable">parent</span>.<span class="variable">onClick</span>
       
       <span class="keyword">if</span>(<span class="variable">onClick</span>){
          <span class="comment">// open window if string</span>
-         <span class="keyword">if</span> (<span class="keyword">typeof</span>(<span class="variable">onClick</span>) == &<span class="variable">quot</span>;<span class="variable">string</span>&<span class="variable">quot</span>;){ <span class="variable">window</span>.<span class="variable">open</span>(<span class="variable">onClick</span>); }
+         <span class="keyword">if</span> (<span class="keyword">typeof</span>(<span class="variable">onClick</span>) == &quot;<span class="variable">string</span>&quot;){ <span class="variable">window</span>.<span class="variable">open</span>(<span class="variable">onClick</span>); }
          <span class="comment">// if function run function with feature as argument</span>
-         <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span>(<span class="variable">onClick</span>) == &<span class="variable">quot</span>;<span class="keyword">function</span>&<span class="variable">quot</span>;){ <span class="variable">onClick</span>(<span class="variable">clicked</span>); }
+         <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span>(<span class="variable">onClick</span>) == &quot;<span class="keyword">function</span>&quot;){ <span class="variable">onClick</span>(<span class="variable">clicked</span>); }
       }
    },</code></pre>
 </td>
@@ -2187,16 +2187,16 @@ This method must be called in all feature subclasses like so <code>this._super(t
                 <span class="keyword">var</span> <span class="variable">onClick</span>;
       
       <span class="comment">// check if the click occured on a feature/object with an onClick property</span>
-      <span class="keyword">if</span> (<span class="variable">clicked</span> != <span class="variable">undefined</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">clicked</span>.<span class="variable">onClick</span> != <span class="variable">undefined</span>)
+      <span class="keyword">if</span> (<span class="variable">clicked</span> != <span class="variable">undefined</span> &amp;&amp; <span class="variable">clicked</span>.<span class="variable">onClick</span> != <span class="variable">undefined</span>)
          <span class="variable">onClick</span> = <span class="variable">clicked</span>.<span class="variable">onClick</span>
-      <span class="keyword">else</span> <span class="keyword">if</span> (<span class="variable">clicked</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">clicked</span>.<span class="variable">parent</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">clicked</span>.<span class="variable">parent</span>.<span class="variable">onClick</span>)
+      <span class="keyword">else</span> <span class="keyword">if</span> (<span class="variable">clicked</span> &amp;&amp; <span class="variable">clicked</span>.<span class="variable">parent</span> &amp;&amp; <span class="variable">clicked</span>.<span class="variable">parent</span>.<span class="variable">onClick</span>)
          <span class="variable">onClick</span> = <span class="variable">clicked</span>.<span class="variable">parent</span>.<span class="variable">onClick</span>
       
       <span class="keyword">if</span>(<span class="variable">onClick</span>){
          <span class="comment">// open window if string</span>
-         <span class="keyword">if</span> (<span class="keyword">typeof</span>(<span class="variable">onClick</span>) == &<span class="variable">quot</span>;<span class="variable">string</span>&<span class="variable">quot</span>;){ <span class="variable">window</span>.<span class="variable">open</span>(<span class="variable">onClick</span>); }
+         <span class="keyword">if</span> (<span class="keyword">typeof</span>(<span class="variable">onClick</span>) == &quot;<span class="variable">string</span>&quot;){ <span class="variable">window</span>.<span class="variable">open</span>(<span class="variable">onClick</span>); }
          <span class="comment">// if function run function with feature as argument</span>
-         <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span>(<span class="variable">onClick</span>) == &<span class="variable">quot</span>;<span class="keyword">function</span>&<span class="variable">quot</span>;){ <span class="variable">onClick</span>(<span class="variable">clicked</span>); }
+         <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span>(<span class="variable">onClick</span>) == &quot;<span class="keyword">function</span>&quot;){ <span class="variable">onClick</span>(<span class="variable">clicked</span>); }
       }
    },</code></pre>
 </td>
@@ -2216,9 +2216,9 @@ This method must be called in all feature subclasses like so <code>this._super(t
       <span class="keyword">var</span> <span class="variable">me</span> = <span class="variable">chart</span>.<span class="variable">myMouseEventHandler</span>;
       <span class="keyword">var</span> <span class="variable">clicked</span> = <span class="variable">me</span>.<span class="variable">eventElement</span>;
       
-      <span class="keyword">if</span> (<span class="variable">clicked</span> != <span class="variable">undefined</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">clicked</span>.<span class="variable">onMouseover</span> != <span class="variable">undefined</span>)
+      <span class="keyword">if</span> (<span class="variable">clicked</span> != <span class="variable">undefined</span> &amp;&amp; <span class="variable">clicked</span>.<span class="variable">onMouseover</span> != <span class="variable">undefined</span>)
          <span class="variable">me</span>.<span class="variable">tooltip</span>.<span class="variable">fire</span>(<span class="variable">clicked</span>);
-      <span class="keyword">else</span> <span class="keyword">if</span> (<span class="variable">clicked</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">clicked</span>.<span class="variable">parent</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">clicked</span>.<span class="variable">parent</span>.<span class="variable">onMouseover</span>) {
+      <span class="keyword">else</span> <span class="keyword">if</span> (<span class="variable">clicked</span> &amp;&amp; <span class="variable">clicked</span>.<span class="variable">parent</span> &amp;&amp; <span class="variable">clicked</span>.<span class="variable">parent</span>.<span class="variable">onMouseover</span>) {
          <span class="variable">clicked</span>.<span class="variable">onMouseover</span> = <span class="variable">clicked</span>.<span class="variable">parent</span>.<span class="variable">onMouseover</span>
          <span class="variable">me</span>.<span class="variable">tooltip</span>.<span class="variable">fire</span>(<span class="variable">clicked</span>);
       }
@@ -2241,9 +2241,9 @@ This method must be called in all feature subclasses like so <code>this._super(t
       <span class="keyword">var</span> <span class="variable">obj</span> = <span class="variable">me</span>.<span class="variable">eventElement</span>;
       <span class="keyword">var</span> <span class="variable">ctx</span> = <span class="variable">chart</span>.<span class="variable">ctx</span>;
       
-      <span class="keyword">if</span> (<span class="variable">obj</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">obj</span>.<span class="variable">onClick</span> != <span class="variable">undefined</span>)
+      <span class="keyword">if</span> (<span class="variable">obj</span> &amp;&amp; <span class="variable">obj</span>.<span class="variable">onClick</span> != <span class="variable">undefined</span>)
          <span class="variable">ctx</span>.<span class="variable">canvas</span>.<span class="variable">style</span>.<span class="variable">cursor</span> = <span class="string">'pointer'</span>;
-      <span class="keyword">else</span> <span class="keyword">if</span> (<span class="variable">obj</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">obj</span>.<span class="variable">parent</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">obj</span>.<span class="variable">parent</span>.<span class="variable">onClick</span> != <span class="variable">undefined</span>)
+      <span class="keyword">else</span> <span class="keyword">if</span> (<span class="variable">obj</span> &amp;&amp; <span class="variable">obj</span>.<span class="variable">parent</span> &amp;&amp; <span class="variable">obj</span>.<span class="variable">parent</span>.<span class="variable">onClick</span> != <span class="variable">undefined</span>)
          <span class="variable">ctx</span>.<span class="variable">canvas</span>.<span class="variable">style</span>.<span class="variable">cursor</span> = <span class="string">'pointer'</span>;
       <span class="keyword">else</span>
          <span class="variable">ctx</span>.<span class="variable">canvas</span>.<span class="variable">style</span>.<span class="variable">cursor</span> = <span class="string">'auto'</span>; 		
@@ -2287,7 +2287,7 @@ This method must be called in all feature subclasses like so <code>this._super(t
 }
 </code></pre>
 </td>
-</tr><tr class="filename"><td><h2 id="src/Scribl.tooltips.js"><a href="#">Scribl.tooltips</a></h2></td><td>src/Scribl.tooltips.js</td></tr><tr class="code">
+</tr><tr class="filename"><td><h2 id="Scribl.tooltips.js"><a href="#">Scribl.tooltips</a></h2></td><td>Scribl.tooltips.js</td></tr><tr class="code">
 <td class="docs">
 <p><strong>Scribl::Tooltips</strong></p>
 
@@ -2377,7 +2377,7 @@ This method must be called in all feature subclasses like so <code>this._super(t
       <span class="comment">// Save</span>
       <span class="this">this</span>.<span class="variable">ctx</span>.<span class="variable">save</span>();
       		
-      <span class="this">this</span>.<span class="variable">ctx</span>.<span class="variable">font</span> = <span class="variable">fontSize</span> +  &<span class="variable">quot</span>;<span class="variable">px</span> &<span class="variable">quot</span>; + <span class="variable">font</span>;
+      <span class="this">this</span>.<span class="variable">ctx</span>.<span class="variable">font</span> = <span class="variable">fontSize</span> +  &quot;<span class="variable">px</span> &quot; + <span class="variable">font</span>;
       
       <span class="comment">// determine properties of line</span>
       <span class="keyword">var</span> <span class="variable">dim</span> = <span class="this">this</span>.<span class="variable">ctx</span>.<span class="variable">measureText</span>(<span class="variable">feature</span>.<span class="variable">onMouseover</span>);
@@ -2395,8 +2395,8 @@ This method must be called in all feature subclasses like so <code>this._super(t
       <span class="comment">// linewrap text</span>
       <span class="keyword">var</span> <span class="variable">geneLength</span> = <span class="variable">feature</span>.<span class="variable">getPixelLength</span>();
       <span class="keyword">var</span> <span class="variable">mincols</span> = <span class="number integer">200</span>;
-      <span class="keyword">if</span> (<span class="variable">length</span> &<span class="variable">gt</span>; <span class="variable">mincols</span>) {
-         <span class="keyword">var</span> <span class="variable">charpixel</span> = <span class="this">this</span>.<span class="variable">ctx</span>.<span class="variable">measureText</span>(&<span class="variable">quot</span>;<span class="variable">s</span>&<span class="variable">quot</span>;).<span class="variable">width</span>;
+      <span class="keyword">if</span> (<span class="variable">length</span> &gt; <span class="variable">mincols</span>) {
+         <span class="keyword">var</span> <span class="variable">charpixel</span> = <span class="this">this</span>.<span class="variable">ctx</span>.<span class="variable">measureText</span>(&quot;<span class="variable">s</span>&quot;).<span class="variable">width</span>;
          <span class="keyword">var</span> <span class="variable">max</span> = <span class="variable">parseInt</span>(<span class="variable">mincols</span> / <span class="variable">charpixel</span>);
          <span class="keyword">var</span> <span class="variable">text</span> = <span class="class">ScriblWrapLines</span>(<span class="variable">max</span>, <span class="variable">feature</span>.<span class="variable">onMouseover</span>);
          <span class="variable">length</span> = <span class="variable">mincols</span> + <span class="number integer">10</span>;
@@ -2405,11 +2405,11 @@ This method must be called in all feature subclasses like so <code>this._super(t
       }
       
       <span class="comment">// check if tooltip will run off screen</span>
-      <span class="keyword">if</span> (<span class="variable">length</span> + <span class="variable">x</span> &<span class="variable">gt</span>; <span class="this">this</span>.<span class="variable">chart</span>.<span class="variable">width</span>)
+      <span class="keyword">if</span> (<span class="variable">length</span> + <span class="variable">x</span> &gt; <span class="this">this</span>.<span class="variable">chart</span>.<span class="variable">width</span>)
          <span class="variable">x</span> = <span class="this">this</span>.<span class="variable">chart</span>.<span class="variable">width</span> - <span class="variable">length</span>;
       
       <span class="comment">// draw light style</span>
-      <span class="keyword">if</span> ( <span class="this">this</span>.<span class="variable">chart</span>.<span class="variable">tooltips</span>.<span class="variable">style</span> == &<span class="variable">quot</span>;<span class="variable">light</span>&<span class="variable">quot</span>; ) {
+      <span class="keyword">if</span> ( <span class="this">this</span>.<span class="variable">chart</span>.<span class="variable">tooltips</span>.<span class="variable">style</span> == &quot;<span class="variable">light</span>&quot; ) {
          <span class="variable">fillStyle</span> = <span class="this">this</span>.<span class="variable">chart</span>.<span class="variable">ctx</span>.<span class="variable">createLinearGradient</span>(<span class="variable">x</span> + <span class="regexp">/2, y, x + length/</span><span class="number integer">2</span>, <span class="variable">y</span> + <span class="variable">height</span>);  
          <span class="variable">fillStyle</span>.<span class="variable">addColorStop</span>(<span class="number integer">0</span>,<span class="string">'rgb(253, 248, 196)'</span>);
          <span class="variable">fillStyle</span>.<span class="variable">addColorStop</span>(.<span class="number integer">75</span>,<span class="string">'rgb(253, 248, 196)'</span>);  
@@ -2419,16 +2419,16 @@ This method must be called in all feature subclasses like so <code>this._super(t
          <span class="variable">strokeStyle</span>.<span class="variable">addColorStop</span>(<span class="number integer">0</span>,<span class="string">'black'</span>);  
          <span class="variable">strokeStyle</span>.<span class="variable">addColorStop</span>(<span class="number integer">1</span>,<span class="string">'rgb(64, 64, 64)'</span>);
          
-         <span class="this">this</span>.<span class="variable">chart</span>.<span class="variable">tooltips</span>.<span class="variable">text</span>.<span class="variable">color</span> = &<span class="variable">quot</span>;<span class="variable">black</span>&<span class="variable">quot</span>;;
+         <span class="this">this</span>.<span class="variable">chart</span>.<span class="variable">tooltips</span>.<span class="variable">text</span>.<span class="variable">color</span> = &quot;<span class="variable">black</span>&quot;;
       
       <span class="comment">// draw dark style	</span>
-      } <span class="keyword">else</span> <span class="keyword">if</span> ( <span class="this">this</span>.<span class="variable">chart</span>.<span class="variable">tooltips</span>.<span class="variable">style</span> == &<span class="variable">quot</span>;<span class="variable">dark</span>&<span class="variable">quot</span>; ) {		
+      } <span class="keyword">else</span> <span class="keyword">if</span> ( <span class="this">this</span>.<span class="variable">chart</span>.<span class="variable">tooltips</span>.<span class="variable">style</span> == &quot;<span class="variable">dark</span>&quot; ) {		
          <span class="variable">fillStyle</span> = <span class="this">this</span>.<span class="variable">chart</span>.<span class="variable">ctx</span>.<span class="variable">createLinearGradient</span>(<span class="variable">x</span> + <span class="regexp">/2, y, x + length/</span><span class="number integer">2</span>, <span class="variable">y</span> + <span class="variable">height</span>);  
          <span class="variable">fillStyle</span>.<span class="variable">addColorStop</span>(<span class="number integer">0</span>,<span class="string">'rgb(64, 64, 64)'</span>);
          <span class="variable">fillStyle</span>.<span class="variable">addColorStop</span>(<span class="number integer">1</span>,<span class="string">'rgb(121, 121, 121)'</span>);  
          	
-         <span class="variable">strokeStyle</span> = &<span class="variable">quot</span>;<span class="variable">white</span>&<span class="variable">quot</span>;;
-         <span class="this">this</span>.<span class="variable">chart</span>.<span class="variable">tooltips</span>.<span class="variable">text</span>.<span class="variable">color</span> = &<span class="variable">quot</span>;<span class="variable">white</span>&<span class="variable">quot</span>;;
+         <span class="variable">strokeStyle</span> = &quot;<span class="variable">white</span>&quot;;
+         <span class="this">this</span>.<span class="variable">chart</span>.<span class="variable">tooltips</span>.<span class="variable">text</span>.<span class="variable">color</span> = &quot;<span class="variable">white</span>&quot;;
       }
 		
 		<span class="this">this</span>.<span class="variable">chart</span>.<span class="class">LastToolTip</span> = { 
@@ -2502,9 +2502,9 @@ This method must be called in all feature subclasses like so <code>this._super(t
       <span class="this">this</span>.<span class="variable">ctx</span>.<span class="variable">stroke</span>();
       
       <span class="comment">// draw text;</span>
-      <span class="this">this</span>.<span class="variable">ctx</span>.<span class="variable">textBaseline</span> = &<span class="variable">quot</span>;<span class="variable">middle</span>&<span class="variable">quot</span>;;
+      <span class="this">this</span>.<span class="variable">ctx</span>.<span class="variable">textBaseline</span> = &quot;<span class="variable">middle</span>&quot;;
       <span class="this">this</span>.<span class="variable">ctx</span>.<span class="variable">fillStyle</span> = <span class="this">this</span>.<span class="variable">chart</span>.<span class="variable">tooltips</span>.<span class="variable">text</span>.<span class="variable">color</span>;
-      <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">i</span> &<span class="variable">lt</span>; <span class="variable">textlines</span>.<span class="variable">length</span>; <span class="variable">i</span>++) {
+      <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">i</span> &lt; <span class="variable">textlines</span>.<span class="variable">length</span>; <span class="variable">i</span>++) {
          <span class="keyword">var</span> <span class="variable">dim</span> = <span class="this">this</span>.<span class="variable">ctx</span>.<span class="variable">measureText</span>(<span class="variable">textlines</span>[<span class="variable">i</span>]);
          <span class="this">this</span>.<span class="variable">ctx</span>.<span class="variable">fillText</span>(<span class="variable">textlines</span>[<span class="variable">i</span>], <span class="variable">x</span> + <span class="number integer">5</span>  , <span class="variable">y</span> + <span class="variable">fontSize</span>*(<span class="variable">i</span>+<span class="number integer">1</span>));
       }
@@ -2514,7 +2514,7 @@ This method must be called in all feature subclasses like so <code>this._super(t
    }
 });</code></pre>
 </td>
-</tr><tr class="filename"><td><h2 id="src/Scribl.class.js"><a href="#">Scribl.class</a></h2></td><td>src/Scribl.class.js</td></tr><tr class="code">
+</tr><tr class="filename"><td><h2 id="Scribl.class.js"><a href="#">Scribl.class</a></h2></td><td>Scribl.class.js</td></tr><tr class="code">
 <td class="docs">
 <p> Simple JavaScript Inheritance</p>
 
@@ -2544,8 +2544,8 @@ This method must be called in all feature subclasses like so <code>this._super(t
     <span class="comment">// Copy the properties over onto the new prototype</span>
     <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">name</span> <span class="keyword">in</span> <span class="variable">prop</span>) {
       <span class="comment">// Check if we're overwriting an existing function</span>
-      <span class="variable">prototype</span>[<span class="variable">name</span>] = <span class="keyword">typeof</span> <span class="variable">prop</span>[<span class="variable">name</span>] == &<span class="variable">quot</span>;<span class="keyword">function</span>&<span class="variable">quot</span>; &<span class="variable">amp</span>;&<span class="variable">amp</span>; 
-        <span class="keyword">typeof</span> <span class="variable">_super</span>[<span class="variable">name</span>] == &<span class="variable">quot</span>;<span class="keyword">function</span>&<span class="variable">quot</span>; &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">fnTest</span>.<span class="variable">test</span>(<span class="variable">prop</span>[<span class="variable">name</span>]) ?
+      <span class="variable">prototype</span>[<span class="variable">name</span>] = <span class="keyword">typeof</span> <span class="variable">prop</span>[<span class="variable">name</span>] == &quot;<span class="keyword">function</span>&quot; &amp;&amp; 
+        <span class="keyword">typeof</span> <span class="variable">_super</span>[<span class="variable">name</span>] == &quot;<span class="keyword">function</span>&quot; &amp;&amp; <span class="variable">fnTest</span>.<span class="variable">test</span>(<span class="variable">prop</span>[<span class="variable">name</span>]) ?
         (<span class="keyword">function</span>(<span class="variable">name</span>, <span class="variable">fn</span>){
           <span class="keyword">return</span> <span class="keyword">function</span>() {
             <span class="keyword">var</span> <span class="variable">tmp</span> = <span class="this">this</span>.<span class="variable">_super</span>;
@@ -2569,7 +2569,7 @@ This method must be called in all feature subclasses like so <code>this._super(t
 
     <span class="keyword">function</span> <span class="class">Class</span>() {
       <span class="comment">// All construction is actually done in the init method</span>
-      <span class="keyword">if</span> ( !<span class="variable">initializing</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="this">this</span>.<span class="variable">init</span> )
+      <span class="keyword">if</span> ( !<span class="variable">initializing</span> &amp;&amp; <span class="this">this</span>.<span class="variable">init</span> )
         <span class="this">this</span>.<span class="variable">init</span>.<span class="variable">apply</span>(<span class="this">this</span>, <span class="variable">arguments</span>);
     }
 
@@ -2586,7 +2586,7 @@ This method must be called in all feature subclasses like so <code>this._super(t
   };
 })();</code></pre>
 </td>
-</tr><tr class="filename"><td><h2 id="src/Scribl.utils.js"><a href="#">Scribl.utils</a></h2></td><td>src/Scribl.utils.js</td></tr><tr class="code">
+</tr><tr class="filename"><td><h2 id="Scribl.utils.js"><a href="#">Scribl.utils</a></h2></td><td>Scribl.utils.js</td></tr><tr class="code">
 <td class="docs">
 <p><strong>Scribl::Utils</strong></p>
 
@@ -2610,31 +2610,31 @@ This method must be called in all feature subclasses like so <code>this._super(t
 <td class="code">
 <pre><code><span class="keyword">function</span> <span class="class">ScriblWrapLines</span>(<span class="variable">max</span>, <span class="variable">text</span>) {
 	<span class="keyword">var</span> <span class="variable">lines</span> = [];
-	<span class="variable">text</span> = &<span class="variable">quot</span>;&<span class="variable">quot</span>; + <span class="variable">text</span>;
-	<span class="keyword">var</span> <span class="variable">temp</span> = &<span class="variable">quot</span>;&<span class="variable">quot</span>;;
+	<span class="variable">text</span> = &quot;&quot; + <span class="variable">text</span>;
+	<span class="keyword">var</span> <span class="variable">temp</span> = &quot;&quot;;
 	<span class="keyword">var</span> <span class="variable">chcount</span> = <span class="number integer">0</span>; 
 	<span class="keyword">var</span> <span class="variable">linecount</span> = <span class="number integer">0</span>;
-	<span class="keyword">var</span> <span class="variable">words</span> = <span class="variable">text</span>.<span class="variable">split</span>(&<span class="variable">quot</span>; &<span class="variable">quot</span>;);
+	<span class="keyword">var</span> <span class="variable">words</span> = <span class="variable">text</span>.<span class="variable">split</span>(&quot; &quot;);
 	
-	<span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">i</span> &<span class="variable">lt</span>; <span class="variable">words</span>.<span class="variable">length</span>; <span class="variable">i</span>++) {
-		<span class="keyword">if</span> ((<span class="variable">words</span>[<span class="variable">i</span>].<span class="variable">length</span> + <span class="variable">temp</span>.<span class="variable">length</span>) &<span class="variable">lt</span>;= <span class="variable">max</span>)
-			<span class="variable">temp</span> += &<span class="variable">quot</span>; &<span class="variable">quot</span>; + <span class="variable">words</span>[<span class="variable">i</span>]
+	<span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">i</span> &lt; <span class="variable">words</span>.<span class="variable">length</span>; <span class="variable">i</span>++) {
+		<span class="keyword">if</span> ((<span class="variable">words</span>[<span class="variable">i</span>].<span class="variable">length</span> + <span class="variable">temp</span>.<span class="variable">length</span>) &lt;= <span class="variable">max</span>)
+			<span class="variable">temp</span> += &quot; &quot; + <span class="variable">words</span>[<span class="variable">i</span>]
 		<span class="keyword">else</span> {
 			<span class="comment">// word is bigger than line break</span>
-			<span class="keyword">if</span> (<span class="variable">temp</span> == &<span class="variable">quot</span>;&<span class="variable">quot</span>;) {
+			<span class="keyword">if</span> (<span class="variable">temp</span> == &quot;&quot;) {
 				<span class="variable">trunc1</span> = <span class="variable">words</span>[<span class="variable">i</span>].<span class="variable">slice</span>(<span class="number integer">0</span>, <span class="variable">max</span>-<span class="number integer">1</span>);
-				<span class="variable">temp</span> += &<span class="variable">quot</span>; &<span class="variable">quot</span>; + <span class="variable">trunc1</span> + &<span class="variable">quot</span>;-&<span class="variable">quot</span>;
+				<span class="variable">temp</span> += &quot; &quot; + <span class="variable">trunc1</span> + &quot;-&quot;
 				<span class="variable">trunc2</span> = <span class="variable">words</span>[<span class="variable">i</span>].<span class="variable">slice</span>(<span class="variable">max</span>, <span class="variable">words</span>[<span class="variable">i</span>].<span class="variable">length</span>);
 				<span class="variable">words</span>.<span class="variable">splice</span>(<span class="variable">i</span>+<span class="number integer">1</span>, <span class="number integer">0</span>, <span class="variable">trunc2</span>);
 				<span class="variable">lines</span>.<span class="variable">push</span>(<span class="variable">temp</span>);
-				<span class="variable">temp</span> = &<span class="variable">quot</span>;&<span class="variable">quot</span>;;
+				<span class="variable">temp</span> = &quot;&quot;;
 				<span class="variable">linecount</span>++;
 			}
 			<span class="keyword">else</span> {
 				<span class="variable">i</span>--;
 				<span class="variable">lines</span>.<span class="variable">push</span>(<span class="variable">temp</span>);
 				<span class="variable">linecount</span>++;
-				<span class="variable">temp</span> = &<span class="variable">quot</span>;&<span class="variable">quot</span>;;
+				<span class="variable">temp</span> = &quot;&quot;;
 			}
 		}
 	}
@@ -2655,7 +2655,7 @@ This method must be called in all feature subclasses like so <code>this._super(t
   <span class="keyword">return</span> <span class="variable">prefix</span> ? <span class="variable">prefix</span> + <span class="variable">id</span> : <span class="variable">id</span>;
 };</code></pre>
 </td>
-</tr><tr class="filename"><td><h2 id="src/Scribl.svg.js"><a href="#">Scribl.svg</a></h2></td><td>src/Scribl.svg.js</td></tr><tr class="code">
+</tr><tr class="filename"><td><h2 id="Scribl.svg.js"><a href="#">Scribl.svg</a></h2></td><td>Scribl.svg.js</td></tr><tr class="code">
 <td class="docs">
 <p>utility functions for converting canvas to svg
  </p>
@@ -2664,14 +2664,14 @@ This method must be called in all feature subclasses like so <code>this._super(t
 <pre><code><span class="keyword">var</span> <span class="class">CanvasToSVG</span> = {
 	<span class="variable">idCounter</span>: <span class="number integer">0</span>,
 	<span class="variable">convert</span>: <span class="keyword">function</span>(<span class="variable">sourceCanvas</span>, <span class="variable">targetSVG</span>, <span class="variable">x</span>, <span class="variable">y</span>) {
-		<span class="keyword">var</span> <span class="variable">svgNS</span> = &<span class="variable">quot</span>;<span class="variable">http</span>:<span class="comment">//www.w3.org/2000/svg&quot;;</span>
-		<span class="keyword">var</span> <span class="variable">xlinkNS</span> = &<span class="variable">quot</span>;<span class="variable">http</span>:<span class="comment">//www.w3.org/1999/xlink&quot;;</span>
+		<span class="keyword">var</span> <span class="variable">svgNS</span> = &quot;<span class="variable">http</span>:<span class="comment">//www.w3.org/2000/svg&quot;;</span>
+		<span class="keyword">var</span> <span class="variable">xlinkNS</span> = &quot;<span class="variable">http</span>:<span class="comment">//www.w3.org/1999/xlink&quot;;</span>
 
 		<span class="comment">// get base64 encoded png from Canvas</span>
 		<span class="keyword">var</span> <span class="variable">image</span> = <span class="variable">sourceCanvas</span>.<span class="variable">toDataURL</span>();
 
 		<span class="comment">// must be careful with the namespaces</span>
-		<span class="keyword">var</span> <span class="variable">svgimg</span> = <span class="variable">document</span>.<span class="variable">createElementNS</span>(<span class="variable">svgNS</span>, &<span class="variable">quot</span>;<span class="variable">image</span>&<span class="variable">quot</span>;);
+		<span class="keyword">var</span> <span class="variable">svgimg</span> = <span class="variable">document</span>.<span class="variable">createElementNS</span>(<span class="variable">svgNS</span>, &quot;<span class="variable">image</span>&quot;);
 
 		<span class="variable">svgimg</span>.<span class="variable">setAttribute</span>(<span class="string">'id'</span>, <span class="string">'importedCanvas_'</span> + <span class="this">this</span>.<span class="variable">idCounter</span>++);
 		<span class="variable">svgimg</span>.<span class="variable">setAttributeNS</span>(<span class="variable">xlinkNS</span>, <span class="string">'xlink:href'</span>, <span class="variable">image</span>);
@@ -2702,13 +2702,13 @@ This method must be called in all feature subclasses like so <code>this._super(t
 
 <span class="keyword">var</span> <span class="variable">svgToString</span> = <span class="keyword">function</span>(<span class="variable">svgcontent</span>) {
 	<span class="comment">// keep calling it until there are none to remove</span>
-	<span class="keyword">while</span> (<span class="variable">removeUnusedDefElems</span>() &<span class="variable">gt</span>; <span class="number integer">0</span>) {};
+	<span class="keyword">while</span> (<span class="variable">removeUnusedDefElems</span>() &gt; <span class="number integer">0</span>) {};
 	
 	<span class="variable">pathActions</span>.<span class="variable">clear</span>(<span class="variable">true</span>);
 	
 	<span class="comment">// Keep SVG-Edit comment on top</span>
 	$.<span class="variable">each</span>(<span class="variable">svgcontent</span>.<span class="variable">childNodes</span>, <span class="keyword">function</span>(<span class="variable">i</span>, <span class="variable">node</span>) {
-		<span class="keyword">if</span>(<span class="variable">i</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">node</span>.<span class="variable">nodeType</span> == <span class="number integer">8</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">node</span>.<span class="variable">data</span>.<span class="variable">indexOf</span>(<span class="string">'Created with'</span>) &<span class="variable">gt</span>;= <span class="number integer">0</span>) {
+		<span class="keyword">if</span>(<span class="variable">i</span> &amp;&amp; <span class="variable">node</span>.<span class="variable">nodeType</span> == <span class="number integer">8</span> &amp;&amp; <span class="variable">node</span>.<span class="variable">data</span>.<span class="variable">indexOf</span>(<span class="string">'Created with'</span>) &gt;= <span class="number integer">0</span>) {
 			<span class="variable">svgcontent</span>.<span class="variable">insertBefore</span>(<span class="variable">node</span>, <span class="variable">svgcontent</span>.<span class="variable">firstChild</span>);
 		}
 	});
@@ -2725,13 +2725,13 @@ This method must be called in all feature subclasses like so <code>this._super(t
 	$(<span class="variable">svgcontent</span>).<span class="variable">find</span>(<span class="string">'g:data(gsvg)'</span>).<span class="variable">each</span>(<span class="keyword">function</span>() {
 		<span class="keyword">var</span> <span class="variable">attrs</span> = <span class="this">this</span>.<span class="variable">attributes</span>;
 		<span class="keyword">var</span> <span class="variable">len</span> = <span class="variable">attrs</span>.<span class="variable">length</span>;
-		<span class="keyword">for</span>(<span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">i</span>&<span class="variable">lt</span>;<span class="variable">len</span>; <span class="variable">i</span>++) {
+		<span class="keyword">for</span>(<span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">i</span>&lt;<span class="variable">len</span>; <span class="variable">i</span>++) {
 			<span class="keyword">if</span>(<span class="variable">attrs</span>[<span class="variable">i</span>].<span class="variable">nodeName</span> == <span class="string">'id'</span> || <span class="variable">attrs</span>[<span class="variable">i</span>].<span class="variable">nodeName</span> == <span class="string">'style'</span>) {
 				<span class="variable">len</span>--;
 			}
 		}
 		<span class="comment">// No significant attributes, so ungroup</span>
-		<span class="keyword">if</span>(<span class="variable">len</span> &<span class="variable">lt</span>;= <span class="number integer">0</span>) {
+		<span class="keyword">if</span>(<span class="variable">len</span> &lt;= <span class="number integer">0</span>) {
 			<span class="keyword">var</span> <span class="variable">svg</span> = <span class="this">this</span>.<span class="variable">firstChild</span>;
 			<span class="variable">naked_svgs</span>.<span class="variable">push</span>(<span class="variable">svg</span>);
 			$(<span class="this">this</span>).<span class="variable">replaceWith</span>(<span class="variable">svg</span>);
@@ -2769,8 +2769,8 @@ This method must be called in all feature subclasses like so <code>this._super(t
 			<span class="variable">i</span>,
 			<span class="variable">childs</span> = <span class="variable">elem</span>.<span class="variable">childNodes</span>;
 		
-		<span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">i</span>&<span class="variable">lt</span>;<span class="variable">indent</span>; <span class="variable">i</span>++) <span class="variable">out</span>.<span class="variable">push</span>(&<span class="variable">quot</span>; &<span class="variable">quot</span>;);
-		<span class="variable">out</span>.<span class="variable">push</span>(&<span class="variable">quot</span>;&<span class="variable">lt</span>;&<span class="variable">quot</span>;); <span class="variable">out</span>.<span class="variable">push</span>(<span class="variable">elem</span>.<span class="variable">nodeName</span>);			
+		<span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">i</span>&lt;<span class="variable">indent</span>; <span class="variable">i</span>++) <span class="variable">out</span>.<span class="variable">push</span>(&quot; &quot;);
+		<span class="variable">out</span>.<span class="variable">push</span>(&quot;&lt;&quot;); <span class="variable">out</span>.<span class="variable">push</span>(<span class="variable">elem</span>.<span class="variable">nodeName</span>);			
 		<span class="keyword">if</span>(<span class="variable">elem</span>.<span class="variable">id</span> == <span class="string">'svgcontent'</span>) {
 			<span class="comment">// Process root element separately</span>
 			<span class="keyword">var</span> <span class="variable">res</span> = <span class="variable">getResolution</span>();
@@ -2783,9 +2783,9 @@ This method must be called in all feature subclasses like so <code>this._super(t
 				<span class="keyword">var</span> <span class="variable">el</span> = <span class="this">this</span>;
 				$.<span class="variable">each</span>(<span class="this">this</span>.<span class="variable">attributes</span>, <span class="keyword">function</span>(<span class="variable">i</span>, <span class="variable">attr</span>) {
 					<span class="keyword">var</span> <span class="variable">uri</span> = <span class="variable">attr</span>.<span class="variable">namespaceURI</span>;
-					<span class="keyword">if</span>(<span class="variable">uri</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; !<span class="variable">nsuris</span>[<span class="variable">uri</span>] &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">nsMap</span>[<span class="variable">uri</span>] !== <span class="string">'xmlns'</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">nsMap</span>[<span class="variable">uri</span>] !== <span class="string">'xml'</span> ) {
+					<span class="keyword">if</span>(<span class="variable">uri</span> &amp;&amp; !<span class="variable">nsuris</span>[<span class="variable">uri</span>] &amp;&amp; <span class="variable">nsMap</span>[<span class="variable">uri</span>] !== <span class="string">'xmlns'</span> &amp;&amp; <span class="variable">nsMap</span>[<span class="variable">uri</span>] !== <span class="string">'xml'</span> ) {
 						<span class="variable">nsuris</span>[<span class="variable">uri</span>] = <span class="variable">true</span>;
-						<span class="variable">out</span>.<span class="variable">push</span>(&<span class="variable">quot</span>; <span class="variable">xmlns</span>:&<span class="variable">quot</span>; + <span class="variable">nsMap</span>[<span class="variable">uri</span>] + <span class="string">'=&quot;'</span> + <span class="variable">uri</span> +<span class="string">'&quot;'</span>);
+						<span class="variable">out</span>.<span class="variable">push</span>(&quot; <span class="variable">xmlns</span>:&quot; + <span class="variable">nsMap</span>[<span class="variable">uri</span>] + <span class="string">'=&quot;'</span> + <span class="variable">uri</span> +<span class="string">'&quot;'</span>);
 					}
 				});
 			});
@@ -2799,27 +2799,27 @@ This method must be called in all feature subclasses like so <code>this._super(t
 				<span class="keyword">if</span>(<span class="variable">attr</span>.<span class="variable">nodeName</span>.<span class="variable">indexOf</span>(<span class="string">'xmlns:'</span>) === <span class="number integer">0</span>) <span class="keyword">continue</span>;
 
 				<span class="comment">// only serialize attributes we don't use internally</span>
-				<span class="keyword">if</span> (<span class="variable">attrVal</span> != &<span class="variable">quot</span>;&<span class="variable">quot</span>; &<span class="variable">amp</span>;&<span class="variable">amp</span>; 
+				<span class="keyword">if</span> (<span class="variable">attrVal</span> != &quot;&quot; &amp;&amp; 
 					[<span class="string">'width'</span>,<span class="string">'height'</span>,<span class="string">'xmlns'</span>,<span class="string">'x'</span>,<span class="string">'y'</span>,<span class="string">'viewBox'</span>,<span class="string">'id'</span>,<span class="string">'overflow'</span>].<span class="variable">indexOf</span>(<span class="variable">attr</span>.<span class="variable">localName</span>) == -<span class="number integer">1</span>) 
 				{
 
 					<span class="keyword">if</span>(!<span class="variable">attr</span>.<span class="variable">namespaceURI</span> || <span class="variable">nsMap</span>[<span class="variable">attr</span>.<span class="variable">namespaceURI</span>]) {
 						<span class="variable">out</span>.<span class="variable">push</span>(<span class="string">' '</span>); 
-						<span class="variable">out</span>.<span class="variable">push</span>(<span class="variable">attr</span>.<span class="variable">nodeName</span>); <span class="variable">out</span>.<span class="variable">push</span>(&<span class="variable">quot</span>;=\&<span class="variable">quot</span>;&<span class="variable">quot</span>;);
-						<span class="variable">out</span>.<span class="variable">push</span>(<span class="variable">attrVal</span>); <span class="variable">out</span>.<span class="variable">push</span>(&<span class="variable">quot</span>;\&<span class="variable">quot</span>;&<span class="variable">quot</span>;);
+						<span class="variable">out</span>.<span class="variable">push</span>(<span class="variable">attr</span>.<span class="variable">nodeName</span>); <span class="variable">out</span>.<span class="variable">push</span>(&quot;=\&quot;&quot;);
+						<span class="variable">out</span>.<span class="variable">push</span>(<span class="variable">attrVal</span>); <span class="variable">out</span>.<span class="variable">push</span>(&quot;\&quot;&quot;);
 					}
 				}
 			}
 		} <span class="keyword">else</span> {
-			<span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span>=<span class="variable">attrs</span>.<span class="variable">length</span>-<span class="number integer">1</span>; <span class="variable">i</span>&<span class="variable">gt</span>;=<span class="number integer">0</span>; <span class="variable">i</span>--) {
+			<span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span>=<span class="variable">attrs</span>.<span class="variable">length</span>-<span class="number integer">1</span>; <span class="variable">i</span>&gt;=<span class="number integer">0</span>; <span class="variable">i</span>--) {
 				<span class="variable">attr</span> = <span class="variable">attrs</span>.<span class="variable">item</span>(<span class="variable">i</span>);
 				<span class="keyword">var</span> <span class="variable">attrVal</span> = <span class="variable">toXml</span>(<span class="variable">attr</span>.<span class="variable">nodeValue</span>);
 				<span class="comment">//remove bogus attributes added by Gecko</span>
-				<span class="keyword">if</span> ([<span class="string">'-moz-math-font-style'</span>, <span class="string">'_moz-math-font-style'</span>].<span class="variable">indexOf</span>(<span class="variable">attr</span>.<span class="variable">localName</span>) &<span class="variable">gt</span>;= <span class="number integer">0</span>) <span class="keyword">continue</span>;
-				<span class="keyword">if</span> (<span class="variable">attrVal</span> != &<span class="variable">quot</span>;&<span class="variable">quot</span>;) {
+				<span class="keyword">if</span> ([<span class="string">'-moz-math-font-style'</span>, <span class="string">'_moz-math-font-style'</span>].<span class="variable">indexOf</span>(<span class="variable">attr</span>.<span class="variable">localName</span>) &gt;= <span class="number integer">0</span>) <span class="keyword">continue</span>;
+				<span class="keyword">if</span> (<span class="variable">attrVal</span> != &quot;&quot;) {
 					<span class="keyword">if</span>(<span class="variable">attrVal</span>.<span class="variable">indexOf</span>(<span class="string">'pointer-events'</span>) === <span class="number integer">0</span>) <span class="keyword">continue</span>;
-					<span class="keyword">if</span>(<span class="variable">attr</span>.<span class="variable">localName</span> === &<span class="variable">quot</span>;<span class="keyword">class</span>&<span class="variable">quot</span>; &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">attrVal</span>.<span class="variable">indexOf</span>(<span class="string">'se_'</span>) === <span class="number integer">0</span>) <span class="keyword">continue</span>;
-					<span class="variable">out</span>.<span class="variable">push</span>(&<span class="variable">quot</span>; &<span class="variable">quot</span>;); 
+					<span class="keyword">if</span>(<span class="variable">attr</span>.<span class="variable">localName</span> === &quot;<span class="keyword">class</span>&quot; &amp;&amp; <span class="variable">attrVal</span>.<span class="variable">indexOf</span>(<span class="string">'se_'</span>) === <span class="number integer">0</span>) <span class="keyword">continue</span>;
+					<span class="variable">out</span>.<span class="variable">push</span>(&quot; &quot;); 
 					<span class="keyword">if</span>(<span class="variable">attr</span>.<span class="variable">localName</span> === <span class="string">'d'</span>) <span class="variable">attrVal</span> = <span class="variable">pathActions</span>.<span class="variable">convertPath</span>(<span class="variable">elem</span>, <span class="variable">true</span>);
 					<span class="comment">//if(!isNaN(attrVal)) {</span>
 					<span class="comment">//	attrVal = shortFloat(attrVal);</span>
@@ -2839,50 +2839,50 @@ This method must be called in all feature subclasses like so <code>this._super(t
 					<span class="comment">// map various namespaces to our fixed namespace prefixes</span>
 					<span class="comment">// (the default xmlns attribute itself does not get a prefix)</span>
 				<span class="comment">//	if(!attr.namespaceURI || attr.namespaceURI == svgns || nsMap[attr.namespaceURI]) {</span>
-						<span class="variable">out</span>.<span class="variable">push</span>(<span class="variable">attr</span>.<span class="variable">nodeName</span>); <span class="variable">out</span>.<span class="variable">push</span>(&<span class="variable">quot</span>;=\&<span class="variable">quot</span>;&<span class="variable">quot</span>;);
-						<span class="variable">out</span>.<span class="variable">push</span>(<span class="variable">attrVal</span>); <span class="variable">out</span>.<span class="variable">push</span>(&<span class="variable">quot</span>;\&<span class="variable">quot</span>;&<span class="variable">quot</span>;);
+						<span class="variable">out</span>.<span class="variable">push</span>(<span class="variable">attr</span>.<span class="variable">nodeName</span>); <span class="variable">out</span>.<span class="variable">push</span>(&quot;=\&quot;&quot;);
+						<span class="variable">out</span>.<span class="variable">push</span>(<span class="variable">attrVal</span>); <span class="variable">out</span>.<span class="variable">push</span>(&quot;\&quot;&quot;);
 				<span class="comment">//	}</span>
 				}
 			}
 		}
 
 		<span class="keyword">if</span> (<span class="variable">elem</span>.<span class="variable">hasChildNodes</span>()) {
-			<span class="variable">out</span>.<span class="variable">push</span>(&<span class="variable">quot</span>;&<span class="variable">gt</span>;&<span class="variable">quot</span>;);
+			<span class="variable">out</span>.<span class="variable">push</span>(&quot;&gt;&quot;);
 			<span class="variable">indent</span>++;
 			<span class="keyword">var</span> <span class="variable">bOneLine</span> = <span class="variable">false</span>;
 			
-			<span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">i</span>&<span class="variable">lt</span>;<span class="variable">childs</span>.<span class="variable">length</span>; <span class="variable">i</span>++)
+			<span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">i</span>&lt;<span class="variable">childs</span>.<span class="variable">length</span>; <span class="variable">i</span>++)
 			{
 				<span class="keyword">var</span> <span class="variable">child</span> = <span class="variable">childs</span>.<span class="variable">item</span>(<span class="variable">i</span>);
 				<span class="keyword">switch</span>(<span class="variable">child</span>.<span class="variable">nodeType</span>) {
 				<span class="keyword">case</span> <span class="number integer">1</span>: <span class="comment">// element node</span>
-					<span class="variable">out</span>.<span class="variable">push</span>(&<span class="variable">quot</span>;\<span class="variable">n</span>&<span class="variable">quot</span>;);
+					<span class="variable">out</span>.<span class="variable">push</span>(&quot;\<span class="variable">n</span>&quot;);
 					<span class="variable">out</span>.<span class="variable">push</span>(<span class="variable">svgToString</span>(<span class="variable">childs</span>.<span class="variable">item</span>(<span class="variable">i</span>), <span class="variable">indent</span>));
 					<span class="keyword">break</span>;
 				<span class="keyword">case</span> <span class="number integer">3</span>: <span class="comment">// text node</span>
-					<span class="keyword">var</span> <span class="variable">str</span> = <span class="variable">child</span>.<span class="variable">nodeValue</span>.<span class="variable">replace</span>(<span class="regexp">/^\s+|\s+$/g</span>, &<span class="variable">quot</span>;&<span class="variable">quot</span>;);
-					<span class="keyword">if</span> (<span class="variable">str</span> != &<span class="variable">quot</span>;&<span class="variable">quot</span>;) {
+					<span class="keyword">var</span> <span class="variable">str</span> = <span class="variable">child</span>.<span class="variable">nodeValue</span>.<span class="variable">replace</span>(<span class="regexp">/^\s+|\s+$/g</span>, &quot;&quot;);
+					<span class="keyword">if</span> (<span class="variable">str</span> != &quot;&quot;) {
 						<span class="variable">bOneLine</span> = <span class="variable">true</span>;
-						<span class="variable">out</span>.<span class="variable">push</span>(<span class="variable">toXml</span>(<span class="variable">str</span>) + &<span class="variable">quot</span>;&<span class="variable">quot</span>;);
+						<span class="variable">out</span>.<span class="variable">push</span>(<span class="variable">toXml</span>(<span class="variable">str</span>) + &quot;&quot;);
 					}
 					<span class="keyword">break</span>;
 				<span class="keyword">case</span> <span class="number integer">8</span>: <span class="comment">// comment</span>
-					<span class="variable">out</span>.<span class="variable">push</span>(&<span class="variable">quot</span>;\<span class="variable">n</span>&<span class="variable">quot</span>;);
-					<span class="variable">out</span>.<span class="variable">push</span>(<span class="keyword">new</span> <span class="class">Array</span>(<span class="variable">indent</span>+<span class="number integer">1</span>).<span class="variable">join</span>(&<span class="variable">quot</span>; &<span class="variable">quot</span>;));
-					<span class="variable">out</span>.<span class="variable">push</span>(&<span class="variable">quot</span>;&<span class="variable">lt</span>;!--&<span class="variable">quot</span>;);
+					<span class="variable">out</span>.<span class="variable">push</span>(&quot;\<span class="variable">n</span>&quot;);
+					<span class="variable">out</span>.<span class="variable">push</span>(<span class="keyword">new</span> <span class="class">Array</span>(<span class="variable">indent</span>+<span class="number integer">1</span>).<span class="variable">join</span>(&quot; &quot;));
+					<span class="variable">out</span>.<span class="variable">push</span>(&quot;&lt;!--&quot;);
 					<span class="variable">out</span>.<span class="variable">push</span>(<span class="variable">child</span>.<span class="variable">data</span>);
-					<span class="variable">out</span>.<span class="variable">push</span>(&<span class="variable">quot</span>;--&<span class="variable">gt</span>;&<span class="variable">quot</span>;);
+					<span class="variable">out</span>.<span class="variable">push</span>(&quot;--&gt;&quot;);
 					<span class="keyword">break</span>;
 				} <span class="comment">// switch on node type</span>
 			}
 			<span class="variable">indent</span>--;
 			<span class="keyword">if</span> (!<span class="variable">bOneLine</span>) {
-				<span class="variable">out</span>.<span class="variable">push</span>(&<span class="variable">quot</span>;\<span class="variable">n</span>&<span class="variable">quot</span>;);
-				<span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">i</span>&<span class="variable">lt</span>;<span class="variable">indent</span>; <span class="variable">i</span>++) <span class="variable">out</span>.<span class="variable">push</span>(&<span class="variable">quot</span>; &<span class="variable">quot</span>;);
+				<span class="variable">out</span>.<span class="variable">push</span>(&quot;\<span class="variable">n</span>&quot;);
+				<span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">i</span>&lt;<span class="variable">indent</span>; <span class="variable">i</span>++) <span class="variable">out</span>.<span class="variable">push</span>(&quot; &quot;);
 			}
-			<span class="variable">out</span>.<span class="variable">push</span>(&<span class="variable">quot</span>;&<span class="variable">lt</span>;/&<span class="variable">quot</span>;); <span class="variable">out</span>.<span class="variable">push</span>(<span class="variable">elem</span>.<span class="variable">nodeName</span>); <span class="variable">out</span>.<span class="variable">push</span>(&<span class="variable">quot</span>;&<span class="variable">gt</span>;&<span class="variable">quot</span>;);
+			<span class="variable">out</span>.<span class="variable">push</span>(&quot;&lt;/&quot;); <span class="variable">out</span>.<span class="variable">push</span>(<span class="variable">elem</span>.<span class="variable">nodeName</span>); <span class="variable">out</span>.<span class="variable">push</span>(&quot;&gt;&quot;);
 		} <span class="keyword">else</span> {
-			<span class="variable">out</span>.<span class="variable">push</span>(&<span class="variable">quot</span>;/&<span class="variable">gt</span>;&<span class="variable">quot</span>;);
+			<span class="variable">out</span>.<span class="variable">push</span>(&quot;/&gt;&quot;);
 		}
 	}
 	<span class="keyword">return</span> <span class="variable">out</span>.<span class="variable">join</span>(<span class="string">''</span>);
@@ -2891,7 +2891,7 @@ This method must be called in all feature subclasses like so <code>this._super(t
 
 </code></pre>
 </td>
-</tr><tr class="filename"><td><h2 id="src/glyph/Scribl.arrow.js"><a href="#">Scribl.arrow</a></h2></td><td>src/glyph/Scribl.arrow.js</td></tr><tr class="code">
+</tr><tr class="filename"><td><h2 id="glyph/Scribl.arrow.js"><a href="#">Scribl.arrow</a></h2></td><td>glyph/Scribl.arrow.js</td></tr><tr class="code">
 <td class="docs">
 <p><strong>Scribl::Glyph::Arrow</strong></p>
 
@@ -2921,7 +2921,7 @@ This method must be called in all feature subclasses like so <code>this._super(t
          
          <span class="comment">// set defaults</span>
          <span class="this">this</span>.<span class="variable">slope</span> = <span class="number integer">1</span>;
-         <span class="this">this</span>.<span class="variable">glyphType</span> = &<span class="variable">quot</span>;<span class="class">Arrow</span>&<span class="variable">quot</span>;;
+         <span class="this">this</span>.<span class="variable">glyphType</span> = &quot;<span class="class">Arrow</span>&quot;;
          <span class="this">this</span>.<span class="variable">thickness</span> = <span class="number float">4.6</span>
 		},</code></pre>
 </td>
@@ -3065,7 +3065,7 @@ This method must be called in all feature subclasses like so <code>this._super(t
 
 </code></pre>
 </td>
-</tr><tr class="filename"><td><h2 id="src/glyph/Scribl.blockarrow.js"><a href="#">Scribl.blockarrow</a></h2></td><td>src/glyph/Scribl.blockarrow.js</td></tr><tr class="code">
+</tr><tr class="filename"><td><h2 id="glyph/Scribl.blockarrow.js"><a href="#">Scribl.blockarrow</a></h2></td><td>glyph/Scribl.blockarrow.js</td></tr><tr class="code">
 <td class="docs">
 <p><strong>Scribl::Glyph::BlockArrow</strong></p>
 
@@ -3093,7 +3093,7 @@ This method must be called in all feature subclasses like so <code>this._super(t
          <span class="comment">// call super init method to initialize glyph</span>
          <span class="this">this</span>.<span class="variable">_super</span>(<span class="variable">type</span>, <span class="variable">position</span>, <span class="variable">length</span>, <span class="variable">strand</span>, <span class="variable">opts</span>);
          <span class="this">this</span>.<span class="variable">slope</span> = <span class="number integer">1</span>;
-         <span class="this">this</span>.<span class="variable">glyphType</span> = &<span class="variable">quot</span>;<span class="class">BlockArrow</span>&<span class="variable">quot</span>;;
+         <span class="this">this</span>.<span class="variable">glyphType</span> = &quot;<span class="class">BlockArrow</span>&quot;;
       },</code></pre>
 </td>
 </tr>
@@ -3167,7 +3167,7 @@ This method must be called in all feature subclasses like so <code>this._super(t
          <span class="comment">// bottom slope</span>
          <span class="variable">bs_ctrl_y</span> = <span class="variable">y</span> + <span class="variable">height</span>;
          <span class="variable">bs_ctrl_x</span> = ( (-<span class="variable">bs_ctrl_y</span> - <span class="variable">bs_intercept</span>)<span class="regexp">/blockarrow.slope ); 	/</span>/ <span class="variable">control</span> <span class="variable">point</span>
-         <span class="keyword">if</span> (<span class="variable">bs_ctrl_x</span> &<span class="variable">lt</span>; <span class="variable">x</span> ) {
+         <span class="keyword">if</span> (<span class="variable">bs_ctrl_x</span> &lt; <span class="variable">x</span> ) {
             <span class="keyword">var</span> <span class="variable">r</span> = <span class="keyword">new</span> <span class="class">Rect</span>(<span class="variable">blockarrow</span>.<span class="variable">type</span>, <span class="number integer">0</span>, <span class="variable">length</span>);
             <span class="variable">r</span>.<span class="variable">_draw</span>(<span class="variable">ctx</span>, <span class="variable">length</span>, <span class="variable">height</span>, <span class="variable">roundness</span>);
             <span class="keyword">return</span>;
@@ -3219,7 +3219,7 @@ This method must be called in all feature subclasses like so <code>this._super(t
 
 </code></pre>
 </td>
-</tr><tr class="filename"><td><h2 id="src/glyph/Scribl.complex.js"><a href="#">Scribl.complex</a></h2></td><td>src/glyph/Scribl.complex.js</td></tr><tr class="code">
+</tr><tr class="filename"><td><h2 id="glyph/Scribl.complex.js"><a href="#">Scribl.complex</a></h2></td><td>glyph/Scribl.complex.js</td></tr><tr class="code">
 <td class="docs">
 <p><strong>Scribl::Glyph::Complex</strong></p>
 
@@ -3251,13 +3251,13 @@ any feature that should be made up of other features</em></p>
          
          <span class="comment">// instantiate and set defaults</span>
          <span class="this">this</span>.<span class="variable">slope</span> = <span class="number integer">1</span>;
-         <span class="this">this</span>.<span class="variable">glyphType</span> = &<span class="variable">quot</span>;<span class="class">Complex</span>&<span class="variable">quot</span>;;
+         <span class="this">this</span>.<span class="variable">glyphType</span> = &quot;<span class="class">Complex</span>&quot;;
          <span class="this">this</span>.<span class="variable">subFeatures</span> = <span class="variable">subFeatures</span>;
          			
          <span class="comment">// instantiate connector line and set default attributes</span>
          <span class="this">this</span>.<span class="variable">line</span> =  <span class="keyword">new</span> <span class="class">Line</span>(<span class="variable">type</span>, <span class="number integer">0</span>, <span class="variable">length</span>);
          <span class="this">this</span>.<span class="variable">line</span>.<span class="variable">parent</span> = <span class="this">this</span>;
-         <span class="this">this</span>.<span class="variable">line</span>.<span class="variable">color</span> = &<span class="variable">quot</span>;<span class="variable">black</span>&<span class="variable">quot</span>;;
+         <span class="this">this</span>.<span class="variable">line</span>.<span class="variable">color</span> = &quot;<span class="variable">black</span>&quot;;
          <span class="this">this</span>.<span class="variable">line</span>.<span class="variable">thickness</span> = <span class="number integer">2</span>;			
       },</code></pre>
 </td>
@@ -3315,7 +3315,7 @@ any feature that should be made up of other features</em></p>
          
          <span class="comment">// draw subFeatures</span>
          <span class="keyword">var</span> <span class="variable">numsubFeatures</span> = <span class="variable">complex</span>.<span class="variable">subFeatures</span>.<span class="variable">length</span>
-         <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">i</span>&<span class="variable">lt</span>; <span class="variable">numsubFeatures</span>; <span class="variable">i</span>++) {				
+         <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">i</span>&lt; <span class="variable">numsubFeatures</span>; <span class="variable">i</span>++) {				
             <span class="comment">// set subFeature to same lane and draw</span>
             <span class="variable">complex</span>.<span class="variable">subFeatures</span>[<span class="variable">i</span>].<span class="variable">parent</span> = <span class="variable">complex</span>;
             <span class="variable">complex</span>.<span class="variable">subFeatures</span>[<span class="variable">i</span>].<span class="variable">lane</span> = <span class="variable">complex</span>.<span class="variable">lane</span>;
@@ -3334,7 +3334,7 @@ any feature that should be made up of other features</em></p>
 
 </code></pre>
 </td>
-</tr><tr class="filename"><td><h2 id="src/glyph/Scribl.line.js"><a href="#">Scribl.line</a></h2></td><td>src/glyph/Scribl.line.js</td></tr><tr class="code">
+</tr><tr class="filename"><td><h2 id="glyph/Scribl.line.js"><a href="#">Scribl.line</a></h2></td><td>glyph/Scribl.line.js</td></tr><tr class="code">
 <td class="docs">
 <p><strong>Scribl::Glyph::Line</strong></p>
 
@@ -3360,8 +3360,8 @@ any feature that should be made up of other features</em></p>
 <td class="code">
 <pre><code><span class="variable">init</span>: <span class="keyword">function</span>(<span class="variable">type</span>, <span class="variable">position</span>, <span class="variable">length</span>, <span class="variable">opts</span>) {
          <span class="this">this</span>.<span class="variable">thickness</span> = <span class="number integer">2</span>;
-         <span class="this">this</span>.<span class="variable">_super</span>(<span class="variable">type</span>, <span class="variable">position</span>, <span class="variable">length</span>, &<span class="variable">quot</span>;+&<span class="variable">quot</span>;, <span class="variable">opts</span>);
-         <span class="this">this</span>.<span class="variable">glyphType</span> = &<span class="variable">quot</span>;<span class="class">Line</span>&<span class="variable">quot</span>;;
+         <span class="this">this</span>.<span class="variable">_super</span>(<span class="variable">type</span>, <span class="variable">position</span>, <span class="variable">length</span>, &quot;+&quot;, <span class="variable">opts</span>);
+         <span class="this">this</span>.<span class="variable">glyphType</span> = &quot;<span class="class">Line</span>&quot;;
       },</code></pre>
 </td>
 </tr>
@@ -3401,7 +3401,7 @@ any feature that should be made up of other features</em></p>
 	}
 });</code></pre>
 </td>
-</tr><tr class="filename"><td><h2 id="src/glyph/Scribl.rect.js"><a href="#">Scribl.rect</a></h2></td><td>src/glyph/Scribl.rect.js</td></tr><tr class="code">
+</tr><tr class="filename"><td><h2 id="glyph/Scribl.rect.js"><a href="#">Scribl.rect</a></h2></td><td>glyph/Scribl.rect.js</td></tr><tr class="code">
 <td class="docs">
 <p><strong>Scribl::Glyph::Rect</strong></p>
 
@@ -3426,8 +3426,8 @@ any feature that should be made up of other features</em></p>
 </td>
 <td class="code">
 <pre><code><span class="variable">init</span>: <span class="keyword">function</span>(<span class="variable">type</span>, <span class="variable">position</span>, <span class="variable">length</span>, <span class="variable">opts</span>) {
-         <span class="this">this</span>.<span class="variable">_super</span>(<span class="variable">type</span>, <span class="variable">position</span>, <span class="variable">length</span>, &<span class="variable">quot</span>;+&<span class="variable">quot</span>;, <span class="variable">opts</span>);
-         <span class="this">this</span>.<span class="variable">glyphType</span> = &<span class="variable">quot</span>;<span class="class">Rect</span>&<span class="variable">quot</span>;;
+         <span class="this">this</span>.<span class="variable">_super</span>(<span class="variable">type</span>, <span class="variable">position</span>, <span class="variable">length</span>, &quot;+&quot;, <span class="variable">opts</span>);
+         <span class="this">this</span>.<span class="variable">glyphType</span> = &quot;<span class="class">Rect</span>&quot;;
       },</code></pre>
 </td>
 </tr>
@@ -3518,14 +3518,14 @@ any feature that should be made up of other features</em></p>
 	}
 });</code></pre>
 </td>
-</tr><tr class="filename"><td><h2 id="src/parsers/bed.js"><a href="#">bed</a></h2></td><td>src/parsers/bed.js</td></tr><tr class="code">
+</tr><tr class="filename"><td><h2 id="parsers/bed.js"><a href="#">bed</a></h2></td><td>parsers/bed.js</td></tr><tr class="code">
 <td class="docs">
 <p>Bed parser
  </p>
 </td>
 <td class="code">
 <pre><code><span class="keyword">function</span> <span class="variable">bed</span>(<span class="variable">file</span>, <span class="variable">chart</span>) {
-	<span class="keyword">var</span> <span class="variable">lines</span> = <span class="variable">file</span>.<span class="variable">split</span>(&<span class="variable">quot</span>;\<span class="variable">n</span>&<span class="variable">quot</span>;);
+	<span class="keyword">var</span> <span class="variable">lines</span> = <span class="variable">file</span>.<span class="variable">split</span>(&quot;\<span class="variable">n</span>&quot;);
 	<span class="keyword">var</span> <span class="variable">features</span> = [];
 	<span class="keyword">var</span> <span class="variable">max</span> = <span class="variable">undefined</span>;
 	<span class="keyword">var</span> <span class="variable">min</span> = <span class="variable">undefined</span>;
@@ -3535,15 +3535,15 @@ any feature that should be made up of other features</em></p>
 	
 	<span class="comment">// parse genes</span>
 	<span class="variable">numFeatures</span> = <span class="variable">lines</span>.<span class="variable">length</span>
-	<span class="keyword">for</span>( <span class="keyword">var</span> <span class="variable">j</span>=<span class="number integer">1</span>; <span class="variable">j</span> &<span class="variable">lt</span>; <span class="variable">numFeatures</span>; <span class="variable">j</span>++ ) {
-		<span class="keyword">if</span>( <span class="variable">lines</span>[<span class="variable">j</span>] == &<span class="variable">quot</span>;&<span class="variable">quot</span>; ) <span class="keyword">break</span>;
+	<span class="keyword">for</span>( <span class="keyword">var</span> <span class="variable">j</span>=<span class="number integer">1</span>; <span class="variable">j</span> &lt; <span class="variable">numFeatures</span>; <span class="variable">j</span>++ ) {
+		<span class="keyword">if</span>( <span class="variable">lines</span>[<span class="variable">j</span>] == &quot;&quot; ) <span class="keyword">break</span>;
 		
-		<span class="keyword">var</span> <span class="variable">fields</span> = <span class="variable">lines</span>[<span class="variable">j</span>].<span class="variable">split</span>(&<span class="variable">quot</span>; &<span class="variable">quot</span>;);
+		<span class="keyword">var</span> <span class="variable">fields</span> = <span class="variable">lines</span>[<span class="variable">j</span>].<span class="variable">split</span>(&quot; &quot;);
 		
 		<span class="comment">//chrom chromStart chromEnd name score strand thickStart thickEnd itemRgb blockCount blockSizes blockStarts</span>
 		<span class="keyword">var</span> <span class="variable">chromStart</span> = <span class="variable">parseInt</span>(<span class="variable">fields</span>[<span class="number integer">1</span>]);
 		<span class="keyword">var</span> <span class="variable">chromEnd</span> = <span class="variable">parseInt</span>(<span class="variable">fields</span>[<span class="number integer">2</span>]);
-		<span class="keyword">var</span> <span class="variable">name</span> = <span class="variable">fields</span>[<span class="number integer">0</span>] + &<span class="variable">quot</span>;: &<span class="variable">quot</span>; + <span class="variable">fields</span>[<span class="number integer">3</span>];
+		<span class="keyword">var</span> <span class="variable">name</span> = <span class="variable">fields</span>[<span class="number integer">0</span>] + &quot;: &quot; + <span class="variable">fields</span>[<span class="number integer">3</span>];
 		<span class="keyword">var</span> <span class="variable">orientation</span> = <span class="variable">fields</span>[<span class="number integer">5</span>];
 		<span class="keyword">var</span> <span class="variable">itemRgb</span> = <span class="variable">fields</span>[<span class="number integer">8</span>];
 		<span class="keyword">var</span> <span class="variable">blockLengths</span> = <span class="variable">fields</span>[<span class="number integer">10</span>].<span class="variable">split</span>(<span class="string">','</span>);
@@ -3551,14 +3551,14 @@ any feature that should be made up of other features</em></p>
 
 		<span class="keyword">var</span> <span class="variable">complex</span> = <span class="variable">chart</span>.<span class="variable">addFeature</span>( <span class="keyword">new</span> <span class="class">Complex</span>(<span class="string">'complex'</span>, <span class="variable">chromStart</span>, <span class="variable">chromEnd</span>, <span class="variable">orientation</span>, [], {<span class="string">'color'</span>:<span class="variable">itemRgb</span>, <span class="string">'name'</span>:<span class="variable">name</span>}) );
 
-		<span class="keyword">for</span>( <span class="keyword">var</span> <span class="variable">k</span>=<span class="number integer">0</span>; <span class="variable">k</span>&<span class="variable">lt</span>;<span class="variable">blockLengths</span>.<span class="variable">length</span>; <span class="variable">k</span>++) {
-			<span class="keyword">if</span>( <span class="variable">blockLengths</span>[<span class="variable">k</span>] == &<span class="variable">quot</span>;&<span class="variable">quot</span>;) <span class="keyword">break</span>;
+		<span class="keyword">for</span>( <span class="keyword">var</span> <span class="variable">k</span>=<span class="number integer">0</span>; <span class="variable">k</span>&lt;<span class="variable">blockLengths</span>.<span class="variable">length</span>; <span class="variable">k</span>++) {
+			<span class="keyword">if</span>( <span class="variable">blockLengths</span>[<span class="variable">k</span>] == &quot;&quot;) <span class="keyword">break</span>;
 			<span class="variable">complex</span>.<span class="variable">addSubFeature</span>( <span class="keyword">new</span> <span class="class">BlockArrow</span>(<span class="string">'complex'</span>, <span class="variable">parseInt</span>(<span class="variable">blockStarts</span>[<span class="variable">k</span>]), <span class="variable">parseInt</span>(<span class="variable">blockLengths</span>[<span class="variable">k</span>]), <span class="variable">orientation</span>));
 		}
 	}
 }</code></pre>
 </td>
-</tr><tr class="filename"><td><h2 id="src/parsers/genbank.js"><a href="#">genbank</a></h2></td><td>src/parsers/genbank.js</td></tr><tr class="code">
+</tr><tr class="filename"><td><h2 id="parsers/genbank.js"><a href="#">genbank</a></h2></td><td>parsers/genbank.js</td></tr><tr class="code">
 <td class="docs">
 <p>Genbank parser
  </p>
@@ -3566,14 +3566,14 @@ any feature that should be made up of other features</em></p>
 <td class="code">
 <pre><code><span class="keyword">function</span> <span class="variable">genbank</span>(<span class="variable">file</span>, <span class="variable">bchart</span>) {
 	
-	<span class="keyword">var</span> <span class="variable">lines</span> = <span class="variable">file</span>.<span class="variable">split</span>(&<span class="variable">quot</span>;\<span class="variable">n</span>&<span class="variable">quot</span>;);
+	<span class="keyword">var</span> <span class="variable">lines</span> = <span class="variable">file</span>.<span class="variable">split</span>(&quot;\<span class="variable">n</span>&quot;);
 	<span class="keyword">var</span> <span class="variable">re</span> = <span class="keyword">new</span> <span class="class">RegExp</span>(<span class="regexp">/\s+gene\s+([a-z]*)\(?(\d+)\.\.(\d+)/</span>);
 	<span class="keyword">var</span> <span class="variable">genes</span> = [];
 	<span class="keyword">var</span> <span class="variable">max</span> = <span class="variable">undefined</span>;
 	<span class="keyword">var</span> <span class="variable">min</span> = <span class="variable">undefined</span>;
 	
 	<span class="comment">// parse genes</span>
-	<span class="keyword">for</span>( <span class="keyword">var</span> <span class="variable">j</span>=<span class="number integer">0</span>; <span class="variable">j</span> &<span class="variable">lt</span>; <span class="variable">lines</span>.<span class="variable">length</span>; <span class="variable">j</span>++ ) {
+	<span class="keyword">for</span>( <span class="keyword">var</span> <span class="variable">j</span>=<span class="number integer">0</span>; <span class="variable">j</span> &lt; <span class="variable">lines</span>.<span class="variable">length</span>; <span class="variable">j</span>++ ) {
 
 		<span class="keyword">var</span> <span class="variable">gene_info</span>;
 		<span class="keyword">if</span> (<span class="variable">gene_info</span> = <span class="variable">lines</span>[<span class="variable">j</span>].<span class="variable">match</span>(<span class="variable">re</span>)) {
@@ -3582,10 +3582,10 @@ any feature that should be made up of other features</em></p>
 			
 			<span class="comment">// determine scale dimensions</span>
 			<span class="keyword">var</span> <span class="variable">end</span> = <span class="variable">gene_info</span>[<span class="number integer">2</span>];
-			<span class="keyword">if</span> (<span class="variable">max</span> == <span class="variable">undefined</span> || <span class="variable">max</span> &<span class="variable">gt</span>; <span class="variable">end</span>)
+			<span class="keyword">if</span> (<span class="variable">max</span> == <span class="variable">undefined</span> || <span class="variable">max</span> &gt; <span class="variable">end</span>)
 				<span class="variable">max</span> = <span class="variable">end</span>;
 			<span class="keyword">var</span> <span class="variable">position</span> = <span class="variable">gene_info</span>[<span class="number integer">1</span>];
-			<span class="keyword">if</span> (<span class="variable">min</span> == <span class="variable">undefined</span> || <span class="variable">min</span> &<span class="variable">lt</span>; <span class="variable">position</span>)
+			<span class="keyword">if</span> (<span class="variable">min</span> == <span class="variable">undefined</span> || <span class="variable">min</span> &lt; <span class="variable">position</span>)
 				<span class="variable">min</span> = <span class="variable">position</span>;
 		}
 	}
@@ -3596,11 +3596,11 @@ any feature that should be made up of other features</em></p>
 	<span class="variable">bchart</span>.<span class="variable">scale</span>.<span class="variable">min</span> = <span class="variable">min</span>;
 
 	<span class="comment">// add genes to chart</span>
-	<span class="keyword">for</span>(<span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">i</span> &<span class="variable">lt</span>; <span class="variable">genes</span>.<span class="variable">length</span>; <span class="variable">i</span>++ ) {
+	<span class="keyword">for</span>(<span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">i</span> &lt; <span class="variable">genes</span>.<span class="variable">length</span>; <span class="variable">i</span>++ ) {
 		
 		<span class="comment">// get positional values</span>
 		<span class="keyword">var</span> <span class="variable">strand</span> = <span class="string">'+'</span>;
-		<span class="keyword">if</span> ( <span class="variable">genes</span>[<span class="variable">i</span>][<span class="number integer">0</span>] == &<span class="variable">quot</span>;<span class="variable">complement</span>&<span class="variable">quot</span>; )
+		<span class="keyword">if</span> ( <span class="variable">genes</span>[<span class="variable">i</span>][<span class="number integer">0</span>] == &quot;<span class="variable">complement</span>&quot; )
 			<span class="variable">strand</span> = <span class="string">'-'</span>;
 			
 		<span class="keyword">var</span> <span class="variable">position</span> = <span class="variable">genes</span>[<span class="variable">i</span>][<span class="number integer">1</span>];

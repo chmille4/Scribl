@@ -41,7 +41,7 @@ Scribl is a HTML5 canvas-based genomics graphics library
 http://chmille4.github.com/Scribl/
 
 ## Documentation
-* [Usage Guide](https://github.com/chmille4/Scribl/wiki/Documentation)
+* [Usage Guide](https://github.com/chmille4/Scribl/wiki)
 * [Annotated Source Code](http://chmille4.github.com/Scribl/source.html)
 
 ## Minification

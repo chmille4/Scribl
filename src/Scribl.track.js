@@ -258,7 +258,8 @@ var Track = Class.extend({
             j = m-1;
          }
          // translate down to next lane to draw
-         ctx.translate(0, lanes[0].getHeight() + laneBuffer);
+         if (lanes.length > 0)
+            ctx.translate(0, lanes[0].getHeight() + laneBuffer);
    
       // draw as a line chart of the coverage
       } else if ( style == 'line' ) {

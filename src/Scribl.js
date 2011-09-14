@@ -39,8 +39,8 @@ var Scribl = Class.extend({
       this.scale.max = undefined;
       this.scale.min = undefined;
       this.scale.auto = true;
+      this.scale.userControlled = false;
       this.scale.positions = [0]; // by default scale goes on top
-      this.scale.removeDefault = function() { chart.scale.positions = []; };
       this.scale.off = false;
       this.scale.size = 15; // in pixels
       this.scale.font = {};
@@ -148,9 +148,14 @@ var Scribl = Class.extend({
     * _Inserts a scale at the end of the last track currently added to the chart_
    
     * @api public
-    */	
+    */	    
    addScale: function() {
-      this.scale.positions.push( this.tracks.length );
+      if (this.scale.userControlled)
+         this.scale.positions.push( this.tracks.length );
+      else {
+         this.scale.positions = [ this.tracks.length ];
+         this.scale.userControlled = true;
+      }
    },
 		
 	/** **addTrack**

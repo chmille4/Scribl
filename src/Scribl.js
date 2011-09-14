@@ -22,6 +22,7 @@ var Scribl = Class.extend({
       this.scrolled = false;
       // create canvas contexts		
       var ctx = canvas.getContext('2d');  
+      var chart = this;
 
       // chart defaults
       this.width = width;
@@ -38,6 +39,8 @@ var Scribl = Class.extend({
       this.scale.max = undefined;
       this.scale.min = undefined;
       this.scale.auto = true;
+      this.scale.positions = [0]; // by default scale goes on top
+      this.scale.removeDefault = function() { chart.scale.positions = []; };
       this.scale.off = false;
       this.scale.size = 15; // in pixels
       this.scale.font = {};
@@ -138,6 +141,16 @@ var Scribl = Class.extend({
       }
 
       return wholeHeight;
+   },
+   
+   /** **addScale**
+   
+    * _Inserts a scale at the end of the last track currently added to the chart_
+   
+    * @api public
+    */	
+   addScale: function() {
+      this.scale.positions.push( this.tracks.length );
    },
 		
 	/** **addTrack**
@@ -364,27 +377,23 @@ var Scribl = Class.extend({
       else
          this.offset = ctx.measureText('0').width/2 + 10;			
 
-      ctx.save();		
-		
-      // draw scale
-      if (!this.scale.off) {  
-         var fillStyleRevert = ctx.fillStyle;  		
-         this.drawScale();
-         // restore fillstyle
-         ctx.fillStyle = fillStyleRevert;
-      }		
-
+//      ctx.save();				
 
       ctx.save();
-		
-      // shift down size of scale
-      if (!this.scale.off) ctx.translate(0, this.getScaleHeight() + this.laneBuffer);
 
       // draw tracks
-      for (var i=0; i<tracks.length; i++)
+      for (var i=0; i<tracks.length; i++) {
+         // draw scale
+         if (!this.scale.off && this.scale.positions.indexOf(i) != -1)
+            this.drawScale();            
          tracks[i].draw();
+      }
+      
+      // test if scale is drawn last
+      if (!this.scale.off && this.scale.positions.indexOf(tracks.length) != -1)
+         this.drawScale();                  
 		
-      ctx.restore();	
+//      ctx.restore();	
       ctx.restore();	
       ctx.restore();	
 		
@@ -411,9 +420,10 @@ var Scribl = Class.extend({
     
     * @api public
     */
-	drawScale: function(){
+	drawScale: function(){	   
       var firstMinorTick;
       var ctx = this.ctx;
+      var fillStyleRevert = ctx.fillStyle;
       
       // determine tick vertical sizes and vertical tick positions
       var tickStartPos = this.scale.font.size + this.scale.size;
@@ -465,6 +475,12 @@ var Scribl = Class.extend({
                ctx.stroke();
             }            
          }
+                           
+         // restore fillstyle
+         ctx.fillStyle = fillStyleRevert;
+
+         // shift down size of scale
+         ctx.translate(0, this.getScaleHeight() + this.laneBuffer);
       },
 	
 	/** **pixelsToNts**

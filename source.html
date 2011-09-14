@@ -155,8 +155,8 @@ coordinate drawing</em></p>
       <span class="this">this</span>.<span class="variable">scale</span>.<span class="variable">max</span> = <span class="variable">undefined</span>;
       <span class="this">this</span>.<span class="variable">scale</span>.<span class="variable">min</span> = <span class="variable">undefined</span>;
       <span class="this">this</span>.<span class="variable">scale</span>.<span class="variable">auto</span> = <span class="variable">true</span>;
+      <span class="this">this</span>.<span class="variable">scale</span>.<span class="variable">userControlled</span> = <span class="variable">false</span>;
       <span class="this">this</span>.<span class="variable">scale</span>.<span class="variable">positions</span> = [<span class="number integer">0</span>]; <span class="comment">// by default scale goes on top</span>
-      <span class="this">this</span>.<span class="variable">scale</span>.<span class="variable">removeDefault</span> = <span class="keyword">function</span>() { <span class="variable">chart</span>.<span class="variable">scale</span>.<span class="variable">positions</span> = []; };
       <span class="this">this</span>.<span class="variable">scale</span>.<span class="variable">off</span> = <span class="variable">false</span>;
       <span class="this">this</span>.<span class="variable">scale</span>.<span class="variable">size</span> = <span class="number integer">15</span>; <span class="comment">// in pixels</span>
       <span class="this">this</span>.<span class="variable">scale</span>.<span class="variable">font</span> = {};
@@ -280,7 +280,12 @@ coordinate drawing</em></p>
 </td>
 <td class="code">
 <pre><code><span class="variable">addScale</span>: <span class="keyword">function</span>() {
-      <span class="this">this</span>.<span class="variable">scale</span>.<span class="variable">positions</span>.<span class="variable">push</span>( <span class="this">this</span>.<span class="variable">tracks</span>.<span class="variable">length</span> );
+      <span class="keyword">if</span> (<span class="this">this</span>.<span class="variable">scale</span>.<span class="variable">userControlled</span>)
+         <span class="this">this</span>.<span class="variable">scale</span>.<span class="variable">positions</span>.<span class="variable">push</span>( <span class="this">this</span>.<span class="variable">tracks</span>.<span class="variable">length</span> );
+      <span class="keyword">else</span> {
+         <span class="this">this</span>.<span class="variable">scale</span>.<span class="variable">positions</span> = [ <span class="this">this</span>.<span class="variable">tracks</span>.<span class="variable">length</span> ];
+         <span class="this">this</span>.<span class="variable">scale</span>.<span class="variable">userControlled</span> = <span class="variable">true</span>;
+      }
    },</code></pre>
 </td>
 </tr>

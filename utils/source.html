@@ -138,6 +138,7 @@ coordinate drawing</em></p>
       <span class="this">this</span>.<span class="variable">scrolled</span> = <span class="variable">false</span>;
       <span class="comment">// create canvas contexts		</span>
       <span class="keyword">var</span> <span class="variable">ctx</span> = <span class="variable">canvas</span>.<span class="variable">getContext</span>(<span class="string">'2d'</span>);  
+      <span class="keyword">var</span> <span class="variable">chart</span> = <span class="this">this</span>;
 
       <span class="comment">// chart defaults</span>
       <span class="this">this</span>.<span class="variable">width</span> = <span class="variable">width</span>;
@@ -154,6 +155,8 @@ coordinate drawing</em></p>
       <span class="this">this</span>.<span class="variable">scale</span>.<span class="variable">max</span> = <span class="variable">undefined</span>;
       <span class="this">this</span>.<span class="variable">scale</span>.<span class="variable">min</span> = <span class="variable">undefined</span>;
       <span class="this">this</span>.<span class="variable">scale</span>.<span class="variable">auto</span> = <span class="variable">true</span>;
+      <span class="this">this</span>.<span class="variable">scale</span>.<span class="variable">positions</span> = [<span class="number integer">0</span>]; <span class="comment">// by default scale goes on top</span>
+      <span class="this">this</span>.<span class="variable">scale</span>.<span class="variable">removeDefault</span> = <span class="keyword">function</span>() { <span class="variable">chart</span>.<span class="variable">scale</span>.<span class="variable">positions</span> = []; };
       <span class="this">this</span>.<span class="variable">scale</span>.<span class="variable">off</span> = <span class="variable">false</span>;
       <span class="this">this</span>.<span class="variable">scale</span>.<span class="variable">size</span> = <span class="number integer">15</span>; <span class="comment">// in pixels</span>
       <span class="this">this</span>.<span class="variable">scale</span>.<span class="variable">font</span> = {};
@@ -264,6 +267,20 @@ coordinate drawing</em></p>
       }
 
       <span class="keyword">return</span> <span class="variable">wholeHeight</span>;
+   },</code></pre>
+</td>
+</tr>
+<tr class="code">
+<td class="docs">
+<p><strong>addScale</strong></p>
+
+<p><em>Inserts a scale at the end of the last track currently added to the chart</em></p>
+
+<ul><li><p><strong>api</strong>: <em>public</em></p><p></p></li></ul>
+</td>
+<td class="code">
+<pre><code><span class="variable">addScale</span>: <span class="keyword">function</span>() {
+      <span class="this">this</span>.<span class="variable">scale</span>.<span class="variable">positions</span>.<span class="variable">push</span>( <span class="this">this</span>.<span class="variable">tracks</span>.<span class="variable">length</span> );
    },</code></pre>
 </td>
 </tr>
@@ -520,27 +537,23 @@ coordinate drawing</em></p>
       <span class="keyword">else</span>
          <span class="this">this</span>.<span class="variable">offset</span> = <span class="variable">ctx</span>.<span class="variable">measureText</span>(<span class="string">'0'</span>).<span class="variable">width</span>/<span class="number integer">2</span> + <span class="number integer">10</span>;			
 
-      <span class="variable">ctx</span>.<span class="variable">save</span>();		
-		
-      <span class="comment">// draw scale</span>
-      <span class="keyword">if</span> (!<span class="this">this</span>.<span class="variable">scale</span>.<span class="variable">off</span>) {  
-         <span class="keyword">var</span> <span class="variable">fillStyleRevert</span> = <span class="variable">ctx</span>.<span class="variable">fillStyle</span>;  		
-         <span class="this">this</span>.<span class="variable">drawScale</span>();
-         <span class="comment">// restore fillstyle</span>
-         <span class="variable">ctx</span>.<span class="variable">fillStyle</span> = <span class="variable">fillStyleRevert</span>;
-      }		
-
+<span class="comment">//      ctx.save();				</span>
 
       <span class="variable">ctx</span>.<span class="variable">save</span>();
-		
-      <span class="comment">// shift down size of scale</span>
-      <span class="keyword">if</span> (!<span class="this">this</span>.<span class="variable">scale</span>.<span class="variable">off</span>) <span class="variable">ctx</span>.<span class="variable">translate</span>(<span class="number integer">0</span>, <span class="this">this</span>.<span class="variable">getScaleHeight</span>() + <span class="this">this</span>.<span class="variable">laneBuffer</span>);
 
       <span class="comment">// draw tracks</span>
-      <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">i</span>&lt;<span class="variable">tracks</span>.<span class="variable">length</span>; <span class="variable">i</span>++)
+      <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">i</span>&lt;<span class="variable">tracks</span>.<span class="variable">length</span>; <span class="variable">i</span>++) {
+         <span class="comment">// draw scale</span>
+         <span class="keyword">if</span> (!<span class="this">this</span>.<span class="variable">scale</span>.<span class="variable">off</span> &amp;&amp; <span class="this">this</span>.<span class="variable">scale</span>.<span class="variable">positions</span>.<span class="variable">indexOf</span>(<span class="variable">i</span>) != -<span class="number integer">1</span>)
+            <span class="this">this</span>.<span class="variable">drawScale</span>();            
          <span class="variable">tracks</span>[<span class="variable">i</span>].<span class="variable">draw</span>();
+      }
+      
+      <span class="comment">// test if scale is drawn last</span>
+      <span class="keyword">if</span> (!<span class="this">this</span>.<span class="variable">scale</span>.<span class="variable">off</span> &amp;&amp; <span class="this">this</span>.<span class="variable">scale</span>.<span class="variable">positions</span>.<span class="variable">indexOf</span>(<span class="variable">tracks</span>.<span class="variable">length</span>) != -<span class="number integer">1</span>)
+         <span class="this">this</span>.<span class="variable">drawScale</span>();                  
 		
-      <span class="variable">ctx</span>.<span class="variable">restore</span>();	
+<span class="comment">//      ctx.restore();	</span>
       <span class="variable">ctx</span>.<span class="variable">restore</span>();	
       <span class="variable">ctx</span>.<span class="variable">restore</span>();	
 		
@@ -575,9 +588,10 @@ coordinate drawing</em></p>
 <ul><li><p><strong>api</strong>: <em>public</em></p><p></p></li></ul>
 </td>
 <td class="code">
-<pre><code><span class="variable">drawScale</span>: <span class="keyword">function</span>(){
+<pre><code><span class="variable">drawScale</span>: <span class="keyword">function</span>(){	   
       <span class="keyword">var</span> <span class="variable">firstMinorTick</span>;
       <span class="keyword">var</span> <span class="variable">ctx</span> = <span class="this">this</span>.<span class="variable">ctx</span>;
+      <span class="keyword">var</span> <span class="variable">fillStyleRevert</span> = <span class="variable">ctx</span>.<span class="variable">fillStyle</span>;
       
       <span class="comment">// determine tick vertical sizes and vertical tick positions</span>
       <span class="keyword">var</span> <span class="variable">tickStartPos</span> = <span class="this">this</span>.<span class="variable">scale</span>.<span class="variable">font</span>.<span class="variable">size</span> + <span class="this">this</span>.<span class="variable">scale</span>.<span class="variable">size</span>;
@@ -629,6 +643,12 @@ coordinate drawing</em></p>
                <span class="variable">ctx</span>.<span class="variable">stroke</span>();
             }            
          }
+                           
+         <span class="comment">// restore fillstyle</span>
+         <span class="variable">ctx</span>.<span class="variable">fillStyle</span> = <span class="variable">fillStyleRevert</span>;
+
+         <span class="comment">// shift down size of scale</span>
+         <span class="variable">ctx</span>.<span class="variable">translate</span>(<span class="number integer">0</span>, <span class="this">this</span>.<span class="variable">getScaleHeight</span>() + <span class="this">this</span>.<span class="variable">laneBuffer</span>);
       },</code></pre>
 </td>
 </tr>
@@ -1271,7 +1291,8 @@ coordinate drawing</em></p>
             <span class="variable">j</span> = <span class="variable">m</span>-<span class="number integer">1</span>;
          }
          <span class="comment">// translate down to next lane to draw</span>
-         <span class="variable">ctx</span>.<span class="variable">translate</span>(<span class="number integer">0</span>, <span class="variable">lanes</span>[<span class="number integer">0</span>].<span class="variable">getHeight</span>() + <span class="variable">laneBuffer</span>);
+         <span class="keyword">if</span> (<span class="variable">lanes</span>.<span class="variable">length</span> &gt; <span class="number integer">0</span>)
+            <span class="variable">ctx</span>.<span class="variable">translate</span>(<span class="number integer">0</span>, <span class="variable">lanes</span>[<span class="number integer">0</span>].<span class="variable">getHeight</span>() + <span class="variable">laneBuffer</span>);
    
       <span class="comment">// draw as a line chart of the coverage</span>
       } <span class="keyword">else</span> <span class="keyword">if</span> ( <span class="variable">style</span> == <span class="string">'line'</span> ) {
@@ -2654,6 +2675,54 @@ This method must be called in all feature subclasses like so <code>this._super(t
   <span class="keyword">var</span> <span class="variable">id</span> = <span class="variable">idCounter</span>++;
   <span class="keyword">return</span> <span class="variable">prefix</span> ? <span class="variable">prefix</span> + <span class="variable">id</span> : <span class="variable">id</span>;
 };</code></pre>
+</td>
+</tr>
+<tr class="code">
+<td class="docs">
+<p>add indexOf if not implemented for compatibility
+    with older browsers</p>
+</td>
+<td class="code">
+<pre><code><span class="keyword">if</span> (!<span class="class">Array</span>.<span class="variable">prototype</span>.<span class="variable">indexOf</span>) {  
+    <span class="class">Array</span>.<span class="variable">prototype</span>.<span class="variable">indexOf</span> = <span class="keyword">function</span> (<span class="variable">searchElement</span></code></pre>
+</td>
+</tr>
+<tr class="code">
+<td class="docs">
+<p>, fromIndex </p>
+</td>
+<td class="code">
+<pre><code>) {  
+        &quot;<span class="variable">use</span> <span class="variable">strict</span>&quot;;  
+        <span class="keyword">if</span> (<span class="this">this</span> === <span class="keyword">void</span> <span class="number integer">0</span> || <span class="this">this</span> === <span class="keyword">null</span>) {  
+            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="class">TypeError</span>();  
+        }  
+        <span class="keyword">var</span> <span class="variable">t</span> = <span class="class">Object</span>(<span class="this">this</span>);  
+        <span class="keyword">var</span> <span class="variable">len</span> = <span class="variable">t</span>.<span class="variable">length</span> &gt;&gt;&gt; <span class="number integer">0</span>;  
+        <span class="keyword">if</span> (<span class="variable">len</span> === <span class="number integer">0</span>) {  
+            <span class="keyword">return</span> -<span class="number integer">1</span>;  
+        }  
+        <span class="keyword">var</span> <span class="variable">n</span> = <span class="number integer">0</span>;  
+        <span class="keyword">if</span> (<span class="variable">arguments</span>.<span class="variable">length</span> &gt; <span class="number integer">0</span>) {  
+            <span class="variable">n</span> = <span class="class">Number</span>(<span class="variable">arguments</span>[<span class="number integer">1</span>]);  
+            <span class="keyword">if</span> (<span class="variable">n</span> !== <span class="variable">n</span>) { <span class="comment">// shortcut for verifying if it's NaN  </span>
+                <span class="variable">n</span> = <span class="number integer">0</span>;  
+            } <span class="keyword">else</span> <span class="keyword">if</span> (<span class="variable">n</span> !== <span class="number integer">0</span> &amp;&amp; <span class="variable">n</span> !== <span class="class">Infinity</span> &amp;&amp; <span class="variable">n</span> !== -<span class="class">Infinity</span>) {  
+                <span class="variable">n</span> = (<span class="variable">n</span> &gt; <span class="number integer">0</span> || -<span class="number integer">1</span>) * <span class="class">Math</span>.<span class="variable">floor</span>(<span class="class">Math</span>.<span class="variable">abs</span>(<span class="variable">n</span>));  
+            }  
+        }  
+        <span class="keyword">if</span> (<span class="variable">n</span> &gt;= <span class="variable">len</span>) {  
+            <span class="keyword">return</span> -<span class="number integer">1</span>;  
+        }  
+        <span class="keyword">var</span> <span class="variable">k</span> = <span class="variable">n</span> &gt;= <span class="number integer">0</span> ? <span class="variable">n</span> : <span class="class">Math</span>.<span class="variable">max</span>(<span class="variable">len</span> - <span class="class">Math</span>.<span class="variable">abs</span>(<span class="variable">n</span>), <span class="number integer">0</span>);  
+        <span class="keyword">for</span> (; <span class="variable">k</span> &lt; <span class="variable">len</span>; <span class="variable">k</span>++) {  
+            <span class="keyword">if</span> (<span class="variable">k</span> <span class="keyword">in</span> <span class="variable">t</span> &amp;&amp; <span class="variable">t</span>[<span class="variable">k</span>] === <span class="variable">searchElement</span>) {  
+                <span class="keyword">return</span> <span class="variable">k</span>;  
+            }  
+        }  
+        <span class="keyword">return</span> -<span class="number integer">1</span>;  
+    }  
+}</code></pre>
 </td>
 </tr><tr class="filename"><td><h2 id="Scribl.svg.js"><a href="#">Scribl.svg</a></h2></td><td>Scribl.svg.js</td></tr><tr class="code">
 <td class="docs">

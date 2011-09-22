@@ -326,6 +326,9 @@ var Glyph = Class.extend({
          for(var i=0; currColor=color[i], i < color.length; i++)
             lineargradient.addColorStop(i / (color.length-1), currColor);
          return lineargradient
+      } else if ( color instanceof Function) {
+         var lineargradient = this.lane.ctx.createLinearGradient(this.length/2, 0, this.length/2, this.getHeight());
+        return color(lineargradient); 
       } else 
          return color;
    },

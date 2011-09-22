@@ -332,6 +332,7 @@ var Scribl = Class.extend({
 		
       newChart.laneSizes = this.laneSizes;
       newChart.drawStyle = this.drawStyle;
+      newChart.glyph = this.glyph;
       newChart.loadFeatures(sliced_features);
       return newChart;
    },
@@ -378,9 +379,9 @@ var Scribl = Class.extend({
       // fix offsets so scale will not be cut off on left side
       // check if offset is turned off and then set it to static '0'
       if (this.scale.min.offset) 
-         this.offset = ctx.measureText(this.getTickText(this.scale.min)).width/2 + 10;
+         this.offset = Math.ceil( ctx.measureText(this.getTickText(this.scale.min)).width/2 + 10 );
       else
-         this.offset = ctx.measureText('0').width/2 + 10;			
+         this.offset = Math.ceil( ctx.measureText('0').width/2 + 10 );			
 
 //      ctx.save();				
 
@@ -712,17 +713,21 @@ var Scribl = Class.extend({
       // if mouse is not on any tracks then return
       if (!lane) return;
       
-      this.ctx.save(); 
-      lane.erase();
-      this.ctx.translate(0, lane.getPixelPositionY());
-      lane.draw();
-      var LastToolTip = this.LastToolTip;
-      if (LastToolTip) {
-         this.ctx.putImageData(LastToolTip.pixels, LastToolTip.x, LastToolTip.y )
+      if (lane.track.getDrawStyle() == 'collapse') {
+         this.redraw();
+      } else {
+         this.ctx.save(); 
+         lane.erase();
+         this.ctx.translate(0, lane.getPixelPositionY());
+         lane.draw();
+         var LastToolTip = this.LastToolTip;
+         if (LastToolTip) {
+            this.ctx.putImageData(LastToolTip.pixels, LastToolTip.x, LastToolTip.y )
+         }
+         this.ctx.restore();
       }
-      this.ctx.restore();
       
-      //this.redraw();
+      
       var chart = this;
 		
       if (type == 'click') {

@@ -150,6 +150,14 @@
 
  }
  
+ #rover-img {
+    background: -webkit-gradient(linear, left top, left bottom, from(#4C535C), to(#353A41));
+    background: -moz-linear-gradient(top, rgb(86,99,110), rgb(67,73,81));
+    background: linear-gradient(top, rgb(86,99,110), rgb(67,73,81));   
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#56636E', endColorstr='#434951');
+    padding: 5px;    
+ }
+ 
  #download {
 	margin-left: auto;
 	margin-right: auto;

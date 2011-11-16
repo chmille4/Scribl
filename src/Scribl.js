@@ -195,6 +195,35 @@ var Scribl = Class.extend({
 	loadBed: function(file) {
       bed(file, this);
    },
+   
+   /** **loadBam**
+   
+    * _parses a bam file and adds the features to the Scribl chart/view_
+   
+    * @param {File} bam file as a javascript file object
+    * @param {File} bai (bam index) file as a javascript file object
+    * @param {Int} start
+    * @param {Int} end
+    * @api public
+    */
+	loadBam: function(bamFile, baiFile, chr, start, end, callback) {
+	   var scribl = this;
+      makeBam(new BlobFetchable(bamFile), 
+              new BlobFetchable(baiFile),
+              function(bam) {
+                 bam.fetch(chr, start, end, function(r, e) {
+                    if (r) {
+                        for (var i = 0; i < r.length; i += 1) {
+                           scribl.addFeature( new BlockArrow('bam', r[i].pos, r[i].lengthOnRef, '+'))
+                        }
+                        callback();
+                    }
+                    if (e) {
+                        alert('error: ' + e);
+                    }                 
+                 });
+      });
+   },
 	
 	/** **loadFeatures**
    

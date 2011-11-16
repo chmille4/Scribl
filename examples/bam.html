@@ -1,0 +1,133 @@
+<html>
+
+<!-- <script language="javascript" src="../lib/bin.js"></script>
+<script language="javascript" src="../lib/inflate.js"></script>
+<script language="javascript" src="../lib/bam.js"></script>
+<script src="../src/Scribl.class.js" ></script>
+<script src="../src/Scribl.js" ></script>
+<script src="../src/Scribl.track.js" ></script>
+<script src="../src/Scribl.lane.js" ></script>
+<script src="../src/Scribl.tooltips.js" ></script>    
+<script src="../src/Scribl.events.js" ></script>
+<script src="../src/Scribl.utils.js" ></script>
+<script src="../src/Scribl.svg.js" ></script>
+<script src="../src/Scribl.glyph.js" ></script>
+<script src="../src/glyph/Scribl.blockarrow.js" ></script>
+<script src="../src/glyph/Scribl.arrow.js" ></script>
+<script src="../src/glyph/Scribl.rect.js" ></script>
+<script src="../src/glyph/Scribl.line.js" ></script>
+<script src="../src/glyph/Scribl.complex.js" ></script>      -->
+<script src="../Scribl.min.js" ></script>
+<script language="javascript">
+
+
+
+
+
+
+// function dlog(msg) {
+//     var logHolder = document.getElementById('log');
+//     if (logHolder) {
+//    logHolder.appendChild(makeElement('p', msg));
+//     }
+// }
+
+
+function testBam() {
+   // var bam1 = makeBam(new URLFetchable('http://www.biodalliance.org/datasets/subset22-sorted.bam', 0, 34000000, {'file': bamFile}), 
+   //         new URLFetchable('http://www.biodalliance.org/datasets/subset22-sorted.bam.bai', 0, 34000000, { 'file' : baiFile}),
+   // Get Canvas and Create Chart
+  	var canvas = document.getElementById('canvas');  	
+	
+	// Create Chart
+	var chart = new Scribl(canvas, 500);
+	chart.laneSizes = 10;
+	chart.addGene( 30000200, 1000, '-');
+	chart.loadBam(bamFile, baiFile,'22', 30000100,30005000, function() {
+	   chart.redraw();
+	});
+	
+//	chart.draw();
+   // bam1.fetch('22', 30000000, 30010000, function(r, e) {        
+   //    var h = 1;
+   // });
+}         
+</script>
+<head></head>
+
+<body>   
+   <h1>BAM test</h1>
+   <div id='content'></div>
+   <button onClick="testBam()">Test Bam</button>
+   <div id="container">
+		<canvas id="canvas" width="547" height="330"></canvas>  
+	</div>
+	
+   <div id='log'>
+   </div>
+   
+   <script>
+      // initalize drag n drop
+         var content = document.getElementById('content');
+      	if (!window.FileReader) {
+      	  content.innerHTML = "<p>This browser doesnt support the File API</p>";
+      	} else {
+      	  // Page Layout
+      	  content.innerHTML =
+      	    '<p>Drag a Genbank(.gb) or BED(.bed) file onto this area <input type="hidden" id="file" /></p>';
+
+      	  // Displays gene charts.
+      	  function displayChart(file) {
+      	    var reader = new FileReader();
+      		var fileType = /[^.]+$/.exec(file.name);
+
+      	   reader.onload = function(event) {
+      			var canvas = document.getElementById('canvas');
+      			chart = new Scribl(canvas, 810);
+      			if (fileType == "bed") 
+      				chart.loadBed(event.target.result);
+      			else if (fileType == "gb")
+      				chart.loadGenbank(event.target.result);
+      			else
+      			 	alert("File must have a .gb or .bed extension");
+      			chart.draw();		
+      	    };
+      	    reader.readAsText(file);
+      	  }		 
+
+      	  // Input handler
+      	  document.getElementById('file').onchange = function() {
+      	    //displayFile(this.files[0]);
+      	    alert('change!');
+//      	    alert(this.files[0].name + " " + this.files[1].name);
+      	  };
+
+      	  // Reduce movement by adding invisible border
+      	  content.style.border = '4px solid transparent';
+
+      	  // Add dragging events
+      	  content.ondragenter = function() {
+      	    content.style.border = '4px solid #b1ecb3';
+      	    return false;
+      	  };
+
+      	  content.ondragover = function() {
+      	    return false;
+      	  };
+
+      	  content.ondragleave = function() {
+      	    return false;
+      	  };
+
+      	  content.ondrop = function(event) {
+      	    content.style.border = '4px solid transparent';
+      	    //alert(event.dataTransfer.files[0].name + " " + event.dataTransfer.files[1].name);
+      	    bamFile = event.dataTransfer.files[0];
+      	    baiFile = event.dataTransfer.files[1];
+      	    //displayChart(event.dataTransfer.files[0]);
+      	    return false;
+      	  };
+      	}
+   </script>
+</body>
+</html>

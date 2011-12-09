@@ -1,6 +1,6 @@
 <html>
 
-<!-- <script language="javascript" src="../lib/bin.js"></script>
+<script language="javascript" src="../lib/bin.js"></script>
 <script language="javascript" src="../lib/inflate.js"></script>
 <script language="javascript" src="../lib/bam.js"></script>
 <script src="../src/Scribl.class.js" ></script>
@@ -16,21 +16,18 @@
 <script src="../src/glyph/Scribl.arrow.js" ></script>
 <script src="../src/glyph/Scribl.rect.js" ></script>
 <script src="../src/glyph/Scribl.line.js" ></script>
-<script src="../src/glyph/Scribl.complex.js" ></script>      -->
-<script src="../Scribl.min.js" ></script>
+<script src="../src/glyph/Scribl.complex.js" ></script>
+<script src="../src/glyph/Scribl.seq.js" ></script>     
+<!-- <script src="../Scribl.min.js" ></script> -->
+
+<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js"></script>
+<script type="text/javascript" src="examples/js/dragscrollable.js"></script>
+
+
 <script language="javascript">
-
-
-
-
-
-
-// function dlog(msg) {
-//     var logHolder = document.getElementById('log');
-//     if (logHolder) {
-//    logHolder.appendChild(makeElement('p', msg));
-//     }
-// }
 
 
 function testBam() {
@@ -41,16 +38,20 @@ function testBam() {
 	
 	// Create Chart
 	var chart = new Scribl(canvas, 500);
-	chart.laneSizes = 10;
-	chart.addGene( 30000200, 1000, '-');
-	chart.loadBam(bamFile, baiFile,'22', 30000100,30005000, function() {
-	   chart.redraw();
-	});
+	chart.laneSizes = 15;
+   // chart.scale.min = 30000100;
+   // chart.scale.max = 30000200;
+   chart.scrollable = true;
+   chart.scrollValues = [30000000, 30000190];
+   // chart.draw();
+   // chart.addGene(10, 1000, '+');
+   // chart.addGene(1000, 1000, '+');
+	var track = chart.loadBam(bamFile, baiFile,'22', 30000100,30000200);
+	//track.drawOnResponse = true;
+	chart.tmp = true;
+   chart.draw();
+   chart.tmp = false;
 	
-//	chart.draw();
-   // bam1.fetch('22', 30000000, 30010000, function(r, e) {        
-   //    var h = 1;
-   // });
 }         
 </script>
 <head></head>
@@ -58,13 +59,39 @@ function testBam() {
 <body>   
    <h1>BAM test</h1>
    <div id='content'></div>
+   <input type="file" id="files" name="files[]" multiple />
    <button onClick="testBam()">Test Bam</button>
    <div id="container">
-		<canvas id="canvas" width="547" height="330"></canvas>  
+		<canvas id="canvas" width="547" height="330"></canvas> 
 	</div>
 	
    <div id='log'>
    </div>
+   
+   <script>
+      function handleFileSelect(event) {
+
+          if (event.target.files.length != 2) {
+             alert('must select both a .bam and .bai file');
+             return;
+          }
+
+          var fileType0 = /[^.]+$/.exec(event.target.files[0].name)[0];
+          var fileType1 = /[^.]+$/.exec(event.target.files[1].name)[0];
+
+          if (fileType0 == 'bam' && fileType1 == 'bai') {
+      	    bamFile = event.target.files[0];
+      	    baiFile = event.target.files[1];
+      	 } else if (fileType1 == 'bam' && fileType0 == 'bai') {
+      	    bamFile = event.target.files[1];
+      	    baiFile = event.target.files[0];
+      	 } else {
+      	    alert('must select both a .bam and .bai file');
+      	 }
+        }
+
+        document.getElementById('files').addEventListener('change', handleFileSelect, false);
+   </script>
    
    <script>
       // initalize drag n drop
@@ -122,8 +149,22 @@ function testBam() {
       	  content.ondrop = function(event) {
       	    content.style.border = '4px solid transparent';
       	    //alert(event.dataTransfer.files[0].name + " " + event.dataTransfer.files[1].name);
-      	    bamFile = event.dataTransfer.files[0];
-      	    baiFile = event.dataTransfer.files[1];
+      	    if (event.dataTransfer.files.length != 2) {
+      	       alert('must select both a .bam and .bai file');
+      	       return;
+      	    }
+      	    var fileType0 = /[^.]+$/.exec(event.dataTransfer.files[0].name);
+      	    var fileType1 = /[^.]+$/.exec(event.dataTransfer.files[1].name);
+      	    
+      	    if (fileType0 == 'bam' && fileType1 == 'bai') {
+         	    bamFile = event.dataTransfer.files[0];
+         	    baiFile = event.dataTransfer.files[1];
+         	 } else if (fileType1 == 'bam' && fileType0 == 'bai') {
+         	    bamFile = event.dataTransfer.files[1];
+         	    baiFile = event.dataTransfer.files[0];
+         	 } else {
+         	    alert('must select both a .bam and .bai file');
+         	 }
       	    //displayChart(event.dataTransfer.files[0]);
       	    return false;
       	  };

@@ -8,7 +8,7 @@
  *   http://www.gnu.org/licenses/gpl.html
  *
  */
-;(function($){ // secure $ jQuery alias
+;(function(jQuery){ // secure $ jQuery alias
 
 /**
  * Adds the ability to manage elements scroll by dragging
@@ -49,9 +49,9 @@
  *  would not interfere as acceptPropagatedEvent is set to false.
  *		
  */
-$.fn.dragscrollable = function( options ){
+jQuery.fn.dragscrollable = function( options ){
    
-	var settings = $.extend(
+	var settings = jQuery.extend(
 		{   
 			dragSelector:'>:first',
 			acceptPropagatedEvent: true,
@@ -70,9 +70,9 @@ $.fn.dragscrollable = function( options ){
 			// Initial coordinates will be the last when dragging
 			event.data.lastCoord = {left: event.clientX, top: event.clientY}; 
 		
-			$.event.add( document, "mouseup", 
+			jQuery.event.add( document, "mouseup", 
 						 dragscroll.mouseUpHandler, event.data );
-			$.event.add( document, "mousemove", 
+			jQuery.event.add( document, "mousemove", 
 						 dragscroll.mouseMoveHandler, event.data );
 			if (event.data.preventDefault) {
                 event.preventDefault();
@@ -99,8 +99,8 @@ $.fn.dragscrollable = function( options ){
 
 		},
 		mouseUpHandler : function(event) { // Stop scrolling
-			$.event.remove( document, "mousemove", dragscroll.mouseMoveHandler);
-			$.event.remove( document, "mouseup", dragscroll.mouseUpHandler);
+			jQuery.event.remove( document, "mousemove", dragscroll.mouseMoveHandler);
+			jQuery.event.remove( document, "mouseup", dragscroll.mouseUpHandler);
 			if (event.data.preventDefault) {
                 event.preventDefault();
                 return false;
@@ -111,11 +111,11 @@ $.fn.dragscrollable = function( options ){
 	// set up the initial events
 	this.each(function() {
 		// closure object data for each scrollable element
-		var data = {scrollable : $(this),
+		var data = {scrollable : jQuery(this),
 					acceptPropagatedEvent : settings.acceptPropagatedEvent,
                     preventDefault : settings.preventDefault }
 		// Set mouse initiating event on the desired descendant
-		$(this).find(settings.dragSelector).
+		jQuery(this).find(settings.dragSelector).
 						bind('mousedown', data, dragscroll.mouseDownHandler);
 	});
 }; //end plugin dragscrollable

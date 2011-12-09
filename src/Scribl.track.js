@@ -23,6 +23,7 @@ var Track = Class.extend({
       this.ctx = ctx;
       this.uid = _uniqueId('track');      
       this.drawStyle = undefined;
+      this.hide = false;
       
       // coverage variables
       this.coverageData = [];  // number of features at any given pixel;
@@ -108,6 +109,26 @@ var Track = Class.extend({
       curr_lane.addFeature( feature );	
       return feature;
    },
+   
+   /** **hide**
+   
+    * _hides the track so it doesn't get drawn_
+       
+    * @api public        
+    */
+	hide: function() {
+	   this.hide = true;
+	},
+	
+	/** **unhide**
+   
+    * _unhides the track so it is drawn_
+       
+    * @api public        
+    */
+	unhide: function() {
+	   this.hide = false;
+	},
 	
 	/** **getDrawStyle**
    
@@ -158,7 +179,12 @@ var Track = Class.extend({
     */
    getPixelPositionY: function() {
       var track = this;
-      var y = track.chart.getScaleHeight() + track.chart.laneBuffer;
+      var y;
+      
+      if (!track.chart.scale.off)
+         y = track.chart.getScaleHeight() + track.chart.laneBuffer;
+      else
+         y = 0;
 
       for( var i=0; i < track.chart.tracks.length; i++ ) {
          if (track.uid == track.chart.tracks[i].uid) break;
@@ -211,6 +237,16 @@ var Track = Class.extend({
     */
 	draw: function() {
       var track = this;
+      // check if track is waiting and if so do nothing
+      if ( track.status == 'waiting' ) {
+         track.drawOnResponse = true;
+         return;
+      }
+      
+      // check if track shouldn't be drawn
+      if(track.hide)
+         return;
+      
       var style = track.getDrawStyle();
       var laneSize = track.chart.laneSizes;
       var lanes = track.lanes;

@@ -7,6 +7,23 @@
  * 
  * Chase Miller 2011
  */
+ 
+ // globals
+// if (SCRIBL == undefined) {
+    var SCRIBL = {};
+    SCRIBL.chars = {};                                    
+    SCRIBL.chars.nt_color = 'white';
+    SCRIBL.chars.nt_A_bg = 'red';
+    SCRIBL.chars.nt_G_bg = 'blue';
+    SCRIBL.chars.nt_C_bg = 'green';
+    SCRIBL.chars.nt_T_bg = 'black';
+    SCRIBL.chars.nt_N_bg = 'purple';
+    SCRIBL.chars.nt_dash_bg = 'rgb(120,120,120)';
+    SCRIBL.chars.heights = [];
+    SCRIBL.chars.canvasHolder = document.createElement('canvas');      
+ //}
+ 
+ 
 var Scribl = Class.extend({
    	 
    /** **init**
@@ -95,11 +112,14 @@ var Scribl = Class.extend({
       this.tooltips.roundness = 5;  // in pixels
       this.tooltips.fade = false;
       this.tooltips.style = 'light';  // also a 'dark' option
+      this.lastToolTips = [];
       
       // scroll defaults
       this.scrollable = false;
       this.scrollValues = [0, undefined]; // values in nts where scroll
-                                          // should start at when loaded
+       
+      this.chars = {}; 
+      this.chars.drawOnBuild = [];
       
       // draw defaults
       this.drawStyle = 'expand';  
@@ -173,6 +193,24 @@ var Scribl = Class.extend({
       this.tracks.push(track);
       return track;
    },
+   
+   /** **removeTrack**
+   
+    * _removes a track_
+   
+    * @param {Object} the track to be removed
+    * @api public
+    */
+	removeTrack: function(track) {
+	   var chart = this;
+	   
+      for (var i=0; i < chart.tracks.length; i++){
+         if (track.uid == chart.tracks[i].uid)
+            chart.tracks.splice(i,1);
+      }      
+      delete track;
+   },
+	
 	
 	/** **loadGenbank**
    
@@ -208,21 +246,30 @@ var Scribl = Class.extend({
     */
 	loadBam: function(bamFile, baiFile, chr, start, end, callback) {
 	   var scribl = this;
+      // scribl.scale.min = start;
+      // scribl.scale.max = end;
+	   var track = scribl.addTrack();
+	   track.status = 'waiting';
       makeBam(new BlobFetchable(bamFile), 
               new BlobFetchable(baiFile),
-              function(bam) {
+              function(bam, reader) {
+                 scribl.file = bam;
                  bam.fetch(chr, start, end, function(r, e) {
-                    if (r) {
-                        for (var i = 0; i < r.length; i += 1) {
-                           scribl.addFeature( new BlockArrow('bam', r[i].pos, r[i].lengthOnRef, '+'))
-                        }
-                        callback();
-                    }
-                    if (e) {
-                        alert('error: ' + e);
-                    }                 
-                 });
+                                     if (r) {
+                                         for (var i = 0; i < r.length; i += 1) {
+                                            track.addFeature( new BlockArrow('bam', r[i].pos, r[i].lengthOnRef, '+', {'seq':r[i].seq}))
+                                         }
+                                         track.status = "received";
+                                         if (track.drawOnResponse)
+                                             scribl.redraw();
+                                        //callback();
+                                     }
+                                     if (e) {
+                                         alert('error: ' + e);
+                                     }                 
+                                  });
       });
+      return track;
    },
 	
 	/** **loadFeatures**
@@ -377,7 +424,7 @@ var Scribl = Class.extend({
       // initalize variables
       var ctx = this.ctx;
       var tracks = this.tracks;
-		
+      
       // check if scrollable
       if (this.scrollable == true) {		    
          this.initScrollable();
@@ -583,24 +630,27 @@ var Scribl = Class.extend({
          parentDiv.appendChild(sliderDiv);
          canvasContainer.appendChild(this.canvas);
          parentDiv.appendChild(canvasContainer);
-         $(canvasContainer).dragscrollable({dragSelector: 'canvas:first', acceptPropagatedEvent: false});      
+
+         jQuery(canvasContainer).dragscrollable({dragSelector: 'canvas:first', acceptPropagatedEvent: false});      
       }
-                
+           
       var totalNts =  this.scale.max - this.scale.min;
       var scrollStartMax = this.scrollValues[1] || this.scale.max - totalNts * .35;
       if( this.scrollValues[0] != undefined)
           scrollStartMin = this.scrollValues[0];
       else
           scrollStartMin = this.scale.max + totalNts * .35;            
+
       var viewNts = scrollStartMax - scrollStartMin;            
       var viewNtsPerPixel = viewNts / document.getElementById('scroll-wrapper').style.width.split('px')[0];
-      var canvasWidth = totalNts / viewNtsPerPixel;
+
+      var canvasWidth = (totalNts / viewNtsPerPixel) || 100;
       this.canvas.width = canvasWidth;
       this.width = canvasWidth - 30;
       schart = this;
-      var zoomValue = (scrollStartMax - scrollStartMin) / (this.scale.max - this.scale.min) * 100;
+      var zoomValue = (scrollStartMax - scrollStartMin) / (this.scale.max - this.scale.min) * 100 || 1;
 
-      $(sliderDiv).slider({
+      jQuery(sliderDiv).slider({
          orientation: 'vertical',
          range: 'min',
          min: 1,
@@ -749,9 +799,9 @@ var Scribl = Class.extend({
          lane.erase();
          this.ctx.translate(0, lane.getPixelPositionY());
          lane.draw();
-         var LastToolTip = this.LastToolTip;
-         if (LastToolTip) {
-            this.ctx.putImageData(LastToolTip.pixels, LastToolTip.x, LastToolTip.y )
+         var ltt;
+         while (ltt =  this.lastToolTips.pop() ) {
+            this.ctx.putImageData(ltt.pixels, ltt.x, ltt.y )
          }
          this.ctx.restore();
       }
@@ -807,6 +857,7 @@ var Scribl = Class.extend({
       var chart = this;
       if ( this.events.mouseovers.length > 0)
          this.canvas.addEventListener('mousemove', function(event) { chart.handleMouseEvent(event, 'mouseover') }, false);
+        // this.canvas.addEventListener('mousemove', function(event) { alert('hi') }, false);         
       if ( this.events.clicks.length > 0 )
          //$(this.canvas).bind('click', function(e) {chart.handleMouseEvent(e, 'click')})
          this.canvas.addEventListener('click', function(event) { chart.handleMouseEvent(event, 'click') }, false);

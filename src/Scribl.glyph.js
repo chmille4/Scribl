@@ -31,12 +31,15 @@ var Glyph = Class.extend({
       glyph.position = pos;
       glyph.length = length;
       glyph.strand = strand;
+      glyph.opts = opts;
       // this is used for all attributes at the chart level (e.g. chart.gene.color = "blue" )
       this.type = type;
       
       glyph.name = "";
       glyph.borderColor = "none";
       glyph.borderWidth = undefined;
+      glyph.ntLevel = 4; // in pixels - sets the level at which glyphs are rendered as actual nucleotides instead of icons
+      glyph.tooltips = [];
       
       // initialize font variables
       glyph.text = {};
@@ -378,6 +381,35 @@ var Glyph = Class.extend({
       glyph.ctx.clearRect(glyph.getPixelPositionX(), glyph.getPixelPositionY(), glyph.getPixelLength(), glyph.getHeight());
       glyph.ctx.restore();
    },
+   
+   /** **addTooltip**
+   
+    * _add tooltip to glyph. Can add multiple tooltips_
+    
+    * @param {Int} placement - two options 'above' glyph or 'below' glyph
+    * @param {Int} verticalOffset - + numbers for up, - for down
+    * @param {Hash} options - optional attributes, horizontalOffset and ntOffset (nucleotide)
+    * @return {Object} tooltip   
+    * @api public 
+    */
+    
+    addTooltip: function(text, placement, verticalOffset, opts){
+      var glyph = this;
+      var tt = new Tooltip(text, placement, verticalOffset, opts);
+      tt.feature = glyph;
+      glyph.tooltips.push( tt );
+    },
+    
+    /** **fireTooltips**
+
+     * _draws the tooltips associated with this feature_
+
+     * @api public 
+     */
+    fireTooltips: function() {
+       for (var i=0; i < this.tooltips.length; i++)
+         this.tooltips[i].fire()
+    },
 	
 	/** **draw**
    
@@ -410,8 +442,17 @@ var Glyph = Class.extend({
       if (glyph.strand == '-' && !glyph.isSubFeature()) 
          glyph.ctx.transform(-1, 0, 0, 1, glyph.getPixelLength(), 0);
       
-      // draw glyph with subclass specific draw
-      glyph._draw();
+      if (glyph.seq && glyph.lane.chart.ntsToPixels() < glyph.ntLevel){
+         var s = new Seq(glyph.type, glyph.position, glyph.length, glyph.seq, glyph.opts);
+         s.lane = glyph.lane;
+         s.ctx = glyph.ctx;
+         s._draw();
+      } else {
+         // draw glyph with subclass specific draw
+         glyph._draw();
+     }
+      
+      
       
       // draw border color
       if (glyph.borderColor != "none") {

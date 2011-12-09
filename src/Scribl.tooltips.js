@@ -7,7 +7,7 @@
  */
 
 
-var tooltips = Class.extend({
+var Tooltip = Class.extend({
    /** **init**
 
     * _Constructor, call this with `new tooltips()`_
@@ -16,10 +16,18 @@ var tooltips = Class.extend({
     * @return {Object} tooltip object
     * @api internal
     */
-	init: function(chart) {
-      this.chart = chart;
-      this.ctx = chart.ctx;
-      var tt = this;
+	init: function(text, placement, verticalOffset, opts) {
+	   var tt = this;    
+	   tt.text = text; 
+      tt.placement = placement || 'above';
+      tt.verticalOffset = verticalOffset || 0;      
+      // set option attributes if any
+      for (var attribute in opts)
+         tt[attribute] = opts[attribute];
+         
+      tt.horizontalOffset = tt.horizontalOffset || 0;
+      tt.ntOffset = tt.ntOffset || 0;
+         
 	},
 	
 	/** **fire**
@@ -30,29 +38,14 @@ var tooltips = Class.extend({
     * @api internal
     */
 	
-	fire: function(feature) {  		
+	fire: function(ft) {  		
       // get curr opacity
-      var globalAlpha = this.ctx.globalAlpha; 
+      var feature = ft || this.feature;
+      this.chart = feature.lane.track.chart;
+      this.ctx = this.chart.ctx;
       
+      this.draw(feature, 1);
       
-      if ( this.chart.tooltips.fade ) {
-         h = 1; // holder
-         // experimental at the moment, not sure if I can find a way to do this well
-         // setTimeout( function() {tt.draw(feature, .1);}, 0);
-         // setTimeout( function() {tt.draw(feature, .2);}, 50);
-         // setTimeout( function() {tt.draw(feature, .3);}, 100);
-         // setTimeout( function() {tt.draw(feature, .4);}, 150);
-         // setTimeout( function() {tt.draw(feature, .5);}, 200);
-         // setTimeout( function() {tt.draw(feature, .6);}, 250);
-         // setTimeout( function() {tt.draw(feature, .7);}, 300);
-         // setTimeout( function() {tt.draw(feature, .8);}, 350);
-         // setTimeout( function() {tt.draw(feature, .9);}, 400);
-         // setTimeout( function() {tt.draw(feature, 1);}, 450);
-      } else
-      	this.draw(feature, 1);
-      
-      // reset opacity to value before tooltip.fired
-      this.ctx.globalAlpha = globalAlpha;
    },
 	
 	/** **draw**
@@ -70,6 +63,7 @@ var tooltips = Class.extend({
       var roundness = this.chart.tooltips.roundness;
       var font = this.chart.tooltips.text.font;
       var fontSize = this.chart.tooltips.text.size;
+      var text = this.text || feature.onMouseover;
       
       // Save
       this.ctx.save();
@@ -77,17 +71,35 @@ var tooltips = Class.extend({
       this.ctx.font = fontSize +  "px " + font;
       
       // determine properties of line
-      var dim = this.ctx.measureText(feature.onMouseover);
-      var textlines = [feature.onMouseover];
+      var dim = this.ctx.measureText(text);
+      var textlines = [text];
       var height = fontSize + 10;
       var length = dim.width + 10;
       var vertical_offset = height - 4;
       var fillStyle;
       var strokeStyle;
       
+      // determine nt offset
+      var ntOffsetPx = 0;
+      if(feature.seq) {
+         var lengthPx = feature.getPixelLength();
+         ntOffsetPx = this.ntOffset * (lengthPx / feature.length);
+      }
+      
       // Get coordinates
-      var x = feature.getPixelPositionX() + 10;
-      var y = feature.getPixelPositionY() - vertical_offset;
+      var x = feature.getPixelPositionX() + this.horizontalOffset + ntOffsetPx;
+      var y;
+      if (this.placement == 'below')
+         y = feature.getPixelPositionY() + feature.getHeight() - this.verticalOffset;
+      else 
+         y = feature.getPixelPositionY() - height - this.verticalOffset;
+         
+      
+         
+       
+      // var x = feature.getPixelPositionX();
+      // var y = feature.getPixelPositionY() + feature.getHeight();
+      
       
       // linewrap text
       var geneLength = feature.getPixelLength();
@@ -95,10 +107,10 @@ var tooltips = Class.extend({
       if (length > mincols) {
          var charpixel = this.ctx.measureText("s").width;
          var max = parseInt(mincols / charpixel);
-         var text = ScriblWrapLines(max, feature.onMouseover);
+         var formattedText = ScriblWrapLines(max, text);
          length = mincols + 10;
-         height = text[1]*fontSize + 10;
-         textlines = text[0];
+         height = formattedText[1]*fontSize + 10;
+         textlines = formattedText[0];
       }
       
       // check if tooltip will run off screen
@@ -128,11 +140,11 @@ var tooltips = Class.extend({
          this.chart.tooltips.text.color = "white";
       }
 		
-		this.chart.LastToolTip = { 
+		this.chart.lastToolTips.push( { 
 		   'pixels' : this.ctx.getImageData(x-1, y-1, length+2, height+2),
 		   'x' : x-1,
 		   'y' : y-1
-		};
+		});
 		
       this.ctx.fillStyle = fillStyle;
       

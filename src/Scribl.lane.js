@@ -82,9 +82,9 @@ var Lane = Class.extend({
       }
       
       // determine chart absolute_min and absolute_max
-      if ( feature.length + feature.position > this.chart.scale.max || this.chart.scale.max == undefined )
+      if ( feature.length + feature.position > this.chart.scale.max || !this.chart.scale.max )
          this.chart.scale.max = feature.length + feature.position;
-      if ( feature.position < this.chart.scale.min || this.chart.scale.min == undefined )
+      if ( feature.position < this.chart.scale.min || !this.chart.scale.min )
          this.chart.scale.min = feature.position;				
       	
       return feature;

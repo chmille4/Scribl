@@ -21,7 +21,7 @@ var MouseEventHandler = Class.extend({
       this.mouseY = null;
       this.eventElement = undefined; 
       this.isEventDetected = false;	
-      this.tooltip = new tooltips(this.chart);
+      this.tooltip = new Tooltip("", 'above', -4);
    },
    
    /** **addEvents**
@@ -37,10 +37,18 @@ var MouseEventHandler = Class.extend({
       var me = chart.myMouseEventHandler;
       
       // check if any features use onmouseover and if so register an event listener if not already done
-      if (feature.onMouseover && !chart.events.hasMouseover) {
+      if (feature.onMouseover && !chart.events.hasMouseover ) {
       	chart.addMouseoverEventListener(chart.myMouseEventHandler.handleMouseover);
       	chart.events.hasMouseover = true;
-      } 
+      }
+      else if (feature.tooltips.length>0 && !chart.events.hasMouseover){
+      	chart.addMouseoverEventListener(chart.myMouseEventHandler.handleMouseover);
+      	chart.events.hasMouseover = true;
+      }
+      else if (feature.parent && feature.parent.tooltips.length>0 && !chart.events.hasMouseover){
+      	chart.addMouseoverEventListener(chart.myMouseEventHandler.handleMouseover);
+      	chart.events.hasMouseover = true;
+      }
       else if (feature.parent && feature.parent.onMouseover && !chart.events.hasMouseover) {
       	chart.addMouseoverEventListener(chart.myMouseEventHandler.handleMouseover);
       	chart.events.hasMouseover = true;
@@ -89,7 +97,7 @@ var MouseEventHandler = Class.extend({
 	handleClick: function(chart) {
       var me = chart.myMouseEventHandler;
       var clicked = me.eventElement;
-                var onClick;
+      var onClick;
       
       // check if the click occured on a feature/object with an onClick property
       if (clicked != undefined && clicked.onClick != undefined)
@@ -161,12 +169,17 @@ var MouseEventHandler = Class.extend({
       var me = chart.myMouseEventHandler;
       var clicked = me.eventElement;
       
+      // handle mouseover tooltips
       if (clicked != undefined && clicked.onMouseover != undefined)
          me.tooltip.fire(clicked);
       else if (clicked && clicked.parent && clicked.parent.onMouseover) {
          clicked.onMouseover = clicked.parent.onMouseover
          me.tooltip.fire(clicked);
       }
+      
+      // handle tooltip object tooltips
+      if (clicked && clicked.tooltips.length > 0)
+         clicked.fireTooltips();
    },
 	
 	/** **handleMouseStyle**

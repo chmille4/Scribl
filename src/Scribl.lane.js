@@ -145,7 +145,7 @@ var Lane = Class.extend({
     */
    erase: function() {
       var lane = this;
-      lane.chart.ctx.clearRect(0, lane.getPixelPositionY(), lane.track.chart.width, lane.getHeight());
+      lane.chart.ctx.clearRect(0, lane.getPixelPositionY(), lane.track.chart.canvas.width, lane.getHeight());
    },
 	
 	/** **draw**
@@ -155,6 +155,8 @@ var Lane = Class.extend({
     * @api internal
     */
 	draw: function() {
+	   var h = 1;
+	   h += 1;
       for (var i=0; i< this.features.length; i++)
          this.features[i].draw();
    }

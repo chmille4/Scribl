@@ -31,9 +31,9 @@ var Glyph = Class.extend({
       glyph.position = pos;
       glyph.length = length;
       glyph.strand = strand;
-      glyph.opts = opts;
       // this is used for all attributes at the chart level (e.g. chart.gene.color = "blue" )
       this.type = type;
+      glyph.opts = {};
       
       glyph.name = "";
       glyph.borderColor = "none";
@@ -53,8 +53,10 @@ var Glyph = Class.extend({
       glyph.onMouseover = undefined;
       
       // set option attributes if any
-      for (var attribute in opts)
+      for (var attribute in opts) {
          glyph[attribute] = opts[attribute];
+         glyph.opts[attribute] = opts[attribute];
+      }
 		
    },
 
@@ -142,10 +144,13 @@ var Glyph = Class.extend({
       var glyph = this;
       var newFeature = this;
 
-      if(f.orientation)
-         newFeature = eval( 'new' + f.glyphType + '(' + f.type + ',' + f.position + ',' + f.length + ',' + f.orientation)
-      else
-         newFeature = eval( 'new' + f.glyphType + '(' + f.type + ',' + f.position + ',' + f.length)
+      if(glyph.strand){
+         var str = 'new ' + glyph.glyphType + '("' + glyph.type + '",' + glyph.position + ',' + glyph.length + ',"' + glyph.strand + '",' + JSON.stringify(glyph.opts) + ')';
+         newFeature = eval( str );}
+      else {
+         var str =  'new ' + glyph.glyphType + '(' + glyph.type + ',' + glyph.position + ',' + glyph.length + ',' + glyph.opts + ')';
+         newFeature = eval(str);
+      } 
 
       return( newFeature );
 	          

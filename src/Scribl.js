@@ -39,10 +39,11 @@ var Scribl = Class.extend({
       this.scrolled = false;
       // create canvas contexts		
       var ctx = canvas.getContext('2d');  
-      var chart = this;
+      var chart = this;      
 
       // chart defaults
       this.width = width;
+      this.uid = _uniqueId('chart');
       this.laneSizes = 50;	
       this.laneBuffer = 5;
       this.trackBuffer = 25;
@@ -368,17 +369,17 @@ var Scribl = Class.extend({
                // determine if feature is in slice/region
                if(type == 'inclusive') {
                   if ( start >= from && start <= to )
-                     newLane.addFeature( s_features[k] )
+                     newLane.addFeature( s_features[k].clone() )
                   else if ( end > from && end < to )
-                     newLane.addFeature( s_features[k] )				
+                     newLane.addFeature( s_features[k].clone() )				
                   else if ( start < from && end > to )
-                     newLane.addFeature( s_features[k] )				
+                     newLane.addFeature( s_features[k].clone() )				
                   else if ( start > from && end < to)
-                     newLane.addFeature( s_features[k] )				
+                     newLane.addFeature( s_features[k].clone() )				
                } else if (type == 'strict') {
                   if ( start >= from && start <= to){
                      if (end > from && end < to)
-                        newLane.addFeature( s_features[k] )
+                        newLane.addFeature( s_features[k].clone() )
                      else {
                         var f = s_features[k].clone();
                         f.length = Math.abs(to - start);
@@ -398,7 +399,7 @@ var Scribl = Class.extend({
                   }
                } else if (type == 'exclusive') {
                   if ( start >= from && start <= to && end > from && end < to)
-                     newLane.addFeature( s_features[k] )
+                     newLane.addFeature( s_features[k].clone() )
                }
         			
             }				
@@ -409,7 +410,6 @@ var Scribl = Class.extend({
       newChart.laneSizes = this.laneSizes;
       newChart.drawStyle = this.drawStyle;
       newChart.glyph = this.glyph;
-      newChart.loadFeatures(sliced_features);
       return newChart;
    },
 	
@@ -855,12 +855,17 @@ var Scribl = Class.extend({
     */
 	registerEventListeners: function() {
       var chart = this;
+      var mouseHandler = function(e) {chart.handleMouseEvent(e, 'mouseover')};
+      var clickHandler = function(event) { chart.handleMouseEvent(event, 'click') };
       if ( this.events.mouseovers.length > 0)
-         this.canvas.addEventListener('mousemove', function(event) { chart.handleMouseEvent(event, 'mouseover') }, false);
+         //this.canvas.removeEventListener('mousemove', mouseHandler);
+         //this.canvas.addEventListener('mousemove', mouseHandler, false);
+          $(this.canvas).unbind('mousemove');
+          $(this.canvas).bind('mousemove', mouseHandler);
         // this.canvas.addEventListener('mousemove', function(event) { alert('hi') }, false);         
       if ( this.events.clicks.length > 0 )
          //$(this.canvas).bind('click', function(e) {chart.handleMouseEvent(e, 'click')})
-         this.canvas.addEventListener('click', function(event) { chart.handleMouseEvent(event, 'click') }, false);
+         this.canvas.addEventListener('click', clickHandler, false);
       this.events.added = true;
    }
 	

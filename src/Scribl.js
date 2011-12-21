@@ -858,11 +858,8 @@ var Scribl = Class.extend({
       var mouseHandler = function(e) {chart.handleMouseEvent(e, 'mouseover')};
       var clickHandler = function(event) { chart.handleMouseEvent(event, 'click') };
       if ( this.events.mouseovers.length > 0)
-         //this.canvas.removeEventListener('mousemove', mouseHandler);
-         //this.canvas.addEventListener('mousemove', mouseHandler, false);
-          $(this.canvas).unbind('mousemove');
-          $(this.canvas).bind('mousemove', mouseHandler);
-        // this.canvas.addEventListener('mousemove', function(event) { alert('hi') }, false);         
+         this.canvas.removeEventListener('mousemove', mouseHandler);
+         this.canvas.addEventListener('mousemove', mouseHandler, false);
       if ( this.events.clicks.length > 0 )
          //$(this.canvas).bind('click', function(e) {chart.handleMouseEvent(e, 'click')})
          this.canvas.addEventListener('click', clickHandler, false);

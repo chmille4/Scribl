@@ -406,10 +406,21 @@ var Scribl = Class.extend({
 			
          }
       }
-		
-      newChart.laneSizes = this.laneSizes;
-      newChart.drawStyle = this.drawStyle;
-      newChart.glyph = this.glyph;
+
+		// TODO: make this more robust
+      newChart.scale.min    = this.scale.min;      
+      newChart.scale.max    = this.scale.max;
+      newChart.offset       = this.offset;
+      newChart.scale.off    = this.scale.off;
+      newChart.scale.pretty = this.scale.pretty;      
+      newChart.laneSizes    = this.laneSizes;
+      newChart.drawStyle    = this.drawStyle;
+      newChart.glyph        = this.glyph;
+      
+      // for (var attr in this) {
+      //    if (this.hasOwnProperty(attr)) copy[attr] = this[attr];
+      // }
+
       return newChart;
    },
 	
@@ -454,9 +465,7 @@ var Scribl = Class.extend({
 					
       // fix offsets so scale will not be cut off on left side
       // check if offset is turned off and then set it to static '0'
-      if (this.scale.min.offset) 
-         this.offset = Math.ceil( ctx.measureText(this.getTickText(this.scale.min)).width/2 + 10 );
-      else
+      if (this.offset == undefined) 
          this.offset = Math.ceil( ctx.measureText('0').width/2 + 10 );			
 
 //      ctx.save();				
@@ -668,9 +677,9 @@ var Scribl = Class.extend({
             var maxPixel = center + widthPixels/2;
             
             // convert to nt
-            var min = minPixel / schart.canvas.width * totalNts;
-            var max = maxPixel / schart.canvas.width * totalNts;
-                    
+            var min = schart.scale.min + (minPixel / schart.canvas.width) * totalNts;
+            var max = schart.scale.min + (maxPixel / schart.canvas.width) * totalNts;
+
             schart.scrollValues = [min, max];
             schart.ctx.clearRect(0, 0, schart.canvas.width, schart.canvas.height);
             schart.draw();
@@ -792,8 +801,12 @@ var Scribl = Class.extend({
       // if mouse is not on any tracks then return
       if (!lane) return;
       
-      if (lane.track.getDrawStyle() == 'collapse') {
+      var drawStyle = lane.track.getDrawStyle();
+      
+      if (drawStyle == 'collapse') {
          this.redraw();
+      } else if (drawStyle == 'line') {
+        // do nothing 
       } else {
          this.ctx.save(); 
          lane.erase();
@@ -847,6 +860,21 @@ var Scribl = Class.extend({
 		this.events.mouseovers.push(func);
 	},
 	
+	/** **removeEventListeners**
+   
+    * _remove event listerners_
+   
+    * @param {String} event-type - e.g. mouseover, click, etc...
+    * @api internal
+    */
+   removeEventListeners: function(eventType){
+      if (eventType == 'mouseover')
+         this.canvas.removeEventListener('mousemove', this.mouseHandler);
+      else if (eventType == 'click')
+         this.canvas.removeEventListener('click', this.clickHandler);
+   },
+	
+	
 	/** **registerEventListeners**
    
     * _adds event listerners_
@@ -855,14 +883,15 @@ var Scribl = Class.extend({
     */
 	registerEventListeners: function() {
       var chart = this;
-      var mouseHandler = function(e) {chart.handleMouseEvent(e, 'mouseover')};
-      var clickHandler = function(event) { chart.handleMouseEvent(event, 'click') };
-      if ( this.events.mouseovers.length > 0)
-         this.canvas.removeEventListener('mousemove', mouseHandler);
-         this.canvas.addEventListener('mousemove', mouseHandler, false);
+      chart.mouseHandler = function(e) {chart.handleMouseEvent(e, 'mouseover')};
+      chart.clickHandler = function(event) { chart.handleMouseEvent(event, 'click') };
+      if ( this.events.mouseovers.length > 0) {
+         this.canvas.removeEventListener('mousemove', chart.mouseHandler);
+         this.canvas.addEventListener('mousemove', chart.mouseHandler, false);
+      }
       if ( this.events.clicks.length > 0 )
          //$(this.canvas).bind('click', function(e) {chart.handleMouseEvent(e, 'click')})
-         this.canvas.addEventListener('click', clickHandler, false);
+         this.canvas.addEventListener('click', chart.clickHandler, false);
       this.events.added = true;
    }
 	

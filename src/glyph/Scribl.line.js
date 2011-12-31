@@ -19,7 +19,7 @@
        */
 		init: function(type, position, length, opts) {
          this.thickness = 2;
-         this._super(type, position, length, "+", opts);
+         this._super(type, position, length, undefined, opts);
          this.glyphType = "Line";
       },
 		

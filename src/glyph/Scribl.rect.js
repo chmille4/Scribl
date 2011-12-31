@@ -18,7 +18,8 @@
        * @api public
 		 */
 		init: function(type, position, length, opts) {
-         this._super(type, position, length, "+", opts);
+         this._super(type, position, length, undefined, opts);
+         //this._super(type, position, length, '+', opts);
          this.glyphType = "Rect";
       },
 		

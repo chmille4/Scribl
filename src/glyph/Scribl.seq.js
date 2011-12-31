@@ -31,7 +31,7 @@
          this.chars.height = undefined;
          this.chars.list = ['A', 'G', 'T', 'C', 'N', '-'];
          
-         this._super(type, position, length, "+", opts);
+         this._super(type, position, length, undefined, opts);
       },
 		
    	/** **_draw**
@@ -130,7 +130,8 @@
                 pos += chars.heights[height].width;
              }
 
-             ctx.drawImage(seq.imgCanvas, x, height - height*fraction, length, height*fraction);
+             //ctx.drawImage(seq.imgCanvas, x, height - height*fraction, length, height*fraction);
+             ctx.drawImage(seq.imgCanvas, x, y, length, height);
              ctx.font = origFont;
 
              ctx.restore();                       

@@ -31,53 +31,68 @@
 					// Create Chart
 					chart1 = new Scribl(canvas, 600);
                // style chart
-               chart1.glyph.text.color = 'white';
-               chart1.glyph.text.align = 'left';
+              // chart1.glyph.text.color = 'white';
+               //chart1.glyph.text.align = 'left';
                // chart1.glyph.onClick = function(feature) { 
                //    alert(feature.name);
                // };
                chart1.laneSizes = 15;
-               chart1.scale.min = 0;
-               chart1.scale.max = 1000;
+               //chart1.scale.min = 0;
+               //chart1.scale.max = 1000;
                
-               var track1 = chart1.addTrack();               
+      var track1 = chart1.addTrack();   
+      // create new lane
+      var lane1 = track1.addLane();
+      gene_0 = lane1.addFeature( new BlockArrow( 'gene_0', 156, 1212, '+', {'name':'gene_0'}));
+      // create new lane
+      var lane2 = track1.addLane();
+      gene_1 = lane2.addFeature( new BlockArrow( 'gene_1', 1727, 3038, '+', {'name':'gene_1'}));
+      // use chain calling to add new lane
+      gene_2 = track1.addLane().addFeature( new BlockArrow( 'gene_2', 3113, 3384, '+', {'name':'gene_2'}));
+      // use chain calling to add new lane
+      gene_3 = track1.addLane().addFeature( new BlockArrow( 'gene_3', 3971, 4682, '+', {'name':'gene_3'}));
+               
+                           
               // track1.drawStyle = 'line';
-               var gene3 = track1.addGene(0, 1000, '+');
-               var gene6 = track1.addGene(0, 1000, '+');
-               gene3.name = 3;
-              
-               //addBorder(gene3);
-               var gene4 = track1.addGene(1200, 1000, '+');
-               gene4.name = 4;
-               var gene5 = track1.addGene(2400, 1000, '+');
-               gene5.name = 5;
-               
-               var track2 = chart1.addTrack();               
-               
-               var gene13 = track2.addGene(0, 1000, '+');
-               var gene16 = track2.addGene(0, 1000, '+');
-               gene13.name = 13;
-               gene13.text.align = 'right';
-               //addBorder(gene3);
-               var gene14 = track2.addGene(1200, 1000, '+');
-               gene14.name = 14;
-               var gene15 = track2.addGene(2400, 1000, '+');
-               gene15.name = 15;
-
-               gene1 = chart1.addFeature( 
-						new Complex('complex', 1500, 8000, '+', [
-							new Arrow('arrow1',7000, '+', {'color':'none', 'borderColor':'black'}),
-							new BlockArrow('complex',0,500, '+', {'name':'chase'}),
-							new Rect('complex',3500, 2000, {'color':'none', 'borderColor':'black'}),
-							new BlockArrow('complex',700,400, '+')
-						])
-					);
-					
-					gene2 = chart1.addGene(10000, 500, '+');
+               //                var gene3 = track1.addGene(0, 1000, '+');
+               //                var gene6 = track1.addGene(0, 1000, '+');
+               //                gene3.name = 3;
+               //               
+               //                //addBorder(gene3);
+               //                var gene4 = track1.addGene(1200, 1000, '+');
+               //                gene4.name = 4;
+               //                var gene5 = track1.addGene(2400, 1000, '+');
+               //                gene5.name = 5;
+               //                
+               //                var track2 = chart1.addTrack();               
+               //                
+               //                var gene13 = track2.addGene(0, 1000, '+');
+               //                var gene16 = track2.addGene(0, 1000, '+');
+               //                gene13.name = 13;
+               //                gene13.text.align = 'right';
+               //                //addBorder(gene3);
+               //                var gene14 = track2.addGene(1200, 1000, '+');
+               //                gene14.name = 14;
+               //                var gene15 = track2.addGene(2400, 1000, '+');
+               //                gene15.name = 15;
+               // 
+               //                gene1 = chart1.addFeature( 
+               //    new Complex('complex', 1500, 8000, '+', [
+               //       new Arrow('arrow1',7000, '+', {'color':'none', 'borderColor':'black'}),
+               //       new BlockArrow('complex',0,500, '+', {'name':'chase'}),
+               //       new Rect('complex',3500, 2000, {'color':'none', 'borderColor':'black'}),
+               //       new BlockArrow('complex',700,400, '+')
+               //    ])
+               // );
+               // 
+               // gene2 = chart1.addGene(10000, 500, '+');
                
 
                // Draw Chart
 //               chart1.tracks[0].drawStyle = 'line';
+
+               
+
                chart1.draw();
                               gene6.erase();
 //               chart1.draw();               

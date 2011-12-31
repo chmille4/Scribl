@@ -40,6 +40,21 @@ var Glyph = Class.extend({
       glyph.borderWidth = undefined;
       glyph.ntLevel = 4; // in pixels - sets the level at which glyphs are rendered as actual nucleotides instead of icons
       glyph.tooltips = [];
+      glyph.hooks = {};
+      
+      // add seq hook
+      glyph.addDrawHook(function(theGlyph) {
+        if (theGlyph.ntLevel != undefined && theGlyph.seq && theGlyph.lane.chart.ntsToPixels() < theGlyph.ntLevel){
+           var s = new Seq(theGlyph.type, theGlyph.position, theGlyph.length, theGlyph.seq, theGlyph.opts);
+           s.lane = theGlyph.lane;
+           s.ctx = theGlyph.ctx;
+           s._draw();
+           // return true to stop normal drawing of glyph
+           return true;
+        }
+        // return false to allow normal draing of glyph
+        return false;
+      }, "ntHook");
       
       // initialize font variables
       glyph.text = {};
@@ -97,7 +112,7 @@ var Glyph = Class.extend({
    
     * _gets the number of pixels from the left of the chart to the left of this glyph/feature_
    
-    * @return {Int} positionX - in pixels
+    * @return {Float} positionX - in pixels
     * @api public        
     */	
    getPixelPositionX: function() { 
@@ -107,14 +122,14 @@ var Glyph = Class.extend({
          var position = glyph.position + glyph.parent.position - glyph.lane.track.chart.scale.min;
       else 
          var position = glyph.position - glyph.lane.track.chart.scale.min;
-      return ( glyph.lane.chart.pixelsToNts( position ) + offset); 
+      return ( glyph.lane.track.chart.pixelsToNts( position ) + offset); 
    },
 
 	/** **getPixelPositionY**
    
     * _gets the number of pixels from the top of the chart to the top of this glyph/feature_
    
-    * @return {Int} positionY - in pixels
+    * @return {Float} positionY - in pixels
     * @api public        
     */
 	getPixelPositionY : function() { 
@@ -137,21 +152,23 @@ var Glyph = Class.extend({
    
     * _shallow copy_
    
-    * @return {Int} copy - shallow copy of this glyph/feature
+    * @return {Object} copy - shallow copy of this glyph/feature
     * @api public        
     */
 	clone: function() {
       var glyph = this;
-      var newFeature = this;
+      var newFeature;
 
       if(glyph.strand){
          var str = 'new ' + glyph.glyphType + '("' + glyph.type + '",' + glyph.position + ',' + glyph.length + ',"' + glyph.strand + '",' + JSON.stringify(glyph.opts) + ')';
-         newFeature = eval( str );}
-      else {
-         var str =  'new ' + glyph.glyphType + '(' + glyph.type + ',' + glyph.position + ',' + glyph.length + ',' + glyph.opts + ')';
+         newFeature = eval( str );
+      } else {
+         var str =  'new ' + glyph.glyphType + '("' + glyph.type + '",' + glyph.position + ',' + glyph.length + ',' + JSON.stringify(glyph.opts) + ')';
          newFeature = eval(str);
       } 
-
+      
+      newFeature.tooltips = glyph.tooltips;
+      newFeature.hooks = glyph.hooks;
       return( newFeature );
 	          
    },
@@ -387,6 +404,33 @@ var Glyph = Class.extend({
       glyph.ctx.restore();
    },
    
+   /** **addDrawHook**
+   
+    * _add function to glyph that executes before the glyph is drawn_
+    
+    * @param {Function} function - takes glyph as param, returns true to stop the normal draw, false to allow
+    * @return {Int} id - returns the uniqe id for the hook which is used to remove it
+    * @api public 
+    */
+   
+   addDrawHook: function(fn, hookId) {
+      var uid = hookId || _uniqueId('drawHook');
+      this.hooks[uid] = fn;
+      return uid;
+   },
+   
+   /** **removeDrawHook**
+   
+    * _removes function to glyph that executes before the glyph is drawn_
+    
+    * @param {Int} id - the id of drawHook function that will be removed
+    * @api public 
+    */
+    
+    removeDrawHook: function(uid) {
+       delete this.hooks[uid];
+    },
+   
    /** **addTooltip**
    
     * _add tooltip to glyph. Can add multiple tooltips_
@@ -447,17 +491,21 @@ var Glyph = Class.extend({
       if (glyph.strand == '-' && !glyph.isSubFeature()) 
          glyph.ctx.transform(-1, 0, 0, 1, glyph.getPixelLength(), 0);
       
-      if (glyph.seq && glyph.lane.chart.ntsToPixels() < glyph.ntLevel){
-         var s = new Seq(glyph.type, glyph.position, glyph.length, glyph.seq, glyph.opts);
-         s.lane = glyph.lane;
-         s.ctx = glyph.ctx;
-         s._draw();
-      } else {
+      var dontDraw = false;
+      for (var i in glyph.hooks) {
+         dontDraw = glyph.hooks[i](glyph) || dontDraw;
+      }
+      // if (glyph.seq && glyph.lane.chart.ntsToPixels() < glyph.ntLevel){
+      //    var s = new Seq(glyph.type, glyph.position, glyph.length, glyph.seq, glyph.opts);
+      //    s.lane = glyph.lane;
+      //    s.ctx = glyph.ctx;
+      //    s._draw();
+      // } else {
+      if (!dontDraw) {
          // draw glyph with subclass specific draw
          glyph._draw();
-     }
-      
-      
+      }
+            
       
       // draw border color
       if (glyph.borderColor != "none") {

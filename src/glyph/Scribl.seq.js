@@ -130,8 +130,8 @@
                 pos += chars.heights[height].width;
              }
 
-             //ctx.drawImage(seq.imgCanvas, x, height - height*fraction, length, height*fraction);
-             ctx.drawImage(seq.imgCanvas, x, y, length, height);
+             ctx.drawImage(seq.imgCanvas, x, height - height*fraction, length, height*fraction);
+             //ctx.drawImage(seq.imgCanvas, x, y, length, height);
              ctx.font = origFont;
 
              ctx.restore();                       

@@ -495,12 +495,6 @@ var Glyph = Class.extend({
       for (var i in glyph.hooks) {
          dontDraw = glyph.hooks[i](glyph) || dontDraw;
       }
-      // if (glyph.seq && glyph.lane.chart.ntsToPixels() < glyph.ntLevel){
-      //    var s = new Seq(glyph.type, glyph.position, glyph.length, glyph.seq, glyph.opts);
-      //    s.lane = glyph.lane;
-      //    s.ctx = glyph.ctx;
-      //    s._draw();
-      // } else {
       if (!dontDraw) {
          // draw glyph with subclass specific draw
          glyph._draw();

@@ -24,6 +24,7 @@ var Track = Class.extend({
       this.uid = _uniqueId('track');      
       this.drawStyle = undefined;
       this.hide = false;
+      this.hooks = {};
       
       // coverage variables
       this.coverageData = [];  // number of features at any given pixel;
@@ -255,69 +256,105 @@ var Track = Class.extend({
       var y =  laneSize + trackBuffer;
       var ctx = track.ctx;
       
-      // draw lanes
       
-      // draw expanded/default style
-      if ( style == undefined || style == 'expand' ) {   		
-         for (var i=0; i<lanes.length; i++) {
-            lanes[i].y = y;
-            lanes[i].draw();
-            var height = lanes[i].getHeight();
-            ctx.translate(0, height + laneBuffer);
-            y = y + height + laneBuffer;
-         }
-      } else if ( style == 'collapse' ) { // draw collapse style (i.e. single lane)
-         var features = []
-         // concat all features into single array
-         for (var i=0; i<lanes.length; i++) {
-            var features = features.concat(lanes[i].features);
-         }
-         // sort features so the minimal number of lanes are used
-         features.sort( function(a,b){ return(a.position - b.position); } );
-         for (var j=0; j<features.length; j++) {
-            var originalLength = features[j].length;
-            var originalName = features[j].name;
-            var m = undefined;
-            for( m=j+1; m < features.length; m++) {
-               // if a feature is overlapping change length to draw as a single feature
-               if (features[j].getEnd() >= features[m].position) {
-                  features[j].length = Math.max(features[j].getEnd(), features[m].getEnd()) - features[j].position;
-                  features[j].name = "";
-               } else break;
-            }               
-            // draw
-            features[j].draw();
-            // put length and name back to correct values
-            features[j].length = originalLength;
-            features[j].name = originalName;
-            // update j to skip features that were merged
-            j = m-1;
-         }
-         // translate down to next lane to draw
-         if (lanes.length > 0)
-            ctx.translate(0, lanes[0].getHeight() + laneBuffer);
-   
-      // draw as a line chart of the coverage
-      } else if ( style == 'line' ) {
-         if (track.coverageData.length == 0) track.calcCoverageData();
-   	   
-         var normalizationFactor = this.maxDepth;
-
-         ctx.beginPath();
-//         ctx.moveTo(this.chart.offset, laneSize);
-         for (var k=this.chart.offset; k <= this.chart.width + this.chart.offset; k++) {
-            var normalizedPt = track.coverageData[k] / normalizationFactor * laneSize || 0;
-            normalizedPt = laneSize - normalizedPt;
-            ctx.lineTo(k, normalizedPt);
-         }
-         ctx.lineTo(this.chart.width + this.chart.offset, laneSize)
-//		   ctx.lineTo(this.chart.offset, laneSize);
-         ctx.stroke();
-         ctx.translate(0, lanes[0].getHeight() + laneBuffer);
+      // execute hooks
+      var dontDraw = false;
+      for (var i in track.hooks) {
+         dontDraw = track.hooks[i](track) || dontDraw;
       }
+      if (!dontDraw) {
+         
+         // draw lanes
+      
+         // draw expanded/default style
+         if ( style == undefined || style == 'expand' ) {   		
+            for (var i=0; i<lanes.length; i++) {
+               lanes[i].y = y;
+               lanes[i].draw();
+               var height = lanes[i].getHeight();
+               ctx.translate(0, height + laneBuffer);
+               y = y + height + laneBuffer;
+            }
+         } else if ( style == 'collapse' ) { // draw collapse style (i.e. single lane)
+            var features = []
+            // concat all features into single array
+            for (var i=0; i<lanes.length; i++) {
+               var features = features.concat(lanes[i].features);
+            }
+            // sort features so the minimal number of lanes are used
+            features.sort( function(a,b){ return(a.position - b.position); } );
+            for (var j=0; j<features.length; j++) {
+               var originalLength = features[j].length;
+               var originalName = features[j].name;
+               var m = undefined;
+               for( m=j+1; m < features.length; m++) {
+                  // if a feature is overlapping change length to draw as a single feature
+                  if (features[j].getEnd() >= features[m].position) {
+                     features[j].length = Math.max(features[j].getEnd(), features[m].getEnd()) - features[j].position;
+                     features[j].name = "";
+                  } else break;
+               }               
+               // draw
+               features[j].draw();
+               // put length and name back to correct values
+               features[j].length = originalLength;
+               features[j].name = originalName;
+               // update j to skip features that were merged
+               j = m-1;
+            }
+            // translate down to next lane to draw
+            if (lanes.length > 0)
+               ctx.translate(0, lanes[0].getHeight() + laneBuffer);
+   
+         // draw as a line chart of the coverage
+         } else if ( style == 'line' ) {
+            if (track.coverageData.length == 0) track.calcCoverageData();
+   	   
+            var normalizationFactor = this.maxDepth;
+
+            ctx.beginPath();
+   //         ctx.moveTo(this.chart.offset, laneSize);
+            for (var k=this.chart.offset; k <= this.chart.width + this.chart.offset; k++) {
+               var normalizedPt = track.coverageData[k] / normalizationFactor * laneSize || 0;
+               normalizedPt = laneSize - normalizedPt;
+               ctx.lineTo(k, normalizedPt);
+            }
+            ctx.lineTo(this.chart.width + this.chart.offset, laneSize)
+   //		   ctx.lineTo(this.chart.offset, laneSize);
+            ctx.stroke();
+            ctx.translate(0, lanes[0].getHeight() + laneBuffer);
+         }
+   	}
    	
       // add track buffer - extra laneBuffer
       ctx.translate(0,trackBuffer-laneBuffer);
 		
-   }
+   },
+   
+   /** **addDrawHook**
+   
+    * _add function that executes before the track is drawn_
+    
+    * @param {Function} function - takes track as param, returns true to stop the normal draw, false to allow
+    * @return {Int} id - returns the uniqe id for the hook which is used to remove it
+    * @api public 
+    */
+   
+   addDrawHook: function(fn, hookId) {
+      var uid = hookId || _uniqueId('drawHook');
+      this.hooks[uid] = fn;
+      return uid;
+   },
+   
+   /** **removeDrawHook**
+   
+    * _removes function that executes before the track is drawn_
+    
+    * @param {Int} id - the id of drawHook function that will be removed
+    * @api public 
+    */
+    
+    removeDrawHook: function(uid) {
+       delete this.hooks[uid];
+    }
 });

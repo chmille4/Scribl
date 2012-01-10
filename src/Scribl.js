@@ -92,6 +92,8 @@ var Scribl = Class.extend({
       this.events.clicks = new Array;
       this.events.mouseovers = new Array;
       this.events.added = false;
+      this.mouseHandler = function(e) { chart.handleMouseEvent(e, 'mouseover') };
+      this.clickHandler = function(e) { chart.handleMouseEvent(e, 'click') };
       
       // tick defaults
       this.tick = {};
@@ -357,6 +359,20 @@ var Scribl = Class.extend({
       // iterate through tracks
       var numTracks = this.tracks.length;
       var newChart = new Scribl(this.canvas, this.width);
+      
+      // TODO: make this more robust
+      newChart.scale.min    = this.scale.min;      
+      newChart.scale.max    = this.scale.max;
+      newChart.offset       = this.offset;
+      newChart.scale.off    = this.scale.off;
+      newChart.scale.pretty = this.scale.pretty;      
+      newChart.laneSizes    = this.laneSizes;
+      newChart.drawStyle    = this.drawStyle;
+      newChart.glyph        = this.glyph;
+      newChart.glyphHooks   = this.glyphHooks;
+      newChart.trackHooks   = this.trackHooks;
+      newChart.mouseHandler = this.mouseHandler;
+      newChart.clickHandler = this.clickHandler;
 		
       for ( var j=0; j < numTracks; j++) {
          var track = this.tracks[j];
@@ -410,15 +426,6 @@ var Scribl = Class.extend({
          }
       }
 
-		// TODO: make this more robust
-      newChart.scale.min    = this.scale.min;      
-      newChart.scale.max    = this.scale.max;
-      newChart.offset       = this.offset;
-      newChart.scale.off    = this.scale.off;
-      newChart.scale.pretty = this.scale.pretty;      
-      newChart.laneSizes    = this.laneSizes;
-      newChart.drawStyle    = this.drawStyle;
-      newChart.glyph        = this.glyph;
       
       // for (var attr in this) {
       //    if (this.hasOwnProperty(attr)) copy[attr] = this[attr];
@@ -886,15 +893,16 @@ var Scribl = Class.extend({
     */
 	registerEventListeners: function() {
       var chart = this;
-      chart.mouseHandler = function(e) {chart.handleMouseEvent(e, 'mouseover')};
-      chart.clickHandler = function(event) { chart.handleMouseEvent(event, 'click') };
+
       if ( this.events.mouseovers.length > 0) {
          this.canvas.removeEventListener('mousemove', chart.mouseHandler);
          this.canvas.addEventListener('mousemove', chart.mouseHandler, false);
       }
-      if ( this.events.clicks.length > 0 )
+      if ( this.events.clicks.length > 0 ) {
          //$(this.canvas).bind('click', function(e) {chart.handleMouseEvent(e, 'click')})
+         this.canvas.removeEventListener('click', chart.clickHandler);
          this.canvas.addEventListener('click', chart.clickHandler, false);
+      }
       this.events.added = true;
    }
 	

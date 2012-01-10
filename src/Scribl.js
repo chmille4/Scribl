@@ -125,6 +125,10 @@ var Scribl = Class.extend({
       // draw defaults
       this.drawStyle = 'expand';  
       
+      // draw hooks
+      this.glyphHooks = [];
+      this.trackHooks = [];
+      
       // private variables
       this.myMouseEventHandler = new MouseEventHandler(this);
       this.tracks = [];
@@ -187,8 +191,7 @@ var Scribl = Class.extend({
     * @api public
     */
 	addTrack: function() {
-      var track = new Track(this.ctx);
-      track.chart = this;
+      var track = new Track(this);
       if (this.tracks.length == 1 && this.tracks[0] == undefined)
          this.tracks = [];
       this.tracks.push(track);

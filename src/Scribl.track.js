@@ -17,14 +17,22 @@ var Track = Class.extend({
     * @param {Object} ctx - the canvas.context object
     * @api internal
     */
-	init: function(ctx) {
+	init: function(chart) {
       // defaults
+      var track = this;
+      this.chart = chart
       this.lanes = [];
-      this.ctx = ctx;
+      this.ctx = chart.ctx;
       this.uid = _uniqueId('track');      
       this.drawStyle = undefined;
       this.hide = false;
       this.hooks = {};
+      
+      // add draw hooks
+      for (var i=0; i<chart.trackHooks.length; i++) {
+         this.addDrawHook( chart.trackHooks[i] );
+      }
+      
       
       // coverage variables
       this.coverageData = [];  // number of features at any given pixel;
@@ -238,6 +246,13 @@ var Track = Class.extend({
     */
 	draw: function() {
       var track = this;
+      
+      // execute hooks
+      var dontDraw = false;
+      for (var i in track.hooks) {
+         dontDraw = track.hooks[i](track) || dontDraw;
+      }
+      
       // check if track is waiting and if so do nothing
       if ( track.status == 'waiting' ) {
          track.drawOnResponse = true;
@@ -247,7 +262,7 @@ var Track = Class.extend({
       // check if track shouldn't be drawn
       if(track.hide)
          return;
-      
+                  
       var style = track.getDrawStyle();
       var laneSize = track.chart.laneSizes;
       var lanes = track.lanes;
@@ -256,12 +271,6 @@ var Track = Class.extend({
       var y =  laneSize + trackBuffer;
       var ctx = track.ctx;
       
-      
-      // execute hooks
-      var dontDraw = false;
-      for (var i in track.hooks) {
-         dontDraw = track.hooks[i](track) || dontDraw;
-      }
       if (!dontDraw) {
          
          // draw lanes

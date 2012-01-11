@@ -373,6 +373,7 @@ var Scribl = Class.extend({
       newChart.trackHooks   = this.trackHooks;
       newChart.mouseHandler = this.mouseHandler;
       newChart.clickHandler = this.clickHandler;
+      newChart.previousDrawStyle = this.previousDrawStyle;
 		
       for ( var j=0; j < numTracks; j++) {
          var track = this.tracks[j];

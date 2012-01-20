@@ -354,6 +354,7 @@ var Scribl = Class.extend({
     */
 	slice: function(from, to, type) {
       type = type || 'inclusive';
+      var chart = this;
       var sliced_features = [];
 		
       // iterate through tracks
@@ -374,6 +375,22 @@ var Scribl = Class.extend({
       newChart.mouseHandler = this.mouseHandler;
       newChart.clickHandler = this.clickHandler;
       newChart.previousDrawStyle = this.previousDrawStyle;
+      
+      // for ( var i in object.getOwnPropertyNames(this) ) {
+      //    newChart[i] = this[i];
+      // }
+      
+      // Aliases for the rather verbose methods on ES5
+      // var descriptor  = Object.getOwnPropertyDescriptor
+      //   , properties  = Object.getOwnPropertyNames
+      //   , define_prop = Object.defineProperty
+
+      // (target:Object, source:Object) → Object
+      // Copies properties from `source' to `target'
+
+          // properties(chart).forEach(function(key) {
+          //     define_prop(newChart, key, descriptor(chart, key)) })
+
 		
       for ( var j=0; j < numTracks; j++) {
          var track = this.tracks[j];

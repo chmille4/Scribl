@@ -155,15 +155,20 @@ var Glyph = Class.extend({
     * @return {Object} copy - shallow copy of this glyph/feature
     * @api public        
     */
-	clone: function() {
+	clone: function(glyphType) {
       var glyph = this;
       var newFeature;
+      
+      glyphType = glyphType || glyph.glyphType;
+      
+      if (glyphType == "Rect" || glyphType == "Line")
+         glyph.strand = undefined
 
       if(glyph.strand){
-         var str = 'new ' + glyph.glyphType + '("' + glyph.type + '",' + glyph.position + ',' + glyph.length + ',"' + glyph.strand + '",' + JSON.stringify(glyph.opts) + ')';
+         var str = 'new ' + glyphType + '("' + glyph.type + '",' + glyph.position + ',' + glyph.length + ',"' + glyph.strand + '",' + JSON.stringify(glyph.opts) + ')';
          newFeature = eval( str );
       } else {
-         var str =  'new ' + glyph.glyphType + '("' + glyph.type + '",' + glyph.position + ',' + glyph.length + ',' + JSON.stringify(glyph.opts) + ')';
+         var str =  'new ' + glyphType + '("' + glyph.type + '",' + glyph.position + ',' + glyph.length + ',' + JSON.stringify(glyph.opts) + ')';
          newFeature = eval(str);
       } 
       

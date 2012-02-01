@@ -398,7 +398,7 @@ var Scribl = Class.extend({
          newTrack.drawStyle = track.drawStyle;
          var numLanes = track.lanes.length;
          for ( var i=0; i < numLanes; i++ ) {
-            newLane = newTrack.addLane();
+            var newLane = newTrack.addLane();
             var s_features = track.lanes[i].features;
             for (var k=0; k < s_features.length; k++ ) {
                var end = s_features[k].position + s_features[k].length
@@ -418,18 +418,32 @@ var Scribl = Class.extend({
                      if (end > from && end < to)
                         newLane.addFeature( s_features[k].clone() )
                      else {
-                        var f = s_features[k].clone();
+                        // turn first half into rect to stop having two block arrows features    
+                        if (s_features[k].glyphType == "BlockArrow" && s_features[k].strand == "+")                                               
+                           var f = s_features[k].clone("Rect");
+                        else
+                           var f = s_features[k].clone();
+                           
                         f.length = Math.abs(to - start);
                         newLane.addFeature( f );
                      }
                   } else if (end > from && end < to) {
-                     var f = s_features[k].clone();
+                     // turn first half into rect to stop having two block arrows features    
+                     if (s_features[k].glyphType == "BlockArrow" && s_features[k].strand == "-")                                               
+                        var f = s_features[k].clone("Rect");
+                     else
+                        var f = s_features[k].clone();
+                     
                      f.position = from;
                      f.length = Math.abs(end - from);
                      newLane.addFeature( f );
                   }
                   else if( start < from && end > to){
-                     var f = s_features[k].clone();
+                     // turn first half into rect to stop having two block arrows features    
+                     if (s_features[k].glyphType == "BlockArrow")                                               
+                        var f = s_features[k].clone("Rect");
+                     else
+                        var f = s_features[k].clone();
                      f.position = from;
                      f.length = Math.abs(to - from);
                      newLane.addFeature( f );

@@ -269,7 +269,7 @@ var Track = Class.extend({
       var laneBuffer = track.chart.laneBuffer;
       var trackBuffer = track.chart.trackBuffer;
       var y =  laneSize + trackBuffer;
-      var ctx = track.ctx;
+      var ctx = track.chart.ctx;
       
       if (!dontDraw) {
          

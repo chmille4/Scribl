@@ -92,3 +92,94 @@ if (!Array.prototype.indexOf) {
         return -1;  
     }  
 }
+
+
+
+/** **resetGeneColors**
+
+* _will reset the colors of all genes in a chart_
+
+* @param {String} chart- name of a Scribl Chart
+* @api internal
+*/
+function resetGeneColors(chart) {
+   // reset color
+   for (var i=0; i < chart.tracks.length; i++){
+     for (var k=0; k < chart.tracks[i].lanes.length; k++) {
+       for (var j=0; j < chart.tracks[i].lanes[k].features.length; j++){
+           chart.tracks[i].lanes[k].features[j].color = "";
+       }
+     }
+   }  
+   chart.redraw(); 
+}
+
+
+
+/** **fadeGene**
+
+* _will fade the gene from one color to another_
+* 
+* _note: this requires a  div of id="descripiton" as well as_
+* _genes to have a description and title field_
+
+* @param {Str} gene - gene name
+* @param {Array}  colorStart- in the format rgb(int,int,int)
+* @param {Array}  colorEnd- in the format rgb(int,int,int)
+* @param {Int}  duration- length of time for fade)
+* @param {Int}  steps- lnumber of steps in the fade)
+* @return {String} formatted text
+* @api internal
+*/
+function fadeGene(gene, colorStart, colorEnd, duration, steps) {
+   var chart = gene.lane.track.chart;
+   
+  for(var i=0; i < window.slices.length; i++) {
+     // reset colors for each slice
+     // this will cause the color to revert
+     // back to the default stored in chart.glyph.color
+     resetGeneColors(slices[i]);
+  }
+			   
+  // get rgbStart
+  var digits = colorStart.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+  var rStart = parseInt(digits[1],10);
+  var gStart = parseInt(digits[2],10);
+  var bStart = parseInt(digits[3],10);
+            
+  // get rgbEnd
+  digits = colorEnd.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+  var rEnd = parseInt(digits[1],10);
+  var gEnd = parseInt(digits[2],10);
+  var bEnd = parseInt(digits[3],10);
+			   
+  // initialize 
+  var ri;
+  var gi;
+  var bi;
+  var rstep = (rEnd - rStart) / steps;
+  var gstep = (gEnd - gStart) / steps;
+  var bstep = (bEnd - bStart) / steps;
+			   
+  var interval = duration / steps;
+			   
+  document.getElementById( 'description' ).innerHTML = "<h1>"+gene.title+"</h1>"+"<pre>"+gene.description+"</pre>";
+			   
+  var intervalId = setInterval( function() {
+    ri = (ri === undefined) ? rStart : ri + rstep;
+    gi = (gi === undefined) ? gStart : gi + gstep;
+    bi = (bi === undefined) ? bStart : bi + bstep;     
+			      
+    // set color for group with specific tagname	   
+    gene.color = 'rgb(' +Math.round(ri)+ ',' +Math.round(gi)+ ',' +Math.round(bi)+ ')';
+
+    // redraw chart
+    chart.redraw();
+    
+    if (rstep > 0) {
+      if (ri >= rEnd) { window.clearInterval(intervalId); }
+    } else {
+      if (ri <= rEnd) { window.clearInterval(intervalId); }
+    }
+  }, interval );			   
+}

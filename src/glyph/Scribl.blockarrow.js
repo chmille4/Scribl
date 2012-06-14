@@ -44,9 +44,11 @@
          var ctx = ctx || blockarrow.ctx;
          var length = length || blockarrow.getPixelLength();
          var height = height || blockarrow.getHeight();
-         var roundness = roundness + 1 || blockarrow.calcRoundness();
+         var roundness = roundness + 1 || blockarrow.calcRoundness();         
          if (roundness != undefined) roundness -= 1;
+
          var side = length*.75;
+         
          
          // set start x and y draw locations to 0
          x = y = 0;
@@ -75,7 +77,7 @@
          a_max_x = x + length;  // the furthest point of the arrow
          // use bezier quadratic equation to calculate control point x coord
          t = .5  // solve for end of arrow
-         a_ctrl_x = ( a_max_x - (1-t)*(1-t)*a_b_x - t*t*a_t_x ) / ( 2*(1-t)*t )
+         a_ctrl_x = Math.round( (( a_max_x - (1-t)*(1-t)*a_b_x - t*t*a_t_x ) / ( 2*(1-t)*t ))*10 )/10;
          a_ctrl_y = y + height/2;
          
          // arrow slope and intercept
@@ -85,8 +87,8 @@
          ts_intercept = (-a_ctrl_y) - ts_slope * a_ctrl_x;
          
          // arrow y coords
-         a_b_y = -(bs_slope * a_b_x + bs_intercept);
-         a_t_y = -(ts_slope * a_t_x + ts_intercept);
+         a_b_y = -(Math.round( (bs_slope * a_b_x + bs_intercept)*10 )/10);
+         a_t_y = -(Math.round( (ts_slope * a_t_x + ts_intercept)*10 )/10);
          
          
          // bottom slope
@@ -101,7 +103,7 @@
          bs_lgth_y = y + height; 	// horizontal point
          bs_lgth_x = bs_ctrl_x - roundness;											
          bs_slpe_x = bs_ctrl_x + roundness;		// slope point
-         bs_slpe_y = -(bs_slope * bs_slpe_x + bs_intercept);											
+         bs_slpe_y = -(Math.round( (bs_slope * bs_slpe_x + bs_intercept)*10 )/10);	
          
          // top slope					
          ts_ctrl_y = y;
@@ -109,7 +111,7 @@
          ts_lgth_y = y; 	// horizontal point
          ts_lgth_x = ts_ctrl_x - roundness;	
          ts_slpe_x = ts_ctrl_x + roundness;		// slope point
-         ts_slpe_y = -(ts_slope * ts_slpe_x + ts_intercept);
+         ts_slpe_y = -(Math.round( (ts_slope * ts_slpe_x + ts_intercept)*10 )/10);
          
          
          // draw lines

@@ -38,7 +38,9 @@ var Scribl = Class.extend({
 	init: function(canvas, width) {
       this.scrolled = false;
       // create canvas contexts		
-      var ctx = canvas.getContext('2d');  
+      var ctx;
+      if (canvas)
+         ctx = canvas.getContext('2d');
       var chart = this;      
 
       // chart defaults
@@ -92,7 +94,9 @@ var Scribl = Class.extend({
       this.events.clicks = new Array;
       this.events.mouseovers = new Array;
       this.events.added = false;
-      this.mouseHandler = function(e) { chart.handleMouseEvent(e, 'mouseover') };
+      this.mouseHandler = function(e) { 
+         chart.handleMouseEvent(e, 'mouseover') 
+         };
       this.clickHandler = function(e) { chart.handleMouseEvent(e, 'click') };
       
       // tick defaults
@@ -168,6 +172,22 @@ var Scribl = Class.extend({
       }
 
       return wholeHeight;
+   },
+   
+   getFeatures: function() {
+      var features = [];
+      for (var i=0; i < this.tracks.length; i++){
+         for (var k=0; k < this.tracks[i].lanes.length; k++) {
+            features = features.concat(this.tracks[i].lanes[k].features);
+         }
+      }
+      return features;
+   },
+   
+   setCanvas: function(canvas){
+      this.canvas = canvas;
+      this.ctx = canvas.getContext('2d');
+     // this.registerEventListeners();
    },
    
    /** **addScale**
@@ -372,8 +392,8 @@ var Scribl = Class.extend({
       newChart.glyph        = this.glyph;
       newChart.glyphHooks   = this.glyphHooks;
       newChart.trackHooks   = this.trackHooks;
-      newChart.mouseHandler = this.mouseHandler;
-      newChart.clickHandler = this.clickHandler;
+//      newChart.mouseHandler = this.mouseHandler;
+//      newChart.clickHandler = this.clickHandler;
       newChart.previousDrawStyle = this.previousDrawStyle;
       
       // for ( var i in object.getOwnPropertyNames(this) ) {
@@ -401,8 +421,8 @@ var Scribl = Class.extend({
             var newLane = newTrack.addLane();
             var s_features = track.lanes[i].features;
             for (var k=0; k < s_features.length; k++ ) {
-               var end = s_features[k].position + s_features[k].length
-               var start = s_features[k].position
+               var end = s_features[k].position + s_features[k].length;
+               var start = s_features[k].position;               
                // determine if feature is in slice/region
                if(type == 'inclusive') {
                   if ( start >= from && start <= to )
@@ -486,24 +506,7 @@ var Scribl = Class.extend({
       ctx.save();
       // make scale pretty by starting and ending the scale
       // at major ticks and choosing best tick distances
-      if (this.scale.pretty) {					
-		
-         // determine reasonable tick intervals
-         if (this.tick.auto) {
-            // set major tick interval
-            this.tick.major.size = this.determineMajorTick();
-
-            // set minor tick interval
-            this.tick.minor.size = Math.round(this.tick.major.size / 10);
-         }			
-		
-         // make scale end on major ticks
-         if (this.scale.auto) { 
-            this.scale.min -= this.scale.min % this.tick.major.size;
-            this.scale.max = Math.round(this.scale.max / this.tick.major.size + .4) 
-               * this.tick.major.size;
-         }
-      }
+      this.initScale();
 					
       // fix offsets so scale will not be cut off on left side
       // check if offset is turned off and then set it to static '0'
@@ -547,16 +550,46 @@ var Scribl = Class.extend({
          this.draw();
 	},
 	
+	/** **initScale**
+   
+    * _initializes scale_
+    
+    * @api internal
+    */
+	initScale: function() {
+	   if (this.scale.pretty) {					
+		
+         // determine reasonable tick intervals
+         if (this.tick.auto) {
+            // set major tick interval
+            this.tick.major.size = this.determineMajorTick();
+
+            // set minor tick interval
+            this.tick.minor.size = Math.round(this.tick.major.size / 10);
+         }			
+		
+         // make scale end on major ticks
+         if (this.scale.auto) { 
+            this.scale.min -= this.scale.min % this.tick.major.size;
+            this.scale.max = Math.round(this.scale.max / this.tick.major.size + .4) 
+               * this.tick.major.size;
+         }
+      }
+	},
+	
 	/** **drawScale**
    
     * _draws scale_
     
     * @api public
     */
-	drawScale: function(){	   
+	drawScale: function(options){	   
       var firstMinorTick;
       var ctx = this.ctx;
       var fillStyleRevert = ctx.fillStyle;
+      
+      if(options && options.init)
+         this.initScale();
       
       // determine tick vertical sizes and vertical tick positions
       var tickStartPos = this.scale.font.size + this.scale.size;
@@ -569,6 +602,9 @@ var Scribl = Class.extend({
       ctx.textBaseline = 'top';		
       ctx.fillStyle = this.scale.font.color;
       
+      if (this.offset == undefined) 
+         this.offset = Math.ceil( ctx.measureText('0').width/2 + 10 );      
+      
       // determine the place to start first minor tick
       if (this.scale.min % this.tick.minor.size == 0)
          firstMinorTick = this.scale.min
@@ -579,6 +615,8 @@ var Scribl = Class.extend({
       // draw
       for(var i = firstMinorTick; i <= this.scale.max; i += this.tick.minor.size){		    
          ctx.beginPath();
+         if(i == 187250)
+            var h = 2;
          var curr_pos = this.pixelsToNts(i - this.scale.min) + this.offset;
          if ( i % this.tick.major.size == 0) { // draw major tick
             // create text
@@ -626,9 +664,9 @@ var Scribl = Class.extend({
     */
 	pixelsToNts: function(pixels) { 
       if (pixels == undefined)
-         return (this.width / ( this.scale.max - this.scale.min) ); 
+         return ( this.width / ( this.scale.max - this.scale.min) );
       else
-         return ( this.width / ( this.scale.max - this.scale.min) * pixels );
+         return ( this.width / ( this.scale.max - this.scale.min) * pixels  );
 	},
 	
    /** **ntsToPixels**
@@ -704,7 +742,7 @@ var Scribl = Class.extend({
       jQuery(sliderDiv).slider({
          orientation: 'vertical',
          range: 'min',
-         min: 1,
+         min: 6,
          max: 100,
          value: zoomValue,
          slide: function( event, ui ) {
@@ -730,7 +768,7 @@ var Scribl = Class.extend({
         
 
       var startingPixel = (scrollStartMin - this.scale.min) / totalNts * this.canvas.width;        
-      document.getElementById('scroll-wrapper').scrollLeft = startingPixel
+      document.getElementById('scroll-wrapper').scrollLeft = startingPixel;
       this.scrolled = true;
 	},
 

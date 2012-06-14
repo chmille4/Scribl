@@ -56,6 +56,9 @@ _uniqueId = function(prefix) {
   return prefix ? prefix + id : id;
 };
 
+// polyfill for older browsers
+Object.keys=Object.keys||function(o,k,r){r=[];for(k in o)r.hasOwnProperty.call(o,k)&&r.push(k);return r}
+
 
 /** add indexOf if not implemented for compatibility
     with older browsers

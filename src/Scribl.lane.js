@@ -155,9 +155,17 @@ var Lane = Class.extend({
     * @api internal
     */
 	draw: function() {
-	   var h = 1;
-	   h += 1;
-      for (var i=0; i< this.features.length; i++)
-         this.features[i].draw();
+	   var min = this.track.chart.scale.min;
+      var max = this.track.chart.scale.max;
+	   var hasGlyphs = false;
+      for (var i=0; i< this.features.length; i++) {
+         var pos = this.features[i].position;
+         var end = this.features[i].getEnd();
+         if ( pos >= min && pos <= max || end >= min && end <= max) {
+            this.features[i].draw();
+            hasGlyphs = true;
+         }
+      }
+      return hasGlyphs;
    }
 });

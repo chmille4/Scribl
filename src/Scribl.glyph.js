@@ -167,9 +167,17 @@ var Glyph = Class.extend({
       if(glyph.strand){
          var str = 'new ' + glyphType + '("' + glyph.type + '",' + glyph.position + ',' + glyph.length + ',"' + glyph.strand + '",' + JSON.stringify(glyph.opts) + ')';
          newFeature = eval( str );
+         var attrs = Object.keys(glyph);
+         for ( var i=0; i < attrs.length; i++) {
+            newFeature[attrs[i]] = glyph[attrs[i]];
+         }
       } else {
          var str =  'new ' + glyphType + '("' + glyph.type + '",' + glyph.position + ',' + glyph.length + ',' + JSON.stringify(glyph.opts) + ')';
          newFeature = eval(str);
+         var attrs = Object.keys(glyph);
+         for ( var i=0; i < attrs.length; i++) {
+            newFeature[attrs[i]] = glyph[attrs[i]];
+         }
       } 
       
       newFeature.tooltips = glyph.tooltips;
@@ -301,7 +309,12 @@ var Glyph = Class.extend({
     * @return {Int} roundness
     * @api internal
     */	
-	calcRoundness : function() {return (this.getHeight() * this.getAttr('roundness')/100);},
+	calcRoundness : function() {
+	   var roundness = this.getHeight() * this.getAttr('roundness')/100;
+	   // round roundness to the nearest 0.5
+      roundness = ((roundness*10 % 5) >= 2.5 ? parseInt(roundness*10 / 5) * 5 + 5 : parseInt(roundness*10 / 5) * 5) / 10;
+	   return (roundness);
+	},
 	
 	/** **isContainedWithinRect**
    
@@ -351,13 +364,13 @@ var Glyph = Class.extend({
       var color = glyph.getAttr('color');
 		
       if (color instanceof Array) {
-         var lineargradient = this.lane.ctx.createLinearGradient(this.length/2, 0, this.length/2, this.getHeight());
+         var lineargradient = this.lane.track.chart.ctx.createLinearGradient(this.length/2, 0, this.length/2, this.getHeight());
          var currColor;
          for(var i=0; currColor=color[i], i < color.length; i++)
             lineargradient.addColorStop(i / (color.length-1), currColor);
          return lineargradient
       } else if ( color instanceof Function) {
-         var lineargradient = this.lane.ctx.createLinearGradient(this.length/2, 0, this.length/2, this.getHeight());
+         var lineargradient = this.lane.track.chart.ctx.createLinearGradient(this.length/2, 0, this.length/2, this.getHeight());
         return color(lineargradient); 
       } else 
          return color;
@@ -537,5 +550,16 @@ var Glyph = Class.extend({
       // setup mouse events if need be
       glyph.lane.chart.myMouseEventHandler.addEvents(this); 
 			
+   },
+   
+   redraw: function() {
+      var glyph = this;
+      glyph.lane.ctx.save();
+      glyph.erase;
+      var y = glyph.getPixelPositionY();
+      glyph.lane.ctx.translate(0, y);
+      glyph.draw();
+      glyph.lane.ctx.restore();
    }
+   
 });

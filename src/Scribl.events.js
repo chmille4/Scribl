@@ -128,11 +128,15 @@ var MouseEventHandler = Class.extend({
       var clicked = me.eventElement;
       
       // handle mouseover tooltips
-      if (clicked != undefined && clicked.onMouseover != undefined)
-         me.tooltip.fire(clicked);
-      else if (clicked && clicked.parent && clicked.parent.onMouseover) {
+      if (clicked && clicked.onMouseover == undefined && clicked.parent && clicked.parent.onMouseover) {
          clicked.onMouseover = clicked.parent.onMouseover
-         me.tooltip.fire(clicked);
+      }
+      
+      if(clicked && clicked.onMouseover) {
+         // open window if string
+         if (typeof(clicked.onMouseover) == "string"){ me.tooltip.fire(clicked); }
+         // if function run function with feature as argument
+         else if (typeof(clicked.onMouseover) == "function"){ clicked.onMouseover(clicked); }
       }
       
       // handle tooltip object tooltips

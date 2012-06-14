@@ -103,7 +103,8 @@ var Track = Class.extend({
          var prev_feature = this.lanes[j].features[ this.lanes[j].features.length - 1 ];
 
          // check if new lane is needed
-         if ( prev_feature != undefined && (feature.position - 3/this.chart.pixelsToNts()) > (prev_feature.position + prev_feature.length) ) {
+         var spacer = 3/this.chart.pixelsToNts() || 3;
+         if ( prev_feature != undefined && (feature.position - spacer) > (prev_feature.position + prev_feature.length) ) {
             new_lane = false;
             curr_lane = this.lanes[j];
             break;
@@ -212,16 +213,22 @@ var Track = Class.extend({
     */
    calcCoverageData: function() {
       var lanes = this.lanes 
+      var min = this.chart.scale.min;
+      var max = this.chart.scale.max;
 	   
 	   // determine feature locations
       for (var i=0; i<lanes.length; i++) {
          for (var k=0; k<lanes[i].features.length; k++) {
             var feature = lanes[i].features[k];
-            var from = Math.round( feature.getPixelPositionX() );
-            var to =  Math.round( from + feature.getPixelLength() );
-            for (var j=from; j <= to; j++) { 
-               this.coverageData[j] = this.coverageData[j] + 1 || 1; 
-               this.maxDepth = Math.max(this.coverageData[j], this.maxDepth);
+            var pos = feature.position;
+            var end = feature.getEnd();
+            if ( (pos >= min && pos <= max) || (end >= min && end <= max) ) {
+               var from = Math.round( feature.getPixelPositionX() );
+               var to =  Math.round( from + feature.getPixelLength() );
+               for (var j=from; j <= to; j++) { 
+                  this.coverageData[j] = this.coverageData[j] + 1 || 1; 
+                  this.maxDepth = Math.max(this.coverageData[j], this.maxDepth);
+               }
             }
          }
       }     
@@ -279,16 +286,17 @@ var Track = Class.extend({
          if ( style == undefined || style == 'expand' ) {   		
             for (var i=0; i<lanes.length; i++) {
                lanes[i].y = y;
-               lanes[i].draw();
-               var height = lanes[i].getHeight();
-               ctx.translate(0, height + laneBuffer);
-               y = y + height + laneBuffer;
+               if(lanes[i].draw()) {
+                  var height = lanes[i].getHeight();
+                  ctx.translate(0, height + laneBuffer);
+                  y = y + height + laneBuffer;
+               }
             }
          } else if ( style == 'collapse' ) { // draw collapse style (i.e. single lane)
             var features = []
             // concat all features into single array
             for (var i=0; i<lanes.length; i++) {
-               var features = features.concat(lanes[i].features);
+               features = features.concat(lanes[i].features);
             }
             // sort features so the minimal number of lanes are used
             features.sort( function(a,b){ return(a.position - b.position); } );
@@ -296,20 +304,20 @@ var Track = Class.extend({
                var originalLength = features[j].length;
                var originalName = features[j].name;
                var m = undefined;
-               for( m=j+1; m < features.length; m++) {
-                  // if a feature is overlapping change length to draw as a single feature
-                  if (features[j].getEnd() >= features[m].position) {
-                     features[j].length = Math.max(features[j].getEnd(), features[m].getEnd()) - features[j].position;
-                     features[j].name = "";
-                  } else break;
-               }               
+               // for( m=j+1; m < features.length; m++) {
+               //    // if a feature is overlapping change length to draw as a single feature
+               //    if (features[j].getEnd() >= features[m].position) {
+               //       features[j].length = Math.max(features[j].getEnd(), features[m].getEnd()) - features[j].position;
+               //       features[j].name = "";
+               //    } else break;
+               // }               
                // draw
                features[j].draw();
                // put length and name back to correct values
                features[j].length = originalLength;
                features[j].name = originalName;
                // update j to skip features that were merged
-               j = m-1;
+             //  j = m-1;
             }
             // translate down to next lane to draw
             if (lanes.length > 0)
@@ -317,6 +325,7 @@ var Track = Class.extend({
    
          // draw as a line chart of the coverage
          } else if ( style == 'line' ) {
+            track.coverageData = [];
             if (track.coverageData.length == 0) track.calcCoverageData();
    	   
             var normalizationFactor = this.maxDepth;

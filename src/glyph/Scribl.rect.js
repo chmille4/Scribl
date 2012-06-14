@@ -44,11 +44,12 @@
          var height = height || rect.getHeight();
          var roundness = roundness + 1 || rect.calcRoundness();
          if (roundness != undefined) roundness -= 1
-         
+
          // Set starting draw position
          x = y = 0;
-         ctx.beginPath();
          
+
+         ctx.beginPath();
          
          // calculate points
          

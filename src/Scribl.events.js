@@ -112,9 +112,6 @@ var MouseEventHandler = Class.extend({
          else if (typeof(onClick) == "function"){ onClick(clicked); }
       }
    },
-
-	
-
 	
 	/** **handleMouseover**
 

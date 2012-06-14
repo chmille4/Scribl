@@ -6,6 +6,7 @@
  * from this class_
  *
  * Chase Miller 2011
+ *
  */
 
 var Glyph = Class.extend({
@@ -552,6 +553,12 @@ var Glyph = Class.extend({
 			
    },
    
+   /** **redraw**
+   
+    * _erases this specific glyph and redraws it_
+   
+    * @api internal        
+    */
    redraw: function() {
       var glyph = this;
       glyph.lane.ctx.save();

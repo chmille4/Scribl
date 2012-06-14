@@ -174,6 +174,14 @@ var Scribl = Class.extend({
       return wholeHeight;
    },
    
+   /** **getFeatures**
+   
+    * _Returns an array of features (e.g. gene)_
+   
+    * @return {Array} of features
+    * @api public
+    */
+   
    getFeatures: function() {
       var features = [];
       for (var i=0; i < this.tracks.length; i++){
@@ -184,6 +192,13 @@ var Scribl = Class.extend({
       return features;
    },
    
+   /** **setCanvas**
+   
+    * _Changes the canvas that Scribl draws to_
+   
+    * @param {Html Canvas Element} the canvas to draw to
+    * @api public
+    */
    setCanvas: function(canvas){
       this.canvas = canvas;
       this.ctx = canvas.getContext('2d');

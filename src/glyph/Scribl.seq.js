@@ -75,14 +75,7 @@
                 var charName = "nt_" + ntName + '_bg';                
                 this.createChar(nt, chars.nt_color, chars[charName], height);
              }
-          } 
-          
-          // check if image chars are built since this is an async process
-          // if (!this.charsBuilt(height)){
-          //    this.lane.track.chart.chars.drawOnBuild.push(seq);
-          //    return;
-          // }
-          
+          }           
           
           // Set starting draw position
           x = y = 0;      
@@ -157,6 +150,16 @@
          ctx.closePath();
 	}, 
 	
+	/** **_createChar**
+
+    * _creates glyphs of a given character_
+
+    * @param {Char} - the char to create glyph of
+    * @param {String} - string of char color in rgb or hex
+    * @param {String} - string of char background color in rgb or hex
+    * @param {Int} - height of glyph
+    * @api internal 
+    */
 	createChar: function(theChar, color, backgroundColor, height) {                  
       var seq = this;
       var chart = seq.lane.track.chart;
@@ -183,6 +186,7 @@
       ctx.textAlign = 'center';
       ctx.textBaseline = "middle";
       ctx.fillText(theChar, width/2, height/2);
+      // store canvas with glyph in global variable
       SCRIBL.chars.heights[height][theChar] = canvas;
       ctx.fillStyle = fillStyle;
       
@@ -207,6 +211,7 @@
       ctx.textAlign = 'center';
       ctx.textBaseline = "middle";
       ctx.fillText(theChar, width/2, height/2);
+      // store canvas with glyph in global variable
       SCRIBL.chars.heights[height][theChar + 'rightInsert'] = canvas;
       ctx.fillStyle = fillStyle;
       
@@ -231,17 +236,9 @@
       ctx.textAlign = 'center';
       ctx.textBaseline = "middle";
       ctx.fillText(theChar, width/2, height/2);
+      // store canvas with glyph in global variable
       SCRIBL.chars.heights[height][theChar + 'leftInsert'] = canvas;
       ctx.fillStyle = fillStyle;
       
    }
-   
-   // charsBuilt: function(height) {
-   //    for (var i=0; i < this.chars.list.length; i++) {
-   //       var nt = this.chars.list[i];
-   //       if ( !SCRIBL.chars.heights[height] || !SCRIBL.chars.heights[height][nt] )
-   //          return false
-   //    }
-   //    return true;
-   // }
 });

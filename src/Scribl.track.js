@@ -293,10 +293,11 @@ var Track = Class.extend({
                }
             }
          } else if ( style == 'collapse' ) { // draw collapse style (i.e. single lane)
-            var features = []
+            var features = [];
+            
             // concat all features into single array
             for (var i=0; i<lanes.length; i++) {
-               features = features.concat(lanes[i].features);
+               features = features.concat( lanes[i].filterFeaturesByPosition(track.chart.scale.min, track.chart.scale.max) );
             }
             // sort features so the minimal number of lanes are used
             features.sort( function(a,b){ return(a.position - b.position); } );
@@ -374,5 +375,6 @@ var Track = Class.extend({
     
     removeDrawHook: function(uid) {
        delete this.hooks[uid];
-    }
+    } 
+    
 });

@@ -2771,6 +2771,126 @@ This method must be called in all feature subclasses like so <code>this._super(t
 }
 </code></pre>
 </td>
+</tr><tr class="filename"><td><h2 id="Scribl.utils.js"><a href="#">Scribl.utils</a></h2></td><td>Scribl.utils.js</td></tr><tr class="code">
+<td class="docs">
+<p><strong>Scribl::Utils</strong></p>
+
+<p>Chase Miller 2011
+ </p>
+</td>
+<td class="code">
+
+</td>
+</tr>
+<tr class="code">
+<td class="docs">
+<p><strong>ScriblWrapLines</strong></p>
+
+<p><em>transforms text to fit in a column of given width</em></p>
+
+<h2></h2>
+
+<ul><li><p><strong>param</strong>: <em>Int</em>  max - column width in letters</p></li><li><p><strong>param</strong>: <em>String</em>  text</p></li><li><p><strong>return</strong>: <em>String</em>  formatted text</p></li><li><p><strong>api</strong>: <em>internal</em></p></li></ul>
+</td>
+<td class="code">
+<pre><code><span class="keyword">function</span> <span class="class">ScriblWrapLines</span>(<span class="variable">max</span>, <span class="variable">text</span>) {
+	<span class="keyword">var</span> <span class="variable">lines</span> = [];
+	<span class="variable">text</span> = &quot;&quot; + <span class="variable">text</span>;
+	<span class="keyword">var</span> <span class="variable">temp</span> = &quot;&quot;;
+	<span class="keyword">var</span> <span class="variable">chcount</span> = <span class="number integer">0</span>; 
+	<span class="keyword">var</span> <span class="variable">linecount</span> = <span class="number integer">0</span>;
+	<span class="keyword">var</span> <span class="variable">words</span> = <span class="variable">text</span>.<span class="variable">split</span>(&quot; &quot;);
+	
+	<span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">i</span> &lt; <span class="variable">words</span>.<span class="variable">length</span>; <span class="variable">i</span>++) {
+		<span class="keyword">if</span> ((<span class="variable">words</span>[<span class="variable">i</span>].<span class="variable">length</span> + <span class="variable">temp</span>.<span class="variable">length</span>) &lt;= <span class="variable">max</span>)
+			<span class="variable">temp</span> += &quot; &quot; + <span class="variable">words</span>[<span class="variable">i</span>]
+		<span class="keyword">else</span> {
+			<span class="comment">// word is bigger than line break</span>
+			<span class="keyword">if</span> (<span class="variable">temp</span> == &quot;&quot;) {
+				<span class="variable">trunc1</span> = <span class="variable">words</span>[<span class="variable">i</span>].<span class="variable">slice</span>(<span class="number integer">0</span>, <span class="variable">max</span>-<span class="number integer">1</span>);
+				<span class="variable">temp</span> += &quot; &quot; + <span class="variable">trunc1</span> + &quot;-&quot;
+				<span class="variable">trunc2</span> = <span class="variable">words</span>[<span class="variable">i</span>].<span class="variable">slice</span>(<span class="variable">max</span>, <span class="variable">words</span>[<span class="variable">i</span>].<span class="variable">length</span>);
+				<span class="variable">words</span>.<span class="variable">splice</span>(<span class="variable">i</span>+<span class="number integer">1</span>, <span class="number integer">0</span>, <span class="variable">trunc2</span>);
+				<span class="variable">lines</span>.<span class="variable">push</span>(<span class="variable">temp</span>);
+				<span class="variable">temp</span> = &quot;&quot;;
+				<span class="variable">linecount</span>++;
+			}
+			<span class="keyword">else</span> {
+				<span class="variable">i</span>--;
+				<span class="variable">lines</span>.<span class="variable">push</span>(<span class="variable">temp</span>);
+				<span class="variable">linecount</span>++;
+				<span class="variable">temp</span> = &quot;&quot;;
+			}
+		}
+	}
+	<span class="variable">linecount</span>++;
+	<span class="variable">lines</span>.<span class="variable">push</span>(<span class="variable">temp</span>)
+	<span class="keyword">return</span> ([<span class="variable">lines</span>, <span class="variable">linecount</span>]); <span class="comment">// sends value of temp back</span>
+}</code></pre>
+</td>
+</tr>
+<tr class="code">
+<td class="docs">
+<p>create unique ids </p>
+</td>
+<td class="code">
+<pre><code><span class="keyword">var</span> <span class="variable">idCounter</span> = <span class="number integer">0</span>;
+<span class="variable">_uniqueId</span> = <span class="keyword">function</span>(<span class="variable">prefix</span>) {
+  <span class="keyword">var</span> <span class="variable">id</span> = <span class="variable">idCounter</span>++;
+  <span class="keyword">return</span> <span class="variable">prefix</span> ? <span class="variable">prefix</span> + <span class="variable">id</span> : <span class="variable">id</span>;
+};
+
+<span class="comment">// polyfill for older browsers</span>
+<span class="class">Object</span>.<span class="variable">keys</span>=<span class="class">Object</span>.<span class="variable">keys</span>||<span class="keyword">function</span>(<span class="variable">o</span>,<span class="variable">k</span>,<span class="variable">r</span>){<span class="variable">r</span>=[];<span class="keyword">for</span>(<span class="variable">k</span> <span class="keyword">in</span> <span class="variable">o</span>)<span class="variable">r</span>.<span class="variable">hasOwnProperty</span>.<span class="variable">call</span>(<span class="variable">o</span>,<span class="variable">k</span>)&amp;&amp;<span class="variable">r</span>.<span class="variable">push</span>(<span class="variable">k</span>);<span class="keyword">return</span> <span class="variable">r</span>}</code></pre>
+</td>
+</tr>
+<tr class="code">
+<td class="docs">
+<p>add indexOf if not implemented for compatibility
+    with older browsers</p>
+</td>
+<td class="code">
+<pre><code><span class="keyword">if</span> (!<span class="class">Array</span>.<span class="variable">prototype</span>.<span class="variable">indexOf</span>) {  
+    <span class="class">Array</span>.<span class="variable">prototype</span>.<span class="variable">indexOf</span> = <span class="keyword">function</span> (<span class="variable">searchElement</span></code></pre>
+</td>
+</tr>
+<tr class="code">
+<td class="docs">
+<p>, fromIndex </p>
+</td>
+<td class="code">
+<pre><code>) {  
+        &quot;<span class="variable">use</span> <span class="variable">strict</span>&quot;;  
+        <span class="keyword">if</span> (<span class="this">this</span> === <span class="keyword">void</span> <span class="number integer">0</span> || <span class="this">this</span> === <span class="keyword">null</span>) {  
+            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="class">TypeError</span>();  
+        }  
+        <span class="keyword">var</span> <span class="variable">t</span> = <span class="class">Object</span>(<span class="this">this</span>);  
+        <span class="keyword">var</span> <span class="variable">len</span> = <span class="variable">t</span>.<span class="variable">length</span> &gt;&gt;&gt; <span class="number integer">0</span>;  
+        <span class="keyword">if</span> (<span class="variable">len</span> === <span class="number integer">0</span>) {  
+            <span class="keyword">return</span> -<span class="number integer">1</span>;  
+        }  
+        <span class="keyword">var</span> <span class="variable">n</span> = <span class="number integer">0</span>;  
+        <span class="keyword">if</span> (<span class="variable">arguments</span>.<span class="variable">length</span> &gt; <span class="number integer">0</span>) {  
+            <span class="variable">n</span> = <span class="class">Number</span>(<span class="variable">arguments</span>[<span class="number integer">1</span>]);  
+            <span class="keyword">if</span> (<span class="variable">n</span> !== <span class="variable">n</span>) { <span class="comment">// shortcut for verifying if it's NaN  </span>
+                <span class="variable">n</span> = <span class="number integer">0</span>;  
+            } <span class="keyword">else</span> <span class="keyword">if</span> (<span class="variable">n</span> !== <span class="number integer">0</span> &amp;&amp; <span class="variable">n</span> !== <span class="class">Infinity</span> &amp;&amp; <span class="variable">n</span> !== -<span class="class">Infinity</span>) {  
+                <span class="variable">n</span> = (<span class="variable">n</span> &gt; <span class="number integer">0</span> || -<span class="number integer">1</span>) * <span class="class">Math</span>.<span class="variable">floor</span>(<span class="class">Math</span>.<span class="variable">abs</span>(<span class="variable">n</span>));  
+            }  
+        }  
+        <span class="keyword">if</span> (<span class="variable">n</span> &gt;= <span class="variable">len</span>) {  
+            <span class="keyword">return</span> -<span class="number integer">1</span>;  
+        }  
+        <span class="keyword">var</span> <span class="variable">k</span> = <span class="variable">n</span> &gt;= <span class="number integer">0</span> ? <span class="variable">n</span> : <span class="class">Math</span>.<span class="variable">max</span>(<span class="variable">len</span> - <span class="class">Math</span>.<span class="variable">abs</span>(<span class="variable">n</span>), <span class="number integer">0</span>);  
+        <span class="keyword">for</span> (; <span class="variable">k</span> &lt; <span class="variable">len</span>; <span class="variable">k</span>++) {  
+            <span class="keyword">if</span> (<span class="variable">k</span> <span class="keyword">in</span> <span class="variable">t</span> &amp;&amp; <span class="variable">t</span>[<span class="variable">k</span>] === <span class="variable">searchElement</span>) {  
+                <span class="keyword">return</span> <span class="variable">k</span>;  
+            }  
+        }  
+        <span class="keyword">return</span> -<span class="number integer">1</span>;  
+    }  
+}</code></pre>
+</td>
 </tr><tr class="filename"><td><h2 id="Scribl.tooltips.js"><a href="#">Scribl.tooltips</a></h2></td><td>Scribl.tooltips.js</td></tr><tr class="code">
 <td class="docs">
 <p><strong>Scribl::Tooltips</strong></p>
@@ -3009,126 +3129,6 @@ This method must be called in all feature subclasses like so <code>this._super(t
 		
    }
 });</code></pre>
-</td>
-</tr><tr class="filename"><td><h2 id="Scribl.utils.js"><a href="#">Scribl.utils</a></h2></td><td>Scribl.utils.js</td></tr><tr class="code">
-<td class="docs">
-<p><strong>Scribl::Utils</strong></p>
-
-<p>Chase Miller 2011
- </p>
-</td>
-<td class="code">
-
-</td>
-</tr>
-<tr class="code">
-<td class="docs">
-<p><strong>ScriblWrapLines</strong></p>
-
-<p><em>transforms text to fit in a column of given width</em></p>
-
-<h2></h2>
-
-<ul><li><p><strong>param</strong>: <em>Int</em>  max - column width in letters</p></li><li><p><strong>param</strong>: <em>String</em>  text</p></li><li><p><strong>return</strong>: <em>String</em>  formatted text</p></li><li><p><strong>api</strong>: <em>internal</em></p></li></ul>
-</td>
-<td class="code">
-<pre><code><span class="keyword">function</span> <span class="class">ScriblWrapLines</span>(<span class="variable">max</span>, <span class="variable">text</span>) {
-	<span class="keyword">var</span> <span class="variable">lines</span> = [];
-	<span class="variable">text</span> = &quot;&quot; + <span class="variable">text</span>;
-	<span class="keyword">var</span> <span class="variable">temp</span> = &quot;&quot;;
-	<span class="keyword">var</span> <span class="variable">chcount</span> = <span class="number integer">0</span>; 
-	<span class="keyword">var</span> <span class="variable">linecount</span> = <span class="number integer">0</span>;
-	<span class="keyword">var</span> <span class="variable">words</span> = <span class="variable">text</span>.<span class="variable">split</span>(&quot; &quot;);
-	
-	<span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">i</span> &lt; <span class="variable">words</span>.<span class="variable">length</span>; <span class="variable">i</span>++) {
-		<span class="keyword">if</span> ((<span class="variable">words</span>[<span class="variable">i</span>].<span class="variable">length</span> + <span class="variable">temp</span>.<span class="variable">length</span>) &lt;= <span class="variable">max</span>)
-			<span class="variable">temp</span> += &quot; &quot; + <span class="variable">words</span>[<span class="variable">i</span>]
-		<span class="keyword">else</span> {
-			<span class="comment">// word is bigger than line break</span>
-			<span class="keyword">if</span> (<span class="variable">temp</span> == &quot;&quot;) {
-				<span class="variable">trunc1</span> = <span class="variable">words</span>[<span class="variable">i</span>].<span class="variable">slice</span>(<span class="number integer">0</span>, <span class="variable">max</span>-<span class="number integer">1</span>);
-				<span class="variable">temp</span> += &quot; &quot; + <span class="variable">trunc1</span> + &quot;-&quot;
-				<span class="variable">trunc2</span> = <span class="variable">words</span>[<span class="variable">i</span>].<span class="variable">slice</span>(<span class="variable">max</span>, <span class="variable">words</span>[<span class="variable">i</span>].<span class="variable">length</span>);
-				<span class="variable">words</span>.<span class="variable">splice</span>(<span class="variable">i</span>+<span class="number integer">1</span>, <span class="number integer">0</span>, <span class="variable">trunc2</span>);
-				<span class="variable">lines</span>.<span class="variable">push</span>(<span class="variable">temp</span>);
-				<span class="variable">temp</span> = &quot;&quot;;
-				<span class="variable">linecount</span>++;
-			}
-			<span class="keyword">else</span> {
-				<span class="variable">i</span>--;
-				<span class="variable">lines</span>.<span class="variable">push</span>(<span class="variable">temp</span>);
-				<span class="variable">linecount</span>++;
-				<span class="variable">temp</span> = &quot;&quot;;
-			}
-		}
-	}
-	<span class="variable">linecount</span>++;
-	<span class="variable">lines</span>.<span class="variable">push</span>(<span class="variable">temp</span>)
-	<span class="keyword">return</span> ([<span class="variable">lines</span>, <span class="variable">linecount</span>]); <span class="comment">// sends value of temp back</span>
-}</code></pre>
-</td>
-</tr>
-<tr class="code">
-<td class="docs">
-<p>create unique ids </p>
-</td>
-<td class="code">
-<pre><code><span class="keyword">var</span> <span class="variable">idCounter</span> = <span class="number integer">0</span>;
-<span class="variable">_uniqueId</span> = <span class="keyword">function</span>(<span class="variable">prefix</span>) {
-  <span class="keyword">var</span> <span class="variable">id</span> = <span class="variable">idCounter</span>++;
-  <span class="keyword">return</span> <span class="variable">prefix</span> ? <span class="variable">prefix</span> + <span class="variable">id</span> : <span class="variable">id</span>;
-};
-
-<span class="comment">// polyfill for older browsers</span>
-<span class="class">Object</span>.<span class="variable">keys</span>=<span class="class">Object</span>.<span class="variable">keys</span>||<span class="keyword">function</span>(<span class="variable">o</span>,<span class="variable">k</span>,<span class="variable">r</span>){<span class="variable">r</span>=[];<span class="keyword">for</span>(<span class="variable">k</span> <span class="keyword">in</span> <span class="variable">o</span>)<span class="variable">r</span>.<span class="variable">hasOwnProperty</span>.<span class="variable">call</span>(<span class="variable">o</span>,<span class="variable">k</span>)&amp;&amp;<span class="variable">r</span>.<span class="variable">push</span>(<span class="variable">k</span>);<span class="keyword">return</span> <span class="variable">r</span>}</code></pre>
-</td>
-</tr>
-<tr class="code">
-<td class="docs">
-<p>add indexOf if not implemented for compatibility
-    with older browsers</p>
-</td>
-<td class="code">
-<pre><code><span class="keyword">if</span> (!<span class="class">Array</span>.<span class="variable">prototype</span>.<span class="variable">indexOf</span>) {  
-    <span class="class">Array</span>.<span class="variable">prototype</span>.<span class="variable">indexOf</span> = <span class="keyword">function</span> (<span class="variable">searchElement</span></code></pre>
-</td>
-</tr>
-<tr class="code">
-<td class="docs">
-<p>, fromIndex </p>
-</td>
-<td class="code">
-<pre><code>) {  
-        &quot;<span class="variable">use</span> <span class="variable">strict</span>&quot;;  
-        <span class="keyword">if</span> (<span class="this">this</span> === <span class="keyword">void</span> <span class="number integer">0</span> || <span class="this">this</span> === <span class="keyword">null</span>) {  
-            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="class">TypeError</span>();  
-        }  
-        <span class="keyword">var</span> <span class="variable">t</span> = <span class="class">Object</span>(<span class="this">this</span>);  
-        <span class="keyword">var</span> <span class="variable">len</span> = <span class="variable">t</span>.<span class="variable">length</span> &gt;&gt;&gt; <span class="number integer">0</span>;  
-        <span class="keyword">if</span> (<span class="variable">len</span> === <span class="number integer">0</span>) {  
-            <span class="keyword">return</span> -<span class="number integer">1</span>;  
-        }  
-        <span class="keyword">var</span> <span class="variable">n</span> = <span class="number integer">0</span>;  
-        <span class="keyword">if</span> (<span class="variable">arguments</span>.<span class="variable">length</span> &gt; <span class="number integer">0</span>) {  
-            <span class="variable">n</span> = <span class="class">Number</span>(<span class="variable">arguments</span>[<span class="number integer">1</span>]);  
-            <span class="keyword">if</span> (<span class="variable">n</span> !== <span class="variable">n</span>) { <span class="comment">// shortcut for verifying if it's NaN  </span>
-                <span class="variable">n</span> = <span class="number integer">0</span>;  
-            } <span class="keyword">else</span> <span class="keyword">if</span> (<span class="variable">n</span> !== <span class="number integer">0</span> &amp;&amp; <span class="variable">n</span> !== <span class="class">Infinity</span> &amp;&amp; <span class="variable">n</span> !== -<span class="class">Infinity</span>) {  
-                <span class="variable">n</span> = (<span class="variable">n</span> &gt; <span class="number integer">0</span> || -<span class="number integer">1</span>) * <span class="class">Math</span>.<span class="variable">floor</span>(<span class="class">Math</span>.<span class="variable">abs</span>(<span class="variable">n</span>));  
-            }  
-        }  
-        <span class="keyword">if</span> (<span class="variable">n</span> &gt;= <span class="variable">len</span>) {  
-            <span class="keyword">return</span> -<span class="number integer">1</span>;  
-        }  
-        <span class="keyword">var</span> <span class="variable">k</span> = <span class="variable">n</span> &gt;= <span class="number integer">0</span> ? <span class="variable">n</span> : <span class="class">Math</span>.<span class="variable">max</span>(<span class="variable">len</span> - <span class="class">Math</span>.<span class="variable">abs</span>(<span class="variable">n</span>), <span class="number integer">0</span>);  
-        <span class="keyword">for</span> (; <span class="variable">k</span> &lt; <span class="variable">len</span>; <span class="variable">k</span>++) {  
-            <span class="keyword">if</span> (<span class="variable">k</span> <span class="keyword">in</span> <span class="variable">t</span> &amp;&amp; <span class="variable">t</span>[<span class="variable">k</span>] === <span class="variable">searchElement</span>) {  
-                <span class="keyword">return</span> <span class="variable">k</span>;  
-            }  
-        }  
-        <span class="keyword">return</span> -<span class="number integer">1</span>;  
-    }  
-}</code></pre>
 </td>
 </tr><tr class="filename"><td><h2 id="Scribl.svg.js"><a href="#">Scribl.svg</a></h2></td><td>Scribl.svg.js</td></tr><tr class="code">
 <td class="docs">
@@ -3539,6 +3539,363 @@ This method must be called in all feature subclasses like so <code>this._super(t
 
 
 </code></pre>
+</td>
+</tr><tr class="filename"><td><h2 id="glyph/Scribl.complex.js"><a href="#">Scribl.complex</a></h2></td><td>glyph/Scribl.complex.js</td></tr><tr class="code">
+<td class="docs">
+<p><strong>Scribl::Glyph::Complex</strong></p>
+
+<p><em>Complex is used to draw any feature that has splices
+(e.g gene with subFeatures and introns, etc) Or
+any feature that should be made up of other features</em></p>
+
+<p>Chase Miller 2011
+ </p>
+</td>
+<td class="code">
+<pre><code><span class="keyword">var</span> <span class="class">Complex</span> = <span class="class">Glyph</span>.<span class="variable">extend</span>({</code></pre>
+</td>
+</tr>
+<tr class="code">
+<td class="docs">
+<p><strong>init</strong></p>
+
+<p><em>Constructor, call this with <code>new Complex()</code></em></p>
+
+<h2></h2>
+
+<ul><li><p><strong>param</strong>: <em>String</em>  type - a tag to associate this glyph with</p></li><li><p><strong>param</strong>: <em>Int</em>  position - start position of the glyph</p></li><li><p><strong>param</strong>: <em>Int</em>  length - length of the glyph</p></li><li><p><strong>param</strong>: <em>Array</em>  subFeatures - array of derived Glyph objects (e.g Rect, Arrow, etc...)</p></li><li><p><strong>param</strong>: <em>Hash</em>  [opts] - optional hash of attributes that can be applied to glyph</p></li><li><p><strong>api</strong>: <em>public</em></p><pre><code> </code></pre></li></ul>
+</td>
+<td class="code">
+<pre><code><span class="variable">init</span>: <span class="keyword">function</span>(<span class="variable">type</span>, <span class="variable">position</span>, <span class="variable">length</span>, <span class="variable">strand</span>, <span class="variable">subFeatures</span>, <span class="variable">opts</span>) {
+         <span class="comment">// call super init method to initialize glyph</span>
+         <span class="this">this</span>.<span class="variable">_super</span>(<span class="variable">type</span>, <span class="variable">position</span>, <span class="variable">length</span>, <span class="variable">strand</span>, <span class="variable">opts</span>);
+         
+         <span class="comment">// instantiate and set defaults</span>
+         <span class="this">this</span>.<span class="variable">slope</span> = <span class="number integer">1</span>;
+         <span class="this">this</span>.<span class="variable">glyphType</span> = &quot;<span class="class">Complex</span>&quot;;
+         <span class="this">this</span>.<span class="variable">subFeatures</span> = <span class="variable">subFeatures</span>;
+         			
+         <span class="comment">// instantiate connector line and set default attributes</span>
+         <span class="this">this</span>.<span class="variable">line</span> =  <span class="keyword">new</span> <span class="class">Line</span>(<span class="variable">type</span>, <span class="number integer">0</span>, <span class="variable">length</span>);
+         <span class="this">this</span>.<span class="variable">line</span>.<span class="variable">parent</span> = <span class="this">this</span>;
+         <span class="this">this</span>.<span class="variable">line</span>.<span class="variable">color</span> = &quot;<span class="variable">black</span>&quot;;
+         <span class="this">this</span>.<span class="variable">line</span>.<span class="variable">thickness</span> = <span class="number integer">2</span>;			
+      },</code></pre>
+</td>
+</tr>
+<tr class="code">
+<td class="docs">
+<p><strong>addSubFeature</strong></p>
+
+<p><em>adds subFeature to complex glyph/feature</em></p>
+
+<ul><li><strong>param</strong>: <em>subFeature</em></li><li>a derived Glyph object (e.g. Rect, Arrow, etc..) </li><li><p><strong>api</strong>: <em>public</em></p><p>   </p></li></ul>
+</td>
+<td class="code">
+<pre><code><span class="variable">addSubFeature</span> : <span class="keyword">function</span>(<span class="variable">subFeature</span>) {
+         <span class="this">this</span>.<span class="variable">subFeatures</span>.<span class="variable">push</span>(<span class="variable">subFeature</span>);
+      },</code></pre>
+</td>
+</tr>
+<tr class="code">
+<td class="docs">
+<p><strong>_draw</strong></p>
+
+<p><em>private complex specific draw method that gets called by this.</em>super.draw()_</p>
+
+<ul><li><strong>para</strong>: <em>m</em>
+[context] - optional canvas.context </li><li><strong>para</strong>: <em>m</em>
+[length] - optional length of glyph/feature</li><li><strong>para</strong>: <em>m</em>
+[height] - optional height of lane</li><li><strong>para</strong>: <em>m</em>
+[roundness] - optional roundness of glyph/feature      </li><li><p><strong>api</strong>: <em>internal</em></p><p>   </p></li></ul>
+</td>
+<td class="code">
+<pre><code><span class="variable">_draw</span> : <span class="keyword">function</span>(<span class="variable">ctx</span>, <span class="variable">length</span>, <span class="variable">height</span>, <span class="variable">roundness</span>) {
+
+         <span class="comment">// Initialize</span>
+         <span class="keyword">var</span> <span class="variable">complex</span> = <span class="this">this</span>;
+         
+         
+         <span class="comment">// see if optional parameters are set and get chart specific info</span>
+         <span class="keyword">var</span> <span class="variable">ctx</span> = <span class="variable">ctx</span> || <span class="variable">complex</span>.<span class="variable">ctx</span>;
+         <span class="keyword">var</span> <span class="variable">length</span> = <span class="variable">length</span> || <span class="variable">complex</span>.<span class="variable">getPixelLength</span>();
+         <span class="keyword">var</span> <span class="variable">height</span> = <span class="variable">height</span> || <span class="variable">complex</span>.<span class="variable">getHeight</span>();
+         <span class="keyword">var</span> <span class="variable">roundness</span> = <span class="variable">roundness</span> + <span class="number integer">1</span> || <span class="variable">complex</span>.<span class="variable">calcRoundness</span>();
+         <span class="keyword">if</span> (<span class="variable">roundness</span> != <span class="variable">undefined</span>) <span class="variable">roundness</span> -= <span class="number integer">1</span>;
+         
+         <span class="comment">// set start x and y draw locations to 0</span>
+         <span class="variable">x</span> = <span class="variable">y</span> = <span class="number integer">0</span>;
+         
+         <span class="comment">// translate back the length of the complex glyph</span>
+         <span class="comment">// so sub glyphs will be placed correctly</span>
+         <span class="variable">ctx</span>.<span class="variable">translate</span>(-<span class="variable">complex</span>.<span class="variable">getPixelPositionX</span>(), <span class="number integer">0</span>);
+         
+         <span class="comment">// draw connector line</span>
+         <span class="variable">complex</span>.<span class="variable">line</span>.<span class="variable">lane</span> = <span class="this">this</span>.<span class="variable">lane</span>;						
+         <span class="variable">complex</span>.<span class="variable">line</span>.<span class="variable">draw</span>();
+         
+         <span class="comment">// draw subFeatures</span>
+         <span class="keyword">var</span> <span class="variable">numsubFeatures</span> = <span class="variable">complex</span>.<span class="variable">subFeatures</span>.<span class="variable">length</span>
+         <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">i</span>&lt; <span class="variable">numsubFeatures</span>; <span class="variable">i</span>++) {				
+            <span class="comment">// set subFeature to same lane and draw</span>
+            <span class="variable">complex</span>.<span class="variable">subFeatures</span>[<span class="variable">i</span>].<span class="variable">parent</span> = <span class="variable">complex</span>;
+            <span class="variable">complex</span>.<span class="variable">subFeatures</span>[<span class="variable">i</span>].<span class="variable">lane</span> = <span class="variable">complex</span>.<span class="variable">lane</span>;
+            <span class="variable">complex</span>.<span class="variable">subFeatures</span>[<span class="variable">i</span>].<span class="variable">draw</span>();
+         }
+			
+         <span class="comment">// redo translate so the next glyphs will be placed correctly</span>
+         <span class="variable">ctx</span>.<span class="variable">translate</span>(<span class="variable">complex</span>.<span class="variable">getPixelPositionX</span>(), <span class="number integer">0</span>);
+         
+         <span class="comment">// end path so it doesn't get redrawn when parent tries to draw</span>
+         <span class="variable">ctx</span>.<span class="variable">beginPath</span>();					
+      }
+			 
+   });
+	
+
+</code></pre>
+</td>
+</tr><tr class="filename"><td><h2 id="glyph/Scribl.line.js"><a href="#">Scribl.line</a></h2></td><td>glyph/Scribl.line.js</td></tr><tr class="code">
+<td class="docs">
+<p><strong>Scribl::Glyph::Line</strong></p>
+
+<p><em>Glyph used to draw any line shape</em></p>
+
+<p>Chase Miller 2011
+ </p>
+</td>
+<td class="code">
+<pre><code><span class="keyword">var</span> <span class="class">Line</span> = <span class="class">Glyph</span>.<span class="variable">extend</span>({</code></pre>
+</td>
+</tr>
+<tr class="code">
+<td class="docs">
+<p><strong>init</strong></p>
+
+<p><em>Constructor, call this with <code>new Line()</code></em></p>
+
+<h2></h2>
+
+<ul><li><p><strong>param</strong>: <em>String</em>  type - a tag to associate this glyph with</p></li><li><p><strong>param</strong>: <em>Int</em>  position - start position of the glyph</p></li><li><p><strong>param</strong>: <em>Int</em>  length - length of the glyph</p></li><li><p><strong>param</strong>: <em>Hash</em>  [opts] - optional hash of attributes that can be applied to glyph</p></li><li><p><strong>api</strong>: <em>public</em></p><p>   </p></li></ul>
+</td>
+<td class="code">
+<pre><code><span class="variable">init</span>: <span class="keyword">function</span>(<span class="variable">type</span>, <span class="variable">position</span>, <span class="variable">length</span>, <span class="variable">opts</span>) {
+         <span class="this">this</span>.<span class="variable">thickness</span> = <span class="number integer">2</span>;
+         <span class="this">this</span>.<span class="variable">_super</span>(<span class="variable">type</span>, <span class="variable">position</span>, <span class="variable">length</span>, <span class="variable">undefined</span>, <span class="variable">opts</span>);
+         <span class="this">this</span>.<span class="variable">glyphType</span> = &quot;<span class="class">Line</span>&quot;;
+      },</code></pre>
+</td>
+</tr>
+<tr class="code">
+<td class="docs">
+<p><strong>_draw</strong></p>
+
+<p><em>private line specific draw method that gets called by this.</em>super.draw()_</p>
+
+<ul><li><strong>para</strong>: <em>m</em>
+[context] - optional canvas.context </li><li><strong>para</strong>: <em>m</em>
+[length] - optional length of glyph/feature</li><li><strong>para</strong>: <em>m</em>
+[height] - optional height of lane</li><li><strong>para</strong>: <em>m</em>
+[roundness] - optional roundness of glyph/feature      </li><li><p><strong>api</strong>: <em>internal</em></p><p>   </p></li></ul>
+</td>
+<td class="code">
+<pre><code><span class="variable">_draw</span>: <span class="keyword">function</span>(<span class="variable">ctx</span>, <span class="variable">length</span>, <span class="variable">height</span>, <span class="variable">roundness</span>) {
+			
+          <span class="comment">// initialize</span>
+          <span class="keyword">var</span> <span class="variable">line</span> = <span class="this">this</span>;
+          
+          <span class="comment">// see if optional parameters</span>
+          <span class="keyword">var</span> <span class="variable">ctx</span> = <span class="variable">ctx</span> || <span class="variable">line</span>.<span class="variable">ctx</span>;
+          <span class="keyword">var</span> <span class="variable">length</span> = <span class="variable">length</span> || <span class="variable">line</span>.<span class="variable">getPixelLength</span>();
+          <span class="keyword">var</span> <span class="variable">height</span> = <span class="variable">height</span> || <span class="variable">line</span>.<span class="variable">getHeight</span>();
+          
+          <span class="comment">// Set starting draw position</span>
+          <span class="variable">x</span> = <span class="variable">y</span> = <span class="number integer">0</span>;
+          
+          <span class="variable">ctx</span>.<span class="variable">beginPath</span>();
+          <span class="variable">ctx</span>.<span class="variable">moveTo</span>(<span class="variable">x</span>, <span class="regexp">/2 - line.thickness/</span><span class="number integer">2</span>);
+          <span class="variable">ctx</span>.<span class="variable">lineTo</span>(<span class="variable">x</span>, <span class="regexp">/2 + line.thickness/</span><span class="number integer">2</span>);
+          <span class="variable">ctx</span>.<span class="variable">lineTo</span>(<span class="variable">x</span>+<span class="variable">length</span>, <span class="regexp">/2 + line.thickness/</span><span class="number integer">2</span>);
+          <span class="variable">ctx</span>.<span class="variable">lineTo</span>(<span class="variable">x</span>+<span class="variable">length</span>, <span class="regexp">/2 - line.thickness/</span><span class="number integer">2</span>);
+<span class="comment">//			ctx.fill();			</span>
+<span class="comment">//			ctx.fillRect(x, height/2 - line.thickness/2, length, line.thickness);</span>
+	}
+});</code></pre>
+</td>
+</tr><tr class="filename"><td><h2 id="glyph/Scribl.rect.js"><a href="#">Scribl.rect</a></h2></td><td>glyph/Scribl.rect.js</td></tr><tr class="code">
+<td class="docs">
+<p><strong>Scribl::Glyph::Rect</strong></p>
+
+<p><em>Glyph used to draw any rectangle shape</em></p>
+
+<p>Chase Miller 2011
+ </p>
+</td>
+<td class="code">
+<pre><code><span class="keyword">var</span> <span class="class">Rect</span> = <span class="class">Glyph</span>.<span class="variable">extend</span>({</code></pre>
+</td>
+</tr>
+<tr class="code">
+<td class="docs">
+<p><strong>init</strong></p>
+
+<p><em>Constructor, call this with <code>new Rect()</code></em></p>
+
+<h2></h2>
+
+<ul><li><p><strong>param</strong>: <em>String</em>  type - a tag to associate this glyph with</p></li><li><p><strong>param</strong>: <em>Int</em>  position - start position of the glyph</p></li><li><p><strong>param</strong>: <em>Int</em>  length - length of the glyph</p></li><li><p><strong>param</strong>: <em>Hash</em>  [opts] - optional hash of attributes that can be applied to glyph</p></li><li><p><strong>api</strong>: <em>public</em></p><pre><code> </code></pre></li></ul>
+</td>
+<td class="code">
+<pre><code><span class="variable">init</span>: <span class="keyword">function</span>(<span class="variable">type</span>, <span class="variable">position</span>, <span class="variable">length</span>, <span class="variable">opts</span>) {
+         <span class="this">this</span>.<span class="variable">_super</span>(<span class="variable">type</span>, <span class="variable">position</span>, <span class="variable">length</span>, <span class="variable">undefined</span>, <span class="variable">opts</span>);
+         <span class="comment">//this._super(type, position, length, '+', opts);</span>
+         <span class="this">this</span>.<span class="variable">glyphType</span> = &quot;<span class="class">Rect</span>&quot;;
+      },</code></pre>
+</td>
+</tr>
+<tr class="code">
+<td class="docs">
+<p><strong>_draw</strong></p>
+
+<p><em>private rect specific draw method that gets called by this.</em>super.draw()_</p>
+
+<ul><li><strong>para</strong>: <em>m</em>
+[context] - optional canvas.context </li><li><strong>para</strong>: <em>m</em>
+[length] - optional length of glyph/feature</li><li><strong>para</strong>: <em>m</em>
+[height] - optional height of lane</li><li><strong>para</strong>: <em>m</em>
+[roundness] - optional roundness of glyph/feature      </li><li><p><strong>api</strong>: <em>internal</em></p><p>   </p></li></ul>
+</td>
+<td class="code">
+<pre><code><span class="variable">_draw</span>: <span class="keyword">function</span>(<span class="variable">ctx</span>, <span class="variable">length</span>, <span class="variable">height</span>, <span class="variable">roundness</span>) {
+			
+         <span class="comment">// initialize</span>
+         <span class="keyword">var</span> <span class="variable">rect</span> = <span class="this">this</span>;
+         
+         <span class="comment">// see if optional parameters are set</span>
+         <span class="keyword">var</span> <span class="variable">ctx</span> = <span class="variable">ctx</span> || <span class="variable">rect</span>.<span class="variable">ctx</span>;
+         <span class="keyword">var</span> <span class="variable">length</span> = <span class="variable">length</span> || <span class="variable">rect</span>.<span class="variable">getPixelLength</span>();
+         <span class="keyword">var</span> <span class="variable">height</span> = <span class="variable">height</span> || <span class="variable">rect</span>.<span class="variable">getHeight</span>();
+         <span class="keyword">var</span> <span class="variable">roundness</span> = <span class="variable">roundness</span> + <span class="number integer">1</span> || <span class="variable">rect</span>.<span class="variable">calcRoundness</span>();
+         <span class="keyword">if</span> (<span class="variable">roundness</span> != <span class="variable">undefined</span>) <span class="variable">roundness</span> -= <span class="number integer">1</span>
+
+         <span class="comment">// Set starting draw position</span>
+         <span class="variable">x</span> = <span class="variable">y</span> = <span class="number integer">0</span>;
+         
+
+         <span class="variable">ctx</span>.<span class="variable">beginPath</span>();
+         
+         <span class="comment">// calculate points</span>
+         
+         <span class="comment">// top left corner</span>
+         <span class="variable">tlc_ctrl_x</span> = <span class="variable">x</span>; 				<span class="comment">// control point</span>
+         <span class="variable">tlc_ctrl_y</span> = <span class="variable">y</span>;
+         <span class="variable">tlc_lgth_x</span> = <span class="variable">x</span> + <span class="variable">roundness</span>; 	<span class="comment">// horizontal point</span>
+         <span class="variable">tlc_lgth_y</span> = <span class="variable">y</span>;
+         <span class="variable">tlc_wdth_x</span> = <span class="variable">x</span>;				<span class="comment">// vertical point</span>
+         <span class="variable">tlc_wdth_y</span> = <span class="variable">y</span> + <span class="variable">roundness</span>;
+         
+         <span class="comment">// bottom left corner</span>
+         <span class="variable">blc_ctrl_x</span> = <span class="variable">x</span>; 				<span class="comment">// control point</span>
+         <span class="variable">blc_ctrl_y</span> = <span class="variable">y</span> + <span class="variable">height</span>;
+         <span class="variable">blc_lgth_x</span> = <span class="variable">x</span> + <span class="variable">roundness</span>; 	<span class="comment">// horizontal point</span>
+         <span class="variable">blc_lgth_y</span> = <span class="variable">y</span> + <span class="variable">height</span>;
+         <span class="variable">blc_wdth_x</span> = <span class="variable">x</span>;				<span class="comment">// vertical point</span>
+         <span class="variable">blc_wdth_y</span> = <span class="variable">y</span> + <span class="variable">height</span> - <span class="variable">roundness</span>;
+         
+         <span class="comment">// bottom right corner</span>
+         <span class="variable">brc_ctrl_x</span> = <span class="variable">x</span> + <span class="variable">length</span>; 				<span class="comment">// control point</span>
+         <span class="variable">brc_ctrl_y</span> = <span class="variable">y</span> + <span class="variable">height</span>;
+         <span class="variable">brc_lgth_x</span> = <span class="variable">x</span> + <span class="variable">length</span> - <span class="variable">roundness</span>; 	<span class="comment">// horizontal point</span>
+         <span class="variable">brc_lgth_y</span> = <span class="variable">y</span> + <span class="variable">height</span>;
+         <span class="variable">brc_wdth_x</span> = <span class="variable">x</span> + <span class="variable">length</span>;				<span class="comment">// vertical point</span>
+         <span class="variable">brc_wdth_y</span> = <span class="variable">y</span> + <span class="variable">height</span> - <span class="variable">roundness</span>;
+         
+         <span class="comment">// top right corner</span>
+         <span class="variable">trc_ctrl_x</span> = <span class="variable">x</span> + <span class="variable">length</span>; 				<span class="comment">// control point</span>
+         <span class="variable">trc_ctrl_y</span> = <span class="variable">y</span>;
+         <span class="variable">trc_lgth_x</span> = <span class="variable">x</span> + <span class="variable">length</span> - <span class="variable">roundness</span>; 	<span class="comment">// horizontal point</span>
+         <span class="variable">trc_lgth_y</span> = <span class="variable">y</span>;
+         <span class="variable">trc_wdth_x</span> = <span class="variable">x</span> + <span class="variable">length</span>;				<span class="comment">// vertical point</span>
+         <span class="variable">trc_wdth_y</span> = <span class="variable">y</span> + <span class="variable">roundness</span>;
+         
+         <span class="comment">// draw lines</span>
+         
+         <span class="comment">// top left corner</span>
+         <span class="variable">ctx</span>.<span class="variable">moveTo</span>(<span class="variable">tlc_lgth_x</span>, <span class="variable">tlc_lgth_y</span>); 
+         <span class="variable">ctx</span>.<span class="variable">quadraticCurveTo</span>(<span class="variable">tlc_ctrl_x</span>, <span class="variable">tlc_ctrl_y</span>, <span class="variable">tlc_wdth_x</span>, <span class="variable">tlc_wdth_y</span>);
+         
+         <span class="comment">// bottom left corner</span>
+         <span class="variable">ctx</span>.<span class="variable">lineTo</span>(<span class="variable">blc_wdth_x</span>, <span class="variable">blc_wdth_y</span>);
+         <span class="variable">ctx</span>.<span class="variable">quadraticCurveTo</span>(<span class="variable">blc_ctrl_x</span>, <span class="variable">blc_ctrl_y</span>, <span class="variable">blc_lgth_x</span>, <span class="variable">blc_lgth_y</span>);
+         
+         <span class="comment">// bottom right corner</span>
+         <span class="variable">ctx</span>.<span class="variable">lineTo</span>(<span class="variable">brc_lgth_x</span>, <span class="variable">brc_lgth_y</span>);
+         <span class="variable">ctx</span>.<span class="variable">quadraticCurveTo</span>(<span class="variable">brc_ctrl_x</span>, <span class="variable">brc_ctrl_y</span>, <span class="variable">brc_wdth_x</span>, <span class="variable">brc_wdth_y</span>);
+         
+         <span class="comment">// top right corner</span>
+         <span class="variable">ctx</span>.<span class="variable">lineTo</span>(<span class="variable">trc_wdth_x</span>, <span class="variable">trc_wdth_y</span>);
+         <span class="variable">ctx</span>.<span class="variable">quadraticCurveTo</span>(<span class="variable">trc_ctrl_x</span>, <span class="variable">trc_ctrl_y</span>, <span class="variable">trc_lgth_x</span>, <span class="variable">trc_lgth_y</span>);
+         
+         <span class="comment">// top line</span>
+         <span class="variable">ctx</span>.<span class="variable">lineTo</span>(<span class="variable">tlc_lgth_x</span>, <span class="variable">tlc_lgth_y</span>);
+	}
+});</code></pre>
+</td>
+</tr><tr class="filename"><td><h2 id="parsers/genbank.js"><a href="#">genbank</a></h2></td><td>parsers/genbank.js</td></tr><tr class="code">
+<td class="docs">
+<p>Genbank parser
+ </p>
+</td>
+<td class="code">
+<pre><code><span class="keyword">function</span> <span class="variable">genbank</span>(<span class="variable">file</span>, <span class="variable">bchart</span>) {
+	
+	<span class="keyword">var</span> <span class="variable">lines</span> = <span class="variable">file</span>.<span class="variable">split</span>(&quot;\<span class="variable">n</span>&quot;);
+	<span class="keyword">var</span> <span class="variable">re</span> = <span class="keyword">new</span> <span class="class">RegExp</span>(<span class="regexp">/\s+gene\s+([a-z]*)\(?(\d+)\.\.(\d+)/</span>);
+	<span class="keyword">var</span> <span class="variable">genes</span> = [];
+	<span class="keyword">var</span> <span class="variable">max</span> = <span class="variable">undefined</span>;
+	<span class="keyword">var</span> <span class="variable">min</span> = <span class="variable">undefined</span>;
+	
+	<span class="comment">// parse genes</span>
+	<span class="keyword">for</span>( <span class="keyword">var</span> <span class="variable">j</span>=<span class="number integer">0</span>; <span class="variable">j</span> &lt; <span class="variable">lines</span>.<span class="variable">length</span>; <span class="variable">j</span>++ ) {
+
+		<span class="keyword">var</span> <span class="variable">gene_info</span>;
+		<span class="keyword">if</span> (<span class="variable">gene_info</span> = <span class="variable">lines</span>[<span class="variable">j</span>].<span class="variable">match</span>(<span class="variable">re</span>)) {
+			<span class="variable">gene_info</span>.<span class="variable">shift</span>();
+			<span class="variable">genes</span>.<span class="variable">push</span>(<span class="variable">gene_info</span>);
+			
+			<span class="comment">// determine scale dimensions</span>
+			<span class="keyword">var</span> <span class="variable">end</span> = <span class="variable">gene_info</span>[<span class="number integer">2</span>];
+			<span class="keyword">if</span> (<span class="variable">max</span> == <span class="variable">undefined</span> || <span class="variable">max</span> &gt; <span class="variable">end</span>)
+				<span class="variable">max</span> = <span class="variable">end</span>;
+			<span class="keyword">var</span> <span class="variable">position</span> = <span class="variable">gene_info</span>[<span class="number integer">1</span>];
+			<span class="keyword">if</span> (<span class="variable">min</span> == <span class="variable">undefined</span> || <span class="variable">min</span> &lt; <span class="variable">position</span>)
+				<span class="variable">min</span> = <span class="variable">position</span>;
+		}
+	}
+
+
+	<span class="comment">// set scale dimensions</span>
+	<span class="variable">bchart</span>.<span class="variable">scale</span>.<span class="variable">max</span> = <span class="variable">max</span>;
+	<span class="variable">bchart</span>.<span class="variable">scale</span>.<span class="variable">min</span> = <span class="variable">min</span>;
+
+	<span class="comment">// add genes to chart</span>
+	<span class="keyword">for</span>(<span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">i</span> &lt; <span class="variable">genes</span>.<span class="variable">length</span>; <span class="variable">i</span>++ ) {
+		
+		<span class="comment">// get positional values</span>
+		<span class="keyword">var</span> <span class="variable">strand</span> = <span class="string">'+'</span>;
+		<span class="keyword">if</span> ( <span class="variable">genes</span>[<span class="variable">i</span>][<span class="number integer">0</span>] == &quot;<span class="variable">complement</span>&quot; )
+			<span class="variable">strand</span> = <span class="string">'-'</span>;
+			
+		<span class="keyword">var</span> <span class="variable">position</span> = <span class="variable">genes</span>[<span class="variable">i</span>][<span class="number integer">1</span>];
+		<span class="keyword">var</span> <span class="variable">end</span> = <span class="variable">genes</span>[<span class="variable">i</span>][<span class="number integer">2</span>];
+		<span class="variable">position</span> = <span class="variable">position</span> - <span class="number integer">1</span> + <span class="number integer">1</span>;  <span class="comment">// force to be integer - TODO make bChart catch non-ints automatically and gracefully fail</span>
+		<span class="keyword">var</span> <span class="variable">length</span> = <span class="variable">end</span> - <span class="variable">position</span>;
+		
+		<span class="variable">bchart</span>.<span class="variable">addGene</span>(<span class="variable">position</span>, <span class="variable">length</span>, <span class="variable">strand</span>);
+
+	}
+
+}</code></pre>
 </td>
 </tr><tr class="filename"><td><h2 id="glyph/Scribl.blockarrow.js"><a href="#">Scribl.blockarrow</a></h2></td><td>glyph/Scribl.blockarrow.js</td></tr><tr class="code">
 <td class="docs">
@@ -3952,307 +4309,6 @@ This method must be called in all feature subclasses like so <code>this._super(t
    }
 });</code></pre>
 </td>
-</tr><tr class="filename"><td><h2 id="glyph/Scribl.complex.js"><a href="#">Scribl.complex</a></h2></td><td>glyph/Scribl.complex.js</td></tr><tr class="code">
-<td class="docs">
-<p><strong>Scribl::Glyph::Complex</strong></p>
-
-<p><em>Complex is used to draw any feature that has splices
-(e.g gene with subFeatures and introns, etc) Or
-any feature that should be made up of other features</em></p>
-
-<p>Chase Miller 2011
- </p>
-</td>
-<td class="code">
-<pre><code><span class="keyword">var</span> <span class="class">Complex</span> = <span class="class">Glyph</span>.<span class="variable">extend</span>({</code></pre>
-</td>
-</tr>
-<tr class="code">
-<td class="docs">
-<p><strong>init</strong></p>
-
-<p><em>Constructor, call this with <code>new Complex()</code></em></p>
-
-<h2></h2>
-
-<ul><li><p><strong>param</strong>: <em>String</em>  type - a tag to associate this glyph with</p></li><li><p><strong>param</strong>: <em>Int</em>  position - start position of the glyph</p></li><li><p><strong>param</strong>: <em>Int</em>  length - length of the glyph</p></li><li><p><strong>param</strong>: <em>Array</em>  subFeatures - array of derived Glyph objects (e.g Rect, Arrow, etc...)</p></li><li><p><strong>param</strong>: <em>Hash</em>  [opts] - optional hash of attributes that can be applied to glyph</p></li><li><p><strong>api</strong>: <em>public</em></p><pre><code> </code></pre></li></ul>
-</td>
-<td class="code">
-<pre><code><span class="variable">init</span>: <span class="keyword">function</span>(<span class="variable">type</span>, <span class="variable">position</span>, <span class="variable">length</span>, <span class="variable">strand</span>, <span class="variable">subFeatures</span>, <span class="variable">opts</span>) {
-         <span class="comment">// call super init method to initialize glyph</span>
-         <span class="this">this</span>.<span class="variable">_super</span>(<span class="variable">type</span>, <span class="variable">position</span>, <span class="variable">length</span>, <span class="variable">strand</span>, <span class="variable">opts</span>);
-         
-         <span class="comment">// instantiate and set defaults</span>
-         <span class="this">this</span>.<span class="variable">slope</span> = <span class="number integer">1</span>;
-         <span class="this">this</span>.<span class="variable">glyphType</span> = &quot;<span class="class">Complex</span>&quot;;
-         <span class="this">this</span>.<span class="variable">subFeatures</span> = <span class="variable">subFeatures</span>;
-         			
-         <span class="comment">// instantiate connector line and set default attributes</span>
-         <span class="this">this</span>.<span class="variable">line</span> =  <span class="keyword">new</span> <span class="class">Line</span>(<span class="variable">type</span>, <span class="number integer">0</span>, <span class="variable">length</span>);
-         <span class="this">this</span>.<span class="variable">line</span>.<span class="variable">parent</span> = <span class="this">this</span>;
-         <span class="this">this</span>.<span class="variable">line</span>.<span class="variable">color</span> = &quot;<span class="variable">black</span>&quot;;
-         <span class="this">this</span>.<span class="variable">line</span>.<span class="variable">thickness</span> = <span class="number integer">2</span>;			
-      },</code></pre>
-</td>
-</tr>
-<tr class="code">
-<td class="docs">
-<p><strong>addSubFeature</strong></p>
-
-<p><em>adds subFeature to complex glyph/feature</em></p>
-
-<ul><li><strong>param</strong>: <em>subFeature</em></li><li>a derived Glyph object (e.g. Rect, Arrow, etc..) </li><li><p><strong>api</strong>: <em>public</em></p><p>   </p></li></ul>
-</td>
-<td class="code">
-<pre><code><span class="variable">addSubFeature</span> : <span class="keyword">function</span>(<span class="variable">subFeature</span>) {
-         <span class="this">this</span>.<span class="variable">subFeatures</span>.<span class="variable">push</span>(<span class="variable">subFeature</span>);
-      },</code></pre>
-</td>
-</tr>
-<tr class="code">
-<td class="docs">
-<p><strong>_draw</strong></p>
-
-<p><em>private complex specific draw method that gets called by this.</em>super.draw()_</p>
-
-<ul><li><strong>para</strong>: <em>m</em>
-[context] - optional canvas.context </li><li><strong>para</strong>: <em>m</em>
-[length] - optional length of glyph/feature</li><li><strong>para</strong>: <em>m</em>
-[height] - optional height of lane</li><li><strong>para</strong>: <em>m</em>
-[roundness] - optional roundness of glyph/feature      </li><li><p><strong>api</strong>: <em>internal</em></p><p>   </p></li></ul>
-</td>
-<td class="code">
-<pre><code><span class="variable">_draw</span> : <span class="keyword">function</span>(<span class="variable">ctx</span>, <span class="variable">length</span>, <span class="variable">height</span>, <span class="variable">roundness</span>) {
-
-         <span class="comment">// Initialize</span>
-         <span class="keyword">var</span> <span class="variable">complex</span> = <span class="this">this</span>;
-         
-         
-         <span class="comment">// see if optional parameters are set and get chart specific info</span>
-         <span class="keyword">var</span> <span class="variable">ctx</span> = <span class="variable">ctx</span> || <span class="variable">complex</span>.<span class="variable">ctx</span>;
-         <span class="keyword">var</span> <span class="variable">length</span> = <span class="variable">length</span> || <span class="variable">complex</span>.<span class="variable">getPixelLength</span>();
-         <span class="keyword">var</span> <span class="variable">height</span> = <span class="variable">height</span> || <span class="variable">complex</span>.<span class="variable">getHeight</span>();
-         <span class="keyword">var</span> <span class="variable">roundness</span> = <span class="variable">roundness</span> + <span class="number integer">1</span> || <span class="variable">complex</span>.<span class="variable">calcRoundness</span>();
-         <span class="keyword">if</span> (<span class="variable">roundness</span> != <span class="variable">undefined</span>) <span class="variable">roundness</span> -= <span class="number integer">1</span>;
-         
-         <span class="comment">// set start x and y draw locations to 0</span>
-         <span class="variable">x</span> = <span class="variable">y</span> = <span class="number integer">0</span>;
-         
-         <span class="comment">// translate back the length of the complex glyph</span>
-         <span class="comment">// so sub glyphs will be placed correctly</span>
-         <span class="variable">ctx</span>.<span class="variable">translate</span>(-<span class="variable">complex</span>.<span class="variable">getPixelPositionX</span>(), <span class="number integer">0</span>);
-         
-         <span class="comment">// draw connector line</span>
-         <span class="variable">complex</span>.<span class="variable">line</span>.<span class="variable">lane</span> = <span class="this">this</span>.<span class="variable">lane</span>;						
-         <span class="variable">complex</span>.<span class="variable">line</span>.<span class="variable">draw</span>();
-         
-         <span class="comment">// draw subFeatures</span>
-         <span class="keyword">var</span> <span class="variable">numsubFeatures</span> = <span class="variable">complex</span>.<span class="variable">subFeatures</span>.<span class="variable">length</span>
-         <span class="keyword">for</span> (<span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">i</span>&lt; <span class="variable">numsubFeatures</span>; <span class="variable">i</span>++) {				
-            <span class="comment">// set subFeature to same lane and draw</span>
-            <span class="variable">complex</span>.<span class="variable">subFeatures</span>[<span class="variable">i</span>].<span class="variable">parent</span> = <span class="variable">complex</span>;
-            <span class="variable">complex</span>.<span class="variable">subFeatures</span>[<span class="variable">i</span>].<span class="variable">lane</span> = <span class="variable">complex</span>.<span class="variable">lane</span>;
-            <span class="variable">complex</span>.<span class="variable">subFeatures</span>[<span class="variable">i</span>].<span class="variable">draw</span>();
-         }
-			
-         <span class="comment">// redo translate so the next glyphs will be placed correctly</span>
-         <span class="variable">ctx</span>.<span class="variable">translate</span>(<span class="variable">complex</span>.<span class="variable">getPixelPositionX</span>(), <span class="number integer">0</span>);
-         
-         <span class="comment">// end path so it doesn't get redrawn when parent tries to draw</span>
-         <span class="variable">ctx</span>.<span class="variable">beginPath</span>();					
-      }
-			 
-   });
-	
-
-</code></pre>
-</td>
-</tr><tr class="filename"><td><h2 id="glyph/Scribl.line.js"><a href="#">Scribl.line</a></h2></td><td>glyph/Scribl.line.js</td></tr><tr class="code">
-<td class="docs">
-<p><strong>Scribl::Glyph::Line</strong></p>
-
-<p><em>Glyph used to draw any line shape</em></p>
-
-<p>Chase Miller 2011
- </p>
-</td>
-<td class="code">
-<pre><code><span class="keyword">var</span> <span class="class">Line</span> = <span class="class">Glyph</span>.<span class="variable">extend</span>({</code></pre>
-</td>
-</tr>
-<tr class="code">
-<td class="docs">
-<p><strong>init</strong></p>
-
-<p><em>Constructor, call this with <code>new Line()</code></em></p>
-
-<h2></h2>
-
-<ul><li><p><strong>param</strong>: <em>String</em>  type - a tag to associate this glyph with</p></li><li><p><strong>param</strong>: <em>Int</em>  position - start position of the glyph</p></li><li><p><strong>param</strong>: <em>Int</em>  length - length of the glyph</p></li><li><p><strong>param</strong>: <em>Hash</em>  [opts] - optional hash of attributes that can be applied to glyph</p></li><li><p><strong>api</strong>: <em>public</em></p><p>   </p></li></ul>
-</td>
-<td class="code">
-<pre><code><span class="variable">init</span>: <span class="keyword">function</span>(<span class="variable">type</span>, <span class="variable">position</span>, <span class="variable">length</span>, <span class="variable">opts</span>) {
-         <span class="this">this</span>.<span class="variable">thickness</span> = <span class="number integer">2</span>;
-         <span class="this">this</span>.<span class="variable">_super</span>(<span class="variable">type</span>, <span class="variable">position</span>, <span class="variable">length</span>, <span class="variable">undefined</span>, <span class="variable">opts</span>);
-         <span class="this">this</span>.<span class="variable">glyphType</span> = &quot;<span class="class">Line</span>&quot;;
-      },</code></pre>
-</td>
-</tr>
-<tr class="code">
-<td class="docs">
-<p><strong>_draw</strong></p>
-
-<p><em>private line specific draw method that gets called by this.</em>super.draw()_</p>
-
-<ul><li><strong>para</strong>: <em>m</em>
-[context] - optional canvas.context </li><li><strong>para</strong>: <em>m</em>
-[length] - optional length of glyph/feature</li><li><strong>para</strong>: <em>m</em>
-[height] - optional height of lane</li><li><strong>para</strong>: <em>m</em>
-[roundness] - optional roundness of glyph/feature      </li><li><p><strong>api</strong>: <em>internal</em></p><p>   </p></li></ul>
-</td>
-<td class="code">
-<pre><code><span class="variable">_draw</span>: <span class="keyword">function</span>(<span class="variable">ctx</span>, <span class="variable">length</span>, <span class="variable">height</span>, <span class="variable">roundness</span>) {
-			
-          <span class="comment">// initialize</span>
-          <span class="keyword">var</span> <span class="variable">line</span> = <span class="this">this</span>;
-          
-          <span class="comment">// see if optional parameters</span>
-          <span class="keyword">var</span> <span class="variable">ctx</span> = <span class="variable">ctx</span> || <span class="variable">line</span>.<span class="variable">ctx</span>;
-          <span class="keyword">var</span> <span class="variable">length</span> = <span class="variable">length</span> || <span class="variable">line</span>.<span class="variable">getPixelLength</span>();
-          <span class="keyword">var</span> <span class="variable">height</span> = <span class="variable">height</span> || <span class="variable">line</span>.<span class="variable">getHeight</span>();
-          
-          <span class="comment">// Set starting draw position</span>
-          <span class="variable">x</span> = <span class="variable">y</span> = <span class="number integer">0</span>;
-          
-          <span class="variable">ctx</span>.<span class="variable">beginPath</span>();
-          <span class="variable">ctx</span>.<span class="variable">moveTo</span>(<span class="variable">x</span>, <span class="regexp">/2 - line.thickness/</span><span class="number integer">2</span>);
-          <span class="variable">ctx</span>.<span class="variable">lineTo</span>(<span class="variable">x</span>, <span class="regexp">/2 + line.thickness/</span><span class="number integer">2</span>);
-          <span class="variable">ctx</span>.<span class="variable">lineTo</span>(<span class="variable">x</span>+<span class="variable">length</span>, <span class="regexp">/2 + line.thickness/</span><span class="number integer">2</span>);
-          <span class="variable">ctx</span>.<span class="variable">lineTo</span>(<span class="variable">x</span>+<span class="variable">length</span>, <span class="regexp">/2 - line.thickness/</span><span class="number integer">2</span>);
-<span class="comment">//			ctx.fill();			</span>
-<span class="comment">//			ctx.fillRect(x, height/2 - line.thickness/2, length, line.thickness);</span>
-	}
-});</code></pre>
-</td>
-</tr><tr class="filename"><td><h2 id="glyph/Scribl.rect.js"><a href="#">Scribl.rect</a></h2></td><td>glyph/Scribl.rect.js</td></tr><tr class="code">
-<td class="docs">
-<p><strong>Scribl::Glyph::Rect</strong></p>
-
-<p><em>Glyph used to draw any rectangle shape</em></p>
-
-<p>Chase Miller 2011
- </p>
-</td>
-<td class="code">
-<pre><code><span class="keyword">var</span> <span class="class">Rect</span> = <span class="class">Glyph</span>.<span class="variable">extend</span>({</code></pre>
-</td>
-</tr>
-<tr class="code">
-<td class="docs">
-<p><strong>init</strong></p>
-
-<p><em>Constructor, call this with <code>new Rect()</code></em></p>
-
-<h2></h2>
-
-<ul><li><p><strong>param</strong>: <em>String</em>  type - a tag to associate this glyph with</p></li><li><p><strong>param</strong>: <em>Int</em>  position - start position of the glyph</p></li><li><p><strong>param</strong>: <em>Int</em>  length - length of the glyph</p></li><li><p><strong>param</strong>: <em>Hash</em>  [opts] - optional hash of attributes that can be applied to glyph</p></li><li><p><strong>api</strong>: <em>public</em></p><pre><code> </code></pre></li></ul>
-</td>
-<td class="code">
-<pre><code><span class="variable">init</span>: <span class="keyword">function</span>(<span class="variable">type</span>, <span class="variable">position</span>, <span class="variable">length</span>, <span class="variable">opts</span>) {
-         <span class="this">this</span>.<span class="variable">_super</span>(<span class="variable">type</span>, <span class="variable">position</span>, <span class="variable">length</span>, <span class="variable">undefined</span>, <span class="variable">opts</span>);
-         <span class="comment">//this._super(type, position, length, '+', opts);</span>
-         <span class="this">this</span>.<span class="variable">glyphType</span> = &quot;<span class="class">Rect</span>&quot;;
-      },</code></pre>
-</td>
-</tr>
-<tr class="code">
-<td class="docs">
-<p><strong>_draw</strong></p>
-
-<p><em>private rect specific draw method that gets called by this.</em>super.draw()_</p>
-
-<ul><li><strong>para</strong>: <em>m</em>
-[context] - optional canvas.context </li><li><strong>para</strong>: <em>m</em>
-[length] - optional length of glyph/feature</li><li><strong>para</strong>: <em>m</em>
-[height] - optional height of lane</li><li><strong>para</strong>: <em>m</em>
-[roundness] - optional roundness of glyph/feature      </li><li><p><strong>api</strong>: <em>internal</em></p><p>   </p></li></ul>
-</td>
-<td class="code">
-<pre><code><span class="variable">_draw</span>: <span class="keyword">function</span>(<span class="variable">ctx</span>, <span class="variable">length</span>, <span class="variable">height</span>, <span class="variable">roundness</span>) {
-			
-         <span class="comment">// initialize</span>
-         <span class="keyword">var</span> <span class="variable">rect</span> = <span class="this">this</span>;
-         
-         <span class="comment">// see if optional parameters are set</span>
-         <span class="keyword">var</span> <span class="variable">ctx</span> = <span class="variable">ctx</span> || <span class="variable">rect</span>.<span class="variable">ctx</span>;
-         <span class="keyword">var</span> <span class="variable">length</span> = <span class="variable">length</span> || <span class="variable">rect</span>.<span class="variable">getPixelLength</span>();
-         <span class="keyword">var</span> <span class="variable">height</span> = <span class="variable">height</span> || <span class="variable">rect</span>.<span class="variable">getHeight</span>();
-         <span class="keyword">var</span> <span class="variable">roundness</span> = <span class="variable">roundness</span> + <span class="number integer">1</span> || <span class="variable">rect</span>.<span class="variable">calcRoundness</span>();
-         <span class="keyword">if</span> (<span class="variable">roundness</span> != <span class="variable">undefined</span>) <span class="variable">roundness</span> -= <span class="number integer">1</span>
-
-         <span class="comment">// Set starting draw position</span>
-         <span class="variable">x</span> = <span class="variable">y</span> = <span class="number integer">0</span>;
-         
-
-         <span class="variable">ctx</span>.<span class="variable">beginPath</span>();
-         
-         <span class="comment">// calculate points</span>
-         
-         <span class="comment">// top left corner</span>
-         <span class="variable">tlc_ctrl_x</span> = <span class="variable">x</span>; 				<span class="comment">// control point</span>
-         <span class="variable">tlc_ctrl_y</span> = <span class="variable">y</span>;
-         <span class="variable">tlc_lgth_x</span> = <span class="variable">x</span> + <span class="variable">roundness</span>; 	<span class="comment">// horizontal point</span>
-         <span class="variable">tlc_lgth_y</span> = <span class="variable">y</span>;
-         <span class="variable">tlc_wdth_x</span> = <span class="variable">x</span>;				<span class="comment">// vertical point</span>
-         <span class="variable">tlc_wdth_y</span> = <span class="variable">y</span> + <span class="variable">roundness</span>;
-         
-         <span class="comment">// bottom left corner</span>
-         <span class="variable">blc_ctrl_x</span> = <span class="variable">x</span>; 				<span class="comment">// control point</span>
-         <span class="variable">blc_ctrl_y</span> = <span class="variable">y</span> + <span class="variable">height</span>;
-         <span class="variable">blc_lgth_x</span> = <span class="variable">x</span> + <span class="variable">roundness</span>; 	<span class="comment">// horizontal point</span>
-         <span class="variable">blc_lgth_y</span> = <span class="variable">y</span> + <span class="variable">height</span>;
-         <span class="variable">blc_wdth_x</span> = <span class="variable">x</span>;				<span class="comment">// vertical point</span>
-         <span class="variable">blc_wdth_y</span> = <span class="variable">y</span> + <span class="variable">height</span> - <span class="variable">roundness</span>;
-         
-         <span class="comment">// bottom right corner</span>
-         <span class="variable">brc_ctrl_x</span> = <span class="variable">x</span> + <span class="variable">length</span>; 				<span class="comment">// control point</span>
-         <span class="variable">brc_ctrl_y</span> = <span class="variable">y</span> + <span class="variable">height</span>;
-         <span class="variable">brc_lgth_x</span> = <span class="variable">x</span> + <span class="variable">length</span> - <span class="variable">roundness</span>; 	<span class="comment">// horizontal point</span>
-         <span class="variable">brc_lgth_y</span> = <span class="variable">y</span> + <span class="variable">height</span>;
-         <span class="variable">brc_wdth_x</span> = <span class="variable">x</span> + <span class="variable">length</span>;				<span class="comment">// vertical point</span>
-         <span class="variable">brc_wdth_y</span> = <span class="variable">y</span> + <span class="variable">height</span> - <span class="variable">roundness</span>;
-         
-         <span class="comment">// top right corner</span>
-         <span class="variable">trc_ctrl_x</span> = <span class="variable">x</span> + <span class="variable">length</span>; 				<span class="comment">// control point</span>
-         <span class="variable">trc_ctrl_y</span> = <span class="variable">y</span>;
-         <span class="variable">trc_lgth_x</span> = <span class="variable">x</span> + <span class="variable">length</span> - <span class="variable">roundness</span>; 	<span class="comment">// horizontal point</span>
-         <span class="variable">trc_lgth_y</span> = <span class="variable">y</span>;
-         <span class="variable">trc_wdth_x</span> = <span class="variable">x</span> + <span class="variable">length</span>;				<span class="comment">// vertical point</span>
-         <span class="variable">trc_wdth_y</span> = <span class="variable">y</span> + <span class="variable">roundness</span>;
-         
-         <span class="comment">// draw lines</span>
-         
-         <span class="comment">// top left corner</span>
-         <span class="variable">ctx</span>.<span class="variable">moveTo</span>(<span class="variable">tlc_lgth_x</span>, <span class="variable">tlc_lgth_y</span>); 
-         <span class="variable">ctx</span>.<span class="variable">quadraticCurveTo</span>(<span class="variable">tlc_ctrl_x</span>, <span class="variable">tlc_ctrl_y</span>, <span class="variable">tlc_wdth_x</span>, <span class="variable">tlc_wdth_y</span>);
-         
-         <span class="comment">// bottom left corner</span>
-         <span class="variable">ctx</span>.<span class="variable">lineTo</span>(<span class="variable">blc_wdth_x</span>, <span class="variable">blc_wdth_y</span>);
-         <span class="variable">ctx</span>.<span class="variable">quadraticCurveTo</span>(<span class="variable">blc_ctrl_x</span>, <span class="variable">blc_ctrl_y</span>, <span class="variable">blc_lgth_x</span>, <span class="variable">blc_lgth_y</span>);
-         
-         <span class="comment">// bottom right corner</span>
-         <span class="variable">ctx</span>.<span class="variable">lineTo</span>(<span class="variable">brc_lgth_x</span>, <span class="variable">brc_lgth_y</span>);
-         <span class="variable">ctx</span>.<span class="variable">quadraticCurveTo</span>(<span class="variable">brc_ctrl_x</span>, <span class="variable">brc_ctrl_y</span>, <span class="variable">brc_wdth_x</span>, <span class="variable">brc_wdth_y</span>);
-         
-         <span class="comment">// top right corner</span>
-         <span class="variable">ctx</span>.<span class="variable">lineTo</span>(<span class="variable">trc_wdth_x</span>, <span class="variable">trc_wdth_y</span>);
-         <span class="variable">ctx</span>.<span class="variable">quadraticCurveTo</span>(<span class="variable">trc_ctrl_x</span>, <span class="variable">trc_ctrl_y</span>, <span class="variable">trc_lgth_x</span>, <span class="variable">trc_lgth_y</span>);
-         
-         <span class="comment">// top line</span>
-         <span class="variable">ctx</span>.<span class="variable">lineTo</span>(<span class="variable">tlc_lgth_x</span>, <span class="variable">tlc_lgth_y</span>);
-	}
-});</code></pre>
-</td>
 </tr><tr class="filename"><td><h2 id="parsers/bed.js"><a href="#">bed</a></h2></td><td>parsers/bed.js</td></tr><tr class="code">
 <td class="docs">
 <p>Bed parser
@@ -4291,62 +4347,6 @@ any feature that should be made up of other features</em></p>
 			<span class="variable">complex</span>.<span class="variable">addSubFeature</span>( <span class="keyword">new</span> <span class="class">BlockArrow</span>(<span class="string">'complex'</span>, <span class="variable">parseInt</span>(<span class="variable">blockStarts</span>[<span class="variable">k</span>]), <span class="variable">parseInt</span>(<span class="variable">blockLengths</span>[<span class="variable">k</span>]), <span class="variable">orientation</span>));
 		}
 	}
-}</code></pre>
-</td>
-</tr><tr class="filename"><td><h2 id="parsers/genbank.js"><a href="#">genbank</a></h2></td><td>parsers/genbank.js</td></tr><tr class="code">
-<td class="docs">
-<p>Genbank parser
- </p>
-</td>
-<td class="code">
-<pre><code><span class="keyword">function</span> <span class="variable">genbank</span>(<span class="variable">file</span>, <span class="variable">bchart</span>) {
-	
-	<span class="keyword">var</span> <span class="variable">lines</span> = <span class="variable">file</span>.<span class="variable">split</span>(&quot;\<span class="variable">n</span>&quot;);
-	<span class="keyword">var</span> <span class="variable">re</span> = <span class="keyword">new</span> <span class="class">RegExp</span>(<span class="regexp">/\s+gene\s+([a-z]*)\(?(\d+)\.\.(\d+)/</span>);
-	<span class="keyword">var</span> <span class="variable">genes</span> = [];
-	<span class="keyword">var</span> <span class="variable">max</span> = <span class="variable">undefined</span>;
-	<span class="keyword">var</span> <span class="variable">min</span> = <span class="variable">undefined</span>;
-	
-	<span class="comment">// parse genes</span>
-	<span class="keyword">for</span>( <span class="keyword">var</span> <span class="variable">j</span>=<span class="number integer">0</span>; <span class="variable">j</span> &lt; <span class="variable">lines</span>.<span class="variable">length</span>; <span class="variable">j</span>++ ) {
-
-		<span class="keyword">var</span> <span class="variable">gene_info</span>;
-		<span class="keyword">if</span> (<span class="variable">gene_info</span> = <span class="variable">lines</span>[<span class="variable">j</span>].<span class="variable">match</span>(<span class="variable">re</span>)) {
-			<span class="variable">gene_info</span>.<span class="variable">shift</span>();
-			<span class="variable">genes</span>.<span class="variable">push</span>(<span class="variable">gene_info</span>);
-			
-			<span class="comment">// determine scale dimensions</span>
-			<span class="keyword">var</span> <span class="variable">end</span> = <span class="variable">gene_info</span>[<span class="number integer">2</span>];
-			<span class="keyword">if</span> (<span class="variable">max</span> == <span class="variable">undefined</span> || <span class="variable">max</span> &gt; <span class="variable">end</span>)
-				<span class="variable">max</span> = <span class="variable">end</span>;
-			<span class="keyword">var</span> <span class="variable">position</span> = <span class="variable">gene_info</span>[<span class="number integer">1</span>];
-			<span class="keyword">if</span> (<span class="variable">min</span> == <span class="variable">undefined</span> || <span class="variable">min</span> &lt; <span class="variable">position</span>)
-				<span class="variable">min</span> = <span class="variable">position</span>;
-		}
-	}
-
-
-	<span class="comment">// set scale dimensions</span>
-	<span class="variable">bchart</span>.<span class="variable">scale</span>.<span class="variable">max</span> = <span class="variable">max</span>;
-	<span class="variable">bchart</span>.<span class="variable">scale</span>.<span class="variable">min</span> = <span class="variable">min</span>;
-
-	<span class="comment">// add genes to chart</span>
-	<span class="keyword">for</span>(<span class="keyword">var</span> <span class="variable">i</span>=<span class="number integer">0</span>; <span class="variable">i</span> &lt; <span class="variable">genes</span>.<span class="variable">length</span>; <span class="variable">i</span>++ ) {
-		
-		<span class="comment">// get positional values</span>
-		<span class="keyword">var</span> <span class="variable">strand</span> = <span class="string">'+'</span>;
-		<span class="keyword">if</span> ( <span class="variable">genes</span>[<span class="variable">i</span>][<span class="number integer">0</span>] == &quot;<span class="variable">complement</span>&quot; )
-			<span class="variable">strand</span> = <span class="string">'-'</span>;
-			
-		<span class="keyword">var</span> <span class="variable">position</span> = <span class="variable">genes</span>[<span class="variable">i</span>][<span class="number integer">1</span>];
-		<span class="keyword">var</span> <span class="variable">end</span> = <span class="variable">genes</span>[<span class="variable">i</span>][<span class="number integer">2</span>];
-		<span class="variable">position</span> = <span class="variable">position</span> - <span class="number integer">1</span> + <span class="number integer">1</span>;  <span class="comment">// force to be integer - TODO make bChart catch non-ints automatically and gracefully fail</span>
-		<span class="keyword">var</span> <span class="variable">length</span> = <span class="variable">end</span> - <span class="variable">position</span>;
-		
-		<span class="variable">bchart</span>.<span class="variable">addGene</span>(<span class="variable">position</span>, <span class="variable">length</span>, <span class="variable">strand</span>);
-
-	}
-
 }</code></pre>
 </td>
 </tr>	</body>

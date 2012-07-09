@@ -167,5 +167,31 @@ var Lane = Class.extend({
          }
       }
       return hasGlyphs;
+   },
+   
+   /** **filterFeaturesByPosition**
+   
+   * _returns an array of features that fall inside a given range_
+   
+   * @param {Int} start - the start of the range
+   * @param {Int} end - the end of the range
+   * @return {Array} features - the features that any part of which fall inside that range
+   * @api public
+   */
+   
+   filterFeaturesByPosition: function(start, end) {
+      var lane = this;
+      var features = [];
+      var numFeatures = lane.features.length;
+      
+      for( var i=0; i < numFeatures; i++ ) {
+         var ftStart = lane.features[i].position;
+         var ftEnd = lane.features[i].getEnd();
+
+         if ( (ftStart >= start && ftStart <= end) || (ftEnd >= start && ftEnd <= end) )
+           features.push( lane.features[i] );
+      }
+      
+      return features;
    }
 });

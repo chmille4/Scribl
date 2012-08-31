@@ -984,9 +984,10 @@ var Scribl = Class.extend({
          this.canvas.addEventListener('mousemove', chart.mouseHandler, false);
       }
       if ( this.events.clicks.length > 0 ) {
-         //$(this.canvas).bind('click', function(e) {chart.handleMouseEvent(e, 'click')})
-         this.canvas.removeEventListener('click', chart.clickHandler);
-         this.canvas.addEventListener('click', chart.clickHandler, false);
+         $(this.canvas).unbind('click');
+         $(this.canvas).bind('click', function(e) {chart.handleMouseEvent(e, 'click')})
+         // this.canvas.removeEventListener('click', chart.clickHandler);
+         // this.canvas.addEventListener('click', chart.clickHandler, false);
       }
       this.events.added = true;
    }

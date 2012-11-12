@@ -5,30 +5,40 @@
 		<script  src="../js/Scribl.1.0.min.js" ></script>
       <script type="text/javascript" src="../js/genbankData.js"></script> 
 		<link rel="stylesheet" type="text/css" href="../css/demos.css" />
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		<link rel="stylesheet" href="../js/highlight/styles/github.css">
+      <script src="../js/highlight/highlight.pack.js"></script>
+	  	<script>	
+         $(document).ready(function() {
+           document.getElementById('code').innerHTML = document.getElementById('scriblScript').text;
+           hljs.initHighlightingOnLoad();
+         });
+      </script>
 		
-      		<script>
-      				function draw(canvasName) {  
+		
+<script id="scriblScript">
+function draw(canvasName) {  
 
-      					// Get Canvas and Create Chart
-      				  	var canvas = document.getElementById(canvasName);  	
+   // Get Canvas and Create Chart
+   var canvas = document.getElementById(canvasName);  	
 
-      					// Create Chart
-      					chart = new Scribl(canvas, 660);
-      					chart.laneSizes = 15;
+   // Create Chart
+   chart = new Scribl(canvas, 660);
+   chart.laneSizes = 15;
 
-      					// parse and load genbank file
-      					chart.loadGenbank(getGenbankData());
+   // parse and load genbank file
+   chart.loadGenbank(getGenbankData());
 
-      					// Draw Chart
-      					chart.draw();
+   // Draw Chart
+   chart.draw();
 
-      					// Create image of chart1
-      					var img = chart.canvas.toDataURL("image/png");
-      					// Add link to download image
-      					document.getElementById('export').href = img;
-      			}
+   // Create image of chart1
+   var img = chart.canvas.toDataURL("image/png");
+   // Add link to download image
+   document.getElementById('export').href = img;
+}
 
-      		</script>
+</script>
 
       	</head>  
 
@@ -38,7 +48,11 @@
       		</div>
       		<div id="container">
       			<canvas id="canvas" width="700" height="200"></canvas>  
-      						</br><a id="export">Export as PNG (right click Save As)</a>
+               </br><a id="export">Export as PNG (right click Save As)</a>
+               
+               </br></br></br><h2>Code</h2>
+         		<pre><code id="code" style="margin-left:auto; margin-right:auto; text-align:left; width: 500px"></code></pre>
+      						
       		</div>
       	</body>
 

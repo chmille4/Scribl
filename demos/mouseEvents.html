@@ -4,6 +4,16 @@
 		<title>Scribl - mouse events</title>
 		<script  src="../js/Scribl.1.0.min.js" ></script>
 		<link rel="stylesheet" type="text/css" href="../css/demos.css" />	
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		<link rel="stylesheet" href="../js/highlight/styles/github.css">
+      <script src="../js/highlight/highlight.pack.js"></script>
+	  	<script>	
+         $(document).ready(function() {
+           document.getElementById('code').innerHTML = document.getElementById('scriblScript').text;
+           hljs.initHighlightingOnLoad();
+         });
+      </script>
+		
 		
 		<script type="text/javascript">
 
@@ -19,32 +29,32 @@
 
 		</script>	
 		
-		<script> 
+<script id="scriblScript"> 
 
-			function draw(canvasName) {  
-					
-					// Get Canvas and Create Chart
-				  	var canvas = document.getElementById(canvasName);  	
-					
-					// Create Chart
-					chart1 = new Scribl(canvas, 500);
+function draw(canvasName) {  
 
-					// Add Gene      position, length, orientation
-					gene1 = chart1.addGene( 900,    750 , '-');
-					gene1.name = "Click Me";
-					gene1.onMouseover = "Start:900 Length:750";
-					gene1.onClick = "http://www.google.com";
-					
-					gene2 = chart1.addGene( 3500, 2500, '+');
-					gene2.name = "Gene 2";
-					gene2.onMouseover = "Start:3500 Length:2500";
-					gene2.onClick = function() {alert("gene clicked");}
-					
-					// Draw Chart
-					chart1.draw();
-			}
-				
-		</script>
+   // Get Canvas and Create Chart
+   var canvas = document.getElementById(canvasName);  	
+
+   // Create Chart
+   chart1 = new Scribl(canvas, 500);
+
+   // Add Gene      position, length, orientation
+   gene1 = chart1.addGene( 900,    750 , '-');
+   gene1.name = "Click Me";
+   gene1.onMouseover = "Start:900 Length:750";
+   gene1.onClick = "http://www.google.com";
+
+   gene2 = chart1.addGene( 3500, 2500, '+');
+   gene2.name = "Gene 2";
+   gene2.onMouseover = "Start:3500 Length:2500";
+   gene2.onClick = function() {alert("gene clicked");}
+
+   // Draw Chart
+   chart1.draw();
+}
+	
+</script>
 
 	</head>  
 	
@@ -55,6 +65,8 @@
 		</div><br/>
 		<div id="container">
 			<canvas id="canvas" width="547" height="330" ></canvas>  
+		<h2>Code</h2>
+   		<pre><code id="code" style="margin-left:auto; margin-right:auto; text-align:left; width: 500px"></code></pre>
 		</div>
 		
 	</body>

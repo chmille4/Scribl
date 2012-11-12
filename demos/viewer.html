@@ -2,10 +2,20 @@
 <html lang="en">
 	<head>
 		<title>Scribl - viewer</title>
+			  	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
 		<script  src="../js/Scribl.1.0.min.js" ></script>
 		<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
 		<link rel="stylesheet" type="text/css" href="../css/demos.css" />
-	  	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+		<link rel="stylesheet" href="../js/highlight/styles/github.css">
+      <script src="../js/highlight/highlight.pack.js"></script>
+	  	<script>	
+         $(document).ready(function() {
+           document.getElementById('code').innerHTML = document.getElementById('scriblScript').text;
+           hljs.initHighlightingOnLoad();
+         });
+      </script>
+		
+
 	  		  	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js"></script>
 	  	<script type="text/javascript" src="../js/dragscrollable.js"></script> 
       
@@ -32,18 +42,18 @@
       		   }
       		</style>
 
-      		<script type="text/javascript">
+<script type="text/javascript" id="scriblScript">
 
-      		  function go() {
-                  var zoomCanvas = document.getElementById('canvas');
-                  origZoomChart = new Scribl(zoomCanvas, 900);
-                  origZoomChart.loadGenbank(getGenbankData());
-                  origZoomChart.scrollable = true;
-                  origZoomChart.scrollValues = [200000, 250000];
-                  origZoomChart.draw();
-      		  }
+function go() {
+   var zoomCanvas = document.getElementById('canvas');
+   origZoomChart = new Scribl(zoomCanvas, 900);
+   origZoomChart.loadGenbank(getGenbankData());
+   origZoomChart.scrollable = true;
+   origZoomChart.scrollValues = [200000, 250000];
+   origZoomChart.draw();
+}
 
-      		</script>
+</script>
 
       	</head>  
 
@@ -60,6 +70,9 @@
       		</div>
       		<div id="container">
       		            <canvas id="canvas" width="940px" height="400px"  style="margin-left:auto; margin-right:auto"></canvas>  
+      		            
+<h2>Code</h2>
+               		<pre><code id="code" style="margin-left:auto; margin-right:auto; text-align:left; width: 500px"></code></pre>
       		</div>		
       	</body>
 

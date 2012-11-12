@@ -4,6 +4,15 @@
 		<title>Scribl - simple demo</title>
 		<script  src="../js/Scribl.1.0.min.js" ></script>
 		<link rel="stylesheet" type="text/css" href="../css/demos.css" />
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		<link rel="stylesheet" href="../js/highlight/styles/github.css">
+      <script src="../js/highlight/highlight.pack.js"></script>
+	  	<script>	
+         $(document).ready(function() {
+           document.getElementById('code').innerHTML = document.getElementById('scriblScript').text;
+           hljs.initHighlightingOnLoad();
+         });
+      </script>
 		
 		<script type="text/javascript">
 		  var _gaq = _gaq || [];
@@ -18,56 +27,56 @@
 
 		</script>
 		
-		<script> 
+<script id="scriblScript"> 
 
-			function draw(canvasName) {  
-					
-					// Get Canvas and Create Chart
-				  	var canvas = document.getElementById(canvasName);  	
-					
-					// Create Chart
-					chart1 = new Scribl(canvas, 500);
+function draw(canvasName) {  
 
-					// Add Genes  with helper method
-					gene1 = chart1.addGene( 0,    950 , '+');
-					gene2 = chart1.addGene( 900,    750 , '-');
-					// Add Gene with generic addFeature method
-					gene3 = chart1.addFeature( new BlockArrow("gene", 3500, 2500, '+') );
-					
-					// Add protein with helper method
-					protein1 = chart1.addProtein( 8100, 1000, '-');
-					// Add protein with generic addFeature method
-					protein2 = chart1.addFeature( new BlockArrow("protein", 6200, 1500, '+') );
-					
-					// Add custom types which do not have helper methods
-					humanGene1 = chart1.addFeature( new BlockArrow("human", 1000,  1000, '-') );		
-					humanGene2 = chart1.addFeature( new BlockArrow("human", 3500, 1500, '-') );		
-					
-					// Add Rect glyph
-					track1 = chart1.addTrack();
-					track1.height = 10;
-					annotation1 = track1.addFeature( new Rect('annotation', 1000, 1000) );
-					annotation2 = track1.addFeature( new Rect('annotation', 3500, 1500) );
+   // Get Canvas and Create Chart
+   var canvas = document.getElementById(canvasName);  	
 
-					// set colors based on "type"
-					// note: other attributes work identically (e.g. roundness, font, font color)
-					chart1.gene.color = "yellow";
-					chart1.protein.color = "green";
-					chart1.human.color = "red"
-					
-					// set color for specific gene and overide type color
-					gene1.color = "blue";
-					
-					// Draw Chart
-					chart1.draw();
-					
-					// Create image of chart1
-					var img = chart1.canvas.toDataURL("image/png");
-					// Add link to download image
-					document.getElementById('export').href = img;
-			}
-				
-		</script>
+   // Create Chart
+   chart1 = new Scribl(canvas, 500);
+
+   // Add Genes  with helper method
+   gene1 = chart1.addGene( 0,    950 , '+');
+   gene2 = chart1.addGene( 900,    750 , '-');
+   // Add Gene with generic addFeature method
+   gene3 = chart1.addFeature( new BlockArrow("gene", 3500, 2500, '+') );
+
+   // Add protein with helper method
+   protein1 = chart1.addProtein( 8100, 1000, '-');
+   // Add protein with generic addFeature method
+   protein2 = chart1.addFeature( new BlockArrow("protein", 6200, 1500, '+') );
+
+   // Add custom types which do not have helper methods
+   humanGene1 = chart1.addFeature( new BlockArrow("human", 1000,  1000, '-') );		
+   humanGene2 = chart1.addFeature( new BlockArrow("human", 3500, 1500, '-') );		
+
+   // Add Rect glyph
+   track1 = chart1.addTrack();
+   track1.height = 10;
+   annotation1 = track1.addFeature( new Rect('annotation', 1000, 1000) );
+   annotation2 = track1.addFeature( new Rect('annotation', 3500, 1500) );
+
+   // set colors based on "type"
+   // note: other attributes work identically (e.g. roundness, font, font color)
+   chart1.gene.color = "yellow";
+   chart1.protein.color = "green";
+   chart1.human.color = "red"
+
+   // set color for specific gene and overide type color
+   gene1.color = "blue";
+
+   // Draw Chart
+   chart1.draw();
+
+   // Create image of chart1
+   var img = chart1.canvas.toDataURL("image/png");
+   // Add link to download image
+   document.getElementById('export').href = img;
+}
+
+</script>
 
 	</head>  
 	
@@ -80,6 +89,8 @@
 		<div id="container">
 			<canvas id="canvas" width="547" height="330"></canvas>  
 			</br><a id="export">Export as PNG (right click Save As)</a>
+         </br></br><h2>Code</h2>
+   		<pre><code id="code" style="margin-left:auto; margin-right:auto; text-align:left; width: 700px"></code></pre>
 		</div>
 		
 	</body>

@@ -4,6 +4,16 @@
 		<title>Scribl - drag n drop</title>
 		<script  src="../js/Scribl.1.0.min.js" ></script>
 		<link rel="stylesheet" type="text/css" href="../css/demos.css" />
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		<link rel="stylesheet" href="../js/highlight/styles/github.css">
+      <script src="../js/highlight/highlight.pack.js"></script>
+	  	<script>	
+         $(document).ready(function() {
+           document.getElementById('code').innerHTML = document.getElementById('scriblScript').text;
+           hljs.initHighlightingOnLoad();
+         });
+      </script>
+      
 		
 		<script type="text/javascript">
 
@@ -32,64 +42,67 @@
 		</div>
 		<div id="container">
 			<canvas id='canvas' width=900 height=450/>
+
 		</div>
+		</br></br></br><h2 style="text-align:center">Code</h2>
+		<pre><code id="code" style="margin-left:auto; margin-right:auto; text-align:left; width: 500px"></code></pre>
 		
-		<script>
-		var dropbox = document.getElementById('dropbox');
-		if (!window.FileReader) {
-		  dropbox.innerHTML = "<p>This browser doesnt support the File API</p>";
-		} else {
-		  // Page Layout
-		  dropbox.innerHTML =
-		    '<p>Drag a Genbank(.gb) or BED(.bed) file onto this area <input type="hidden" id="file" /></p>';
+		<script id="scriblScript">
+   var dropbox = document.getElementById('dropbox');
+   if (!window.FileReader) {
+     dropbox.innerHTML = "<p>This browser doesnt support the File API</p>";
+   } else {
+     // Page Layout
+     dropbox.innerHTML =
+       '<p>Drag a Genbank(.gb) or BED(.bed) file onto this area <input type="hidden" id="file" /></p>';
 
-		  // Displays gene charts.
-		  function displayChart(file) {
-		    var reader = new FileReader();
-			var fileType = /[^.]+$/.exec(file.name);
+   // Displays gene charts.
+   function displayChart(file) {
+      var reader = new FileReader();
+      var fileType = /[^.]+$/.exec(file.name);
 
-		   reader.onload = function(event) {
-				var canvas = document.getElementById('canvas');
-				chart = new Scribl(canvas, 810);
-				if (fileType == "bed") 
-					chart.loadBed(event.target.result);
-				else if (fileType == "gb")
-					chart.loadGenbank(event.target.result);
-				else
-				 	alert("File must have a .gb or .bed extension");
-				chart.draw();		
-		    };
-		    reader.readAsText(file);
-		  }		 
+      reader.onload = function(event) {
+      	var canvas = document.getElementById('canvas');
+      	chart = new Scribl(canvas, 810);
+      	if (fileType == "bed") 
+      		chart.loadBed(event.target.result);
+      	else if (fileType == "gb")
+      		chart.loadGenbank(event.target.result);
+      	else
+      	 	alert("File must have a .gb or .bed extension");
+      	chart.draw();		
+       };
+       reader.readAsText(file);
+   }		 
 
-		  // Input handler
-		  document.getElementById('file').onchange = function() {
-		    displayFile(this.files[0]);
-		  };
+  // Input handler
+  document.getElementById('file').onchange = function() {
+    displayFile(this.files[0]);
+  };
 
-		  // Reduce movement by adding invisible border
-		  dropbox.style.border = '4px solid transparent';
+  // Reduce movement by adding invisible border
+  dropbox.style.border = '4px solid transparent';
 
-		  // Add dragging events
-		  dropbox.ondragenter = function() {
-		    dropbox.style.border = '4px solid #b1ecb3';
-		    return false;
-		  };
+  // Add dragging events
+  dropbox.ondragenter = function() {
+    dropbox.style.border = '4px solid #b1ecb3';
+    return false;
+  };
 
-		  dropbox.ondragover = function() {
-		    return false;
-		  };
+  dropbox.ondragover = function() {
+    return false;
+  };
 
-		  dropbox.ondragleave = function() {
-		    return false;
-		  };
+  dropbox.ondragleave = function() {
+    return false;
+  };
 
-		  dropbox.ondrop = function(event) {
-		    dropbox.style.border = '4px solid transparent';
-		    displayChart(event.dataTransfer.files[0]);
-		    return false;
-		  };
-		}
+  dropbox.ondrop = function(event) {
+    dropbox.style.border = '4px solid transparent';
+    displayChart(event.dataTransfer.files[0]);
+    return false;
+  };
+}
 		</script>
 	</body>
 	

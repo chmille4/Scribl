@@ -7,6 +7,15 @@
 		<link rel="stylesheet" type="text/css" href="../css/demos.css" />
 	  	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
 	  	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+	  	<link rel="stylesheet" href="../js/highlight/styles/github.css">
+      <script src="../js/highlight/highlight.pack.js"></script>
+	  	<script>	
+         $(document).ready(function() {
+           document.getElementById('code').innerHTML = document.getElementById('scriblScript').text;
+           hljs.initHighlightingOnLoad();
+         });
+				
+		</script>
 		
       		<script type="text/javascript">
       			  var _gaq = _gaq || [];
@@ -20,96 +29,136 @@
       			  })();
       		</script>
 
-      		<script>
-      	  		$(document).ready(function() {
-      	    		$("#shapeSlider").slider( { min: 1, max: 20, value: 6, slide: function(event, ui){ redraw() } });
-      	    		$("#laneSlider").slider( { min: 10, max: 200, value: 50, slide: function(event, ui){ redraw() } });
-      				$("#rSlider1").slider( { min: 0, max: 260, value: 0, slide: function(event, ui){ redraw() } });
-      				$("#bSlider1").slider( { min: 0, max: 260, value: 0, slide: function(event, ui){ redraw() } });	
-      				$("#gSlider1").slider( { min: 0, max: 260, value: 0, slide: function(event, ui){ redraw() } });	
-      				$("#rSlider2").slider( { min: 0, max: 260, value: 0, slide: function(event, ui){ redraw() } });	
-      				$("#bSlider2").slider( { min: 0, max: 260, value: 0, slide: function(event, ui){ redraw() } });	
-      				$("#gSlider2").slider( { min: 0, max: 260, value: 0, slide: function(event, ui){ redraw() } });	
-      	  		});
-      	  	</script>
+<script id="scriblScript">
+$(document).ready(function() {
+   // setup sliders
+   $("#shapeSlider").slider( { 
+      min: 1, 
+      max: 20, 
+      value: 6, 
+      slide: function(event, ui){ redraw() } 
+   });
+   $("#laneSlider").slider( { 
+      min: 10, 
+      max: 200, 
+      value: 50, 
+      slide: function(event, ui){ redraw() } 
+   });
+   $("#rSlider1").slider( { 
+      min: 0, 
+      max: 260, 
+      value: 0, 
+      slide: function(event, ui){ redraw() } 
+   });
+   $("#bSlider1").slider( { 
+      min: 0, 
+      max: 260, 
+      value: 0, 
+      slide: function(event, ui){ redraw() } 
+   });	
+   $("#gSlider1").slider( { 
+      min: 0, 
+      max: 260, 
+      value: 0, 
+      slide: function(event, ui){ redraw() } 
+   });	
+   $("#rSlider2").slider( { 
+      min: 0, 
+      max: 260, 
+      value: 0, 
+      slide: function(event, ui){ redraw() } 
+   });	
+   $("#bSlider2").slider( { 
+      min: 0, 
+      max: 260, 
+      value: 0, 
+      slide: function(event, ui){ redraw() } 
+   });	
+   $("#gSlider2").slider( { 
+      min: 0, 
+      max: 260, 
+      value: 0, 
+      slide: function(event, ui){ redraw() } 
+   });	
+});
 
-      		<script> 
 
-      			function draw(canvasName) {  
+function draw(canvasName) {  
 
-      					// Get Canvas and Create Chart
-      				  	var canvas = document.getElementById(canvasName);  	
+   // Get Canvas and Create Chart
+   	var canvas = document.getElementById(canvasName);  	
 
-      					// Create Chart
-      					chart1 = new Scribl(canvas, 500);
-      					chart1.glyph.color = "black";
+   // Create Chart
+   chart1 = new Scribl(canvas, 500);
+   chart1.glyph.color = "black";
 
-      					// Add Genes      position, length, orientation
-      					gene1 = chart1.addGene( 900,    750 , '-');
-      					gene2 = chart1.addGene( 3500, 2500, '+');
-      					gene3 = chart1.addGene( 8100, 1000, '-');
-      					gene4 = chart1.addGene( 6200, 1500, '+');
-      					gene5 = chart1.addGene( 1000,  1000, '-');		
-      					gene6 = chart1.addGene( 3500, 1500, '-');		
-      					gene7 = chart1.addGene( 2230, 1000, '+');
-      					gene8 = chart1.addGene( 5000, 1500, '+');				
-      					gene9 = chart1.addGene( 7230, 1000, '-');
-      					gene10 = chart1.addFeature(
-      						new Complex('gene', 1500, 5000, '+', [ 
-      							new BlockArrow('gene',0,500, '+'), 
-      							new Rect('gene',2000,500), 
-      							new Arrow('gene',5000, '+')
-      						])
-      					);
+   // Add Genes      position, length, orientation
+   gene1 = chart1.addGene( 900,    750 , '-');
+   gene2 = chart1.addGene( 3500, 2500, '+');
+   gene3 = chart1.addGene( 8100, 1000, '-');
+   gene4 = chart1.addGene( 6200, 1500, '+');
+   gene5 = chart1.addGene( 1000,  1000, '-');		
+   gene6 = chart1.addGene( 3500, 1500, '-');		
+   gene7 = chart1.addGene( 2230, 1000, '+');
+   gene8 = chart1.addGene( 5000, 1500, '+');				
+   gene9 = chart1.addGene( 7230, 1000, '-');
+   gene10 = chart1.addFeature(
+   	new Complex('gene', 1500, 5000, '+', [ 
+   		new BlockArrow('gene',0,500, '+'), 
+   		new Rect('gene',2000,500), 
+   		new Arrow('gene',5000, '+')
+   	])
+   );
 
-      					// add name
-      					gene3.name = "Gene 2";
-      					gene3.text.color = "white";
+   // add name
+   gene3.name = "Gene 2";
+   gene3.text.color = "white";
 
-      					// Draw Chart
-      					chart1.draw();
+   // Draw Chart
+   chart1.draw();
 
-      					// Create image of chart1
-      					var img = chart1.canvas.toDataURL("image/png");
-      					// Add link to download image
-      					$("a#export").attr('href', img);
+   // Create image of chart1
+   var img = chart1.canvas.toDataURL("image/png");
+   // Add link to download image
+   $("a#export").attr('href', img);
 
-      					// have to reset chart.gene.color to undefined or else it overrides everything downstream ...
-      					chart1.glyph.color = undefined;
-      			}
+   // have to reset chart.gene.color to undefined or else it overrides everything downstream ...
+   chart1.glyph.color = undefined;
+}
 
-      			function redraw() {
-      				// changeable options
-      				roundness = $("#shapeSlider").slider( "option", "value" );
-      				laneSizes = $("#laneSlider").slider( "option", "value" );
-      				r1 = $("#rSlider1").slider( "option", "value" );
-      				g1 = $("#gSlider1").slider( "option", "value" );
-      				b1 = $("#bSlider1").slider( "option", "value" );
-      				r2 = $("#rSlider2").slider( "option", "value" );
-      				g2 = $("#gSlider2").slider( "option", "value" );
-      				b2 = $("#bSlider2").slider( "option", "value" );
-      				canvas = document.getElementById('canvas');
-      				canvas.height = chart1.getHeight() + 20;
+function redraw() {
+   // changeable options
+   roundness = $("#shapeSlider").slider( "option", "value" );
+   laneSizes = $("#laneSlider").slider( "option", "value" );
+   r1 = $("#rSlider1").slider( "option", "value" );
+   g1 = $("#gSlider1").slider( "option", "value" );
+   b1 = $("#bSlider1").slider( "option", "value" );
+   r2 = $("#rSlider2").slider( "option", "value" );
+   g2 = $("#gSlider2").slider( "option", "value" );
+   b2 = $("#bSlider2").slider( "option", "value" );
+   canvas = document.getElementById('canvas');
+   canvas.height = chart1.getHeight() + 20;
 
-      				// set new values
-      				chart1.glyph.roundness = roundness;
-      				chart1.laneSizes = parseInt(laneSizes);
+   // set new values
+   chart1.glyph.roundness = roundness;
+   chart1.laneSizes = parseInt(laneSizes);
 
-      				// assemble color
-      				top_color = "rgb(" + r1 + ", " + g1 + ", " + b1 + ")";
-      				bottom_color = "rgb(" + r2 + ", " + g2 + ", " + b2 + ")";	
+   // assemble color
+   top_color = "rgb(" + r1 + ", " + g1 + ", " + b1 + ")";
+   bottom_color = "rgb(" + r2 + ", " + g2 + ", " + b2 + ")";	
 
-      				chart1.glyph.color = [top_color, bottom_color];
+   chart1.glyph.color = [top_color, bottom_color];
 
-      				chart1.redraw();
+   chart1.redraw();
 
-      				// Create image of chart1
-      				var img = chart1.canvas.toDataURL("image/png");
-      				// Add link to download image
-      				$("a#export").attr('href', img);
-      			}
+   // Create image of chart1
+   var img = chart1.canvas.toDataURL("image/png");
+   // Add link to download image
+   $("a#export").attr('href', img);
+}
 
-      		</script>
+</script>
+      		      	
 
       	</head>  
 
@@ -156,6 +205,8 @@
       		<div id="container">
       			<canvas id="canvas" width="547" height="350"></canvas>  
       			<br/><a id="export">Export as PNG (right click Save As)</a>
+      			</br></br></br><h2>Code</h2>
+         		<pre><code id="code" style="margin-left:auto; margin-right:auto; text-align:left; width: 700px"></code></pre>
       		</div>
 
 

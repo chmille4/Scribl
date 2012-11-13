@@ -2,6 +2,11 @@ body {
 	background-color: #C3D3E4;
 }
 
+h2 {
+   font-family: arial; 
+	color: rgb(64, 64, 64);
+}
+
 #description{
 	margin-left:auto; 
 	margin-right:auto; 
@@ -25,6 +30,10 @@ body {
 	height: 6px; 
 	font-size: 8px; 
 	display: inline-block;
+}
+
+#code {
+   border-radius:5px;
 }
 
 #watermark {

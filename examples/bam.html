@@ -24,7 +24,7 @@
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js"></script>
-<script type="text/javascript" src="examples/js/dragscrollable.js"></script>
+<script type="text/javascript" src="js/dragscrollable.js"></script>
 
 
 <script language="javascript">
@@ -46,7 +46,7 @@ function testBam() {
    // chart.draw();
    // chart.addGene(10, 1000, '+');
    // chart.addGene(1000, 1000, '+');
-	var track = chart.loadBam(bamFile, baiFile,'22', 30000100,30000200);
+	var track = chart.loadBam(bamFile, baiFile,$('#chromosome').val(), $('#startpos').val(),$('#endpos').val());
 	//track.drawOnResponse = true;
 	chart.tmp = true;
    chart.draw();
@@ -58,10 +58,13 @@ function testBam() {
 
 <body>   
    <h1>BAM test</h1>
-   <div id='content'></div>
+   <div  id='content'></div>
    <input type="file" id="files" name="files[]" multiple />
-   <button onClick="testBam()">Test Bam</button>
-   <div id="container">
+   <span>Chromosome </span><input id="chromosome" value="13"/>
+   <span style="margin-left: 10px">Start Pos </span><input id="startpos" value="42078109"/>
+   <span style="margin-left: 10px">End Pos </span><input id="endpos" value="43188109"/>
+   <button onClick="testBam()" style="margin-left: 10px">Test Bam</button>
+   <div style="margin-left:10px" id="container">
 		<canvas id="canvas" width="547" height="330"></canvas> 
 	</div>
 	
@@ -101,7 +104,7 @@ function testBam() {
       	} else {
       	  // Page Layout
       	  content.innerHTML =
-      	    '<p>Drag a Genbank(.gb) or BED(.bed) file onto this area <input type="hidden" id="file" /></p>';
+      	    '<p>Drag a BAM(.bam) and its index(.bai) file onto this area <input type="hidden" id="file" /></p>';
 
       	  // Displays gene charts.
       	  function displayChart(file) {

@@ -1,0 +1,62 @@
+<!DOCTYPE>
+  <html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>example</title>
+      <script src="http://chmille4.github.com/Scribl/js/Scribl.1.0.min.js"></script>
+      <script src="http://chmille4.github.com/Scribl/js/genbankData.js"></script>
+    	<script>
+				function draw(canvasName) {  
+					
+					// Get Canvas and Create Chart
+				  	var canvas = document.getElementById(canvasName);  	
+					
+					// Create Chart
+					chart = new Scribl(canvas, 1200);
+					chart.laneSizes = 15;
+					chart.scale.auto = false
+					
+					// parse and load genbank file
+					chart.loadGenbank(getGenbankData());
+
+					// Draw Chart
+					redraw(100000, 200000);
+			   }
+			   
+			   function redraw(min, max) {
+               // var scale = $("#slider").editRangeSlider("values");
+			      chart.scale.min = min;
+			      chart.scale.max = max;
+			      chart.redraw();
+			   }
+				
+		</script>
+  </head>
+  <body onload="draw('canvas')">
+    <div id="container" style="width:100%; text-align:center">
+		<canvas id="canvas" width="1230" height="200" style="margin-left:auto;margin-right:auto"></canvas>  
+
+      <div id="slider" style="width:1230px;margin-left:auto;margin-right:auto"></div>
+ 	   <link rel="stylesheet" id="themeCSS" href="../css/iThing.css"> 
+
+    	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
+    	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+    	<script src="http://static.tumblr.com/fcdode8/Giymeu17u/jquery.mousewheel.min.js"></script>
+    	<script src="http://static.tumblr.com/fcdode8/WVbmeu18t/jqallrangesliders-min.js"></script>
+
+   </div>
+
+    <script>
+      $("#slider").editRangeSlider({ bounds:{min: 1, max: 400000}, defaultValues:{min: 100000, max: 200000}, wheelMode: "zoom" });
+      $("#slider").on("valuesChanging", function(e, data){
+        redraw(data.values.min, data.values.max);
+      });
+      $("#slider").on("valuesChanged", function(e, data){
+        redraw(data.values.min, data.values.max);
+      });
+    </script>
+    
+    
+    
+  </body>
+</html>

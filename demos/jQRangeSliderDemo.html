@@ -1,8 +1,6 @@
 <!DOCTYPE>
   <html>
   <head>
-    <meta charset="utf-8"/>
-    <title>example</title>
       <script src="http://chmille4.github.com/Scribl/js/Scribl.1.0.min.js"></script>
       <script src="http://chmille4.github.com/Scribl/js/genbankData.js"></script>
     	<script>
@@ -24,7 +22,7 @@
 			   }
 			   
 			   function redraw(min, max) {
-               // var scale = $("#slider").editRangeSlider("values");
+			      // Set scale and redraw
 			      chart.scale.min = min;
 			      chart.scale.max = max;
 			      chart.redraw();
@@ -37,7 +35,12 @@
 		<canvas id="canvas" width="1230" height="200" style="margin-left:auto;margin-right:auto"></canvas>  
 
       <div id="slider" style="width:1230px;margin-left:auto;margin-right:auto"></div>
- 	   <link rel="stylesheet" id="themeCSS" href="../css/iThing.css"> 
+      <br/>
+      <br/>
+      <br/>
+      <div style="color:rgb(80,80,80); font: 20px bold arial">Make sure to use the scroll wheel (or 2 finger scroll if on a mac laptop) to zoom in and out!</div>
+      
+ 	   <link rel="stylesheet" id="themeCSS" href="http://chmille4.github.com/Scribl/css/iThing.css"> 
 
     	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
     	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>

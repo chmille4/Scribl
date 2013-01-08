@@ -2,6 +2,8 @@
 
 Scribl is a HTML5 canvas-based genomics graphics library
 
+publication - http://www.ncbi.nlm.nih.gov/pubmed/23172864
+
 ## Usage
 
 

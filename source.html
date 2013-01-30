@@ -98,12 +98,10 @@ code .comment { color: #bbb; }
 code .this { color: #19469D; }</style>
 		<script>
 			$(function(){
-				$('tr.code').hide();
-				$('tr.filename').toggle(function(){
-					$(this).nextUntil('.filename').fadeIn();
-				}, function(){
-					$(this).nextUntil('.filename').fadeOut();
-				});
+            $('tr.code').hide();
+            $('tr.filename').click( function() {
+               $(this).nextUntil('tr.filename').toggle(); 
+            });
 				// test
 			});
 		</script>

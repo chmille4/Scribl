@@ -1,92 +1,94 @@
-<!DOCTYPE HTML> 
+<!DOCTYPE HTML>
 <html lang="en">
-	<head>
-		<script src="../dist/scribl.bundle.js"></script>
-		<link rel="stylesheet" type="text/css" href="demos.css" />
-		
-		<script> 
+<head>
+    <script src="../dist/scribl.bundle.js"></script>
+    <link rel="stylesheet" type="text/css" href="demos.css"/>
 
-			function draw(canvasName) {  
-					
-									// Get Canvas and Create Chart
-				var canvas = document.getElementById(canvasName);  
+    <script>
 
-                chart = new Scribl(canvas, 500);				
-				chart.tick.major.color = "white";
-				chart.tick.minor.color = "red";
-				chart.scale.font.color = "white";
-				chart.scale.font.size = 26;
-				chart.scale.size = 7;
+        function draw(canvasName) {
 
-				// Create Track 1
-				track1 = chart.addTrack();	
+            // Get Canvas and Create Chart
+            var canvas = document.getElementById(canvasName);
 
-				// Add Genes to Track 2
-				gene1 = track1.addGene( 5, 750 , '-');
-				gene1.setColorGradient('rgb(204, 193, 208)', 'rgb(96, 74, 123)');
+            var chart = new Scribl(canvas, 500);
+            chart.tick.major.color = 'white';
+            chart.tick.minor.color = 'red';
+            chart.scale.font.color = 'white';
+            chart.scale.font.size = 26;
+            chart.scale.size = 7;
 
-				gene2 = track1.addGene( 3500, 2500, '+');
-				gene2.setColorGradient('rgb(122, 145, 198)', 'rgb(144, 171, 234)','rgb(228,230,255)','rgb(144, 171, 234)', 'rgb(122, 145, 198)');
-				gene2.roundness = 18;
+            // Create Track 1
+            var track1 = chart.addTrack();
 
-				gene3 = track1.addGene( 8900, 500, '-');
-				gene3.setColorGradient('rgb(215, 228, 189)', 'rgb(119, 147, 60)');
+            // Add Genes to Track 2
+            var gene1 = track1.addGene(5, 750, '-');
+            gene1.setColorGradient('rgb(204, 193, 208)', 'rgb(96, 74, 123)');
+
+            var gene2 = track1.addGene(3500, 2500, '+');
+            gene2.setColorGradient('rgb(122, 145, 198)', 'rgb(144, 171, 234)', 'rgb(228,230,255)', 'rgb(144, 171, 234)', 'rgb(122, 145, 198)');
+            gene2.roundness = 18;
+
+            var gene3 = track1.addGene(8900, 500, '-');
+            gene3.setColorGradient('rgb(215, 228, 189)', 'rgb(119, 147, 60)');
+
+            var gene4 = track1.addGene(6000, 1500, '-');
+            gene4.setColorGradient('rgb(252, 213, 181)', 'rgb(228, 108, 10)');
+            gene4.roundness = 0;
+
+            // Create Track 2
+            var track2 = chart.addTrack();
+
+            // Add Genes to Track 2
+            var gene5 = track2.addGene(100, 1000, '-');
+            gene5.setColorGradient('rgb(255, 189, 192)', 'rgb(255, 0, 0)');
+
+            var gene6 = track2.addGene(3500, 1500, '-');
+            gene6.setColorGradient('rgb(232, 227, 155)', 'rgb(255, 255, 0)');
+            gene6.roundness = 0;
 
 
-				gene4 = track1.addGene( 6000, 1500, '-');		
-				gene4.setColorGradient('rgb(252, 213, 181)', 'rgb(228, 108, 10)');
-				gene4.roundness = 0;
+            // Create Track 3
+            var track3 = chart.addTrack();
 
-				// Create Track 2
-				track2 = chart.addTrack();
+            // Add Genes to Track 3
+            var gene7 = track3.addGene(2230, 1000, '+');
+            gene7.setColorGradient('rgb(217, 217, 217)', 'rgb(38, 38, 38)');
 
-				// Add Genes to Track 2
-				gene5 = track2.addGene( 100, 1000, '-');				
-				gene5.setColorGradient('rgb(255, 189, 192)', 'rgb(255, 0, 0)');
+            var gene8 = track3.addGene(4500, 1500, '+');
 
-				gene6 = track2.addGene( 3500, 1500, '-');				
-				gene6.setColorGradient('rgb(232, 227, 155)','rgb(255, 255, 0)');
-				gene6.roundness = 0;
+            // if you want more control, you can access the canvas element directly to add color gradients of any kind
+            var gene9 = track3.addGene(7230, 1000, '-');
+            var lineargradient = chart.ctx.createLinearGradient(gene9.length / 2, 0, gene9.length / 2, gene9.getHeight());
+            lineargradient.addColorStop(0, 'rgb(194, 222, 255)');
+            lineargradient.addColorStop(0.35, 'rgb(0, 0, 255)');
+            gene9.color = lineargradient;
+
+            // Draw Chart
+            chart.draw();
+
+        }
 
 
-				// Create Track 3
-				track3 = chart.addTrack();
+    </script>
 
-				// Add Genes to Track 3
-				gene7 = track3.addGene( 2230, 1000, '+');
-				gene7.setColorGradient('rgb(217, 217, 217)', 'rgb(38, 38, 38)');								 
+</head>
 
-				gene8 = track3.addGene( 4500, 1500, '+');
-				
-				// if you want more control, you can access the canvas element directly to add color gradients of any kind
-				gene9 = track3.addGene( 7230, 1000, '-');
-				var lineargradient = chart.ctx.createLinearGradient(gene9.length/2,0,gene9.length/2,gene9.getHeight());  
-				lineargradient.addColorStop(0,'rgb(194, 222, 255)');  
-				lineargradient.addColorStop(0.35,'rgb(0, 0, 255)');
-				gene9.color = lineargradient;
+<body onload="draw('canvas')">
 
-				// Draw Chart
-				chart.draw();
+<div id="description"><H2>Versatility</H2>
+    <div>Easily change:<br/> background color, scale size, major tick color, minor tick color, scale text color, scale
+        font size, gene roundness
+    </div>
 
-			}
-				
+</div>
+<br/>
 
-		</script>
+<div id="container">
+    <canvas id="canvas" width=547 height=300
+            style="-moz-border-radius:15px; border-radius:15px; background:-webkit-gradient(linear, left top, left bottom, from(rgb(50,50,50)), to(rgb(50,50,50)), color-stop(0.5, rgb(170,170,170)), color-stop(0.5, rgb(170,170,170))); background: -moz-linear-gradient(top, rgb(50,50,50), rgb(170,170,170), rgb(170,170,170), rgb(50,50,50));"
+    </canvas>
+</div>
+</body>
 
-	</head>  
-	
-	<body onload="draw('canvas')">  
-
-		<div id="description"><H2>Versatility</H2>
-			<div>Easily change:<br/> background color, scale size, major tick color, minor tick color, scale text color, scale font size, gene roundness
-			</div>
-
-		</div><br/>
-		
-		<div id="container">		
-			<canvas id="canvas" width=547 height=300 style="-moz-border-radius:15px; border-radius:15px; background:-webkit-gradient(linear, left top, left bottom, from(rgb(50,50,50)), to(rgb(50,50,50)), color-stop(0.5, rgb(170,170,170)), color-stop(0.5, rgb(170,170,170))); background: -moz-linear-gradient(top, rgb(50,50,50), rgb(170,170,170), rgb(170,170,170), rgb(50,50,50));"
-			</canvas>
-		</div>
-	</body>
-	
 </html>

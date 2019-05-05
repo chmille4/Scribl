@@ -1,49 +1,49 @@
-<!DOCTYPE HTML> 
+<!DOCTYPE HTML>
 <html lang="en">
-	<head>
-      <script src="../dist/scribl.bundle.js"></script>     
-      <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
-	  	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js"></script>
-      <script type="text/javascript" src="js/dragscrollable.js"></script>
-	  	
-      <script type="text/javascript" src="js/genbankData.js"></script> 	
-		<link rel="stylesheet" type="text/css" href="demos.css" />
+<head>
+    <script src="../dist/scribl.bundle.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="js/dragscrollable.js"></script>
 
-		<script>
-				function draw(canvasName) {  
-					
-					// Get Canvas and Create Chart
-				  	var canvas = document.getElementById(canvasName);  	
-					
-					// Create Chart
-					var chart = new Scribl(canvas, 660);
-					chart.laneSizes = 15;
-					
-					// parse and load genbank file
-					chart.loadGenbank(getGenbankData());
+    <script type="text/javascript" src="js/genbankData.js"></script>
+    <link rel="stylesheet" type="text/css" href="demos.css"/>
 
-					// Draw Chart
-					chart.scrollable = true;
-					chart.draw();
-					
-					// Create image of chart1
-					var img = chart.canvas.toDataURL("image/png");
-					// Add link to download image
-					document.getElementById('export').href = img;
-			}
-				
-		</script>
+    <script>
+        function draw(canvasName) {
 
-	</head>  
-	
-	<body onload="draw('canvas')">  
-		<div id="description"><h2>Visualize Genbank Files</h2>
-			displaying genbank file of 360kb region of the ecoli genome (AC: FR719195)
-		</div>
-		<div id="container" style="width:100%">
-			<canvas id="canvas" width="700" height="200" style="margin-left:auto;margin-right:auto"></canvas>  
-						</br><a id="export">Export as PNG (right click Save As)</a>
-		</div>
-	</body>
-	
+            // Get Canvas and Create Chart
+            var canvas = document.getElementById(canvasName);
+
+            // Create Chart
+            var chart = new Scribl(canvas, 660);
+            chart.laneSizes = 15;
+
+            // parse and load genbank file
+            chart.loadGenbank(getGenbankData());
+
+            // Draw Chart
+            chart.scrollable = true;
+            chart.draw();
+
+            // Create image of chart1
+            var img = chart.canvas.toDataURL('image/png');
+            // Add link to download image
+            document.getElementById('export').href = img;
+        }
+
+    </script>
+
+</head>
+
+<body onload="draw('canvas')">
+<div id="description"><h2>Visualize Genbank Files</h2>
+    displaying genbank file of 360kb region of the ecoli genome (AC: FR719195)
+</div>
+<div id="container" style="width:100%">
+    <canvas id="canvas" width="700" height="200" style="margin-left:auto;margin-right:auto"></canvas>
+    </br><a id="export">Export as PNG (right click Save As)</a>
+</div>
+</body>
+
 </html>

@@ -21,60 +21,60 @@
 </div>
 
 <script>
-    var content = document.getElementById('content')
+    var content = document.getElementById('content');
     if (!window.FileReader) {
-        content.innerHTML = '<p>This browser doesnt support the File API</p>'
+        content.innerHTML = '<p>This browser doesnt support the File API</p>';
     } else {
         // Page Layout
         content.innerHTML =
-            '<p>Drag a Genbank(.gb) or BED(.bed) file onto this area <input type="hidden" id="file" /></p>'
+            '<p>Drag a Genbank(.gb) or BED(.bed) file onto this area <input type="hidden" id="file" /></p>';
 
         // Displays gene charts.
         function displayChart(file) {
-            var reader = new FileReader()
-            var fileType = /[^.]+$/.exec(file.name)
+            var reader = new FileReader();
+            var fileType = /[^.]+$/.exec(file.name);
 
             reader.onload = function (event) {
-                var canvas = document.getElementById('canvas')
-                var chart = new Scribl(canvas, 810)
+                var canvas = document.getElementById('canvas');
+                var chart = new Scribl(canvas, 810);
                 if (fileType == 'bed')
-                    chart.loadBed(event.target.result)
+                    chart.loadBed(event.target.result);
                 else if (fileType == 'gb')
-                    chart.loadGenbank(event.target.result)
+                    chart.loadGenbank(event.target.result);
                 else
-                    alert('File must have a .gb or .bed extension')
-                chart.draw()
-            }
-            reader.readAsText(file)
+                    alert('File must have a .gb or .bed extension');
+                chart.draw();
+            };
+            reader.readAsText(file);
         }
 
         // Input handler
         document.getElementById('file').onchange = function () {
-            displayFile(this.files[0])
-        }
+            displayFile(this.files[0]);
+        };
 
         // Reduce movement by adding invisible border
-        content.style.border = '4px solid transparent'
+        content.style.border = '4px solid transparent';
 
         // Add dragging events
         content.ondragenter = function () {
-            content.style.border = '4px solid #b1ecb3'
-            return false
-        }
+            content.style.border = '4px solid #b1ecb3';
+            return false;
+        };
 
         content.ondragover = function () {
-            return false
-        }
+            return false;
+        };
 
         content.ondragleave = function () {
-            return false
-        }
+            return false;
+        };
 
         content.ondrop = function (event) {
-            content.style.border = '4px solid transparent'
-            displayChart(event.dataTransfer.files[0])
-            return false
-        }
+            content.style.border = '4px solid transparent';
+            displayChart(event.dataTransfer.files[0]);
+            return false;
+        };
     }
 </script>
 </body>

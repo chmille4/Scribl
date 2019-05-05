@@ -12,31 +12,31 @@
         function draw(canvasName) {
 
             // Get Canvas and Create Chart
-            var canvas = document.getElementById(canvasName)
+            var canvas = document.getElementById(canvasName);
 
             // Create Chart
-            var chart1 = new Scribl(canvas, 600)
+            var chart1 = new Scribl(canvas, 600);
             // style chart
             // chart1.glyph.text.color = 'white';
             //chart1.glyph.text.align = 'left';
             // chart1.glyph.onClick = function(feature) { 
             //    alert(feature.name);
             // };
-            chart1.laneSizes = 15
+            chart1.laneSizes = 15;
             //chart1.scale.min = 0;
             //chart1.scale.max = 1000;
 
-            var track1 = chart1.addTrack()
+            var track1 = chart1.addTrack();
             // create new lane
-            var lane1 = track1.addLane()
-            var gene_0 = lane1.addFeature(new BlockArrow('gene_0', 156, 1212, '+', {'name': 'gene_0'}))
+            var lane1 = track1.addLane();
+            var gene_0 = lane1.addFeature(new BlockArrow('gene_0', 156, 1212, '+', {'name': 'gene_0'}));
             // create new lane
-            var lane2 = track1.addLane()
-            var gene_1 = lane2.addFeature(new BlockArrow('gene_1', 1727, 3038, '+', {'name': 'gene_1'}))
+            var lane2 = track1.addLane();
+            var gene_1 = lane2.addFeature(new BlockArrow('gene_1', 1727, 3038, '+', {'name': 'gene_1'}));
             // use chain calling to add new lane
-            var gene_2 = track1.addLane().addFeature(new BlockArrow('gene_2', 3113, 3384, '+', {'name': 'gene_2'}))
+            var gene_2 = track1.addLane().addFeature(new BlockArrow('gene_2', 3113, 3384, '+', {'name': 'gene_2'}));
             // use chain calling to add new lane
-            var gene_3 = track1.addLane().addFeature(new BlockArrow('gene_3', 3971, 4682, '+', {'name': 'gene_3'}))
+            var gene_3 = track1.addLane().addFeature(new BlockArrow('gene_3', 3971, 4682, '+', {'name': 'gene_3'}));
 
 
             // track1.drawStyle = 'line';
@@ -78,14 +78,14 @@
 //               chart1.tracks[0].drawStyle = 'line';
 
 
-            chart1.draw()
-            gene6.erase()
+            chart1.draw();
+            gene6.erase();
 //               chart1.draw();               
 
             // Create image of chart1
-            var img = chart1.canvas.toDataURL('image/png')
+            var img = chart1.canvas.toDataURL('image/png');
             // Add link to download image
-            document.getElementById('export').href = img
+            document.getElementById('export').href = img;
         }
 
 

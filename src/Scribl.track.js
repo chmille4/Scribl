@@ -296,7 +296,8 @@ export default class Track {
                         y = y + height + laneBuffer;
                     }
                 }
-            } else if (style == 'collapse') { // draw collapse style (i.e. single lane)
+            }
+            else if (style == 'collapse') { // draw collapse style (i.e. single lane)
                 let features = [];
 
                 // concat all features into single array
@@ -331,7 +332,8 @@ export default class Track {
                     ctx.translate(0, lanes[0].getHeight() + laneBuffer);
 
                 // draw as a line chart of the coverage
-            } else if (style == 'line') {
+            }
+            else if (style == 'line') {
                 track.coverageData = [];
                 if (track.coverageData.length == 0) track.calcCoverageData();
 

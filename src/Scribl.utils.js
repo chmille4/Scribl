@@ -34,7 +34,8 @@ export function ScriblWrapLines(max, text) {
                 lines.push(temp);
                 temp = '';
                 linecount++;
-            } else {
+            }
+            else {
                 i--;
                 lines.push(temp);
                 linecount++;

@@ -59,7 +59,7 @@ export default class BlockArrow extends Glyph {
         // calculate points
 
         // top corner
-        const tc_ctrl_x = x; 				// control point
+        const tc_ctrl_x = x; 	    			// control point
         const tc_ctrl_y = y;
         const tc_lgth_x = x + roundness; 	// horizontal point
         const tc_lgth_y = y;

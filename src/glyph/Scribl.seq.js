@@ -88,7 +88,8 @@ export default class Seq extends Glyph {
 
         if (seq.imgCanvas) {
             ctx.drawImage(seq.imgCanvas, left, top - height * fraction, length, height * fraction);
-        } else {
+        }
+        else {
             ctx.save();
             ctx.beginPath();
             ctx.textBaseline = 'middle';
@@ -118,7 +119,8 @@ export default class Seq extends Glyph {
                 if (this.insertions[k] && this.insertions[k]['pos'] != undefined) {
                     if (this.insertions[k]['pos'] - 1 == i) {
                         charGlyph += 'rightInsert';
-                    } else if (this.insertions[k] && this.insertions[k]['pos'] == i) {
+                    }
+                    else if (this.insertions[k] && this.insertions[k]['pos'] == i) {
                         charGlyph += 'leftInsert';
                         k++;
                     }

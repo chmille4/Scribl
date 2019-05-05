@@ -722,7 +722,7 @@ export default class Scribl {
             sliderDiv.id = 'scribl-zoom-slider';
             sliderDiv.className = 'slider';
             sliderDiv.style.cssFloat = 'left';
-            sliderDiv.style.height = (new String(this.canvas.height * .5)) + 'px';
+            sliderDiv.style.height = (String(this.canvas.height * .5)) + 'px';
             sliderDiv.style.margin = '30px auto auto -20px';
 
             // grab css styling from canavs

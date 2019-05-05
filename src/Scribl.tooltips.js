@@ -129,7 +129,8 @@ export default class Tooltip {
             this.chart.tooltips.text.color = 'black';
 
             // draw dark style	
-        } else if (this.chart.tooltips.style == 'dark') {
+        }
+        else if (this.chart.tooltips.style == 'dark') {
             fillStyle = this.chart.ctx.createLinearGradient(x + length / 2, y, x + length / 2, y + height);
             fillStyle.addColorStop(0, 'rgb(64, 64, 64)');
             fillStyle.addColorStop(1, 'rgb(121, 121, 121)');

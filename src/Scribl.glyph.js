@@ -174,7 +174,8 @@ export default class Glyph {
             for (var i = 0; i < attrs.length; i++) {
                 newFeature[attrs[i]] = glyph[attrs[i]];
             }
-        } else {
+        }
+        else {
             var str = 'new ' + glyphType + '("' + glyph.type + '",' + glyph.position + ',' + glyph.length + ',' + JSON.stringify(glyph.opts) + ')';
             newFeature = eval(str);
             var attrs = Object.keys(glyph);
@@ -380,10 +381,12 @@ export default class Glyph {
             for (let i = 0; currColor = color[i], i < color.length; i++)
                 lineargradient.addColorStop(i / (color.length - 1), currColor);
             return lineargradient;
-        } else if (color instanceof Function) {
+        }
+        else if (color instanceof Function) {
             var lineargradient = this.lane.track.chart.ctx.createLinearGradient(this.length / 2, 0, this.length / 2, this.getHeight());
             return color(lineargradient);
-        } else
+        }
+        else
             return color;
     }
 
@@ -404,7 +407,8 @@ export default class Glyph {
             for (let i = 0; currColor = color[i], i < color.length; i++)
                 lineargradient.addColorStop(i / (color.length - 1), currColor);
             return lineargradient;
-        } else
+        }
+        else
             return color;
     }
 

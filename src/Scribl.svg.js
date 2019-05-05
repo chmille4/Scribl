@@ -46,8 +46,6 @@ export function svgToString(svgcontent) {
     // keep calling it until there are none to remove
     while (removeUnusedDefElems() > 0) {
     }
-    ;
-
     pathActions.clear(true);
 
     // Keep SVG-Edit comment on top
@@ -157,7 +155,8 @@ function svgElToString(elem, indent) {
                     }
                 }
             }
-        } else {
+        }
+        else {
             for (var i = attrs.length - 1; i >= 0; i--) {
                 attr = attrs.item(i);
                 var attrVal = toXml(attr.nodeValue);
@@ -231,7 +230,8 @@ function svgElToString(elem, indent) {
             out.push('</');
             out.push(elem.nodeName);
             out.push('>');
-        } else {
+        }
+        else {
             out.push('/>');
         }
     }

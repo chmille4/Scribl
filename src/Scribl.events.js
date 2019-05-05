@@ -42,13 +42,16 @@ export default class MouseEventHandler {
         if (feature.onMouseover && !chart.events.hasMouseover) {
             chart.addMouseoverEventListener(MouseEventHandler.handleMouseover);
             chart.events.hasMouseover = true;
-        } else if (feature.tooltips.length > 0 && !chart.events.hasMouseover) {
+        }
+        else if (feature.tooltips.length > 0 && !chart.events.hasMouseover) {
             chart.addMouseoverEventListener(MouseEventHandler.handleMouseover);
             chart.events.hasMouseover = true;
-        } else if (feature.parent && feature.parent.tooltips.length > 0 && !chart.events.hasMouseover) {
+        }
+        else if (feature.parent && feature.parent.tooltips.length > 0 && !chart.events.hasMouseover) {
             chart.addMouseoverEventListener(MouseEventHandler.handleMouseover);
             chart.events.hasMouseover = true;
-        } else if (feature.parent && feature.parent.onMouseover && !chart.events.hasMouseover) {
+        }
+        else if (feature.parent && feature.parent.onMouseover && !chart.events.hasMouseover) {
             chart.addMouseoverEventListener(MouseEventHandler.handleMouseover);
             chart.events.hasMouseover = true;
         }
@@ -58,7 +61,8 @@ export default class MouseEventHandler {
             chart.addClickEventListener(MouseEventHandler.handleClick);
             chart.addMouseoverEventListener(MouseEventHandler.handleMouseStyle);
             chart.events.hasClick = true;
-        } else if (feature.parent && feature.parent.onClick && !chart.events.hasClick) {
+        }
+        else if (feature.parent && feature.parent.onClick && !chart.events.hasClick) {
             chart.addClickEventListener(MouseEventHandler.handleClick);
             chart.addMouseoverEventListener(MouseEventHandler.handleMouseStyle);
             chart.events.hasClick = true;
@@ -193,7 +197,8 @@ function isPointInPath_mozilla(ctx, x, y) {
         this.setTransform(1, 0, 0, 1, 0, 0);
         ret = ctx.isPointInPath(x, y);
         this.restore();
-    } else
+    }
+    else
         ret = ctx.isPointInPath(x, y);
 
     return ret;

@@ -6,7 +6,7 @@
  * Chase Miller 2011
  */
 
-import Glyph from '../Scribl.glyph'
+import Glyph from '../Scribl.glyph';
 
 export default class Line extends Glyph {
     /** **init**
@@ -20,9 +20,9 @@ export default class Line extends Glyph {
      * @api public
      */
     constructor(type, position, length, opts) {
-        super(type, position, length, undefined, opts)
-        this.thickness = 2
-        this.glyphType = 'Line'
+        super(type, position, length, undefined, opts);
+        this.thickness = 2;
+        this.glyphType = 'Line';
     }
 
     /** **_draw**
@@ -38,21 +38,21 @@ export default class Line extends Glyph {
     _draw(ctx, length, height, roundness) {
 
         // initialize
-        const line = this
+        const line = this;
 
         // see if optional parameters
-        var ctx = ctx || line.ctx
-        var length = length || line.getPixelLength()
-        var height = height || line.getHeight()
+        var ctx = ctx || line.ctx;
+        var length = length || line.getPixelLength();
+        var height = height || line.getHeight();
 
         // Set starting draw position
-        const x = 0
+        const x = 0;
 
-        ctx.beginPath()
-        ctx.moveTo(x, height / 2 - line.thickness / 2)
-        ctx.lineTo(x, height / 2 + line.thickness / 2)
-        ctx.lineTo(x + length, height / 2 + line.thickness / 2)
-        ctx.lineTo(x + length, height / 2 - line.thickness / 2)
+        ctx.beginPath();
+        ctx.moveTo(x, height / 2 - line.thickness / 2);
+        ctx.lineTo(x, height / 2 + line.thickness / 2);
+        ctx.lineTo(x + length, height / 2 + line.thickness / 2);
+        ctx.lineTo(x + length, height / 2 - line.thickness / 2);
 //			ctx.fill();			
 //			ctx.fillRect(x, height/2 - line.thickness/2, length, line.thickness);
     }

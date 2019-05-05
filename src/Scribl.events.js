@@ -6,7 +6,7 @@
  * Chase Miller 2011
  */
 
-import Tooltip from './Scribl.tooltips'
+import Tooltip from './Scribl.tooltips';
 
 export default class MouseEventHandler {
     /** **init**
@@ -18,12 +18,12 @@ export default class MouseEventHandler {
      * @api internal
      */
     constructor(chart) {
-        this.chart = chart
-        this.mouseX = null
-        this.mouseY = null
-        this.eventElement = undefined
-        this.isEventDetected = false
-        this.tooltip = new Tooltip('', 'above', -4)
+        this.chart = chart;
+        this.mouseX = null;
+        this.mouseY = null;
+        this.eventElement = undefined;
+        this.isEventDetected = false;
+        this.tooltip = new Tooltip('', 'above', -4);
     }
 
     /** **addEvents**
@@ -34,40 +34,40 @@ export default class MouseEventHandler {
      * @api internal
      */
     addEvents(feature) {
-        const chart = this.chart
-        const ctx = chart.ctx
-        const me = chart.myMouseEventHandler
+        const chart = this.chart;
+        const ctx = chart.ctx;
+        const me = chart.myMouseEventHandler;
 
         // check if any features use onmouseover and if so register an event listener if not already done
         if (feature.onMouseover && !chart.events.hasMouseover) {
-            chart.addMouseoverEventListener(MouseEventHandler.handleMouseover)
-            chart.events.hasMouseover = true
+            chart.addMouseoverEventListener(MouseEventHandler.handleMouseover);
+            chart.events.hasMouseover = true;
         } else if (feature.tooltips.length > 0 && !chart.events.hasMouseover) {
-            chart.addMouseoverEventListener(MouseEventHandler.handleMouseover)
-            chart.events.hasMouseover = true
+            chart.addMouseoverEventListener(MouseEventHandler.handleMouseover);
+            chart.events.hasMouseover = true;
         } else if (feature.parent && feature.parent.tooltips.length > 0 && !chart.events.hasMouseover) {
-            chart.addMouseoverEventListener(MouseEventHandler.handleMouseover)
-            chart.events.hasMouseover = true
+            chart.addMouseoverEventListener(MouseEventHandler.handleMouseover);
+            chart.events.hasMouseover = true;
         } else if (feature.parent && feature.parent.onMouseover && !chart.events.hasMouseover) {
-            chart.addMouseoverEventListener(MouseEventHandler.handleMouseover)
-            chart.events.hasMouseover = true
+            chart.addMouseoverEventListener(MouseEventHandler.handleMouseover);
+            chart.events.hasMouseover = true;
         }
 
         // check if any features use onclick and if so register event listeners if not already done
         if (feature.onClick && !chart.events.hasClick) {
-            chart.addClickEventListener(MouseEventHandler.handleClick)
-            chart.addMouseoverEventListener(MouseEventHandler.handleMouseStyle)
-            chart.events.hasClick = true
+            chart.addClickEventListener(MouseEventHandler.handleClick);
+            chart.addMouseoverEventListener(MouseEventHandler.handleMouseStyle);
+            chart.events.hasClick = true;
         } else if (feature.parent && feature.parent.onClick && !chart.events.hasClick) {
-            chart.addClickEventListener(MouseEventHandler.handleClick)
-            chart.addMouseoverEventListener(MouseEventHandler.handleMouseStyle)
-            chart.events.hasClick = true
+            chart.addClickEventListener(MouseEventHandler.handleClick);
+            chart.addMouseoverEventListener(MouseEventHandler.handleMouseStyle);
+            chart.events.hasClick = true;
         }
 
         // determine if cursor is currently in a drawn object (feature)
         if (!me.isEventDetected && isPointInPath_mozilla(ctx, me.mouseX, me.mouseY)) {
-            me.eventElement = feature
-            me.isEventDetected = true
+            me.eventElement = feature;
+            me.isEventDetected = true;
         }
     }
 
@@ -80,9 +80,9 @@ export default class MouseEventHandler {
      */
     setMousePosition(e) {
         if (e != null) {
-            const rect = this.chart.canvas.getBoundingClientRect()
-            this.mouseX = e.clientX - rect.left
-            this.mouseY = e.clientY - rect.top
+            const rect = this.chart.canvas.getBoundingClientRect();
+            this.mouseX = e.clientX - rect.left;
+            this.mouseY = e.clientY - rect.top;
         }
     }
 
@@ -94,24 +94,24 @@ export default class MouseEventHandler {
      * @api internal
      */
     static handleClick(chart) {
-        const me = chart.myMouseEventHandler
-        const clicked = me.eventElement
-        let onClick
+        const me = chart.myMouseEventHandler;
+        const clicked = me.eventElement;
+        let onClick;
 
         // check if the click occured on a feature/object with an onClick property
         if (clicked != undefined && clicked.onClick != undefined)
-            onClick = clicked.onClick
+            onClick = clicked.onClick;
         else if (clicked && clicked.parent && clicked.parent.onClick)
-            onClick = clicked.parent.onClick
+            onClick = clicked.parent.onClick;
 
         if (onClick) {
             // open window if string
             if (typeof (onClick) == 'string') {
-                window.open(onClick)
+                window.open(onClick);
             }
             // if function run function with feature as argument
             else if (typeof (onClick) == 'function') {
-                onClick(clicked)
+                onClick(clicked);
             }
         }
     }
@@ -124,28 +124,28 @@ export default class MouseEventHandler {
      * @api internal
      */
     static handleMouseover(chart) {
-        const me = chart.myMouseEventHandler
-        const clicked = me.eventElement
+        const me = chart.myMouseEventHandler;
+        const clicked = me.eventElement;
 
         // handle mouseover tooltips
         if (clicked && clicked.onMouseover == undefined && clicked.parent && clicked.parent.onMouseover) {
-            clicked.onMouseover = clicked.parent.onMouseover
+            clicked.onMouseover = clicked.parent.onMouseover;
         }
 
         if (clicked && clicked.onMouseover) {
             // open window if string
             if (typeof (clicked.onMouseover) == 'string') {
-                me.tooltip.fire(clicked)
+                me.tooltip.fire(clicked);
             }
             // if function run function with feature as argument
             else if (typeof (clicked.onMouseover) == 'function') {
-                clicked.onMouseover(clicked)
+                clicked.onMouseover(clicked);
             }
         }
 
         // handle tooltip object tooltips
         if (clicked && clicked.tooltips.length > 0)
-            clicked.fireTooltips()
+            clicked.fireTooltips();
     }
 
     /** **handleMouseStyle**
@@ -156,16 +156,16 @@ export default class MouseEventHandler {
      * @api internal
      */
     static handleMouseStyle(chart) {
-        const me = chart.myMouseEventHandler
-        const obj = me.eventElement
-        const ctx = chart.ctx
+        const me = chart.myMouseEventHandler;
+        const obj = me.eventElement;
+        const ctx = chart.ctx;
 
         if (obj && obj.onClick != undefined)
-            ctx.canvas.style.cursor = 'pointer'
+            ctx.canvas.style.cursor = 'pointer';
         else if (obj && obj.parent && obj.parent.onClick != undefined)
-            ctx.canvas.style.cursor = 'pointer'
+            ctx.canvas.style.cursor = 'pointer';
         else
-            ctx.canvas.style.cursor = 'auto'
+            ctx.canvas.style.cursor = 'auto';
     }
 
     /** **reset**
@@ -176,25 +176,25 @@ export default class MouseEventHandler {
      * @api internal
      */
     static reset(chart) {
-        const me = chart.myMouseEventHandler
-        me.mouseX = null
-        me.mouseY = null
-        me.eventElement = undefined
-        me.isEventDetected = null
-        me.elementIndexCounter = 0
+        const me = chart.myMouseEventHandler;
+        me.mouseX = null;
+        me.mouseY = null;
+        me.eventElement = undefined;
+        me.isEventDetected = null;
+        me.elementIndexCounter = 0;
     }
 
 }
 
 function isPointInPath_mozilla(ctx, x, y) {
-    let ret
+    let ret;
     if (navigator.userAgent.indexOf('Firefox') !== -1) {
-        this.save()
-        this.setTransform(1, 0, 0, 1, 0, 0)
-        ret = ctx.isPointInPath(x, y)
-        this.restore()
+        this.save();
+        this.setTransform(1, 0, 0, 1, 0, 0);
+        ret = ctx.isPointInPath(x, y);
+        this.restore();
     } else
-        ret = ctx.isPointInPath(x, y)
+        ret = ctx.isPointInPath(x, y);
 
-    return ret
+    return ret;
 }

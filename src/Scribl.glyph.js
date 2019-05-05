@@ -9,7 +9,7 @@
  *
  */
 
-import {_uniqueId} from './Scribl.utils'
+import {_uniqueId} from './Scribl.utils';
 
 export default class Glyph {
     /** **init**
@@ -25,55 +25,55 @@ export default class Glyph {
      * @api internal
      */
     constructor(type, pos, length, strand, opts) {
-        const glyph = this
+        const glyph = this;
 
         // set unique id
-        this.uid = _uniqueId('feature')
+        this.uid = _uniqueId('feature');
 
         // set variables
-        glyph.position = pos
-        glyph.length = length
-        glyph.strand = strand
+        glyph.position = pos;
+        glyph.length = length;
+        glyph.strand = strand;
         // this is used for all attributes at the chart level (e.g. chart.gene.color = "blue" )
-        this.type = type
-        glyph.opts = {}
+        this.type = type;
+        glyph.opts = {};
 
-        glyph.name = ''
-        glyph.borderColor = 'none'
-        glyph.borderWidth = undefined
-        glyph.ntLevel = 4 // in pixels - sets the level at which glyphs are rendered as actual nucleotides instead of icons
-        glyph.tooltips = []
-        glyph.hooks = {}
+        glyph.name = '';
+        glyph.borderColor = 'none';
+        glyph.borderWidth = undefined;
+        glyph.ntLevel = 4; // in pixels - sets the level at which glyphs are rendered as actual nucleotides instead of icons
+        glyph.tooltips = [];
+        glyph.hooks = {};
 
         // add seq hook
         glyph.addDrawHook(function (theGlyph) {
             if (theGlyph.ntLevel != undefined && theGlyph.seq && theGlyph.lane.chart.ntsToPixels() < theGlyph.ntLevel) {
-                const s = new Seq(theGlyph.type, theGlyph.position, theGlyph.length, theGlyph.seq, theGlyph.opts)
-                s.lane = theGlyph.lane
-                s.ctx = theGlyph.ctx
-                s._draw()
+                const s = new Seq(theGlyph.type, theGlyph.position, theGlyph.length, theGlyph.seq, theGlyph.opts);
+                s.lane = theGlyph.lane;
+                s.ctx = theGlyph.ctx;
+                s._draw();
                 // return true to stop normal drawing of glyph
-                return true
+                return true;
             }
             // return false to allow normal draing of glyph
-            return false
-        }, 'ntHook')
+            return false;
+        }, 'ntHook');
 
         // initialize font variables
-        glyph.text = {}
+        glyph.text = {};
         // unset defaults that can be used to override chart defaults for specific glyphs
-        glyph.text.font = undefined // default: 'arial'
-        glyph.text.size = undefined  // default: '15' in pixels 
-        glyph.text.color = undefined // default: 'black'
-        glyph.text.align = undefined // default: 'middle'		
+        glyph.text.font = undefined; // default: 'arial'
+        glyph.text.size = undefined;  // default: '15' in pixels 
+        glyph.text.color = undefined; // default: 'black'
+        glyph.text.align = undefined; // default: 'middle'		
 
-        glyph.onClick = undefined
-        glyph.onMouseover = undefined
+        glyph.onClick = undefined;
+        glyph.onMouseover = undefined;
 
         // set option attributes if any
         for (const attribute in opts) {
-            glyph[attribute] = opts[attribute]
-            glyph.opts[attribute] = opts[attribute]
+            glyph[attribute] = opts[attribute];
+            glyph.opts[attribute] = opts[attribute];
         }
 
     }
@@ -87,15 +87,15 @@ export default class Glyph {
      */
     setColorGradient() {
         if (arguments.length == 1) {
-            this.color = arguments[0]
-            return
+            this.color = arguments[0];
+            return;
         }
-        const lineargradient = this.lane.ctx.createLinearGradient(this.length / 2, 0, this.length / 2, this.getHeight())
-        let color
+        const lineargradient = this.lane.ctx.createLinearGradient(this.length / 2, 0, this.length / 2, this.getHeight());
+        let color;
         for (let i = 0; color = arguments[i], i < arguments.length; i++) {
-            lineargradient.addColorStop(i / (arguments.length - 1), color)
+            lineargradient.addColorStop(i / (arguments.length - 1), color);
         }
-        this.color = lineargradient
+        this.color = lineargradient;
     }
 
     /** **getPixelLength**
@@ -106,8 +106,8 @@ export default class Glyph {
      * @api public
      */
     getPixelLength() {
-        const glyph = this
-        return (glyph.lane.chart.pixelsToNts(glyph.length) || 1)
+        const glyph = this;
+        return (glyph.lane.chart.pixelsToNts(glyph.length) || 1);
     }
 
 
@@ -119,13 +119,13 @@ export default class Glyph {
      * @api public
      */
     getPixelPositionX() {
-        const glyph = this
-        const offset = parseInt(glyph.lane.track.chart.offset) || 0
+        const glyph = this;
+        const offset = parseInt(glyph.lane.track.chart.offset) || 0;
         if (glyph.parent)
-            var position = glyph.position + glyph.parent.position - glyph.lane.track.chart.scale.min
+            var position = glyph.position + glyph.parent.position - glyph.lane.track.chart.scale.min;
         else
-            var position = glyph.position - glyph.lane.track.chart.scale.min
-        return (glyph.lane.track.chart.pixelsToNts(position) + offset)
+            var position = glyph.position - glyph.lane.track.chart.scale.min;
+        return (glyph.lane.track.chart.pixelsToNts(position) + offset);
     }
 
     /** **getPixelPositionY**
@@ -136,8 +136,8 @@ export default class Glyph {
      * @api public
      */
     getPixelPositionY() {
-        const glyph = this
-        return (glyph.lane.getPixelPositionY())
+        const glyph = this;
+        return (glyph.lane.getPixelPositionY());
     }
 
     /** **getEnd**
@@ -148,7 +148,7 @@ export default class Glyph {
      * @api public
      */
     getEnd() {
-        return (this.position + this.length)
+        return (this.position + this.length);
     }
 
     /** **clone**
@@ -159,33 +159,33 @@ export default class Glyph {
      * @api public
      */
     clone(glyphType) {
-        const glyph = this
-        let newFeature
+        const glyph = this;
+        let newFeature;
 
-        glyphType = glyphType || glyph.glyphType
+        glyphType = glyphType || glyph.glyphType;
 
         if (glyphType == 'Rect' || glyphType == 'Line')
-            glyph.strand = undefined
+            glyph.strand = undefined;
 
         if (glyph.strand) {
-            var str = 'new ' + glyphType + '("' + glyph.type + '",' + glyph.position + ',' + glyph.length + ',"' + glyph.strand + '",' + JSON.stringify(glyph.opts) + ')'
-            newFeature = eval(str)
-            var attrs = Object.keys(glyph)
+            var str = 'new ' + glyphType + '("' + glyph.type + '",' + glyph.position + ',' + glyph.length + ',"' + glyph.strand + '",' + JSON.stringify(glyph.opts) + ')';
+            newFeature = eval(str);
+            var attrs = Object.keys(glyph);
             for (var i = 0; i < attrs.length; i++) {
-                newFeature[attrs[i]] = glyph[attrs[i]]
+                newFeature[attrs[i]] = glyph[attrs[i]];
             }
         } else {
-            var str = 'new ' + glyphType + '("' + glyph.type + '",' + glyph.position + ',' + glyph.length + ',' + JSON.stringify(glyph.opts) + ')'
-            newFeature = eval(str)
-            var attrs = Object.keys(glyph)
+            var str = 'new ' + glyphType + '("' + glyph.type + '",' + glyph.position + ',' + glyph.length + ',' + JSON.stringify(glyph.opts) + ')';
+            newFeature = eval(str);
+            var attrs = Object.keys(glyph);
             for (var i = 0; i < attrs.length; i++) {
-                newFeature[attrs[i]] = glyph[attrs[i]]
+                newFeature[attrs[i]] = glyph[attrs[i]];
             }
         }
 
-        newFeature.tooltips = glyph.tooltips
-        newFeature.hooks = glyph.hooks
-        return (newFeature)
+        newFeature.tooltips = glyph.tooltips;
+        newFeature.hooks = glyph.hooks;
+        return (newFeature);
 
     }
 
@@ -198,43 +198,43 @@ export default class Glyph {
      * @api public
      */
     getAttr(attr) {
-        const glyph = this
-        const attrs = attr.split('-')
+        const glyph = this;
+        const attrs = attr.split('-');
 
         // glyph level
-        let glyphLevel = glyph
+        let glyphLevel = glyph;
         for (var k = 0; k < attrs.length; k++) {
-            glyphLevel = glyphLevel[attrs[k]]
+            glyphLevel = glyphLevel[attrs[k]];
         }
-        if (glyphLevel) return glyphLevel
+        if (glyphLevel) return glyphLevel;
 
         // parent level
         if (glyph.parent) {
-            let parentLevel = glyph.parent
+            let parentLevel = glyph.parent;
             for (var k = 0; k < attrs.length; k++) {
-                parentLevel = parentLevel[attrs[k]]
+                parentLevel = parentLevel[attrs[k]];
             }
-            if (parentLevel) return parentLevel
+            if (parentLevel) return parentLevel;
         }
 
         // type level
-        let typeLevel = this.lane.chart[glyph.type]
+        let typeLevel = this.lane.chart[glyph.type];
         if (typeLevel) {
             for (var k = 0; k < attrs.length; k++) {
-                typeLevel = typeLevel[attrs[k]]
+                typeLevel = typeLevel[attrs[k]];
             }
-            if (typeLevel) return typeLevel
+            if (typeLevel) return typeLevel;
         }
 
         // chart level
-        let chartLevel = glyph.lane.chart.glyph
+        let chartLevel = glyph.lane.chart.glyph;
         for (var k = 0; k < attrs.length; k++) {
-            chartLevel = chartLevel[attrs[k]]
+            chartLevel = chartLevel[attrs[k]];
         }
-        if (chartLevel) return chartLevel
+        if (chartLevel) return chartLevel;
 
         // nothing
-        return undefined
+        return undefined;
     }
 
     /** **drawText**
@@ -246,70 +246,70 @@ export default class Glyph {
      */
     drawText(text) {
         // initialize
-        const glyph = this
-        const ctx = glyph.lane.chart.ctx
-        const padding = 5
-        const length = glyph.getPixelLength()
-        const height = glyph.getHeight()
-        let fontSize = glyph.getAttr('text-size')
-        const fontSizeMin = 8
-        const fontStyle = glyph.getAttr('text-style')
+        const glyph = this;
+        const ctx = glyph.lane.chart.ctx;
+        const padding = 5;
+        const length = glyph.getPixelLength();
+        const height = glyph.getHeight();
+        let fontSize = glyph.getAttr('text-size');
+        const fontSizeMin = 8;
+        const fontStyle = glyph.getAttr('text-style');
         // set ctx
-        ctx.font = fontSize + 'px ' + fontStyle
-        ctx.textBaseline = 'middle'
-        ctx.fillStyle = glyph.getAttr('text-color')
+        ctx.font = fontSize + 'px ' + fontStyle;
+        ctx.textBaseline = 'middle';
+        ctx.fillStyle = glyph.getAttr('text-color');
 
 
         // align text properly
-        let placement = undefined
+        let placement = undefined;
 
         // handle relative text alignment based on glyph orientation
-        let align = glyph.getAttr('text-align')
+        let align = glyph.getAttr('text-align');
         if (align == 'start')
             if (glyph.strand == '+')
-                align = 'left'
+                align = 'left';
             else
-                align = 'right'
+                align = 'right';
         else if (align == 'end')
             if (glyph.strand == '+')
-                align = 'right'
+                align = 'right';
             else
-                align = 'left'
+                align = 'left';
 
         // handle absolute text alignment	
-        ctx.textAlign = align
+        ctx.textAlign = align;
         if (align == 'left')
-            placement = 0 + padding
+            placement = 0 + padding;
         else if (align == 'center')
-            placement = length / 2
+            placement = length / 2;
         else if (align == 'right')
-            placement = length - padding
+            placement = length - padding;
 
         // test if text size is too big and if so make it smaller
-        let dim = ctx.measureText(text)
+        let dim = ctx.measureText(text);
         if (text && text != '') {
             while ((length - dim.width) < 4) {
-                fontSize = /^\d+/.exec(ctx.font)
-                fontSize--
-                dim = ctx.measureText(text)
-                ctx.font = fontSize + 'px ' + fontStyle
+                fontSize = /^\d+/.exec(ctx.font);
+                fontSize--;
+                dim = ctx.measureText(text);
+                ctx.font = fontSize + 'px ' + fontStyle;
 
                 // Check if font is getting too small
                 if (fontSize <= fontSizeMin) {
-                    text = ''  // set name to blank if glyph is too small to display text
-                    break
+                    text = '';  // set name to blank if glyph is too small to display text
+                    break;
                 }
             }
 
             // handle special case
             if (glyph.glyphType == 'Complex') {
-                let offset = 0
-                const fontsize = /^\d+/.exec(ctx.font)
+                let offset = 0;
+                const fontsize = /^\d+/.exec(ctx.font);
                 if (align == 'center')
-                    offset = -(ctx.measureText(text).width / 2 + padding / 2)
-                ctx.clearRect(placement + offset, height / 2 - fontsize / 2, ctx.measureText(text).width + padding, fontsize)
+                    offset = -(ctx.measureText(text).width / 2 + padding / 2);
+                ctx.clearRect(placement + offset, height / 2 - fontsize / 2, ctx.measureText(text).width + padding, fontsize);
             }
-            ctx.fillText(text, placement, height / 2)
+            ctx.fillText(text, placement, height / 2);
         }
     }
 
@@ -321,10 +321,10 @@ export default class Glyph {
      * @api internal
      */
     calcRoundness() {
-        let roundness = this.getHeight() * this.getAttr('roundness') / 100
+        let roundness = this.getHeight() * this.getAttr('roundness') / 100;
         // round roundness to the nearest 0.5
-        roundness = ((roundness * 10 % 5) >= 2.5 ? parseInt(roundness * 10 / 5) * 5 + 5 : parseInt(roundness * 10 / 5) * 5) / 10
-        return (roundness)
+        roundness = ((roundness * 10 % 5) >= 2.5 ? parseInt(roundness * 10 / 5) * 5 + 5 : parseInt(roundness * 10 / 5) * 5) / 10;
+        return (roundness);
     }
 
     /** **isContainedWithinRect**
@@ -339,16 +339,16 @@ export default class Glyph {
      * @api public
      */
     isContainedWithinRect(selectionTlX, selectionTlY, selectionBrX, selectionBrY) {
-        const glyph = this
-        const y = glyph.getPixelPositionY()
-        const tlX = glyph.getPixelPositionX()
-        const tlY = y
-        const brX = glyph.getPixelPositionX() + glyph.getPixelLength()
-        const brY = y + glyph.getHeight()
+        const glyph = this;
+        const y = glyph.getPixelPositionY();
+        const tlX = glyph.getPixelPositionX();
+        const tlY = y;
+        const brX = glyph.getPixelPositionX() + glyph.getPixelLength();
+        const brY = y + glyph.getHeight();
         return tlX >= selectionTlX
             && brX <= selectionBrX
             && tlY >= selectionTlY
-            && brY <= selectionBrY
+            && brY <= selectionBrY;
     }
 
     /** **getHeight**
@@ -359,8 +359,8 @@ export default class Glyph {
      * @api public
      */
     getHeight() {
-        const glyph = this
-        return (glyph.lane.getHeight())
+        const glyph = this;
+        return (glyph.lane.getHeight());
     }
 
     /** **getFillStyle**
@@ -371,20 +371,20 @@ export default class Glyph {
      * @api public
      */
     getFillStyle() {
-        const glyph = this
-        const color = glyph.getAttr('color')
+        const glyph = this;
+        const color = glyph.getAttr('color');
 
         if (color instanceof Array) {
-            var lineargradient = this.lane.track.chart.ctx.createLinearGradient(this.length / 2, 0, this.length / 2, this.getHeight())
-            let currColor
+            var lineargradient = this.lane.track.chart.ctx.createLinearGradient(this.length / 2, 0, this.length / 2, this.getHeight());
+            let currColor;
             for (let i = 0; currColor = color[i], i < color.length; i++)
-                lineargradient.addColorStop(i / (color.length - 1), currColor)
-            return lineargradient
+                lineargradient.addColorStop(i / (color.length - 1), currColor);
+            return lineargradient;
         } else if (color instanceof Function) {
-            var lineargradient = this.lane.track.chart.ctx.createLinearGradient(this.length / 2, 0, this.length / 2, this.getHeight())
-            return color(lineargradient)
+            var lineargradient = this.lane.track.chart.ctx.createLinearGradient(this.length / 2, 0, this.length / 2, this.getHeight());
+            return color(lineargradient);
         } else
-            return color
+            return color;
     }
 
     /** **getStrokeStyle**
@@ -395,17 +395,17 @@ export default class Glyph {
      * @api public
      */
     getStrokeStyle() {
-        const glyph = this
-        const color = glyph.getAttr('borderColor')
+        const glyph = this;
+        const color = glyph.getAttr('borderColor');
 
         if (typeof (color) == 'object') {
-            const lineargradient = this.lane.ctx.createLinearGradient(this.length / 2, 0, this.length / 2, this.getHeight())
-            let currColor
+            const lineargradient = this.lane.ctx.createLinearGradient(this.length / 2, 0, this.length / 2, this.getHeight());
+            let currColor;
             for (let i = 0; currColor = color[i], i < color.length; i++)
-                lineargradient.addColorStop(i / (color.length - 1), currColor)
-            return lineargradient
+                lineargradient.addColorStop(i / (color.length - 1), currColor);
+            return lineargradient;
         } else
-            return color
+            return color;
     }
 
     /** **isSubFeature**
@@ -416,7 +416,7 @@ export default class Glyph {
      * @api public
      */
     isSubFeature() {
-        return (this.parent != undefined)
+        return (this.parent != undefined);
     }
 
     /** **erase**
@@ -426,11 +426,11 @@ export default class Glyph {
      * @api public
      */
     erase() {
-        const glyph = this
-        glyph.ctx.save()
-        glyph.ctx.setTransform(1, 0, 0, 1, 0, 0)
-        glyph.ctx.clearRect(glyph.getPixelPositionX(), glyph.getPixelPositionY(), glyph.getPixelLength(), glyph.getHeight())
-        glyph.ctx.restore()
+        const glyph = this;
+        glyph.ctx.save();
+        glyph.ctx.setTransform(1, 0, 0, 1, 0, 0);
+        glyph.ctx.clearRect(glyph.getPixelPositionX(), glyph.getPixelPositionY(), glyph.getPixelLength(), glyph.getHeight());
+        glyph.ctx.restore();
     }
 
     /** **addDrawHook**
@@ -443,9 +443,9 @@ export default class Glyph {
      */
 
     addDrawHook(fn, hookId) {
-        const uid = hookId || _uniqueId('drawHook')
-        this.hooks[uid] = fn
-        return uid
+        const uid = hookId || _uniqueId('drawHook');
+        this.hooks[uid] = fn;
+        return uid;
     }
 
     /** **removeDrawHook**
@@ -457,7 +457,7 @@ export default class Glyph {
      */
 
     removeDrawHook(uid) {
-        delete this.hooks[uid]
+        delete this.hooks[uid];
     }
 
     /** **addTooltip**
@@ -472,10 +472,10 @@ export default class Glyph {
      */
 
     addTooltip(text, placement, verticalOffset, opts) {
-        const glyph = this
-        const tt = new Tooltip(text, placement, verticalOffset, opts)
-        tt.feature = glyph
-        glyph.tooltips.push(tt)
+        const glyph = this;
+        const tt = new Tooltip(text, placement, verticalOffset, opts);
+        tt.feature = glyph;
+        glyph.tooltips.push(tt);
     }
 
     /** **fireTooltips**
@@ -486,7 +486,7 @@ export default class Glyph {
      */
     fireTooltips() {
         for (let i = 0; i < this.tooltips.length; i++)
-            this.tooltips[i].fire()
+            this.tooltips[i].fire();
     }
 
     /** **draw**
@@ -496,70 +496,70 @@ export default class Glyph {
      * @api internal
      */
     draw() {
-        const glyph = this
+        const glyph = this;
 
         // set ctx
-        glyph.ctx = glyph.lane.chart.ctx
-        glyph.ctx.beginPath()
+        glyph.ctx = glyph.lane.chart.ctx;
+        glyph.ctx.beginPath();
 
         // intialize
-        const fontSize = /^\d+/.exec(glyph.ctx.font)
-        const font = /\S+$/.exec(glyph.ctx.font)
-        const fontSizeMin = 10
-        glyph.onClick = glyph.getAttr('onClick')
-        glyph.onMouseover = glyph.getAttr('onMouseover')
-        glyph.ctx.fillStyle = glyph.getFillStyle()
-        const fillStyle = glyph.ctx.fillStyle
-        const position = glyph.getPixelPositionX()
+        const fontSize = /^\d+/.exec(glyph.ctx.font);
+        const font = /\S+$/.exec(glyph.ctx.font);
+        const fontSizeMin = 10;
+        glyph.onClick = glyph.getAttr('onClick');
+        glyph.onMouseover = glyph.getAttr('onMouseover');
+        glyph.ctx.fillStyle = glyph.getFillStyle();
+        const fillStyle = glyph.ctx.fillStyle;
+        const position = glyph.getPixelPositionX();
         const height = glyph.getHeight();
 
-        (height < fontSizeMin) ? glyph.ctx.font = fontSizeMin + 'px ' + font : glyph.ctx.font = height * .9 + 'px ' + font
+        (height < fontSizeMin) ? glyph.ctx.font = fontSizeMin + 'px ' + font : glyph.ctx.font = height * .9 + 'px ' + font;
 
         // setup ctx position and orientation
-        glyph.ctx.translate(position, 0)
+        glyph.ctx.translate(position, 0);
         if (glyph.strand == '-' && !glyph.isSubFeature())
-            glyph.ctx.transform(-1, 0, 0, 1, glyph.getPixelLength(), 0)
+            glyph.ctx.transform(-1, 0, 0, 1, glyph.getPixelLength(), 0);
 
-        let dontDraw = false
+        let dontDraw = false;
         for (const i in glyph.hooks) {
-            dontDraw = glyph.hooks[i](glyph) || dontDraw
+            dontDraw = glyph.hooks[i](glyph) || dontDraw;
         }
         if (!dontDraw) {
             // draw glyph with subclass specific draw
-            glyph._draw()
+            glyph._draw();
         }
 
 
         // draw border color
         if (glyph.borderColor != 'none') {
             if (glyph.color == 'none' && glyph.parent.glyphType == 'Complex') {
-                glyph.erase()
+                glyph.erase();
             }
-            const saveStrokeStyle = glyph.ctx.strokeStyle
-            const saveLineWidth = glyph.ctx.lineWidth
-            glyph.ctx.strokeStyle = glyph.getStrokeStyle()
-            glyph.ctx.lineWidth = glyph.getAttr('borderWidth')
-            glyph.ctx.stroke()
-            glyph.ctx.strokeStyle = saveStrokeStyle
-            glyph.ctx.lineWidth = saveLineWidth
+            const saveStrokeStyle = glyph.ctx.strokeStyle;
+            const saveLineWidth = glyph.ctx.lineWidth;
+            glyph.ctx.strokeStyle = glyph.getStrokeStyle();
+            glyph.ctx.lineWidth = glyph.getAttr('borderWidth');
+            glyph.ctx.stroke();
+            glyph.ctx.strokeStyle = saveStrokeStyle;
+            glyph.ctx.lineWidth = saveLineWidth;
         }
 
         // draw fill color
-        if (glyph.color != 'none') glyph.ctx.fill()
+        if (glyph.color != 'none') glyph.ctx.fill();
 
         // explicity change transformation matrix back -- it's faster than save restore!
         if (glyph.strand == '-' && !glyph.isSubFeature())
-            glyph.ctx.transform(-1, 0, 0, 1, glyph.getPixelLength(), 0)
+            glyph.ctx.transform(-1, 0, 0, 1, glyph.getPixelLength(), 0);
 
         // draw text
-        glyph.drawText(glyph.getAttr('name'))
+        glyph.drawText(glyph.getAttr('name'));
 
         // explicity change transformation matrix back -- it's faster than save restore!
-        glyph.ctx.translate(-position, 0)
-        glyph.ctx.fillStyle = fillStyle
+        glyph.ctx.translate(-position, 0);
+        glyph.ctx.fillStyle = fillStyle;
 
         // setup mouse events if need be
-        glyph.lane.chart.myMouseEventHandler.addEvents(this)
+        glyph.lane.chart.myMouseEventHandler.addEvents(this);
 
     }
 
@@ -570,13 +570,13 @@ export default class Glyph {
      * @api internal
      */
     redraw() {
-        const glyph = this
-        glyph.lane.ctx.save()
-        glyph.erase
-        const y = glyph.getPixelPositionY()
-        glyph.lane.ctx.translate(0, y)
-        glyph.draw()
-        glyph.lane.ctx.restore()
+        const glyph = this;
+        glyph.lane.ctx.save();
+        glyph.erase;
+        const y = glyph.getPixelPositionY();
+        glyph.lane.ctx.translate(0, y);
+        glyph.draw();
+        glyph.lane.ctx.restore();
     }
 }
    

@@ -6,7 +6,7 @@
  * Chase Miller 2011
  */
 
-import Glyph from '../Scribl.glyph'
+import Glyph from '../Scribl.glyph';
 
 export default class Seq extends Glyph {
     /** **init**
@@ -20,19 +20,19 @@ export default class Seq extends Glyph {
      * @api public
      */
     constructor(type, position, length, seq, opts) {
-        super(type, position, length, undefined, opts)
-        this.seq = seq
-        this.insertions = []
+        super(type, position, length, undefined, opts);
+        this.seq = seq;
+        this.insertions = [];
         // used to show bar chart like information; range 0.0 - 1.0
-        this.fraction = 1
-        this.fractionLevel = 0.3 // level where seq shows as fraction (in pixels)           
-        this.glyphType = 'Seq'
+        this.fraction = 1;
+        this.fractionLevel = 0.3; // level where seq shows as fraction (in pixels)           
+        this.glyphType = 'Seq';
 
-        this.font = '8px courier'
-        this.chars = {}
-        this.chars.width = undefined
-        this.chars.height = undefined
-        this.chars.list = ['A', 'G', 'T', 'C', 'N', '-']
+        this.font = '8px courier';
+        this.chars = {};
+        this.chars.width = undefined;
+        this.chars.height = undefined;
+        this.chars.list = ['A', 'G', 'T', 'C', 'N', '-'];
 
     }
 
@@ -48,36 +48,36 @@ export default class Seq extends Glyph {
     _draw(ctx, length, height) {
 
         // initialize
-        const seq = this
-        let fraction = 1
+        const seq = this;
+        let fraction = 1;
 
         if (seq.lane.chart.ntsToPixels() <= seq.fractionLevel)
-            fraction = this.fraction
+            fraction = this.fraction;
 
         // see if optional parameters
-        var ctx = ctx || seq.ctx
-        var length = length || seq.getPixelLength()
-        var height = height || seq.getHeight()
+        var ctx = ctx || seq.ctx;
+        var length = length || seq.getPixelLength();
+        var height = height || seq.getHeight();
 
         // get coords
-        const left = seq.getPixelPositionX()
-        const top = seq.getPixelPositionY()
+        const left = seq.getPixelPositionX();
+        const top = seq.getPixelPositionY();
 
         // check if nts images have been built
-        const chars = SCRIBL.chars
+        const chars = SCRIBL.chars;
 
         // check if image chars need to be built for this height
         if (!chars.heights[height]) {
             // build nt images
-            chars.heights[height] = []
+            chars.heights[height] = [];
             for (var i = 0; i < this.chars.list.length; i++) {
-                const nt = this.chars.list[i]
-                let ntName = nt
+                const nt = this.chars.list[i];
+                let ntName = nt;
                 if (nt == '-') {
-                    ntName = 'dash'
+                    ntName = 'dash';
                 }
-                const charName = 'nt_' + ntName + '_bg'
-                this.createChar(nt, chars.nt_color, chars[charName], height)
+                const charName = 'nt_' + ntName + '_bg';
+                this.createChar(nt, chars.nt_color, chars[charName], height);
             }
         }
 
@@ -87,72 +87,72 @@ export default class Seq extends Glyph {
 
 
         if (seq.imgCanvas) {
-            ctx.drawImage(seq.imgCanvas, left, top - height * fraction, length, height * fraction)
+            ctx.drawImage(seq.imgCanvas, left, top - height * fraction, length, height * fraction);
         } else {
-            ctx.save()
-            ctx.beginPath()
-            ctx.textBaseline = 'middle'
-            const origFont = ctx.font
-            const size = /[\d+px]/.exec(origFont) + 'px'
-            ctx.font = size + ' courier'
-            ctx.fillStyle = 'black'
-            ctx.textAlign = 'left'
-            const seqPx = this.seq.length * chars.heights[height].width
+            ctx.save();
+            ctx.beginPath();
+            ctx.textBaseline = 'middle';
+            const origFont = ctx.font;
+            const size = /[\d+px]/.exec(origFont) + 'px';
+            ctx.font = size + ' courier';
+            ctx.fillStyle = 'black';
+            ctx.textAlign = 'left';
+            const seqPx = this.seq.length * chars.heights[height].width;
 
             // draw text;
-            seq.imgCanvas = document.createElement('canvas')
-            seq.imgCanvas.width = seqPx
-            seq.imgCanvas.height = height
-            const tmpCtx = seq.imgCanvas.getContext('2d')
+            seq.imgCanvas = document.createElement('canvas');
+            seq.imgCanvas.width = seqPx;
+            seq.imgCanvas.height = height;
+            const tmpCtx = seq.imgCanvas.getContext('2d');
 
-            let pos = 0
-            let k = 0
+            let pos = 0;
+            let k = 0;
             for (var i = 0; i < this.seq.length; i++) {
                 if (!chars.heights[height][this.seq[i]]) {
-                    this.createChar(this.seq[i], 'black', 'white', height)
+                    this.createChar(this.seq[i], 'black', 'white', height);
                 }
-                let charGlyph = this.seq[i]
+                let charGlyph = this.seq[i];
                 if (this.insertions.length > 1) {
-                    const h = 2
+                    const h = 2;
                 }
                 if (this.insertions[k] && this.insertions[k]['pos'] != undefined) {
                     if (this.insertions[k]['pos'] - 1 == i) {
-                        charGlyph += 'rightInsert'
+                        charGlyph += 'rightInsert';
                     } else if (this.insertions[k] && this.insertions[k]['pos'] == i) {
-                        charGlyph += 'leftInsert'
-                        k++
+                        charGlyph += 'leftInsert';
+                        k++;
                     }
                 }
 
-                tmpCtx.drawImage(chars.heights[height][charGlyph], pos, y)
-                pos += chars.heights[height].width
+                tmpCtx.drawImage(chars.heights[height][charGlyph], pos, y);
+                pos += chars.heights[height].width;
             }
 
-            ctx.drawImage(seq.imgCanvas, x, height - height * fraction, length, height * fraction)
+            ctx.drawImage(seq.imgCanvas, x, height - height * fraction, length, height * fraction);
             //ctx.drawImage(seq.imgCanvas, x, y, length, height);
-            ctx.font = origFont
+            ctx.font = origFont;
 
-            ctx.restore()
+            ctx.restore();
         }
 
         // this is horrible
         // have to draw an outline around the nucleotides
         // so that the mousehover will work b\c mousehover
         // only works with drawn Paths and not drawn Images :(            
-        ctx.beginPath()
-        ctx.moveTo(0, 0)
-        ctx.lineTo(length, y)
-        ctx.lineTo(length, y + height)
-        ctx.lineTo(x, y + height)
-        ctx.lineTo(x, y)
-        ctx.fillStyle = 'rgba(0,0,0,0)'
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(length, y);
+        ctx.lineTo(length, y + height);
+        ctx.lineTo(x, y + height);
+        ctx.lineTo(x, y);
+        ctx.fillStyle = 'rgba(0,0,0,0)';
         if (seq.lane.chart.ntsToPixels() <= seq.fractionLevel)
-            ctx.strokeStyle = 'rgba(0,0,0,1)'
+            ctx.strokeStyle = 'rgba(0,0,0,1)';
         else
-            ctx.strokeStyle = 'rgba(0,0,0,0)'
+            ctx.strokeStyle = 'rgba(0,0,0,0)';
 
-        ctx.stroke()
-        ctx.closePath()
+        ctx.stroke();
+        ctx.closePath();
     }
 
 
@@ -167,84 +167,84 @@ export default class Seq extends Glyph {
      * @api internal
      */
     createChar(theChar, color, backgroundColor, height) {
-        const seq = this
-        const chart = seq.lane.track.chart
-        var canvas = document.createElement('canvas')
-        var ctx = canvas.getContext('2d')
-        const buffer = 2
-        const fontsize = height - buffer
-        ctx.font = fontsize + 'px courier'
-        const width = ctx.measureText(theChar).width + buffer
-        canvas.height = height
-        canvas.width = width
-        SCRIBL.chars.heights[height].width = width
+        const seq = this;
+        const chart = seq.lane.track.chart;
+        var canvas = document.createElement('canvas');
+        var ctx = canvas.getContext('2d');
+        const buffer = 2;
+        const fontsize = height - buffer;
+        ctx.font = fontsize + 'px courier';
+        const width = ctx.measureText(theChar).width + buffer;
+        canvas.height = height;
+        canvas.width = width;
+        SCRIBL.chars.heights[height].width = width;
 
         // draw standard nt
-        var canvas = document.createElement('canvas')
-        var ctx = canvas.getContext('2d')
-        ctx.font = fontsize + 'px courier'
-        canvas.height = height
-        canvas.width = width
-        var fillStyle = ctx.fillStyle
-        ctx.fillStyle = backgroundColor
-        ctx.fillRect(0, 0, width, height)
-        ctx.fillStyle = color
-        ctx.textAlign = 'center'
-        ctx.textBaseline = 'middle'
-        ctx.fillText(theChar, width / 2, height / 2)
+        var canvas = document.createElement('canvas');
+        var ctx = canvas.getContext('2d');
+        ctx.font = fontsize + 'px courier';
+        canvas.height = height;
+        canvas.width = width;
+        var fillStyle = ctx.fillStyle;
+        ctx.fillStyle = backgroundColor;
+        ctx.fillRect(0, 0, width, height);
+        ctx.fillStyle = color;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(theChar, width / 2, height / 2);
         // store canvas with glyph in global variable
-        SCRIBL.chars.heights[height][theChar] = canvas
-        ctx.fillStyle = fillStyle
+        SCRIBL.chars.heights[height][theChar] = canvas;
+        ctx.fillStyle = fillStyle;
 
         // draw nt with insert to the right
-        var canvas = document.createElement('canvas')
-        var ctx = canvas.getContext('2d')
-        ctx.font = fontsize + 'px courier'
-        canvas.height = height
-        canvas.width = width
-        var fillStyle = ctx.fillStyle
-        ctx.fillStyle = backgroundColor
-        ctx.fillRect(0, 0, width, height)
-        ctx.fillStyle = 'yellow'
-        ctx.beginPath()
-        ctx.moveTo(0, height)
-        ctx.arcTo(width, height, width, 0, height / 2)
-        ctx.lineTo(width, height)
-        ctx.lineTo(0, height)
-        ctx.closePath()
-        ctx.fill()
-        ctx.fillStyle = color
-        ctx.textAlign = 'center'
-        ctx.textBaseline = 'middle'
-        ctx.fillText(theChar, width / 2, height / 2)
+        var canvas = document.createElement('canvas');
+        var ctx = canvas.getContext('2d');
+        ctx.font = fontsize + 'px courier';
+        canvas.height = height;
+        canvas.width = width;
+        var fillStyle = ctx.fillStyle;
+        ctx.fillStyle = backgroundColor;
+        ctx.fillRect(0, 0, width, height);
+        ctx.fillStyle = 'yellow';
+        ctx.beginPath();
+        ctx.moveTo(0, height);
+        ctx.arcTo(width, height, width, 0, height / 2);
+        ctx.lineTo(width, height);
+        ctx.lineTo(0, height);
+        ctx.closePath();
+        ctx.fill();
+        ctx.fillStyle = color;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(theChar, width / 2, height / 2);
         // store canvas with glyph in global variable
-        SCRIBL.chars.heights[height][theChar + 'rightInsert'] = canvas
-        ctx.fillStyle = fillStyle
+        SCRIBL.chars.heights[height][theChar + 'rightInsert'] = canvas;
+        ctx.fillStyle = fillStyle;
 
         // draw nt with insertion to the left
-        var canvas = document.createElement('canvas')
-        var ctx = canvas.getContext('2d')
-        ctx.font = fontsize + 'px courier'
-        canvas.height = height
-        canvas.width = width
-        var fillStyle = ctx.fillStyle
-        ctx.fillStyle = backgroundColor
-        ctx.fillRect(0, 0, width, height)
-        ctx.fillStyle = 'yellow'
-        ctx.beginPath()
-        ctx.moveTo(width, height)
-        ctx.arcTo(0, height, 0, 0, height / 2)
-        ctx.lineTo(0, height)
-        ctx.lineTo(width, height)
-        ctx.closePath()
-        ctx.fill()
-        ctx.fillStyle = color
-        ctx.textAlign = 'center'
-        ctx.textBaseline = 'middle'
-        ctx.fillText(theChar, width / 2, height / 2)
+        var canvas = document.createElement('canvas');
+        var ctx = canvas.getContext('2d');
+        ctx.font = fontsize + 'px courier';
+        canvas.height = height;
+        canvas.width = width;
+        var fillStyle = ctx.fillStyle;
+        ctx.fillStyle = backgroundColor;
+        ctx.fillRect(0, 0, width, height);
+        ctx.fillStyle = 'yellow';
+        ctx.beginPath();
+        ctx.moveTo(width, height);
+        ctx.arcTo(0, height, 0, 0, height / 2);
+        ctx.lineTo(0, height);
+        ctx.lineTo(width, height);
+        ctx.closePath();
+        ctx.fill();
+        ctx.fillStyle = color;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(theChar, width / 2, height / 2);
         // store canvas with glyph in global variable
-        SCRIBL.chars.heights[height][theChar + 'leftInsert'] = canvas
-        ctx.fillStyle = fillStyle
+        SCRIBL.chars.heights[height][theChar + 'leftInsert'] = canvas;
+        ctx.fillStyle = fillStyle;
 
     }
 }

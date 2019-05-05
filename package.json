@@ -2,7 +2,7 @@
   "name": "scribl",
   "version": "1.0.0",
   "description": "HTML5 canvas genomic graphics library",
-  "main": "./src/Scribl.js",
+  "main": "./dist/scribl.bundle.js",
   "directories": {
     "example": "examples",
     "lib": "lib"

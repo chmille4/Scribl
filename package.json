@@ -1,0 +1,33 @@
+{
+  "name": "scribl",
+  "version": "1.0.0",
+  "description": "HTML5 canvas genomic graphics library",
+  "main": "./src/Scribl.js",
+  "directories": {
+    "example": "examples",
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chmille4/Scribl"
+  },
+  "author": "CA Miller",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/chmille4/Scribl/issues"
+  },
+  "homepage": "http://chmille4.github.io/Scribl/",
+  "dependencies": {
+    "dalliance": "^0.13.5"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
+    "babel-loader": "^8.0.5",
+    "webpack": "^4.30.0",
+    "webpack-cli": "^3.3.2"
+  }
+}

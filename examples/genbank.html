@@ -1,7 +1,7 @@
 <!DOCTYPE HTML> 
 <html lang="en">
 	<head>
-      <script src="../Scribl.min.js" ></script>     
+      <script src="../dist/scribl.bundle.js"></script>     
       <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
 	  	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js"></script>
       <script type="text/javascript" src="js/dragscrollable.js"></script>
@@ -16,7 +16,7 @@
 				  	var canvas = document.getElementById(canvasName);  	
 					
 					// Create Chart
-					chart = new Scribl(canvas, 660);
+					var chart = new Scribl(canvas, 660);
 					chart.laneSizes = 15;
 					
 					// parse and load genbank file

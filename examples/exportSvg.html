@@ -1,8 +1,7 @@
 <!DOCTYPE HTML> 
 <html lang="en">
 	<head>
-		<script src="../Scribl.min.js" ></script>
-		<script src="../lib/Scribl.src.js" ></script>
+		<script src="../dist/scribl.bundle.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
 		
 		<link rel="stylesheet" type="text/css" href="demos.css" />
@@ -22,18 +21,18 @@
 				  	var canvas = document.getElementById(canvasName);  	
 					
 					// Create Chart
-					chart1 = new Scribl(canvas, 500);
+					var chart1 = new Scribl(canvas, 500);
 
 					// Add Genes      position, length, orientation
-					gene1 = chart1.addGene(900,  750 , '-');
-					gene2 = chart1.addGene(3500, 2500, '+') ;
-					gene3 = chart1.addGene(8100, 1000, '-') ;
-					gene4 = chart1.addGene(6200, 1500, '+') ;
-					gene5 = chart1.addGene(1000, 1000, '-');		
-					gene6 = chart1.addGene(3500, 1500, '-') ;		
-					gene7 = chart1.addGene(2230, 1000, '+') ;
-					gene8 = chart1.addGene(4500, 1500, '+') ;				
-					gene9 = chart1.addGene(7230, 1000, '-') ;
+					var gene1 = chart1.addGene(900,  750 , '-');
+					var gene2 = chart1.addGene(3500, 2500, '+') ;
+					var gene3 = chart1.addGene(8100, 1000, '-') ;
+					var gene4 = chart1.addGene(6200, 1500, '+') ;
+					var gene5 = chart1.addGene(1000, 1000, '-');		
+					var gene6 = chart1.addGene(3500, 1500, '-') ;		
+					var gene7 = chart1.addGene(2230, 1000, '+') ;
+					var gene8 = chart1.addGene(4500, 1500, '+') ;				
+					var gene9 = chart1.addGene(7230, 1000, '-') ;
 					
 					// add name
 					gene3.name = "Gene 2"; 

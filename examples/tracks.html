@@ -1,7 +1,7 @@
 <!DOCTYPE HTML> 
 <html lang="en">
 	<head>
-      <script src="../Scribl.min.js" ></script>		
+      <script src="../dist/scribl.bundle.js"></script>
 		<link rel="stylesheet" type="text/css" href="demos.css" />
 		
 		<script> 
@@ -12,7 +12,7 @@
 				  	var canvas = document.getElementById(canvasName);  	
 					
 					// Create Chart
-					chart = new Scribl(canvas, 500);
+					var chart = new Scribl(canvas, 500);
 					
 					// Change laneSizes and buffers
 					chart.laneSizes = 18;
@@ -23,32 +23,32 @@
 					chart.glyph.text.color = 'white';			
 
 					// Create Track 1
-					track1 = chart.addTrack();	
+					var track1 = chart.addTrack();	
 			
 					// Add Genes to Track 1
-					gene1 = track1.addFeature( new BlockArrow('track1', 5, 750 , '-') );
-					gene2 = track1.addFeature( new BlockArrow('track1', 3500, 2500, '+') );
-					gene3 = track1.addFeature( new BlockArrow('track1', 8100, 1000, '-') );
-					gene4 = track1.addFeature( new BlockArrow('track1', 6200, 1500, '+') );
+					var gene1 = track1.addFeature( new BlockArrow('track1', 5, 750 , '-') );
+					var gene2 = track1.addFeature( new BlockArrow('track1', 3500, 2500, '+') );
+					var gene3 = track1.addFeature( new BlockArrow('track1', 8100, 1000, '-') );
+					var gene4 = track1.addFeature( new BlockArrow('track1', 6200, 1500, '+') );
 					chart.track1.name = 'track 1';
 			
 					// Create Track 2
-					track2 = chart.addTrack();					
+					var track2 = chart.addTrack();					
 				
 					// Add Genes to Track 2
-					gene5 = track2.addFeature( new BlockArrow('track2', 100, 1000, '-') );
-					gene6 = track2.addFeature( new BlockArrow('track2', 3500, 1500, '-') );
+					var gene5 = track2.addFeature( new BlockArrow('track2', 100, 1000, '-') );
+					var gene6 = track2.addFeature( new BlockArrow('track2', 3500, 1500, '-') );
 					chart.track2.name = 'track 2';
 					
 					// create Lane1 of Track2
 
 					// Create Track with 1 lane
-					track3Lane1 = chart.addTrack().addLane();
+					var track3Lane1 = chart.addTrack().addLane();
 
 					// Add Genes to single lane
-					gene7 = track3Lane1.addFeature( new BlockArrow('track3', 2230, 1000, '+') );
-					gene8 = track3Lane1.addFeature( new BlockArrow('track3',3300, 1500, '+') );				
-					gene9 = track3Lane1.addFeature( new BlockArrow('track3', 4800, 1000, '-') );
+					var gene7 = track3Lane1.addFeature( new BlockArrow('track3', 2230, 1000, '+') );
+					var gene8 = track3Lane1.addFeature( new BlockArrow('track3',3300, 1500, '+') );				
+					var gene9 = track3Lane1.addFeature( new BlockArrow('track3', 4800, 1000, '-') );
 					chart.track3.name = 'track 3';
 					
 					// Draw Chart

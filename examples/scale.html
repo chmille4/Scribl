@@ -1,7 +1,7 @@
 <!DOCTYPE HTML> 
 <html lang="en">
 	<head>
-		<script src="../Scribl.min.js" ></script>
+		<script src="../dist/scribl.bundle.js"></script>
 		<link rel="stylesheet" type="text/css" href="demos.css" />
 		
 		<script> 
@@ -12,7 +12,7 @@
 				  	var canvas = document.getElementById(canvasName);  	
 					
 					// Create Chart
-					chart = new Scribl(canvas, 500);
+					var chart = new Scribl(canvas, 500);
 					
 					// force scale min and max
 					chart.scale.min = 0;
@@ -22,9 +22,9 @@
 					chart.tick.major.size = 1000;
 			
 					// Add Genes
-					gene1 = chart.addGene( 7000,    1000 , '-');
-					gene2 = chart.addGene( 3500, 1500, '+');
-					gene5 = chart.addGene( 6000,  1000, '-');	
+					var gene1 = chart.addGene( 7000,    1000 , '-');
+					var gene2 = chart.addGene( 3500, 1500, '+');
+					var gene5 = chart.addGene( 6000,  1000, '-');	
 					
 					// Draw Chart
 					chart.draw();

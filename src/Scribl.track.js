@@ -7,7 +7,11 @@
  */
 
 
-var Track = Class.extend({
+import BlockArrow from './glyph/Scribl.blockarrow'
+import {_uniqueId} from './Scribl.utils'
+import Lane from './Scribl.lane'
+
+export default class Track{
 	/** **init**
 
     * _Constructor_
@@ -17,9 +21,9 @@ var Track = Class.extend({
     * @param {Object} ctx - the canvas.context object
     * @api internal
     */
-	init: function(chart) {
+	constructor(chart) {
       // defaults
-      var track = this;
+      const track = this;
       this.chart = chart
       this.lanes = [];
       this.ctx = chart.ctx;
@@ -29,7 +33,7 @@ var Track = Class.extend({
       this.hooks = {};
       
       // add draw hooks
-      for (var i=0; i<chart.trackHooks.length; i++) {
+      for (let i=0; i<chart.trackHooks.length; i++) {
          this.addDrawHook( chart.trackHooks[i] );
       }
       
@@ -37,7 +41,7 @@ var Track = Class.extend({
       // coverage variables
       this.coverageData = [];  // number of features at any given pixel;
       this.maxDepth = 0; // highest depth for this track;
-	},
+	}
 	
 	/** **addLane**
 
@@ -46,42 +50,40 @@ var Track = Class.extend({
     * @return {Object} Lane - a Lane object
     * @api public
     */
-	addLane: function() {
-      var lane = new Lane(this.ctx, this);
+	addLane() {
+      const lane = new Lane(this.ctx, this);
       this.lanes.push(lane);
       return lane;
-   },
+   }
 	
 	/** **addGene**
    
     * _syntactic sugar function to add a feature with the gene type to this Track_
    
-    * @param {Int} position - start position of the gene
-    * @param {Int} length - length of the gene
+    * @param {number} position - start position of the gene
+    * @param {number} length - length of the gene
     * @param {String} strand - '+' or '-' strand
     * @param {Hash} [opts] - optional hash of options that can be applied to gene  
     * @return {Object} gene - a feature with the 'gene' type
     * @api public
     */
-	addGene: function(position, length, strand, opts) {
+	addGene(position, length, strand, opts) {
       return (this.addFeature( new BlockArrow("gene", position, length, strand, opts) ) );
-   },
-	
+   }	
 	/** **addProtein**
    
     * _syntactic sugar function to add a feature with the protein type to this Track_
    
-    * @param {Int} position - start position of the protein
-    * @param {Int} length - length of the protein
+    * @param {number} position - start position of the protein
+    * @param {number} length - length of the protein
     * @param {String} strand - '+' or '-' strand
     * @param {Hash} [opts] - optional hash of options that can be applied to protein  
     * @return {Object} protein - a feature with the 'protein' type
     * @api public
     */
-	addProtein: function(position, length, strand, opts) {
+	addProtein(position, length, strand, opts) {
       return (this.addFeature( new BlockArrow("protein", position, length, strand, opts) ) );
-   },
-	
+   }	
 	/** **addFeature**
    
     * _addFeature to this Track and let Scribl manage lane placement to avoid overlaps_
@@ -93,17 +95,17 @@ var Track = Class.extend({
     * @return {Object} feature - new feature
     * @api public        
     */
-	addFeature: function( feature ) {
+	addFeature( feature ) {
 		
-      var curr_lane;
-      var new_lane = true;
+      let curr_lane;
+      let new_lane = true;
       
       // try to add feature at lower lanes then move up
-      for (var j=0; j < this.lanes.length; j++) {
-         var prev_feature = this.lanes[j].features[ this.lanes[j].features.length - 1 ];
+      for (let j=0; j < this.lanes.length; j++) {
+         const prev_feature = this.lanes[j].features[ this.lanes[j].features.length - 1 ];
 
          // check if new lane is needed
-         var spacer = 3/this.chart.pixelsToNts() || 3;
+         const spacer = 3/this.chart.pixelsToNts() || 3;
          if ( prev_feature != undefined && (feature.position - spacer) > (prev_feature.position + prev_feature.length) ) {
             new_lane = false;
             curr_lane = this.lanes[j];
@@ -118,28 +120,25 @@ var Track = Class.extend({
       // add feature
       curr_lane.addFeature( feature );	
       return feature;
-   },
-   
+   }   
    /** **hide**
    
     * _hides the track so it doesn't get drawn_
        
     * @api public        
     */
-	hide: function() {
+	hide() {
 	   this.hide = true;
-	},
-	
+	}	
 	/** **unhide**
    
     * _unhides the track so it is drawn_
        
     * @api public        
     */
-	unhide: function() {
+	unhide() {
 	   this.hide = false;
-	},
-	
+	}	
 	/** **getDrawStyle**
    
     * _returns the draw style associated with this track_
@@ -147,30 +146,29 @@ var Track = Class.extend({
     * @return {String} drawStyle - the style this track will be drawn e.g. expand, collapse, line     
     * @api public        
     */
-   getDrawStyle: function() {
+   getDrawStyle() {
       if (this.drawStyle)
          return this.drawStyle
       else
          return this.chart.drawStyle;
-   },
-	
+   }	
 	/** **getHeight**
    
     * _returns the height of this track in pixels_
    
-    * @return {Int} height
+    * @return {number} height
     * @api public        
     */
-	getHeight: function() {
-      var wholeHeight = 0;
+	getHeight() {
+      let wholeHeight = 0;
 		
-      var numLanes = this.lanes.length;
-      var laneBuffer = this.chart.laneBuffer;
-      var drawStyle = this.getDrawStyle();
+      let numLanes = this.lanes.length;
+      const laneBuffer = this.chart.laneBuffer;
+      const drawStyle = this.getDrawStyle();
       if (drawStyle == 'line' || drawStyle == 'collapse')
          numLanes = 1;
 		
-      for (var i=0; i < numLanes; i++) {
+      for (let i=0; i < numLanes; i++) {
          wholeHeight += laneBuffer;
          wholeHeight += this.lanes[i].getHeight();
       }
@@ -178,84 +176,80 @@ var Track = Class.extend({
       wholeHeight -= laneBuffer;
 		
       return wholeHeight;
-   },
-	
+   }	
 	/** **getPixelPositionY**
    
     * _gets the number of pixels from the top of the chart to the top of this track_
    
-    * @return {Int} pixelPositionY
+    * @return {number} pixelPositionY
     * @api public        
     */
-   getPixelPositionY: function() {
-      var track = this;
-      var y;
+   getPixelPositionY() {
+      const track = this;
+      let y;
       
       if (!track.chart.scale.off)
          y = track.chart.getScaleHeight() + track.chart.laneBuffer;
       else
          y = 0;
 
-      for( var i=0; i < track.chart.tracks.length; i++ ) {
+      for( let i=0; i < track.chart.tracks.length; i++ ) {
          if (track.uid == track.chart.tracks[i].uid) break;
          y += track.chart.trackBuffer;
          y += track.chart.tracks[i].getHeight();
       }
    
       return y; 
-   },
-	
+   }	
 	/** **calcCoverageData**
    
     * _calculates the coverage (the number of features) at each pixel_
     *
     * @api internal    
     */
-   calcCoverageData: function() {
-      var lanes = this.lanes 
-      var min = this.chart.scale.min;
-      var max = this.chart.scale.max;
+   calcCoverageData() {
+      const lanes = this.lanes; 
+      const min = this.chart.scale.min;
+      const max = this.chart.scale.max;
 	   
 	   // determine feature locations
-      for (var i=0; i<lanes.length; i++) {
-         for (var k=0; k<lanes[i].features.length; k++) {
-            var feature = lanes[i].features[k];
-            var pos = feature.position;
-            var end = feature.getEnd();
+      for (let i=0; i<lanes.length; i++) {
+         for (let k=0; k<lanes[i].features.length; k++) {
+            const feature = lanes[i].features[k];
+            const pos = feature.position;
+            const end = feature.getEnd();
             if ( (pos >= min && pos <= max) || (end >= min && end <= max) ) {
-               var from = Math.round( feature.getPixelPositionX() );
-               var to =  Math.round( from + feature.getPixelLength() );
-               for (var j=from; j <= to; j++) { 
+               const from = Math.round( feature.getPixelPositionX() );
+               const to =  Math.round( from + feature.getPixelLength() );
+               for (let j=from; j <= to; j++) { 
                   this.coverageData[j] = this.coverageData[j] + 1 || 1; 
                   this.maxDepth = Math.max(this.coverageData[j], this.maxDepth);
                }
             }
          }
       }     
-   },
-   
+   }   
    /** **erase**
    
     * _erases this track_
     *
     * @api internal    
     */
-   erase: function() {
-      var track = this;
+   erase() {
+      const track = this;
       track.chart.ctx.clearRect(0, track.getPixelPositionY(), track.chart.width, track.getHeight());
-   },
-	
+   }	
 	/** **draw**
    
     * _draws Track_
    
     * @api internal   
     */
-	draw: function() {
-      var track = this;
+	draw() {
+      const track = this;
       
       // execute hooks
-      var dontDraw = false;
+      let dontDraw = false;
       for (var i in track.hooks) {
          dontDraw = track.hooks[i](track) || dontDraw;
       }
@@ -270,13 +264,13 @@ var Track = Class.extend({
       if(track.hide)
          return;
                   
-      var style = track.getDrawStyle();
-      var laneSize = track.chart.laneSizes;
-      var lanes = track.lanes;
-      var laneBuffer = track.chart.laneBuffer;
-      var trackBuffer = track.chart.trackBuffer;
-      var y =  laneSize + trackBuffer;
-      var ctx = track.chart.ctx;
+      const style = track.getDrawStyle();
+      const laneSize = track.chart.laneSizes;
+      const lanes = track.lanes;
+      const laneBuffer = track.chart.laneBuffer;
+      const trackBuffer = track.chart.trackBuffer;
+      let y =  laneSize + trackBuffer;
+      const ctx = track.chart.ctx;
       
       if (!dontDraw) {
          
@@ -287,13 +281,13 @@ var Track = Class.extend({
             for (var i=0; i<lanes.length; i++) {
                lanes[i].y = y;
                if(lanes[i].draw()) {
-                  var height = lanes[i].getHeight();
+                  const height = lanes[i].getHeight();
                   ctx.translate(0, height + laneBuffer);
                   y = y + height + laneBuffer;
                }
             }
          } else if ( style == 'collapse' ) { // draw collapse style (i.e. single lane)
-            var features = [];
+            let features = [];
             
             // concat all features into single array
             for (var i=0; i<lanes.length; i++) {
@@ -301,10 +295,10 @@ var Track = Class.extend({
             }
             // sort features so the minimal number of lanes are used
             features.sort( function(a,b){ return(a.position - b.position); } );
-            for (var j=0; j<features.length; j++) {
-               var originalLength = features[j].length;
-               var originalName = features[j].name;
-               var m = undefined;
+            for (let j=0; j<features.length; j++) {
+               const originalLength = features[j].length;
+               const originalName = features[j].name;
+               const m = undefined;
                // for( m=j+1; m < features.length; m++) {
                //    // if a feature is overlapping change length to draw as a single feature
                //    if (features[j].getEnd() >= features[m].position) {
@@ -329,12 +323,12 @@ var Track = Class.extend({
             track.coverageData = [];
             if (track.coverageData.length == 0) track.calcCoverageData();
    	   
-            var normalizationFactor = this.maxDepth;
+            const normalizationFactor = this.maxDepth;
 
             ctx.beginPath();
    //         ctx.moveTo(this.chart.offset, laneSize);
-            for (var k=this.chart.offset; k <= this.chart.width + this.chart.offset; k++) {
-               var normalizedPt = track.coverageData[k] / normalizationFactor * laneSize || 0;
+            for (let k=this.chart.offset; k <= this.chart.width + this.chart.offset; k++) {
+               let normalizedPt = track.coverageData[k] / normalizationFactor * laneSize || 0;
                normalizedPt = laneSize - normalizedPt;
                ctx.lineTo(k, normalizedPt);
             }
@@ -348,33 +342,31 @@ var Track = Class.extend({
       // add track buffer - extra laneBuffer
       ctx.translate(0,trackBuffer-laneBuffer);
 		
-   },
-   
+   }   
    /** **addDrawHook**
    
     * _add function that executes before the track is drawn_
     
     * @param {Function} function - takes track as param, returns true to stop the normal draw, false to allow
-    * @return {Int} id - returns the uniqe id for the hook which is used to remove it
+    * @return {number} id - returns the uniqe id for the hook which is used to remove it
     * @api public 
     */
    
-   addDrawHook: function(fn, hookId) {
-      var uid = hookId || _uniqueId('drawHook');
+   addDrawHook(fn, hookId) {
+      const uid = hookId || _uniqueId('drawHook');
       this.hooks[uid] = fn;
       return uid;
-   },
-   
+   }   
    /** **removeDrawHook**
    
     * _removes function that executes before the track is drawn_
     
-    * @param {Int} id - the id of drawHook function that will be removed
+    * @param {number} id - the id of drawHook function that will be removed
     * @api public 
     */
     
-    removeDrawHook: function(uid) {
+    removeDrawHook(uid) {
        delete this.hooks[uid];
     } 
     
-});
+}

@@ -1,124 +1,109 @@
-<!DOCTYPE HTML> 
+<!DOCTYPE HTML>
 <html lang="en">
-	<head>
-		
-		<!-- FOR DEVELOPERS USE -->
-		<script src="../src/Scribl.class.js" ></script>
-		<script src="../src/Scribl.js" ></script>
-		<script src="../src/Scribl.track.js" ></script>
-		<script src="../src/Scribl.lane.js" ></script>
-		<script src="../src/Scribl.tooltips.js" ></script>		
-		<script src="../src/Scribl.events.js" ></script>
-		<script src="../src/Scribl.utils.js" ></script>
-		<script src="../src/Scribl.svg.js" ></script>
-		<script src="../src/Scribl.glyph.js" ></script>
-		<script src="../src/glyph/Scribl.blockarrow.js" ></script>
-		<script src="../src/glyph/Scribl.arrow.js" ></script>
-		<script src="../src/glyph/Scribl.rect.js" ></script>
-		<script src="../src/glyph/Scribl.line.js" ></script>
-		<script src="../src/glyph/Scribl.complex.js" ></script>		
-		<link rel="stylesheet" type="text/css" href="demos.css" />
-		
-		<script> 
-		
+<head>
+
+    <!-- FOR DEVELOPERS USE -->
+    <script src="../dist/scribl.bundle.js"></script>
+    <link rel="stylesheet" type="text/css" href="demos.css"/>
+
+    <script>
 
 
-			function draw(canvasName) {  
-					
-					// Get Canvas and Create Chart
-				  	var canvas = document.getElementById(canvasName);  	
-					
-					// Create Chart
-					chart1 = new Scribl(canvas, 600);
-               // style chart
-              // chart1.glyph.text.color = 'white';
-               //chart1.glyph.text.align = 'left';
-               // chart1.glyph.onClick = function(feature) { 
-               //    alert(feature.name);
-               // };
-               chart1.laneSizes = 15;
-               //chart1.scale.min = 0;
-               //chart1.scale.max = 1000;
-               
-      var track1 = chart1.addTrack();   
-      // create new lane
-      var lane1 = track1.addLane();
-      gene_0 = lane1.addFeature( new BlockArrow( 'gene_0', 156, 1212, '+', {'name':'gene_0'}));
-      // create new lane
-      var lane2 = track1.addLane();
-      gene_1 = lane2.addFeature( new BlockArrow( 'gene_1', 1727, 3038, '+', {'name':'gene_1'}));
-      // use chain calling to add new lane
-      gene_2 = track1.addLane().addFeature( new BlockArrow( 'gene_2', 3113, 3384, '+', {'name':'gene_2'}));
-      // use chain calling to add new lane
-      gene_3 = track1.addLane().addFeature( new BlockArrow( 'gene_3', 3971, 4682, '+', {'name':'gene_3'}));
-               
-                           
-              // track1.drawStyle = 'line';
-               //                var gene3 = track1.addGene(0, 1000, '+');
-               //                var gene6 = track1.addGene(0, 1000, '+');
-               //                gene3.name = 3;
-               //               
-               //                //addBorder(gene3);
-               //                var gene4 = track1.addGene(1200, 1000, '+');
-               //                gene4.name = 4;
-               //                var gene5 = track1.addGene(2400, 1000, '+');
-               //                gene5.name = 5;
-               //                
-               //                var track2 = chart1.addTrack();               
-               //                
-               //                var gene13 = track2.addGene(0, 1000, '+');
-               //                var gene16 = track2.addGene(0, 1000, '+');
-               //                gene13.name = 13;
-               //                gene13.text.align = 'right';
-               //                //addBorder(gene3);
-               //                var gene14 = track2.addGene(1200, 1000, '+');
-               //                gene14.name = 14;
-               //                var gene15 = track2.addGene(2400, 1000, '+');
-               //                gene15.name = 15;
-               // 
-               //                gene1 = chart1.addFeature( 
-               //    new Complex('complex', 1500, 8000, '+', [
-               //       new Arrow('arrow1',7000, '+', {'color':'none', 'borderColor':'black'}),
-               //       new BlockArrow('complex',0,500, '+', {'name':'chase'}),
-               //       new Rect('complex',3500, 2000, {'color':'none', 'borderColor':'black'}),
-               //       new BlockArrow('complex',700,400, '+')
-               //    ])
-               // );
-               // 
-               // gene2 = chart1.addGene(10000, 500, '+');
-               
+        function draw(canvasName) {
 
-               // Draw Chart
+            // Get Canvas and Create Chart
+            var canvas = document.getElementById(canvasName)
+
+            // Create Chart
+            var chart1 = new Scribl(canvas, 600)
+            // style chart
+            // chart1.glyph.text.color = 'white';
+            //chart1.glyph.text.align = 'left';
+            // chart1.glyph.onClick = function(feature) { 
+            //    alert(feature.name);
+            // };
+            chart1.laneSizes = 15
+            //chart1.scale.min = 0;
+            //chart1.scale.max = 1000;
+
+            var track1 = chart1.addTrack()
+            // create new lane
+            var lane1 = track1.addLane()
+            var gene_0 = lane1.addFeature(new BlockArrow('gene_0', 156, 1212, '+', {'name': 'gene_0'}))
+            // create new lane
+            var lane2 = track1.addLane()
+            var gene_1 = lane2.addFeature(new BlockArrow('gene_1', 1727, 3038, '+', {'name': 'gene_1'}))
+            // use chain calling to add new lane
+            var gene_2 = track1.addLane().addFeature(new BlockArrow('gene_2', 3113, 3384, '+', {'name': 'gene_2'}))
+            // use chain calling to add new lane
+            var gene_3 = track1.addLane().addFeature(new BlockArrow('gene_3', 3971, 4682, '+', {'name': 'gene_3'}))
+
+
+            // track1.drawStyle = 'line';
+            //                var gene3 = track1.addGene(0, 1000, '+');
+            //                var gene6 = track1.addGene(0, 1000, '+');
+            //                gene3.name = 3;
+            //               
+            //                //addBorder(gene3);
+            //                var gene4 = track1.addGene(1200, 1000, '+');
+            //                gene4.name = 4;
+            //                var gene5 = track1.addGene(2400, 1000, '+');
+            //                gene5.name = 5;
+            //                
+            //                var track2 = chart1.addTrack();               
+            //                
+            //                var gene13 = track2.addGene(0, 1000, '+');
+            //                var gene16 = track2.addGene(0, 1000, '+');
+            //                gene13.name = 13;
+            //                gene13.text.align = 'right';
+            //                //addBorder(gene3);
+            //                var gene14 = track2.addGene(1200, 1000, '+');
+            //                gene14.name = 14;
+            //                var gene15 = track2.addGene(2400, 1000, '+');
+            //                gene15.name = 15;
+            // 
+            //                gene1 = chart1.addFeature( 
+            //    new Complex('complex', 1500, 8000, '+', [
+            //       new Arrow('arrow1',7000, '+', {'color':'none', 'borderColor':'black'}),
+            //       new BlockArrow('complex',0,500, '+', {'name':'chase'}),
+            //       new Rect('complex',3500, 2000, {'color':'none', 'borderColor':'black'}),
+            //       new BlockArrow('complex',700,400, '+')
+            //    ])
+            // );
+            // 
+            // gene2 = chart1.addGene(10000, 500, '+');
+
+
+            // Draw Chart
 //               chart1.tracks[0].drawStyle = 'line';
 
-               
 
-               chart1.draw();
-                              gene6.erase();
+            chart1.draw()
+            gene6.erase()
 //               chart1.draw();               
 
-               // Create image of chart1
-               var img = chart1.canvas.toDataURL("image/png");
-               // Add link to download image
-               document.getElementById('export').href = img;
-            }
-            
+            // Create image of chart1
+            var img = chart1.canvas.toDataURL('image/png')
+            // Add link to download image
+            document.getElementById('export').href = img
+        }
 
-				
-		</script>
 
-	</head>  
-	
-	<body onload="draw('canvas')">
-		<div id="description">
-			<h2>Simple Demo</h2><br/>
-			get up and running with minimal code
-		</div><br/>
-		<div id="container">
-			<canvas id="canvas" width="650" height="330"></canvas>  
-			</br><a id="export">Export as PNG (right click Save As)</a>
-		</div>
-		
-	</body>
-	
+    </script>
+
+</head>
+
+<body onload="draw('canvas')">
+<div id="description">
+    <h2>Simple Demo</h2><br/>
+    get up and running with minimal code
+</div>
+<br/>
+<div id="container">
+    <canvas id="canvas" width="650" height="330"></canvas>
+    </br><a id="export">Export as PNG (right click Save As)</a>
+</div>
+
+</body>
+
 </html>

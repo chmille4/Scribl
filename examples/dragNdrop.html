@@ -1,81 +1,82 @@
-<!DOCTYPE HTML> 
+<!DOCTYPE HTML>
 <html lang="en">
-	<head>
-		<script src="../Scribl.min.js" ></script>		
-		<link rel="stylesheet" type="text/css" href="demos.css" />
+<head>
+    <script src="../dist/scribl.bundle.js"></script>
+    <link rel="stylesheet" type="text/css" href="demos.css"/>
 
-	<!-- NOTE - This will only work as is in Firefox but IT IS MUCH FASTER IN CHROME! -->
-	<!-- To use in Chrome it must be accessed via a server (for some strange reason) -->
-	
-	</head>  
-	
-	<body> 
-		<div id="description"><h2>Drag and Drop</h2>
-			
-			<div id="content"></div>
-	   	<p id="log" style="color: gray"></p>
-		</div>
-		<div id="container">
-			<canvas id='canvas' width=900 height=450/>
-		</div>
-		
-		<script>
-			var content = document.getElementById('content');
-			if (!window.FileReader) {
-			  content.innerHTML = "<p>This browser doesnt support the File API</p>";
-			} else {
-			  // Page Layout
-			  content.innerHTML =
-			    '<p>Drag a Genbank(.gb) or BED(.bed) file onto this area <input type="hidden" id="file" /></p>';
+    <!-- NOTE - This will only work as is in Firefox but IT IS MUCH FASTER IN CHROME! -->
+    <!-- To use in Chrome it must be accessed via a server (for some strange reason) -->
 
-			  // Displays gene charts.
-			  function displayChart(file) {
-			    var reader = new FileReader();
-				var fileType = /[^.]+$/.exec(file.name);
+</head>
 
-			   reader.onload = function(event) {
-					var canvas = document.getElementById('canvas');
-					chart = new Scribl(canvas, 810);
-					if (fileType == "bed") 
-						chart.loadBed(event.target.result);
-					else if (fileType == "gb")
-						chart.loadGenbank(event.target.result);
-					else
-					 	alert("File must have a .gb or .bed extension");
-					chart.draw();		
-			    };
-			    reader.readAsText(file);
-			  }		 
+<body>
+<div id="description"><h2>Drag and Drop</h2>
 
-			  // Input handler
-			  document.getElementById('file').onchange = function() {
-			    displayFile(this.files[0]);
-			  };
+    <div id="content"></div>
+    <p id="log" style="color: gray"></p>
+</div>
+<div id="container">
+    <canvas id='canvas' width=900 height=450>
+    </canvas>
+</div>
 
-			  // Reduce movement by adding invisible border
-			  content.style.border = '4px solid transparent';
+<script>
+    var content = document.getElementById('content')
+    if (!window.FileReader) {
+        content.innerHTML = '<p>This browser doesnt support the File API</p>'
+    } else {
+        // Page Layout
+        content.innerHTML =
+            '<p>Drag a Genbank(.gb) or BED(.bed) file onto this area <input type="hidden" id="file" /></p>'
 
-			  // Add dragging events
-			  content.ondragenter = function() {
-			    content.style.border = '4px solid #b1ecb3';
-			    return false;
-			  };
+        // Displays gene charts.
+        function displayChart(file) {
+            var reader = new FileReader()
+            var fileType = /[^.]+$/.exec(file.name)
 
-			  content.ondragover = function() {
-			    return false;
-			  };
+            reader.onload = function (event) {
+                var canvas = document.getElementById('canvas')
+                var chart = new Scribl(canvas, 810)
+                if (fileType == 'bed')
+                    chart.loadBed(event.target.result)
+                else if (fileType == 'gb')
+                    chart.loadGenbank(event.target.result)
+                else
+                    alert('File must have a .gb or .bed extension')
+                chart.draw()
+            }
+            reader.readAsText(file)
+        }
 
-			  content.ondragleave = function() {
-			    return false;
-			  };
+        // Input handler
+        document.getElementById('file').onchange = function () {
+            displayFile(this.files[0])
+        }
 
-			  content.ondrop = function(event) {
-			    content.style.border = '4px solid transparent';
-			    displayChart(event.dataTransfer.files[0]);
-			    return false;
-			  };
-			}
-		</script>
-	</body>
-	
+        // Reduce movement by adding invisible border
+        content.style.border = '4px solid transparent'
+
+        // Add dragging events
+        content.ondragenter = function () {
+            content.style.border = '4px solid #b1ecb3'
+            return false
+        }
+
+        content.ondragover = function () {
+            return false
+        }
+
+        content.ondragleave = function () {
+            return false
+        }
+
+        content.ondrop = function (event) {
+            content.style.border = '4px solid transparent'
+            displayChart(event.dataTransfer.files[0])
+            return false
+        }
+    }
+</script>
+</body>
+
 </html>

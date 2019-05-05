@@ -1,53 +1,55 @@
-<!DOCTYPE HTML> 
+<!DOCTYPE HTML>
 <html lang="en">
-	<head>
-      <script src="../Scribl.min.js" ></script>      
-		<link rel="stylesheet" type="text/css" href="demos.css" />
-		
-		<script> 
+<head>
+    <script src="../dist/scribl.bundle.js"></script>
+    <link rel="stylesheet" type="text/css" href="demos.css"/>
 
-			function draw(canvasName) {  
-					
-					// Get Canvas and Create Chart
-				  	var canvas = document.getElementById(canvasName);  	
-					
-					// Create Chart
-					chart1 = new Scribl(canvas, 500);
+    <script>
 
-					// Add Genes      position, length, orientation
-					gene1 = chart1.addGene(900,  750 , '-' );
-					gene2 = chart1.addGene(3500, 2500, '+') ;
-					gene3 = chart1.addGene(8100, 1000, '-' ) ;
-               // gene4 = chart1.addGene(6200, 1500, '+') ;
-               // gene5 = chart1.addGene(1000, 1000, '-');     
-               // gene6 = chart1.addGene(3500, 1500, '-') ;    
-                gene7 = chart1.addGene(2230, 1000, '+') ;
-               gene8 = chart1.addGene(4500, 1500, '+') ;          
-                gene9 = chart1.addGene(7230, 1000, '-') ;
-				
-					// Draw Chart
-					chart1.draw();
-					
-					// Create image of chart1
-					var img = chart1.canvas.toDataURL("image/png");
-					// Add link to download image
-					document.getElementById('export').href = img;
-			}
-				
-		</script>
+        function draw(canvasName) {
 
-	</head>  
-	
-	<body onload="draw('canvas')">
-		<div id="description">
-			<h2>Simple Demo</h2><br/>
-			get up and running with minimal code
-		</div><br/>
-		<div id="container">
-			<canvas id="canvas" width="547" height="330"></canvas>  
-			</br><a id="export">Export as PNG (right click Save As)</a>
-		</div>
-		
-	</body>
-	
+            // Get Canvas and Create Chart
+            var canvas = document.getElementById(canvasName)
+
+            // Create Chart
+            var chart1 = new Scribl(canvas, 500)
+
+            // Add Genes      position, length, orientation
+            var gene1 = chart1.addGene(900, 750, '-')
+            var gene2 = chart1.addGene(3500, 2500, '+')
+            var gene3 = chart1.addGene(8100, 1000, '-')
+            // gene4 = chart1.addGene(6200, 1500, '+') ;
+            // gene5 = chart1.addGene(1000, 1000, '-');     
+            // gene6 = chart1.addGene(3500, 1500, '-') ;    
+            var gene7 = chart1.addGene(2230, 1000, '+')
+            var gene8 = chart1.addGene(4500, 1500, '+')
+            var gene9 = chart1.addGene(7230, 1000, '-')
+
+            // Draw Chart
+            chart1.draw()
+
+            // Create image of chart1
+            var img = chart1.canvas.toDataURL('image/png')
+            // Add link to download image
+            document.getElementById('export').href = img
+        }
+
+    </script>
+
+</head>
+
+<body onload="draw('canvas')">
+<div id="description">
+    <h2>Simple Demo</h2><br/>
+    get up and running with minimal code
+</div>
+<br/>
+<div id="container">
+    <canvas id="canvas" width="547" height="330"></canvas>
+    </br>
+    <a id="export">Export as PNG (right click Save As)</a>
+</div>
+
+</body>
+
 </html>

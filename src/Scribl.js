@@ -7,10 +7,18 @@
  * 
  * Chase Miller 2011
  */
+
+import {makeBam} from 'dalliance/js/bam'
+import genbank from './parsers/genbank'
+import bed from './parsers/bed'
+import BlockArrow from './glyph/Scribl.blockarrow'
+import {_uniqueId} from './Scribl.utils'
+import MouseEventHandler from './Scribl.events'
+import Track from './Scribl.track'
  
  // globals
 // if (SCRIBL == undefined) {
-    var SCRIBL = {};
+    const SCRIBL = {};
     SCRIBL.chars = {};                                    
     SCRIBL.chars.nt_color = 'white';
     SCRIBL.chars.nt_A_bg = 'red';
@@ -24,24 +32,24 @@
  //}
  
  
-var Scribl = Class.extend({
+export default class Scribl {
    	 
    /** **init**
 
     * _ Constructor, call this with `new Scribl()`_
 
-    * @param {Object} canvasHTML object
-    * @param {Int} width of chart in pixels
+    * @param {Object} canvas HTML object
+    * @param {number} width of chart in pixels
     * @return {Object} Scribl object
     * @api public
     */
-	init: function(canvas, width) {
+	constructor(canvas, width) {
       this.scrolled = false;
       // create canvas contexts		
-      var ctx;
+      let ctx;
       if (canvas)
          ctx = canvas.getContext('2d');
-      var chart = this;      
+      const chart = this;      
 
       // chart defaults
       this.width = width;
@@ -91,8 +99,8 @@ var Scribl = Class.extend({
       this.events = {};
       this.events.hasClick = false;
       this.events.hasMouseover = false;
-      this.events.clicks = new Array;
-      this.events.mouseovers = new Array;
+      this.events.clicks = [];
+      this.events.mouseovers = [];
       this.events.added = false;
       this.mouseHandler = function(e) { 
          chart.handleMouseEvent(e, 'mouseover') 
@@ -138,41 +146,41 @@ var Scribl = Class.extend({
       // private variables
       this.myMouseEventHandler = new MouseEventHandler(this);
       this.tracks = [];
-      var scaleSize = this.scale.size;
-      var scaleFontSize = this.scale.font.size
-   },
+      const scaleSize = this.scale.size;
+      const scaleFontSize = this.scale.font.size;
+   }
 	
 	/** **getScaleHeight**
    
     * _Get the height of the scale/ruler_
    
-    * @return {Int} height in pixels
+    * @return {number} height in pixels
     * @api public
     */
-	getScaleHeight: function() {
+	getScaleHeight() {
       return (this.scale.font.size + this.scale.size);
-   },
+   }
 	
 	/** **getHeight**
    
     * _Get the height of the entire Scribl chart/view_
    
-    * @return {Int} height in pixels
+    * @return {number} height in pixels
     * @api public
     */
-	getHeight: function() {
-      var wholeHeight = 0;
+	getHeight(){
+      let wholeHeight = 0;
 		
       if (!this.scale.off) wholeHeight += this.getScaleHeight();
-      var numTracks = this.tracks.length
+      const numTracks = this.tracks.length;
 		
-      for (var i=0; i < numTracks; i++) {
+      for (let i=0; i < numTracks; i++) {
          wholeHeight += this.trackBuffer;
          wholeHeight += this.tracks[i].getHeight();
       }
 
       return wholeHeight;
-   },
+   }
    
    /** **getFeatures**
    
@@ -182,15 +190,15 @@ var Scribl = Class.extend({
     * @api public
     */
    
-   getFeatures: function() {
-      var features = [];
-      for (var i=0; i < this.tracks.length; i++){
-         for (var k=0; k < this.tracks[i].lanes.length; k++) {
+   getFeatures() {
+      let features = [];
+      for (let i=0; i < this.tracks.length; i++){
+         for (let k=0; k < this.tracks[i].lanes.length; k++) {
             features = features.concat(this.tracks[i].lanes[k].features);
          }
       }
       return features;
-   },
+   }
    
    /** **setCanvas**
    
@@ -199,11 +207,11 @@ var Scribl = Class.extend({
     * @param {Html Canvas Element} the canvas to draw to
     * @api public
     */
-   setCanvas: function(canvas){
+   setCanvas(canvas){
       this.canvas = canvas;
       this.ctx = canvas.getContext('2d');
      // this.registerEventListeners();
-   },
+   }
    
    /** **addScale**
    
@@ -211,14 +219,14 @@ var Scribl = Class.extend({
    
     * @api public
     */	    
-   addScale: function() {
+   addScale() {
       if (this.scale.userControlled)
          this.scale.positions.push( this.tracks.length );
       else {
          this.scale.positions = [ this.tracks.length ];
          this.scale.userControlled = true;
       }
-   },
+   }
 		
 	/** **addTrack**
    
@@ -227,13 +235,13 @@ var Scribl = Class.extend({
     * @return {Object} the new track
     * @api public
     */
-	addTrack: function() {
-      var track = new Track(this);
+	addTrack() {
+      const track = new Track(this);
       if (this.tracks.length == 1 && this.tracks[0] == undefined)
          this.tracks = [];
       this.tracks.push(track);
       return track;
-   },
+   }
    
    /** **removeTrack**
    
@@ -242,15 +250,14 @@ var Scribl = Class.extend({
     * @param {Object} the track to be removed
     * @api public
     */
-	removeTrack: function(track) {
-	   var chart = this;
+	removeTrack(track) {
+	   const chart = this;
 	   
-      for (var i=0; i < chart.tracks.length; i++){
+      for (let i=0; i < chart.tracks.length; i++){
          if (track.uid == chart.tracks[i].uid)
             chart.tracks.splice(i,1);
       }      
-      delete track;
-   },
+   }
 	
 	
 	/** **loadGenbank**
@@ -260,9 +267,9 @@ var Scribl = Class.extend({
     * @param {String} genbank file as a string
     * @api public
     */
-	loadGenbank: function(file) {
+	loadGenbank(file) {
       genbank(file, this);
-   },
+   }
 	
 	/** **loadBed**
    
@@ -271,9 +278,9 @@ var Scribl = Class.extend({
     * @param {String} bed file as a string
     * @api public
     */
-	loadBed: function(file) {
+	loadBed(file) {
       bed(file, this);
-   },
+   }
    
    /** **loadBam**
    
@@ -281,15 +288,15 @@ var Scribl = Class.extend({
    
     * @param {File} bam file as a javascript file object
     * @param {File} bai (bam index) file as a javascript file object
-    * @param {Int} start
-    * @param {Int} end
+    * @param {number} start
+    * @param {number} end
     * @api public
     */
-	loadBam: function(bamFile, baiFile, chr, start, end, callback) {
-	   var scribl = this;
+	loadBam(bamFile, baiFile, chr, start, end, callback) {
+	   const scribl = this;
       // scribl.scale.min = start;
       // scribl.scale.max = end;
-	   var track = scribl.addTrack();
+	   const track = scribl.addTrack();
 	   track.status = 'waiting';
       makeBam(new BlobFetchable(bamFile), 
               new BlobFetchable(baiFile),
@@ -297,7 +304,7 @@ var Scribl = Class.extend({
                  scribl.file = bam;
                  bam.fetch(chr, start, end, function(r, e) {
                                      if (r) {
-                                         for (var i = 0; i < r.length; i += 1) {
+                                         for (let i = 0; i < r.length; i += 1) {
                                             track.addFeature( new BlockArrow('bam', r[i].pos, r[i].lengthOnRef, '+', {'seq':r[i].seq}))
                                          }
                                          track.status = "received";
@@ -311,7 +318,7 @@ var Scribl = Class.extend({
                                   });
       });
       return track;
-   },
+   }
 	
 	/** **loadFeatures**
    
@@ -320,44 +327,44 @@ var Scribl = Class.extend({
     * @param {Array} features - array of features, which can be any of the derived Glyph classes (e.g. Rect, Arrow, etc..)
     * @api public
     */
-	loadFeatures: function(features) {
-      for ( var i=0; i < features.length; i++ )
+	loadFeatures(features) {
+      for ( let i=0; i < features.length; i++ )
          this.addFeature( features[i] );
-   },
+   }
 	
 	/** **addGene**
    
     * _syntactic sugar function to add a feature with the gene type_
    
-    * @param {Int} position - start position of the feature
-    * @param {Int} length - length of the feature
+    * @param {number} position - start position of the feature
+    * @param {number} length - length of the feature
     * @param {String} strand - '+' or '-' strand
     * @param {Hash} [opts] - optional hash of options that can be applied to feature 
     * @return {Object} feature - a feature with the 'feature' type
     * @api public
     */
-	addGene: function (position, length, strand, opts) {
+	addGene(position, length, strand, opts) {
       return (this.addFeature(
          new BlockArrow('gene', position, length, strand, opts)
       ));
-   },
+   }
 	
 	/** **addProtein**
    
     * _syntactic sugar function to add a feature with the protein type_
    
-    * @param {Int} position - start position of the protein
-    * @param {Int} length - length of the protein
+    * @param {number} position - start position of the protein
+    * @param {number} length - length of the protein
     * @param {String} strand - '+' or '-' strand
     * @param {Hash} [opts] - optional hash of options that can be applied to protein  
     * @return {Object} protein - a feature with the 'protein' type
     * @api public
     */
-	addProtein: function(position, length, strand, opts) {
+	addProtein(position, length, strand, opts) {
       return (this.addFeature( 
          new BlockArrow('protein', position, length, strand, opts) 
       ));
-   },
+   }
 	
 	/** **addFeature**
    
@@ -370,31 +377,31 @@ var Scribl = Class.extend({
     * @return {Object} feature     
     * @api public        
     */
-	addFeature: function( feature ) {	
-      var track = this.tracks[0] || this.addTrack();
+	addFeature( feature ) {	
+      const track = this.tracks[0] || this.addTrack();
       track.addFeature(feature);
       return feature;
-   },
+   }
 	
 	
 	/** **slice**
    
     * _slices the Scribl chart/view at given places and returns a smaller chart/view_
    
-    * @param {Int} from - nucleotide position to slice from
-    * @param {Int} to - nucleotide position to slice to     
+    * @param {number} from - nucleotide position to slice from
+    * @param {number} to - nucleotide position to slice to     
     * @param {String} type - _inclusive_ (defaulte) includes any feature that has any part in region, _exclusive_, includes only features that are entirely in the region, _strict_ if feature is partly in region, it'll cut that feature at the boundary and include the cut portion
     * @return {Object} Scribl   
     * @api public          
     */
-	slice: function(from, to, type) {
+	slice(from, to, type) {
       type = type || 'inclusive';
-      var chart = this;
-      var sliced_features = [];
+      const chart = this;
+      const sliced_features = [];
 		
       // iterate through tracks
-      var numTracks = this.tracks.length;
-      var newChart = new Scribl(this.canvas, this.width);
+      const numTracks = this.tracks.length;
+      const newChart = new Scribl(this.canvas, this.width);
       
       // TODO: make this more robust
       newChart.scale.min    = this.scale.min;      
@@ -427,17 +434,17 @@ var Scribl = Class.extend({
           //     define_prop(newChart, key, descriptor(chart, key)) })
 
 		
-      for ( var j=0; j < numTracks; j++) {
-         var track = this.tracks[j];
-         var newTrack = newChart.addTrack();
+      for ( let j=0; j < numTracks; j++) {
+         const track = this.tracks[j];
+         const newTrack = newChart.addTrack();
          newTrack.drawStyle = track.drawStyle;
-         var numLanes = track.lanes.length;
-         for ( var i=0; i < numLanes; i++ ) {
-            var newLane = newTrack.addLane();
-            var s_features = track.lanes[i].features;
-            for (var k=0; k < s_features.length; k++ ) {
-               var end = s_features[k].position + s_features[k].length;
-               var start = s_features[k].position;               
+         const numLanes = track.lanes.length;
+         for ( let i=0; i < numLanes; i++ ) {
+            const newLane = newTrack.addLane();
+            const s_features = track.lanes[i].features;
+            for (let k=0; k < s_features.length; k++ ) {
+               const end = s_features[k].position + s_features[k].length;
+               const start = s_features[k].position;               
                // determine if feature is in slice/region
                if(type == 'inclusive') {
                   if ( start >= from && start <= to )
@@ -499,7 +506,7 @@ var Scribl = Class.extend({
       // }
 
       return newChart;
-   },
+   }
 	
 	/** **draw**
    
@@ -508,10 +515,10 @@ var Scribl = Class.extend({
     * @api public
     */
        
-	draw: function() {
+	draw() {
       // initalize variables
-      var ctx = this.ctx;
-      var tracks = this.tracks;
+      const ctx = this.ctx;
+      const tracks = this.tracks;
       
       // check if scrollable
       if (this.scrollable == true) {		    
@@ -533,7 +540,7 @@ var Scribl = Class.extend({
       ctx.save();
 
       // draw tracks
-      for (var i=0; i<tracks.length; i++) {
+      for (let i=0; i<tracks.length; i++) {
          // draw scale
          if (!this.scale.off && this.scale.positions.indexOf(i) != -1)
             this.drawScale();            
@@ -551,7 +558,7 @@ var Scribl = Class.extend({
       // add events if haven't done so already
       if (!this.events.added)
          this.registerEventListeners();
-   },
+   }
 
    /** **redraw**
 
@@ -559,11 +566,11 @@ var Scribl = Class.extend({
     
     * @api public
     */			
-	redraw: function(){
+	redraw(){
       this.ctx.clearRect(0,0,this.canvas.width, this.canvas.height);
       if (this.tracks.length > 0)
          this.draw();
-	},
+	}
 	
 	/** **initScale**
    
@@ -571,7 +578,7 @@ var Scribl = Class.extend({
     
     * @api internal
     */
-	initScale: function() {
+	initScale() {
 	   if (this.scale.pretty) {					
 		
          // determine reasonable tick intervals
@@ -590,7 +597,7 @@ var Scribl = Class.extend({
                * this.tick.major.size;
          }
       }
-	},
+	}
 	
 	/** **drawScale**
    
@@ -598,19 +605,19 @@ var Scribl = Class.extend({
     
     * @api public
     */
-	drawScale: function(options){	   
-      var firstMinorTick;
-      var ctx = this.ctx;
-      var fillStyleRevert = ctx.fillStyle;
+	drawScale(options){	   
+      let firstMinorTick;
+      const ctx = this.ctx;
+      const fillStyleRevert = ctx.fillStyle;
       
       if(options && options.init)
          this.initScale();
       
       // determine tick vertical sizes and vertical tick positions
-      var tickStartPos = this.scale.font.size + this.scale.size;
-      var majorTickEndPos = this.scale.font.size + 2;
-      var minorTickEndPos = this.scale.font.size + this.scale.size * 0.66;
-      var halfTickEndPos = this.scale.font.size + this.scale.size * 0.33;
+      const tickStartPos = this.scale.font.size + this.scale.size;
+      const majorTickEndPos = this.scale.font.size + 2;
+      const minorTickEndPos = this.scale.font.size + this.scale.size * 0.66;
+      const halfTickEndPos = this.scale.font.size + this.scale.size * 0.33;
       
       // set scale defaults
       ctx.font = this.scale.font.size + 'px arial';
@@ -628,14 +635,12 @@ var Scribl = Class.extend({
             + this.tick.minor.size;
  		    
       // draw
-      for(var i = firstMinorTick; i <= this.scale.max; i += this.tick.minor.size){		    
+      for(let i = firstMinorTick; i <= this.scale.max; i += this.tick.minor.size){		    
          ctx.beginPath();
-         if(i == 187250)
-            var h = 2;
-         var curr_pos = this.pixelsToNts(i - this.scale.min) + this.offset;
+         const curr_pos = this.pixelsToNts(i - this.scale.min) + this.offset;
          if ( i % this.tick.major.size == 0) { // draw major tick
             // create text
-            var tickText = this.getTickText(i);
+            const tickText = this.getTickText(i);
             ctx.textAlign = 'center';
             ctx.fillText( tickText , curr_pos, 0 );
 
@@ -667,37 +672,37 @@ var Scribl = Class.extend({
 
          // shift down size of scale
          ctx.translate(0, this.getScaleHeight() + this.laneBuffer);
-      },
+      }
 	
 	/** **pixelsToNts**
    
     * _Get the number of nucleotides per the given pixels_
    
-    * @param {Int} [pixels] optional - if not given, the ratio of pixels/nts will be returned
-    * @return {Int} nucleotides or pixels/nts ratio
+    * @param {number} [pixels] optional - if not given, the ratio of pixels/nts will be returned
+    * @return {number} nucleotides or pixels/nts ratio
     * @api internal    
     */
-	pixelsToNts: function(pixels) { 
+	pixelsToNts(pixels) { 
       if (pixels == undefined)
          return ( this.width / ( this.scale.max - this.scale.min) );
       else
          return ( this.width / ( this.scale.max - this.scale.min) * pixels  );
-	},
+	}
 	
    /** **ntsToPixels**
    
     * _Get the number of pixels shown per given nucleotides_
    
-    * @param {Int} [nucleotides] optional - if not given, the ratio of nts/pixel will be returned
-    * @return {Int} pixels or nts/pixel ratio
+    * @param {number} [nucleotides] optional - if not given, the ratio of nts/pixel will be returned
+    * @return {number} pixels or nts/pixel ratio
     * @api internal
     */
-	ntsToPixels: function(nts) { 
+	ntsToPixels(nts) { 
       if (nts == undefined) 
          return ( 1 / this.pixelsToNts() );
       else
          return ( nts / this.width );
-   },
+   }
 	
 	/** **initScrollable**
    
@@ -705,13 +710,13 @@ var Scribl = Class.extend({
    
     * @api internal
     */
-	initScrollable: function() {
-      var scrollStartMin;
+	initScrollable() {
+      let scrollStartMin;
 	    
       if (!this.scrolled){
          // create divs
-         var parentDiv = document.createElement('div');
-         var canvasContainer = document.createElement('div');
+         const parentDiv = document.createElement('div');
+         const canvasContainer = document.createElement('div');
          var sliderDiv = document.createElement('div');
          sliderDiv.id = 'scribl-zoom-slider';
          sliderDiv.className = 'slider';
@@ -722,7 +727,7 @@ var Scribl = Class.extend({
          // grab css styling from canavs
          parentDiv.style.cssText = this.canvas.style.cssText;
          this.canvas.style.cssText = '';
-         parentWidth = parseInt(this.canvas.width) + 25;
+         const parentWidth = parseInt(this.canvas.width) + 25;
          parentDiv.style.width = parentWidth + 'px';
          canvasContainer.style.width = this.canvas.width + 'px';
          canvasContainer.style.overflow = 'auto';
@@ -738,21 +743,21 @@ var Scribl = Class.extend({
          jQuery(canvasContainer).dragscrollable({dragSelector: 'canvas:first', acceptPropagatedEvent: false});      
       }
            
-      var totalNts =  this.scale.max - this.scale.min;
-      var scrollStartMax = this.scrollValues[1] || this.scale.max - totalNts * .35;
+      const totalNts =  this.scale.max - this.scale.min;
+      const scrollStartMax = this.scrollValues[1] || this.scale.max - totalNts * .35;
       if( this.scrollValues[0] != undefined)
           scrollStartMin = this.scrollValues[0];
       else
           scrollStartMin = this.scale.max + totalNts * .35;            
 
-      var viewNts = scrollStartMax - scrollStartMin;            
-      var viewNtsPerPixel = viewNts / document.getElementById('scroll-wrapper').style.width.split('px')[0];
+      const viewNts = scrollStartMax - scrollStartMin;            
+      const viewNtsPerPixel = viewNts / document.getElementById('scroll-wrapper').style.width.split('px')[0];
 
-      var canvasWidth = (totalNts / viewNtsPerPixel) || 100;
+      const canvasWidth = (totalNts / viewNtsPerPixel) || 100;
       this.canvas.width = canvasWidth;
       this.width = canvasWidth - 30;
-      schart = this;
-      var zoomValue = (scrollStartMax - scrollStartMin) / (this.scale.max - this.scale.min) * 100 || 1;
+      const schart = this;
+      const zoomValue = (scrollStartMax - scrollStartMin) / (this.scale.max - this.scale.min) * 100 || 1;
 
       jQuery(sliderDiv).slider({
          orientation: 'vertical',
@@ -760,20 +765,20 @@ var Scribl = Class.extend({
          min: 6,
          max: 100,
          value: zoomValue,
-         slide: function( event, ui ) {
-            var totalNts = schart.scale.max - schart.scale.min;
-            var width = ui['value'] / 100 * totalNts;
-            var widthPixels = ui['value'] / 100 * schart.canvas.width;
-            var canvasContainer = document.getElementById('scroll-wrapper');
-            var center = canvasContainer.scrollLeft + parseInt(canvasContainer.style.width.split('px')[0]) / 2;
+         slide( event, ui ) {
+            const totalNts = schart.scale.max - schart.scale.min;
+            const width = ui['value'] / 100 * totalNts;
+            const widthPixels = ui['value'] / 100 * schart.canvas.width;
+            const canvasContainer = document.getElementById('scroll-wrapper');
+            const center = canvasContainer.scrollLeft + parseInt(canvasContainer.style.width.split('px')[0]) / 2;
                     
             // get min max pixels
-            var minPixel = center - widthPixels/2;
-            var maxPixel = center + widthPixels/2;
+            const minPixel = center - widthPixels/2;
+            const maxPixel = center + widthPixels/2;
             
             // convert to nt
-            var min = schart.scale.min + (minPixel / schart.canvas.width) * totalNts;
-            var max = schart.scale.min + (maxPixel / schart.canvas.width) * totalNts;
+            const min = schart.scale.min + (minPixel / schart.canvas.width) * totalNts;
+            const max = schart.scale.min + (maxPixel / schart.canvas.width) * totalNts;
 
             schart.scrollValues = [min, max];
             schart.ctx.clearRect(0, 0, schart.canvas.width, schart.canvas.height);
@@ -782,32 +787,32 @@ var Scribl = Class.extend({
       });
         
 
-      var startingPixel = (scrollStartMin - this.scale.min) / totalNts * this.canvas.width;        
+      const startingPixel = (scrollStartMin - this.scale.min) / totalNts * this.canvas.width;        
       document.getElementById('scroll-wrapper').scrollLeft = startingPixel;
       this.scrolled = true;
-	},
+	}
 
 
    /** **determineMajorTick**
    
     * _intelligently determines a major tick interval based on size of the chart/view and size of the numbers on the scale_
    
-    * @return {Int} major tick interval
+    * @return {number} major tick interval
     * @api internal
     */
-	determineMajorTick: function() {
+	determineMajorTick() {
       this.ctx.font = this.scale.font.size + 'px arial';
-      var numtimes = this.width/(this.ctx.measureText(this.getTickTextDecimalPlaces(this.scale.max)).width + this.scale.font.buffer);
+      const numtimes = this.width/(this.ctx.measureText(this.getTickTextDecimalPlaces(this.scale.max)).width + this.scale.font.buffer);
 
       // figure out the base of the tick (e.g. 2120 => 2000)
-      var irregularTick = (this.scale.max - this.scale.min) / numtimes;
-      var baseNum =  Math.pow(10, parseInt(irregularTick).toString().length -1);
+      const irregularTick = (this.scale.max - this.scale.min) / numtimes;
+      const baseNum =  Math.pow(10, parseInt(irregularTick).toString().length -1);
       this.tick.major.size = Math.ceil(irregularTick / baseNum) * baseNum;		
 				
 		// round up to a 5* or 1* number (e.g 5000 or 10000)
-      var digits = (this.tick.major.size + '').length;
-      var places = Math.pow(10, digits);
-      var first_digit = this.tick.major.size / places;
+      const digits = (this.tick.major.size + '').length;
+      const places = Math.pow(10, digits);
+      let first_digit = this.tick.major.size / places;
       
       if (first_digit > .1 && first_digit <= .5)
       	first_digit = .5;
@@ -816,22 +821,22 @@ var Scribl = Class.extend({
       
       // return major tick interval
       return (first_digit * places);
-	},
+	}
 
 
    /** **getTickText**
    
     * _abbreviates tick text numbers using 'k', or 'm' (e.g. 10000 becomes 10k)_
    
-    * @param {Int} tickNumber - the tick number that needs to be abbreviated
+    * @param {number} tickNumber - the tick number that needs to be abbreviated
     * @return {String} abbreviated tickNumber
     * @api internal
     */
-	getTickText: function(tickNumber) {
+	getTickText(tickNumber) {
       if ( !this.tick.auto )
          return tickNumber;
 		
-      var tickText = tickNumber;
+      let tickText = tickNumber;
       if (tickNumber >= 1000000 ) {
          var decPlaces = 5;
          var base = Math.pow(10, decPlaces)
@@ -843,21 +848,21 @@ var Scribl = Class.extend({
       }
 		
       return tickText;
-   },
+   }
 	
    /** **getTickTextDecimalPlaces**
    
     * _determines the tick text with decimal places_
    
-    * @param {Int} tickNumber - the tick number that needs to be abbreviated
+    * @param {number} tickNumber - the tick number that needs to be abbreviated
     * @return {String} abbreviated tickNumber
     * @api internal
     */
-	getTickTextDecimalPlaces: function(tickNumber){
+	getTickTextDecimalPlaces(tickNumber){
       if ( !this.tick.auto )
          return tickNumber;
 		
-      var tickText = tickNumber;
+      let tickText = tickNumber;
       if (tickNumber >= 1000000 ) {
          var decPlaces = 5;
          tickText = Math.round( tickText / (1000000 / Math.pow(10,decPlaces)) ) + 'm'; // round to 2 decimal places
@@ -867,7 +872,7 @@ var Scribl = Class.extend({
       }
 
       return tickText;
-   },
+   }
 	
 	/** **handleMouseEvent**
    
@@ -877,15 +882,15 @@ var Scribl = Class.extend({
     * @param {String} type - type of event
     * @api internal
     */
-	handleMouseEvent: function(e, type) {
+	handleMouseEvent(e, type) {
       this.myMouseEventHandler.setMousePosition(e);
-      var positionY = this.myMouseEventHandler.mouseY;
-      var lane;
+      const positionY = this.myMouseEventHandler.mouseY;
+      let lane;
       
       for( var i=0; i < this.tracks.length; i++) {
-         for( var k=0; k < this.tracks[i].lanes.length; k++) {
-            var yt = this.tracks[i].lanes[k].getPixelPositionY();
-            var yb = yt + this.tracks[i].lanes[k].getHeight();
+         for( let k=0; k < this.tracks[i].lanes.length; k++) {
+            const yt = this.tracks[i].lanes[k].getPixelPositionY();
+            const yb = yt + this.tracks[i].lanes[k].getHeight();
             if (positionY >= yt && positionY <= yb ) {
                lane = this.tracks[i].lanes[k];
                break;
@@ -896,7 +901,7 @@ var Scribl = Class.extend({
       // if mouse is not on any tracks then return
       if (!lane) return;
       
-      var drawStyle = lane.track.getDrawStyle();
+      const drawStyle = lane.track.getDrawStyle();
       
       if (drawStyle == 'collapse') {
          this.redraw();
@@ -907,7 +912,7 @@ var Scribl = Class.extend({
          lane.erase();
          this.ctx.translate(0, lane.getPixelPositionY());
          lane.draw();
-         var ltt;
+         let ltt;
          while (ltt =  this.lastToolTips.pop() ) {
             this.ctx.putImageData(ltt.pixels, ltt.x, ltt.y )
          }
@@ -915,22 +920,22 @@ var Scribl = Class.extend({
       }
       
       
-      var chart = this;
+      const chart = this;
 		
       if (type == 'click') {
-         var clicksFns = chart.events.clicks;
+         const clicksFns = chart.events.clicks;
          for (var i = 0; i < clicksFns.length; i++)
             clicksFns[i](chart);
       } else {
-         var mouseoverFns = chart.events.mouseovers;
+         const mouseoverFns = chart.events.mouseovers;
          for (var i = 0; i < mouseoverFns.length; i++) 
             mouseoverFns[i](chart);								    
       }
 		
-      this.myMouseEventHandler.reset(chart);
+      MouseEventHandler.reset(chart);
       
 
-	},
+	}
 	
 	
 	/** **addClickEventListener**
@@ -940,9 +945,9 @@ var Scribl = Class.extend({
     * @param {Function} func - function to be triggered
     * @api public
     */
-	addClickEventListener: function(func) {
+	addClickEventListener(func) {
       this.events.clicks.push(func);
-	},
+	}
 	
 	/** **addMouseoverEventListener**
    
@@ -951,9 +956,9 @@ var Scribl = Class.extend({
     * @param {Function} func - function to be triggered
     * @api public
     */
-	addMouseoverEventListener: function(func) {
+	addMouseoverEventListener(func) {
 		this.events.mouseovers.push(func);
-	},
+	}
 	
 	/** **removeEventListeners**
    
@@ -962,12 +967,12 @@ var Scribl = Class.extend({
     * @param {String} event-type - e.g. mouseover, click, etc...
     * @api internal
     */
-   removeEventListeners: function(eventType){
+   removeEventListeners(eventType){
       if (eventType == 'mouseover')
          this.canvas.removeEventListener('mousemove', this.mouseHandler);
       else if (eventType == 'click')
          this.canvas.removeEventListener('click', this.clickHandler);
-   },
+   }
 	
 	
 	/** **registerEventListeners**
@@ -976,21 +981,19 @@ var Scribl = Class.extend({
    
     * @api internal
     */
-	registerEventListeners: function() {
-      var chart = this;
+	registerEventListeners() {
+      const chart = this;
 
       if ( this.events.mouseovers.length > 0) {
          this.canvas.removeEventListener('mousemove', chart.mouseHandler);
          this.canvas.addEventListener('mousemove', chart.mouseHandler, false);
       }
       if ( this.events.clicks.length > 0 ) {
-         $(this.canvas).unbind('click');
-         $(this.canvas).bind('click', function(e) {chart.handleMouseEvent(e, 'click')})
-         // this.canvas.removeEventListener('click', chart.clickHandler);
-         // this.canvas.addEventListener('click', chart.clickHandler, false);
+         // $(this.canvas).unbind('click');
+         // $(this.canvas).bind('click', function(e) {chart.handleMouseEvent(e, 'click')})
+         this.canvas.removeEventListener('click', chart.clickHandler);
+         this.canvas.addEventListener('click', chart.clickHandler, false);
       }
       this.events.added = true;
    }
-	
-	
-});
+}

@@ -1,7 +1,7 @@
 <!DOCTYPE HTML> 
 <html lang="en">
 	<head>
-		<script src="../Scribl.min.js" ></script>
+		<script src="../dist/scribl.bundle.js"></script>
 		<link rel="stylesheet" type="text/css" href="demos.css" />		
 		
 		<script> 
@@ -12,15 +12,15 @@
 				  	var canvas = document.getElementById(canvasName);  	
 					
 					// Create Chart
-					chart1 = new Scribl(canvas, 500);
+					var chart1 = new Scribl(canvas, 500);
 
 					// Add Gene      position, length, orientation
-					gene1 = chart1.addGene( 900,    750 , '-');
+					var gene1 = chart1.addGene( 900,    750 , '-');
 					gene1.name = "Click Me";
 					gene1.onMouseover = "Start:900 Length:750";
 					gene1.onClick = "http://www.google.com";
 					
-					gene2 = chart1.addGene( 3500, 2500, '+');
+					var gene2 = chart1.addGene( 3500, 2500, '+');
 					gene2.name = "Gene 2";
 					gene2.onMouseover = "Start:3500 Length:2500";
 					gene2.onClick = function() {alert("you clicked me")};

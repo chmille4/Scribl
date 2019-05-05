@@ -3,17 +3,17 @@
  */
  
 
-var CanvasToSVG = {
+export const CanvasToSVG = {
 	idCounter: 0,
 	convert: function(sourceCanvas, targetSVG, x, y) {
-		var svgNS = "http://www.w3.org/2000/svg";
-		var xlinkNS = "http://www.w3.org/1999/xlink";
+		const svgNS = "http://www.w3.org/2000/svg";
+		const xlinkNS = "http://www.w3.org/1999/xlink";
 
 		// get base64 encoded png from Canvas
-		var image = sourceCanvas.toDataURL();
+		const image = sourceCanvas.toDataURL();
 
 		// must be careful with the namespaces
-		var svgimg = document.createElementNS(svgNS, "image");
+		const svgimg = document.createElementNS(svgNS, "image");
 
 		svgimg.setAttribute('id', 'importedCanvas_' + this.idCounter++);
 		svgimg.setAttributeNS(xlinkNS, 'xlink:href', image);
@@ -29,10 +29,10 @@ var CanvasToSVG = {
 	
 		targetSVG.appendChild(svgimg);
 	}
-}
+};
 
 
-var toXml = function(str) {
+export const toXml = function(str) {
 	return $('<p/>').text(str).html();
 };
 
@@ -42,7 +42,7 @@ var toXml = function(str) {
 // Returns: 
 // String containing the SVG image for output
 
-var svgToString = function(svgcontent) {
+export function svgToString(svgcontent) {
 	// keep calling it until there are none to remove
 	while (removeUnusedDefElems() > 0) {};
 	
@@ -61,26 +61,26 @@ var svgToString = function(svgcontent) {
 		selectOnly([current_group]);
 	}
 	
-	var naked_svgs = [];
+	const naked_svgs = [];
 	
 	// Unwrap gsvg if it has no special attributes (only id and style)
 	$(svgcontent).find('g:data(gsvg)').each(function() {
-		var attrs = this.attributes;
-		var len = attrs.length;
-		for(var i=0; i<len; i++) {
+		const attrs = this.attributes;
+		let len = attrs.length;
+		for(let i=0; i<len; i++) {
 			if(attrs[i].nodeName == 'id' || attrs[i].nodeName == 'style') {
 				len--;
 			}
 		}
 		// No significant attributes, so ungroup
 		if(len <= 0) {
-			var svg = this.firstChild;
+			const svg = this.firstChild;
 			naked_svgs.push(svg);
 			$(this).replaceWith(svg);
 		}
 	});
 	
-	var output = svgToString(svgcontent, 0);
+	const output = svgElToString(svgcontent, 0);
 	
 	// Rewrap gsvg
 	if(naked_svgs.length) {
@@ -101,30 +101,31 @@ var svgToString = function(svgcontent) {
 //
 // Returns: 
 // String with the given element as an SVG tag
-var svgToString = function(elem, indent) {
-	var out = new Array();//, toXml;// = Utils.toXml;
+function svgElToString(elem, indent) {
+	const out = [];//, toXml;// = Utils.toXml;
 
 	if (elem) {
-		//cleanupElement(elem);
-		var attrs = elem.attributes,
-			attr,
-			i,
-			childs = elem.childNodes;
-		
-		for (var i=0; i<indent; i++) out.push(" ");
-		out.push("<"); out.push(elem.nodeName);			
-		if(elem.id == 'svgcontent') {
+        //cleanupElement(elem);
+        const attrs = elem.attributes;
+
+        let attr;
+        const childs = elem.childNodes;
+
+        for (let i=0; i<indent; i++)
+        	out.push(" ");
+        out.push("<");out.push(elem.nodeName);
+        if(elem.id == 'svgcontent') {
 			// Process root element separately
-			var res = getResolution();
+			const res = getResolution();
 			out.push(' width="' + res.w + '" height="' + res.h + '" xmlns="'+svgns+'"');
 			
-			var nsuris = {};
+			const nsuris = {};
 			
 			// Check elements for namespaces, add if found
 			$(elem).find('*').andSelf().each(function() {
-				var el = this;
+				const el = this;
 				$.each(this.attributes, function(i, attr) {
-					var uri = attr.namespaceURI;
+					const uri = attr.namespaceURI;
 					if(uri && !nsuris[uri] && nsMap[uri] !== 'xmlns' && nsMap[uri] !== 'xml' ) {
 						nsuris[uri] = true;
 						out.push(" xmlns:" + nsMap[uri] + '="' + uri +'"');
@@ -188,21 +189,21 @@ var svgToString = function(elem, indent) {
 			}
 		}
 
-		if (elem.hasChildNodes()) {
+        if (elem.hasChildNodes()) {
 			out.push(">");
 			indent++;
-			var bOneLine = false;
+			let bOneLine = false;
 			
 			for (var i=0; i<childs.length; i++)
 			{
-				var child = childs.item(i);
+				const child = childs.item(i);
 				switch(child.nodeType) {
 				case 1: // element node
 					out.push("\n");
-					out.push(svgToString(childs.item(i), indent));
+					out.push(svgElToString(childs.item(i), indent));
 					break;
 				case 3: // text node
-					var str = child.nodeValue.replace(/^\s+|\s+$/g, "");
+					const str = child.nodeValue.replace(/^\s+|\s+$/g, "");
 					if (str != "") {
 						bOneLine = true;
 						out.push(toXml(str) + "");
@@ -226,8 +227,8 @@ var svgToString = function(elem, indent) {
 		} else {
 			out.push("/>");
 		}
-	}
+    }
 	return out.join('');
-}; // end svgToString()
+} // end svgToString()
 
 

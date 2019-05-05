@@ -53,10 +53,5 @@ To compile Scrible, clone the repo and then:
 * `npm install` to install the packages this depends on
 * `npx webpack --mode=production` to compile a (minified) production build to `dist/`, or `npx webpack --mode=development` to create a development build.
 
-
-The [closure compiler](http://code.google.com/closure/compiler/) is used to combine and minify multiple javascript files. To compile the library yourself install google closure compiler, set the correct path for the closure compiler in compile.sh and then run compile.rb from the main directory
-  
-  ```ruby utils/compile.rb```
-  
 ## License
 MIT License

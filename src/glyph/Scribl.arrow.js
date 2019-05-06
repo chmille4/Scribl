@@ -14,7 +14,6 @@ export default class Arrow extends Glyph {
 
      * @param {String} type - a tag to associate this glyph with
      * @param {number} position - start position of the glyph
-     * @param {number} length - length of the glyph
      * @param {String} strand - '+' or '-' strand
      * @param {Hash} [opts] - optional hash of attributes that can be applied to glyph
      * @api public
@@ -59,7 +58,7 @@ export default class Arrow extends Glyph {
 
      * _private arrow specific draw method that gets called by this._super.draw()_
 
-     * @param [context] - optional canvas.context
+     * @param [ctx] - optional canvas.context
      * @param [length] - optional length of glyph/feature
      * @param [height] - optional height of lane
      * @param [roundness] - optional roundness of glyph/feature
@@ -74,7 +73,7 @@ export default class Arrow extends Glyph {
         ctx = ctx || arrow.ctx;
         height = height || arrow.getHeight();
         roundness = roundness + 1 || arrow.calcRoundness();
-        if (roundness != undefined) roundness -= 1;
+        if (roundness !== undefined) roundness -= 1;
         const thickness = arrow.getPixelThickness();
         const arrowLength = 0;
 

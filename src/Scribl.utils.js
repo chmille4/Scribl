@@ -10,14 +10,13 @@
 
  * @param {number} max - column width in letters
  * @param {String} text
- * @return {String} formatted text
+ * @return {Array} formatted text
  * @api internal
  */
 export function ScriblWrapLines(max, text) {
     const lines = [];
     text = '' + text;
     let temp = '';
-    const chcount = 0;
     let linecount = 0;
     const words = text.split(' ');
 
@@ -26,7 +25,7 @@ export function ScriblWrapLines(max, text) {
             temp += ' ' + words[i];
         else {
             // word is bigger than line break
-            if (temp == '') {
+            if (temp === '') {
                 const trunc1 = words[i].slice(0, max - 1);
                 temp += ' ' + trunc1 + '-';
                 const trunc2 = words[i].slice(max, words[i].length);
@@ -45,7 +44,7 @@ export function ScriblWrapLines(max, text) {
     }
     linecount++;
     lines.push(temp);
-    return ([lines, linecount]); // sends value of temp back
+    return [lines, linecount]; // sends value of temp back
 }
 
 

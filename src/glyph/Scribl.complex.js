@@ -19,6 +19,7 @@ export default class Complex extends Glyph {
      * @param {String} type - a tag to associate this glyph with
      * @param {number} position - start position of the glyph
      * @param {number} length - length of the glyph
+     * @param {String} strand - '+' or '-' strand
      * @param {Array} subFeatures - array of derived Glyph objects (e.g Rect, Arrow, etc...)
      * @param {Hash} [opts] - optional hash of attributes that can be applied to glyph
      * @api public
@@ -28,7 +29,6 @@ export default class Complex extends Glyph {
         super(type, position, length, strand, opts);
 
         // instantiate and set defaults
-        this.slope = 1;
         this.glyphType = 'Complex';
         this.subFeatures = subFeatures;
 
@@ -54,7 +54,7 @@ export default class Complex extends Glyph {
 
      * _private complex specific draw method that gets called by this._super.draw()_
 
-     * @param [context] - optional canvas.context
+     * @param [ctx] - optional canvas.context
      * @param [length] - optional length of glyph/feature
      * @param [height] - optional height of lane
      * @param [roundness] - optional roundness of glyph/feature
@@ -68,10 +68,6 @@ export default class Complex extends Glyph {
 
         // see if optional parameters are set and get chart specific info
         ctx = ctx || complex.ctx;
-        length = length || complex.getPixelLength();
-        height = height || complex.getHeight();
-        roundness = roundness + 1 || complex.calcRoundness();
-        if (roundness != undefined) roundness -= 1;
 
         // translate back the length of the complex glyph
         // so sub glyphs will be placed correctly

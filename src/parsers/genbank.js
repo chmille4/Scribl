@@ -39,8 +39,8 @@ export default function genbank(file, bchart) {
             if (genes[i][0] === 'complement')
                 strand = '-';
 
-            var position = genes[i][1];
-            var end = genes[i][2];
+            let position = genes[i][1];
+            const end = genes[i][2];
             position = position - 1 + 1;  // force to be integer - TODO make bChart catch non-ints automatically and gracefully fail
             const length = end - position;
 

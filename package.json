@@ -21,7 +21,11 @@
   },
   "homepage": "http://chmille4.github.io/Scribl/",
   "dependencies": {
-    "dalliance": "^0.13.5"
+    "clone": "^2.1.2",
+    "dalliance": "^0.13.5",
+    "jquery": "^3.4.1",
+    "jquery-ui": "^1.12.1",
+    "jquery.dragscrollable": "git+https://github.com/mvlandys/jquery.dragscrollable.git"
   },
   "devDependencies": {
     "@babel/core": "^7.4.4",

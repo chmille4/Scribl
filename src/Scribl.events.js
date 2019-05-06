@@ -103,7 +103,7 @@ export default class MouseEventHandler {
         let onClick;
 
         // check if the click occured on a feature/object with an onClick property
-        if (clicked != undefined && clicked.onClick != undefined)
+        if (clicked !== undefined && clicked.onClick !== undefined)
             onClick = clicked.onClick;
         else if (clicked && clicked.parent && clicked.parent.onClick)
             onClick = clicked.parent.onClick;
@@ -132,7 +132,7 @@ export default class MouseEventHandler {
         const clicked = me.eventElement;
 
         // handle mouseover tooltips
-        if (clicked && clicked.onMouseover == undefined && clicked.parent && clicked.parent.onMouseover) {
+        if (clicked && clicked.onMouseover === undefined && clicked.parent && clicked.parent.onMouseover) {
             clicked.onMouseover = clicked.parent.onMouseover;
         }
 
@@ -164,9 +164,9 @@ export default class MouseEventHandler {
         const obj = me.eventElement;
         const ctx = chart.ctx;
 
-        if (obj && obj.onClick != undefined)
+        if (obj && obj.onClick !== undefined)
             ctx.canvas.style.cursor = 'pointer';
-        else if (obj && obj.parent && obj.parent.onClick != undefined)
+        else if (obj && obj.parent && obj.parent.onClick !== undefined)
             ctx.canvas.style.cursor = 'pointer';
         else
             ctx.canvas.style.cursor = 'auto';

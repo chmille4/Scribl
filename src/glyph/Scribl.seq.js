@@ -40,7 +40,7 @@ export default class Seq extends Glyph {
 
      * _private letter specific draw method that gets called by this._super.draw()_
 
-     * @param [context] - optional canvas.context
+     * @param [ctx] - optional canvas.context
      * @param [length] - optional length of glyph/feature
      * @param [height] - optional height of lane
      * @api internal
@@ -55,9 +55,9 @@ export default class Seq extends Glyph {
             fraction = this.fraction;
 
         // see if optional parameters
-        var ctx = ctx || seq.ctx;
-        var length = length || seq.getPixelLength();
-        var height = height || seq.getHeight();
+        ctx = ctx || seq.ctx;
+        length = length || seq.getPixelLength();
+        height = height || seq.getHeight();
 
         // get coords
         const left = seq.getPixelPositionX();
@@ -70,10 +70,9 @@ export default class Seq extends Glyph {
         if (!chars.heights[height]) {
             // build nt images
             chars.heights[height] = [];
-            for (var i = 0; i < this.chars.list.length; i++) {
-                const nt = this.chars.list[i];
+            for (let nt of this.chars.list) {
                 let ntName = nt;
-                if (nt == '-') {
+                if (nt === '-') {
                     ntName = 'dash';
                 }
                 const charName = 'nt_' + ntName + '_bg';
@@ -108,7 +107,7 @@ export default class Seq extends Glyph {
 
             let pos = 0;
             let k = 0;
-            for (var i = 0; i < this.seq.length; i++) {
+            for (let i = 0; i < this.seq.length; i++) {
                 if (!chars.heights[height][this.seq[i]]) {
                     this.createChar(this.seq[i], 'black', 'white', height);
                 }
@@ -116,11 +115,11 @@ export default class Seq extends Glyph {
                 if (this.insertions.length > 1) {
                     const h = 2;
                 }
-                if (this.insertions[k] && this.insertions[k]['pos'] != undefined) {
-                    if (this.insertions[k]['pos'] - 1 == i) {
+                if (this.insertions[k] && this.insertions[k]['pos'] !== undefined) {
+                    if (this.insertions[k]['pos'] - 1 === i) {
                         charGlyph += 'rightInsert';
                     }
-                    else if (this.insertions[k] && this.insertions[k]['pos'] == i) {
+                    else if (this.insertions[k] && this.insertions[k]['pos'] === i) {
                         charGlyph += 'leftInsert';
                         k++;
                     }
@@ -162,17 +161,16 @@ export default class Seq extends Glyph {
 
      * _creates glyphs of a given character_
 
-     * @param {Char} - the char to create glyph of
-     * @param {String} - string of char color in rgb or hex
-     * @param {String} - string of char background color in rgb or hex
-     * @param {number} - height of glyph
+     * @param {String} theChar - the char to create glyph of
+     * @param {String} color - string of char color in rgb or hex
+     * @param {String} backgroundColor- string of char background color in rgb or hex
+     * @param {number} height- height of glyph
      * @api internal
      */
     createChar(theChar, color, backgroundColor, height) {
         const seq = this;
-        const chart = seq.lane.track.chart;
-        var canvas = document.createElement('canvas');
-        var ctx = canvas.getContext('2d');
+        let canvas = document.createElement('canvas');
+        let ctx = canvas.getContext('2d');
         const buffer = 2;
         const fontsize = height - buffer;
         ctx.font = fontsize + 'px courier';
@@ -182,12 +180,12 @@ export default class Seq extends Glyph {
         SCRIBL.chars.heights[height].width = width;
 
         // draw standard nt
-        var canvas = document.createElement('canvas');
-        var ctx = canvas.getContext('2d');
+        canvas = document.createElement('canvas');
+        ctx = canvas.getContext('2d');
         ctx.font = fontsize + 'px courier';
         canvas.height = height;
         canvas.width = width;
-        var fillStyle = ctx.fillStyle;
+        let fillStyle = ctx.fillStyle;
         ctx.fillStyle = backgroundColor;
         ctx.fillRect(0, 0, width, height);
         ctx.fillStyle = color;
@@ -199,12 +197,12 @@ export default class Seq extends Glyph {
         ctx.fillStyle = fillStyle;
 
         // draw nt with insert to the right
-        var canvas = document.createElement('canvas');
-        var ctx = canvas.getContext('2d');
+        canvas = document.createElement('canvas');
+        ctx = canvas.getContext('2d');
         ctx.font = fontsize + 'px courier';
         canvas.height = height;
         canvas.width = width;
-        var fillStyle = ctx.fillStyle;
+        fillStyle = ctx.fillStyle;
         ctx.fillStyle = backgroundColor;
         ctx.fillRect(0, 0, width, height);
         ctx.fillStyle = 'yellow';
@@ -224,12 +222,12 @@ export default class Seq extends Glyph {
         ctx.fillStyle = fillStyle;
 
         // draw nt with insertion to the left
-        var canvas = document.createElement('canvas');
-        var ctx = canvas.getContext('2d');
+        canvas = document.createElement('canvas');
+        ctx = canvas.getContext('2d');
         ctx.font = fontsize + 'px courier';
         canvas.height = height;
         canvas.width = width;
-        var fillStyle = ctx.fillStyle;
+        fillStyle = ctx.fillStyle;
         ctx.fillStyle = backgroundColor;
         ctx.fillRect(0, 0, width, height);
         ctx.fillStyle = 'yellow';

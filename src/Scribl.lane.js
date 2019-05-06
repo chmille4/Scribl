@@ -113,7 +113,7 @@ export default class Lane {
      * @api public
      */
     getHeight() {
-        if (this.height != undefined)
+        if (this.height !== undefined)
             return this.height;
         else
             return this.chart.laneSizes;
@@ -130,9 +130,9 @@ export default class Lane {
         const lane = this;
         let y = lane.track.getPixelPositionY();
         const laneHeight = lane.getHeight();
-        for (let i = 0; i < lane.track.lanes.length; i++) {
-            if (lane.uid == lane.track.lanes[i].uid) break;
-            y += lane.track.chart.laneBuffer;
+        for (let lane of this.track.lanes) {
+            if (this.uid === lane.uid) break;
+            y += this.track.chart.laneBuffer;
             y += laneHeight;
         }
 

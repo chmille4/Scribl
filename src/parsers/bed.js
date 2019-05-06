@@ -1,6 +1,9 @@
 /**
  * Bed parser
  */
+import Complex from '../glyph/Scribl.complex';
+import BlockArrow from '../glyph/Scribl.blockarrow';
+
 export default function bed(file, chart) {
     try {
         const lines = file.split('\n');

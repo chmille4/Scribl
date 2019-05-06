@@ -18,7 +18,7 @@ export default class Track {
      *
      * This is called with `new Track()`, but to create new Tracks associated with a chart use `Scribl.addTrack()`
      *
-     * @param {Object} ctx - the canvas.context object
+     * @param {Object} chart - the canvas.context object
      * @api internal
      */
     constructor(chart) {
@@ -103,14 +103,14 @@ export default class Track {
         let new_lane = true;
 
         // try to add feature at lower lanes then move up
-        for (let j = 0; j < this.lanes.length; j++) {
-            const prev_feature = this.lanes[j].features[this.lanes[j].features.length - 1];
+        for (let lane of this.lanes) {
+            const prev_feature = lane.features[lane.features.length - 1];
 
             // check if new lane is needed
             const spacer = 3 / this.chart.pixelsToNts() || 3;
-            if (prev_feature != undefined && (feature.position - spacer) > (prev_feature.position + prev_feature.length)) {
+            if (prev_feature !== undefined && (feature.position - spacer) > (prev_feature.position + prev_feature.length)) {
                 new_lane = false;
-                curr_lane = this.lanes[j];
+                curr_lane = lane;
                 break;
             }
         }
@@ -171,7 +171,7 @@ export default class Track {
         let numLanes = this.lanes.length;
         const laneBuffer = this.chart.laneBuffer;
         const drawStyle = this.getDrawStyle();
-        if (drawStyle == 'line' || drawStyle == 'collapse')
+        if (drawStyle === 'line' || drawStyle === 'collapse')
             numLanes = 1;
 
         for (let i = 0; i < numLanes; i++) {
@@ -192,18 +192,17 @@ export default class Track {
      * @api public
      */
     getPixelPositionY() {
-        const track = this;
         let y;
 
-        if (!track.chart.scale.off)
-            y = track.chart.getScaleHeight() + track.chart.laneBuffer;
+        if (!this.chart.scale.off)
+            y = this.chart.getScaleHeight() + this.chart.laneBuffer;
         else
             y = 0;
 
-        for (let i = 0; i < track.chart.tracks.length; i++) {
-            if (track.uid == track.chart.tracks[i].uid) break;
-            y += track.chart.trackBuffer;
-            y += track.chart.tracks[i].getHeight();
+        for (let track of this.chart.tracks) {
+            if (this.uid === track.uid) break;
+            y += this.chart.trackBuffer;
+            y += track.getHeight();
         }
 
         return y;
@@ -221,9 +220,8 @@ export default class Track {
         const max = this.chart.scale.max;
 
         // determine feature locations
-        for (let i = 0; i < lanes.length; i++) {
-            for (let k = 0; k < lanes[i].features.length; k++) {
-                const feature = lanes[i].features[k];
+        for (let lane of lanes) {
+            for (let feature of lane.features) {
                 const pos = feature.position;
                 const end = feature.getEnd();
                 if ((pos >= min && pos <= max) || (end >= min && end <= max)) {
@@ -260,12 +258,12 @@ export default class Track {
 
         // execute hooks
         let dontDraw = false;
-        for (var i in track.hooks) {
-            dontDraw = track.hooks[i](track) || dontDraw;
+        for (let [key, hook] of Object.entries(track.hooks)) {
+            dontDraw = hook(track) || dontDraw;
         }
 
         // check if track is waiting and if so do nothing
-        if (track.status == 'waiting') {
+        if (track.status === 'waiting') {
             track.drawOnResponse = true;
             return;
         }
@@ -287,22 +285,22 @@ export default class Track {
             // draw lanes
 
             // draw expanded/default style
-            if (style == undefined || style == 'expand') {
-                for (var i = 0; i < lanes.length; i++) {
-                    lanes[i].y = y;
-                    if (lanes[i].draw()) {
-                        const height = lanes[i].getHeight();
+            if (style === undefined || style === 'expand') {
+                for (let lane of lanes) {
+                    lane.y = y;
+                    if (lane.draw()) {
+                        const height = lane.getHeight();
                         ctx.translate(0, height + laneBuffer);
                         y = y + height + laneBuffer;
                     }
                 }
             }
-            else if (style == 'collapse') { // draw collapse style (i.e. single lane)
+            else if (style === 'collapse') { // draw collapse style (i.e. single lane)
                 let features = [];
 
                 // concat all features into single array
-                for (var i = 0; i < lanes.length; i++) {
-                    features = features.concat(lanes[i].filterFeaturesByPosition(track.chart.scale.min, track.chart.scale.max));
+                for (let lane of lanes) {
+                    features = features.concat(lane.filterFeaturesByPosition(track.chart.scale.min, track.chart.scale.max));
                 }
                 // sort features so the minimal number of lanes are used
                 features.sort(function (a, b) {
@@ -311,7 +309,6 @@ export default class Track {
                 for (let j = 0; j < features.length; j++) {
                     const originalLength = features[j].length;
                     const originalName = features[j].name;
-                    const m = undefined;
                     // for( m=j+1; m < features.length; m++) {
                     //    // if a feature is overlapping change length to draw as a single feature
                     //    if (features[j].getEnd() >= features[m].position) {
@@ -333,9 +330,9 @@ export default class Track {
 
                 // draw as a line chart of the coverage
             }
-            else if (style == 'line') {
+            else if (style === 'line') {
                 track.coverageData = [];
-                if (track.coverageData.length == 0) track.calcCoverageData();
+                if (track.coverageData.length === 0) track.calcCoverageData();
 
                 const normalizationFactor = this.maxDepth;
 
@@ -362,8 +359,8 @@ export default class Track {
 
      * _add function that executes before the track is drawn_
 
-     * @param {Function} function - takes track as param, returns true to stop the normal draw, false to allow
-     * @return {number} id - returns the uniqe id for the hook which is used to remove it
+     * @param {Function} fn - takes track as param, returns true to stop the normal draw, false to allow
+     * @return {number} returns the uniqe id for the hook which is used to remove it
      * @api public
      */
 
@@ -377,7 +374,7 @@ export default class Track {
 
      * _removes function that executes before the track is drawn_
 
-     * @param {number} id - the id of drawHook function that will be removed
+     * @param {number} uid - the id of drawHook function that will be removed
      * @api public
      */
 

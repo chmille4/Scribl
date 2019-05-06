@@ -1,6 +1,9 @@
 const path = require('path');
+const webpack = require('webpack');
+
 
 module.exports = {
+    devtool: 'source-map',
     entry: path.resolve(__dirname, 'src/index.js'),
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -8,6 +11,13 @@ module.exports = {
         libraryExport: 'default',
         libraryTarget: 'umd'
     },
+    plugins: [
+        new webpack.ProvidePlugin({
+            $: 'jquery/src/jquery',
+            jQuery: 'jquery/src/jquery',
+            'window.jQuery': 'jquery/src/jquery'
+        })
+    ],
     module: {
         rules: [
             {

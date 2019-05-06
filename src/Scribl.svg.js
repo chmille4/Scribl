@@ -50,7 +50,7 @@ export function svgToString(svgcontent) {
 
     // Keep SVG-Edit comment on top
     $.each(svgcontent.childNodes, function (i, node) {
-        if (i && node.nodeType == 8 && node.data.indexOf('Created with') >= 0) {
+        if (i && node.nodeType === 8 && node.data.indexOf('Created with') >= 0) {
             svgcontent.insertBefore(node, svgcontent.firstChild);
         }
     });
@@ -68,7 +68,7 @@ export function svgToString(svgcontent) {
         const attrs = this.attributes;
         let len = attrs.length;
         for (let i = 0; i < len; i++) {
-            if (attrs[i].nodeName == 'id' || attrs[i].nodeName == 'style') {
+            if (attrs[i].nodeName === 'id' || attrs[i].nodeName === 'style') {
                 len--;
             }
         }
@@ -115,7 +115,7 @@ function svgElToString(elem, indent) {
             out.push(' ');
         out.push('<');
         out.push(elem.nodeName);
-        if (elem.id == 'svgcontent') {
+        if (elem.id === 'svgcontent') {
             // Process root element separately
             const res = getResolution();
             out.push(' width="' + res.w + '" height="' + res.h + '" xmlns="' + svgns + '"');
@@ -134,17 +134,19 @@ function svgElToString(elem, indent) {
                 });
             });
 
-            var i = attrs.length;
+            i = attrs.length;
             while (i--) {
                 attr = attrs.item(i);
-                var attrVal = toXml(attr.nodeValue);
+                attrVal = toXml(attr.nodeValue);
 
                 // Namespaces have already been dealt with, so skip
                 if (attr.nodeName.indexOf('xmlns:') === 0) continue;
 
                 // only serialize attributes we don't use internally
-                if (attrVal != '' &&
-                    ['width', 'height', 'xmlns', 'x', 'y', 'viewBox', 'id', 'overflow'].indexOf(attr.localName) == -1) {
+                if (
+                    attrVal !== '' &&
+                    ['width', 'height', 'xmlns', 'x', 'y', 'viewBox', 'id', 'overflow'].includes(attr.localName)
+                ) {
 
                     if (!attr.namespaceURI || nsMap[attr.namespaceURI]) {
                         out.push(' ');
@@ -157,12 +159,12 @@ function svgElToString(elem, indent) {
             }
         }
         else {
-            for (var i = attrs.length - 1; i >= 0; i--) {
+            for (let i = attrs.length - 1; i >= 0; i--) {
                 attr = attrs.item(i);
-                var attrVal = toXml(attr.nodeValue);
+                let attrVal = toXml(attr.nodeValue);
                 //remove bogus attributes added by Gecko
                 if (['-moz-math-font-style', '_moz-math-font-style'].indexOf(attr.localName) >= 0) continue;
-                if (attrVal != '') {
+                if (attrVal !== '') {
                     if (attrVal.indexOf('pointer-events') === 0) continue;
                     if (attr.localName === 'class' && attrVal.indexOf('se_') === 0) continue;
                     out.push(' ');
@@ -199,7 +201,7 @@ function svgElToString(elem, indent) {
             indent++;
             let bOneLine = false;
 
-            for (var i = 0; i < childs.length; i++) {
+            for (let i = 0; i < childs.length; i++) {
                 const child = childs.item(i);
                 switch (child.nodeType) {
                     case 1: // element node
@@ -208,7 +210,7 @@ function svgElToString(elem, indent) {
                         break;
                     case 3: // text node
                         const str = child.nodeValue.replace(/^\s+|\s+$/g, '');
-                        if (str != '') {
+                        if (str !== '') {
                             bOneLine = true;
                             out.push(toXml(str) + '');
                         }
@@ -225,7 +227,7 @@ function svgElToString(elem, indent) {
             indent--;
             if (!bOneLine) {
                 out.push('\n');
-                for (var i = 0; i < indent; i++) out.push(' ');
+                for (let i = 0; i < indent; i++) out.push(' ');
             }
             out.push('</');
             out.push(elem.nodeName);

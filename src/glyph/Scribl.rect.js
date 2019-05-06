@@ -28,7 +28,7 @@ export default class Rect extends Glyph {
 
      * _private rect specific draw method that gets called by this._super.draw()_
 
-     * @param [context] - optional canvas.context
+     * @param [ctx] - optional canvas.context
      * @param [length] - optional length of glyph/feature
      * @param [height] - optional height of lane
      * @param [roundness] - optional roundness of glyph/feature
@@ -40,11 +40,12 @@ export default class Rect extends Glyph {
         const rect = this;
 
         // see if optional parameters are set
-        var ctx = ctx || rect.ctx;
-        var length = length || rect.getPixelLength();
-        var height = height || rect.getHeight();
-        var roundness = roundness + 1 || rect.calcRoundness();
-        if (roundness != undefined) roundness -= 1;
+        ctx = ctx || rect.ctx;
+        length = length || rect.getPixelLength();
+        height = height || rect.getHeight();
+        roundness = roundness + 1 || rect.calcRoundness();
+        if (roundness !== undefined)
+            roundness -= 1;
 
         // Set starting draw position
         const x = 0;

@@ -9,16 +9,19 @@
  */
 
 import {makeBam} from 'dalliance/js/bam';
+import {BlobFetchable} from 'dalliance/js/bin';
 import genbank from './parsers/genbank';
 import bed from './parsers/bed';
 import BlockArrow from './glyph/Scribl.blockarrow';
 import {_uniqueId} from './Scribl.utils';
 import MouseEventHandler from './Scribl.events';
 import Track from './Scribl.track';
+import 'jquery.dragscrollable';
+import Slider from 'jquery-ui/ui/widgets/slider';
 
 // globals
 // if (SCRIBL == undefined) {
-const SCRIBL = {};
+export const SCRIBL = {};
 SCRIBL.chars = {};
 SCRIBL.chars.nt_color = 'white';
 SCRIBL.chars.nt_A_bg = 'red';
@@ -148,8 +151,6 @@ export default class Scribl {
         // private variables
         this.myMouseEventHandler = new MouseEventHandler(this);
         this.tracks = [];
-        const scaleSize = this.scale.size;
-        const scaleFontSize = this.scale.font.size;
     }
 
     /** **getScaleHeight**
@@ -160,7 +161,7 @@ export default class Scribl {
      * @api public
      */
     getScaleHeight() {
-        return (this.scale.font.size + this.scale.size);
+        return this.scale.font.size + this.scale.size;
     }
 
     /** **getHeight**
@@ -174,11 +175,10 @@ export default class Scribl {
         let wholeHeight = 0;
 
         if (!this.scale.off) wholeHeight += this.getScaleHeight();
-        const numTracks = this.tracks.length;
 
-        for (let i = 0; i < numTracks; i++) {
+        for (let track of this.tracks) {
             wholeHeight += this.trackBuffer;
-            wholeHeight += this.tracks[i].getHeight();
+            wholeHeight += track.getHeight();
         }
 
         return wholeHeight;
@@ -206,7 +206,7 @@ export default class Scribl {
 
      * _Changes the canvas that Scribl draws to_
 
-     * @param {Html Canvas Element} the canvas to draw to
+     * @param {HTMLCanvasElement} canvas: The canvas to draw to
      * @api public
      */
     setCanvas(canvas) {
@@ -266,7 +266,7 @@ export default class Scribl {
 
      * _parses a genbank file and adds the features to the Scribl chart/view_
 
-     * @param {String} genbank file as a string
+     * @param {String} file genbank file as a string
      * @api public
      */
     loadGenbank(file) {
@@ -277,7 +277,7 @@ export default class Scribl {
 
      * _parses a bed file and adds the features to the Scribl chart/view_
 
-     * @param {String} bed file as a string
+     * @param {String} file bed file as a string
      * @api public
      */
     loadBed(file) {
@@ -288,8 +288,8 @@ export default class Scribl {
 
      * _parses a bam file and adds the features to the Scribl chart/view_
 
-     * @param {File} bam file as a javascript file object
-     * @param {File} bai (bam index) file as a javascript file object
+     * @param {File} bamFile bam file as a javascript file object
+     * @param {File} baiFile Bam index file as a javascript file object
      * @param {number} start
      * @param {number} end
      * @api public
@@ -300,8 +300,10 @@ export default class Scribl {
         // scribl.scale.max = end;
         const track = scribl.addTrack();
         track.status = 'waiting';
-        makeBam(new BlobFetchable(bamFile),
+        makeBam(
+            new BlobFetchable(bamFile),
             new BlobFetchable(baiFile),
+            null,
             function (bam, reader) {
                 scribl.file = bam;
                 bam.fetch(chr, start, end, function (r, e) {
@@ -330,8 +332,8 @@ export default class Scribl {
      * @api public
      */
     loadFeatures(features) {
-        for (let i = 0; i < features.length; i++)
-            this.addFeature(features[i]);
+        for (let feature of features)
+            this.addFeature(feature);
     }
 
     /** **addGene**
@@ -448,7 +450,7 @@ export default class Scribl {
                     const end = s_features[k].position + s_features[k].length;
                     const start = s_features[k].position;
                     // determine if feature is in slice/region
-                    if (type == 'inclusive') {
+                    if (type === 'inclusive') {
                         if (start >= from && start <= to)
                             newLane.addFeature(s_features[k].clone());
                         else if (end > from && end < to)
@@ -457,41 +459,46 @@ export default class Scribl {
                             newLane.addFeature(s_features[k].clone());
                         else if (start > from && end < to)
                             newLane.addFeature(s_features[k].clone());
-                    } else if (type == 'strict') {
+                    }
+                    else if (type === 'strict') {
+                        let f;
                         if (start >= from && start <= to) {
                             if (end > from && end < to)
                                 newLane.addFeature(s_features[k].clone());
                             else {
                                 // turn first half into rect to stop having two block arrows features    
-                                if (s_features[k].glyphType == 'BlockArrow' && s_features[k].strand == '+')
-                                    var f = s_features[k].clone('Rect');
+                                if (s_features[k].glyphType === 'BlockArrow' && s_features[k].strand === '+')
+                                    f = s_features[k].clone('Rect');
                                 else
-                                    var f = s_features[k].clone();
+                                    f = s_features[k].clone();
 
                                 f.length = Math.abs(to - start);
                                 newLane.addFeature(f);
                             }
-                        } else if (end > from && end < to) {
+                        }
+                        else if (end > from && end < to) {
                             // turn first half into rect to stop having two block arrows features    
-                            if (s_features[k].glyphType == 'BlockArrow' && s_features[k].strand == '-')
-                                var f = s_features[k].clone('Rect');
+                            if (s_features[k].glyphType === 'BlockArrow' && s_features[k].strand === '-')
+                                f = s_features[k].clone('Rect');
                             else
-                                var f = s_features[k].clone();
+                                f = s_features[k].clone();
 
                             f.position = from;
                             f.length = Math.abs(end - from);
                             newLane.addFeature(f);
-                        } else if (start < from && end > to) {
+                        }
+                        else if (start < from && end > to) {
                             // turn first half into rect to stop having two block arrows features    
-                            if (s_features[k].glyphType == 'BlockArrow')
-                                var f = s_features[k].clone('Rect');
+                            if (s_features[k].glyphType === 'BlockArrow')
+                                f = s_features[k].clone('Rect');
                             else
-                                var f = s_features[k].clone();
+                                f = s_features[k].clone();
                             f.position = from;
                             f.length = Math.abs(to - from);
                             newLane.addFeature(f);
                         }
-                    } else if (type == 'exclusive') {
+                    }
+                    else if (type === 'exclusive') {
                         if (start >= from && start <= to && end > from && end < to)
                             newLane.addFeature(s_features[k].clone());
                     }
@@ -522,7 +529,7 @@ export default class Scribl {
         const tracks = this.tracks;
 
         // check if scrollable
-        if (this.scrollable == true) {
+        if (this.scrollable === true) {
             this.initScrollable();
         }
 
@@ -533,7 +540,7 @@ export default class Scribl {
 
         // fix offsets so scale will not be cut off on left side
         // check if offset is turned off and then set it to static '0'
-        if (this.offset == undefined)
+        if (this.offset === undefined)
             this.offset = Math.ceil(ctx.measureText('0').width / 2 + 10);
 
 //      ctx.save();				
@@ -543,13 +550,13 @@ export default class Scribl {
         // draw tracks
         for (let i = 0; i < tracks.length; i++) {
             // draw scale
-            if (!this.scale.off && this.scale.positions.indexOf(i) != -1)
+            if (!this.scale.off && this.scale.positions.includes(i))
                 this.drawScale();
             tracks[i].draw();
         }
 
         // test if scale is drawn last
-        if (!this.scale.off && this.scale.positions.indexOf(tracks.length) != -1)
+        if (!this.scale.off && this.scale.positions.includes(tracks.length))
             this.drawScale();
 
 //      ctx.restore();	
@@ -625,11 +632,11 @@ export default class Scribl {
         ctx.textBaseline = 'top';
         ctx.fillStyle = this.scale.font.color;
 
-        if (this.offset == undefined)
+        if (this.offset === undefined)
             this.offset = Math.ceil(ctx.measureText('0').width / 2 + 10);
 
         // determine the place to start first minor tick
-        if (this.scale.min % this.tick.minor.size == 0)
+        if (this.scale.min % this.tick.minor.size === 0)
             firstMinorTick = this.scale.min;
         else
             firstMinorTick = this.scale.min - (this.scale.min % this.tick.minor.size)
@@ -639,7 +646,7 @@ export default class Scribl {
         for (let i = firstMinorTick; i <= this.scale.max; i += this.tick.minor.size) {
             ctx.beginPath();
             const curr_pos = this.pixelsToNts(i - this.scale.min) + this.offset;
-            if (i % this.tick.major.size == 0) { // draw major tick
+            if (i % this.tick.major.size === 0) { // draw major tick
                 // create text
                 const tickText = this.getTickText(i);
                 ctx.textAlign = 'center';
@@ -651,11 +658,12 @@ export default class Scribl {
                 ctx.strokeStyle = this.tick.major.color;
                 ctx.stroke();
 
-            } else { // draw minor tick
+            }
+            else { // draw minor tick
                 ctx.moveTo(curr_pos, tickStartPos);
 
                 // create half tick - tick between two major ticks
-                if (i % (this.tick.major.size / 2) == 0) {
+                if (i % (this.tick.major.size / 2) === 0) {
                     ctx.strokeStyle = this.tick.halfColor;
                     ctx.lineTo(curr_pos, halfTickEndPos);
                 }
@@ -684,7 +692,7 @@ export default class Scribl {
      * @api internal
      */
     pixelsToNts(pixels) {
-        if (pixels == undefined)
+        if (pixels === undefined)
             return (this.width / (this.scale.max - this.scale.min));
         else
             return (this.width / (this.scale.max - this.scale.min) * pixels);
@@ -694,12 +702,12 @@ export default class Scribl {
 
      * _Get the number of pixels shown per given nucleotides_
 
-     * @param {number} [nucleotides] optional - if not given, the ratio of nts/pixel will be returned
+     * @param {number} [nts] optional - if not given, the ratio of nts/pixel will be returned
      * @return {number} pixels or nts/pixel ratio
      * @api internal
      */
     ntsToPixels(nts) {
-        if (nts == undefined)
+        if (nts === undefined)
             return (1 / this.pixelsToNts());
         else
             return (nts / this.width);
@@ -713,12 +721,13 @@ export default class Scribl {
      */
     initScrollable() {
         let scrollStartMin;
+        let sliderDiv;
 
         if (!this.scrolled) {
             // create divs
             const parentDiv = document.createElement('div');
             const canvasContainer = document.createElement('div');
-            var sliderDiv = document.createElement('div');
+            sliderDiv = document.createElement('div');
             sliderDiv.id = 'scribl-zoom-slider';
             sliderDiv.className = 'slider';
             sliderDiv.style.cssFloat = 'left';
@@ -740,12 +749,12 @@ export default class Scribl {
             canvasContainer.appendChild(this.canvas);
             parentDiv.appendChild(canvasContainer);
 
-            jQuery(canvasContainer).dragscrollable({dragSelector: 'canvas:first', acceptPropagatedEvent: false});
+            $(canvasContainer).dragscrollable({dragSelector: 'canvas:first', acceptPropagatedEvent: false});
         }
 
         const totalNts = this.scale.max - this.scale.min;
         const scrollStartMax = this.scrollValues[1] || this.scale.max - totalNts * .35;
-        if (this.scrollValues[0] != undefined)
+        if (this.scrollValues[0] !== undefined)
             scrollStartMin = this.scrollValues[0];
         else
             scrollStartMin = this.scale.max + totalNts * .35;
@@ -759,7 +768,7 @@ export default class Scribl {
         const schart = this;
         const zoomValue = (scrollStartMax - scrollStartMin) / (this.scale.max - this.scale.min) * 100 || 1;
 
-        jQuery(sliderDiv).slider({
+        new Slider({
             orientation: 'vertical',
             range: 'min',
             min: 6,
@@ -784,11 +793,10 @@ export default class Scribl {
                 schart.ctx.clearRect(0, 0, schart.canvas.width, schart.canvas.height);
                 schart.draw();
             }
-        });
+        }).element.appendTo(sliderDiv);
 
 
-        const startingPixel = (scrollStartMin - this.scale.min) / totalNts * this.canvas.width;
-        document.getElementById('scroll-wrapper').scrollLeft = startingPixel;
+        document.getElementById('scroll-wrapper').scrollLeft = (scrollStartMin - this.scale.min) / totalNts * this.canvas.width;
         this.scrolled = true;
     }
 
@@ -837,13 +845,17 @@ export default class Scribl {
             return tickNumber;
 
         let tickText = tickNumber;
+        let decPlaces;
+        let base;
+
         if (tickNumber >= 1000000) {
-            var decPlaces = 5;
-            var base = Math.pow(10, decPlaces);
+            decPlaces = 5;
+            base = Math.pow(10, decPlaces);
             tickText = Math.round(tickText / 1000000 * base) / base + 'm'; // round to decPlaces
-        } else if (tickNumber >= 1000) {
-            var decPlaces = 2;
-            var base = Math.pow(10, decPlaces);
+        }
+        else if (tickNumber >= 1000) {
+            decPlaces = 2;
+            base = Math.pow(10, decPlaces);
             tickText = Math.round(tickText / 1000 * base) / base + 'k';
         }
 
@@ -862,12 +874,14 @@ export default class Scribl {
         if (!this.tick.auto)
             return tickNumber;
 
+        let decPlaces;
         let tickText = tickNumber;
         if (tickNumber >= 1000000) {
-            var decPlaces = 5;
+            decPlaces = 5;
             tickText = Math.round(tickText / (1000000 / Math.pow(10, decPlaces))) + 'm'; // round to 2 decimal places
-        } else if (tickNumber >= 1000) {
-            var decPlaces = 2;
+        }
+        else if (tickNumber >= 1000) {
+            decPlaces = 2;
             tickText = Math.round(tickText / (1000 / Math.pow(10, decPlaces))) + 'k';
         }
 
@@ -887,12 +901,12 @@ export default class Scribl {
         const positionY = this.myMouseEventHandler.mouseY;
         let lane;
 
-        for (var i = 0; i < this.tracks.length; i++) {
-            for (let k = 0; k < this.tracks[i].lanes.length; k++) {
-                const yt = this.tracks[i].lanes[k].getPixelPositionY();
-                const yb = yt + this.tracks[i].lanes[k].getHeight();
+        for (let track of this.tracks) {
+            for (let k = 0; k < track.lanes.length; k++) {
+                const yt = track.lanes[k].getPixelPositionY();
+                const yb = yt + track.lanes[k].getHeight();
                 if (positionY >= yt && positionY <= yb) {
-                    lane = this.tracks[i].lanes[k];
+                    lane = track.lanes[k];
                     break;
                 }
             }
@@ -903,11 +917,13 @@ export default class Scribl {
 
         const drawStyle = lane.track.getDrawStyle();
 
-        if (drawStyle == 'collapse') {
+        if (drawStyle === 'collapse') {
             this.redraw();
-        } else if (drawStyle == 'line') {
+        }
+        else if (drawStyle === 'line') {
             // do nothing 
-        } else {
+        }
+        else {
             this.ctx.save();
             lane.erase();
             this.ctx.translate(0, lane.getPixelPositionY());
@@ -922,14 +938,15 @@ export default class Scribl {
 
         const chart = this;
 
-        if (type == 'click') {
+        if (type === 'click') {
             const clicksFns = chart.events.clicks;
-            for (var i = 0; i < clicksFns.length; i++)
-                clicksFns[i](chart);
-        } else {
+            for (let clickFn of clicksFns)
+                clickFn(chart);
+        }
+        else {
             const mouseoverFns = chart.events.mouseovers;
-            for (var i = 0; i < mouseoverFns.length; i++)
-                mouseoverFns[i](chart);
+            for (let mouseoverFn of mouseoverFns)
+                mouseoverFn(chart);
         }
 
         MouseEventHandler.reset(chart);
@@ -964,13 +981,13 @@ export default class Scribl {
 
      * _remove event listerners_
 
-     * @param {String} event-type - e.g. mouseover, click, etc...
+     * @param {String} eventType event-type - e.g. mouseover, click, etc...
      * @api internal
      */
     removeEventListeners(eventType) {
-        if (eventType == 'mouseover')
+        if (eventType === 'mouseover')
             this.canvas.removeEventListener('mousemove', this.mouseHandler);
-        else if (eventType == 'click')
+        else if (eventType === 'click')
             this.canvas.removeEventListener('click', this.clickHandler);
     }
 

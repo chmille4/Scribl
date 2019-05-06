@@ -11,22 +11,18 @@ export default class Tooltip {
     /** **init**
 
      * _Constructor, call this with `new tooltips()`_
-
-     * @param {Object} chart - Scribl object
      * @return {Object} tooltip object
      * @api internal
      */
     constructor(text, placement, verticalOffset, opts) {
-        const tt = this;
-        tt.text = text;
-        tt.placement = placement || 'above';
-        tt.verticalOffset = verticalOffset || 0;
-        // set option attributes if any
-        for (const attribute in opts)
-            tt[attribute] = opts[attribute];
+        this.text = text;
+        this.placement = placement || 'above';
+        this.verticalOffset = verticalOffset || 0;
+        // set option athisributes if any
+        Object.assign(this, opts);
 
-        tt.horizontalOffset = tt.horizontalOffset || 0;
-        tt.ntOffset = tt.ntOffset || 0;
+        this.horizontalOffset = this.horizontalOffset || 0;
+        this.ntOffset = this.ntOffset || 0;
 
     }
 
@@ -34,7 +30,7 @@ export default class Tooltip {
 
      * _fires the tooltip_
 
-     * @param {Object} feature - any of the derived Glyph classes (e.g. Rect, Arrow, etc..)
+     * @param {Object} ft - any of the derived Glyph classes (e.g. Rect, Arrow, etc..)
      * @api internal
      */
 
@@ -71,11 +67,10 @@ export default class Tooltip {
         this.ctx.font = fontSize + 'px ' + font;
 
         // determine properties of line
-        var dim = this.ctx.measureText(text);
+        let dim = this.ctx.measureText(text);
         let textlines = [text];
         let height = fontSize + 10;
         let length = dim.width + 10;
-        const vertical_offset = height - 4;
         let fillStyle;
         let strokeStyle;
 
@@ -89,7 +84,7 @@ export default class Tooltip {
         // Get coordinates
         let x = feature.getPixelPositionX() + this.horizontalOffset + ntOffsetPx;
         let y;
-        if (this.placement == 'below')
+        if (this.placement === 'below')
             y = feature.getPixelPositionY() + feature.getHeight() - this.verticalOffset;
         else
             y = feature.getPixelPositionY() - height - this.verticalOffset;
@@ -116,7 +111,7 @@ export default class Tooltip {
             x = this.chart.width - length;
 
         // draw light style
-        if (this.chart.tooltips.style == 'light') {
+        if (this.chart.tooltips.style === 'light') {
             fillStyle = this.chart.ctx.createLinearGradient(x + length / 2, y, x + length / 2, y + height);
             fillStyle.addColorStop(0, 'rgb(253, 248, 196)');
             fillStyle.addColorStop(.75, 'rgb(253, 248, 196)');
@@ -130,7 +125,7 @@ export default class Tooltip {
 
             // draw dark style	
         }
-        else if (this.chart.tooltips.style == 'dark') {
+        else if (this.chart.tooltips.style === 'dark') {
             fillStyle = this.chart.ctx.createLinearGradient(x + length / 2, y, x + length / 2, y + height);
             fillStyle.addColorStop(0, 'rgb(64, 64, 64)');
             fillStyle.addColorStop(1, 'rgb(121, 121, 121)');
@@ -213,7 +208,7 @@ export default class Tooltip {
         this.ctx.textBaseline = 'middle';
         this.ctx.fillStyle = this.chart.tooltips.text.color;
         for (let i = 0; i < textlines.length; i++) {
-            var dim = this.ctx.measureText(textlines[i]);
+            dim = this.ctx.measureText(textlines[i]);
             this.ctx.fillText(textlines[i], x + 5, y + fontSize * (i + 1));
         }
 

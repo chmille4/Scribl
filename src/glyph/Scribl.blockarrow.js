@@ -7,6 +7,7 @@
  */
 
 import Glyph from '../Scribl.glyph';
+import Rect from './Scribl.rect';
 
 export default class BlockArrow extends Glyph {
     /** **init**
@@ -31,7 +32,7 @@ export default class BlockArrow extends Glyph {
 
      * _private blockarrow specific draw method that gets called by this._super.draw()_
 
-     * @param [context] - optional canvas.context
+     * @param [ctx] - optional canvas.context
      * @param [length] - optional length of glyph/feature
      * @param [height] - optional height of lane
      * @param [roundness] - optional roundness of glyph/feature
@@ -43,14 +44,11 @@ export default class BlockArrow extends Glyph {
         const blockarrow = this;
 
         // see if optional parameters are set and get chart specific info
-        var ctx = ctx || blockarrow.ctx;
-        var length = length || blockarrow.getPixelLength();
-        var height = height || blockarrow.getHeight();
-        var roundness = roundness + 1 || blockarrow.calcRoundness();
-        if (roundness != undefined) roundness -= 1;
-
-        const side = length * .75;
-
+        ctx = ctx || blockarrow.ctx;
+        length = length || blockarrow.getPixelLength();
+        height = height || blockarrow.getHeight();
+        roundness = roundness + 1 || blockarrow.calcRoundness();
+        if (roundness !== undefined) roundness -= 1;
 
         // set start x and y draw locations to 0
         const x = 0;

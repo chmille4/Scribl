@@ -29,7 +29,7 @@ export default class Line extends Glyph {
 
      * _private line specific draw method that gets called by this._super.draw()_
 
-     * @param [context] - optional canvas.context
+     * @param [ctx] - optional canvas.context
      * @param [length] - optional length of glyph/feature
      * @param [height] - optional height of lane
      * @param [roundness] - optional roundness of glyph/feature
@@ -41,9 +41,9 @@ export default class Line extends Glyph {
         const line = this;
 
         // see if optional parameters
-        var ctx = ctx || line.ctx;
-        var length = length || line.getPixelLength();
-        var height = height || line.getHeight();
+        ctx = ctx || line.ctx;
+        length = length || line.getPixelLength();
+        height = height || line.getHeight();
 
         // Set starting draw position
         const x = 0;
@@ -53,7 +53,5 @@ export default class Line extends Glyph {
         ctx.lineTo(x, height / 2 + line.thickness / 2);
         ctx.lineTo(x + length, height / 2 + line.thickness / 2);
         ctx.lineTo(x + length, height / 2 - line.thickness / 2);
-//			ctx.fill();			
-//			ctx.fillRect(x, height/2 - line.thickness/2, length, line.thickness);
     }
 }

@@ -6,52 +6,52 @@
  * Chase Miller 2011
  */
 
-	var Line = Glyph.extend({
-      /** **init**
+import Glyph from '../Scribl.glyph';
 
-       * _Constructor, call this with `new Line()`_
+export default class Line extends Glyph {
+    /** **init**
 
-       * @param {String} type - a tag to associate this glyph with
-       * @param {Int} position - start position of the glyph
-       * @param {Int} length - length of the glyph
-       * @param {Hash} [opts] - optional hash of attributes that can be applied to glyph
-       * @api public
-       */
-		init: function(type, position, length, opts) {
-         this.thickness = 2;
-         this._super(type, position, length, undefined, opts);
-         this.glyphType = "Line";
-      },
-		
-   	/** **_draw**
+     * _Constructor, call this with `new Line()`_
 
-       * _private line specific draw method that gets called by this._super.draw()_
+     * @param {String} type - a tag to associate this glyph with
+     * @param {number} position - start position of the glyph
+     * @param {number} length - length of the glyph
+     * @param {Hash} [opts] - optional hash of attributes that can be applied to glyph
+     * @api public
+     */
+    constructor(type, position, length, opts) {
+        super(type, position, length, undefined, opts);
+        this.thickness = 2;
+        this.glyphType = 'Line';
+    }
 
-       * @param [context] - optional canvas.context 
-       * @param [length] - optional length of glyph/feature
-       * @param [height] - optional height of lane
-       * @param [roundness] - optional roundness of glyph/feature      
-       * @api internal 
-       */
-       _draw: function(ctx, length, height, roundness) {
-			
-          // initialize
-          var line = this;
-          
-          // see if optional parameters
-          var ctx = ctx || line.ctx;
-          var length = length || line.getPixelLength();
-          var height = height || line.getHeight();
-          
-          // Set starting draw position
-          x = y = 0;
-          
-          ctx.beginPath();
-          ctx.moveTo(x, height/2 - line.thickness/2);
-          ctx.lineTo(x, height/2 + line.thickness/2);
-          ctx.lineTo(x+length, height/2 + line.thickness/2);
-          ctx.lineTo(x+length, height/2 - line.thickness/2);
-//			ctx.fill();			
-//			ctx.fillRect(x, height/2 - line.thickness/2, length, line.thickness);
-	}
-});
+    /** **_draw**
+
+     * _private line specific draw method that gets called by this._super.draw()_
+
+     * @param [ctx] - optional canvas.context
+     * @param [length] - optional length of glyph/feature
+     * @param [height] - optional height of lane
+     * @param [roundness] - optional roundness of glyph/feature
+     * @api internal
+     */
+    _draw(ctx, length, height, roundness) {
+
+        // initialize
+        const line = this;
+
+        // see if optional parameters
+        ctx = ctx || line.ctx;
+        length = length || line.getPixelLength();
+        height = height || line.getHeight();
+
+        // Set starting draw position
+        const x = 0;
+
+        ctx.beginPath();
+        ctx.moveTo(x, height / 2 - line.thickness / 2);
+        ctx.lineTo(x, height / 2 + line.thickness / 2);
+        ctx.lineTo(x + length, height / 2 + line.thickness / 2);
+        ctx.lineTo(x + length, height / 2 - line.thickness / 2);
+    }
+}

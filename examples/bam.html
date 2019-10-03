@@ -1,24 +1,6 @@
 <html>
 
-<script language="javascript" src="../lib/bin.js"></script>
-<script language="javascript" src="../lib/inflate.js"></script>
-<script language="javascript" src="../lib/bam.js"></script>
-<script src="../src/Scribl.class.js" ></script>
-<script src="../src/Scribl.js" ></script>
-<script src="../src/Scribl.track.js" ></script>
-<script src="../src/Scribl.lane.js" ></script>
-<script src="../src/Scribl.tooltips.js" ></script>    
-<script src="../src/Scribl.events.js" ></script>
-<script src="../src/Scribl.utils.js" ></script>
-<script src="../src/Scribl.svg.js" ></script>
-<script src="../src/Scribl.glyph.js" ></script>
-<script src="../src/glyph/Scribl.blockarrow.js" ></script>
-<script src="../src/glyph/Scribl.arrow.js" ></script>
-<script src="../src/glyph/Scribl.rect.js" ></script>
-<script src="../src/glyph/Scribl.line.js" ></script>
-<script src="../src/glyph/Scribl.complex.js" ></script>
-<script src="../src/glyph/Scribl.seq.js" ></script>     
-<!-- <script src="../Scribl.min.js" ></script> -->
+<script src="../dist/scribl.bundle.js"></script>
 
 <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
 
@@ -30,148 +12,150 @@
 <script language="javascript">
 
 
-function testBam() {
-   // var bam1 = makeBam(new URLFetchable('http://www.biodalliance.org/datasets/subset22-sorted.bam', 0, 34000000, {'file': bamFile}), 
-   //         new URLFetchable('http://www.biodalliance.org/datasets/subset22-sorted.bam.bai', 0, 34000000, { 'file' : baiFile}),
-   // Get Canvas and Create Chart
-  	var canvas = document.getElementById('canvas');  	
-	
-	// Create Chart
-	var chart = new Scribl(canvas, 500);
-	chart.laneSizes = 15;
-   // chart.scale.min = 30000100;
-   // chart.scale.max = 30000200;
-   chart.scrollable = true;
-   chart.scrollValues = [30000000, 30000190];
-   // chart.draw();
-   // chart.addGene(10, 1000, '+');
-   // chart.addGene(1000, 1000, '+');
-	var track = chart.loadBam(bamFile, baiFile,$('#chromosome').val(), $('#startpos').val(),$('#endpos').val());
-	//track.drawOnResponse = true;
-	chart.tmp = true;
-   chart.draw();
-   chart.tmp = false;
-	
-}         
+    function testBam() {
+        // var bam1 = makeBam(new URLFetchable('http://www.biodalliance.org/datasets/subset22-sorted.bam', 0, 34000000, {'file': bamFile}), 
+        //         new URLFetchable('http://www.biodalliance.org/datasets/subset22-sorted.bam.bai', 0, 34000000, { 'file' : baiFile}),
+        // Get Canvas and Create Chart
+        var canvas = document.getElementById('canvas');
+
+        // Create Chart
+        var chart = new Scribl(canvas, 500);
+        chart.laneSizes = 15;
+        // chart.scale.min = 30000100;
+        // chart.scale.max = 30000200;
+        chart.scrollable = true;
+        chart.scrollValues = [30000000, 30000190];
+        // chart.draw();
+        // chart.addGene(10, 1000, '+');
+        // chart.addGene(1000, 1000, '+');
+        var track = chart.loadBam(bamFile, baiFile, $('#chromosome').val(), $('#startpos').val(), $('#endpos').val());
+        //track.drawOnResponse = true;
+        chart.tmp = true;
+        chart.draw();
+        chart.tmp = false;
+
+    }
 </script>
-<head></head>
+<head>
 
-<body>   
-   <h1>BAM test</h1>
-   <div  id='content'></div>
-   <input type="file" id="files" name="files[]" multiple />
-   <span>Chromosome </span><input id="chromosome" value="13"/>
-   <span style="margin-left: 10px">Start Pos </span><input id="startpos" value="42078109"/>
-   <span style="margin-left: 10px">End Pos </span><input id="endpos" value="43188109"/>
-   <button onClick="testBam()" style="margin-left: 10px">Test Bam</button>
-   <div style="margin-left:10px" id="container">
-		<canvas id="canvas" width="547" height="330"></canvas> 
-	</div>
-	
-   <div id='log'>
-   </div>
-   
-   <script>
-      function handleFileSelect(event) {
+</head>
 
-          if (event.target.files.length != 2) {
-             alert('must select both a .bam and .bai file');
-             return;
-          }
+<body>
+<h1>BAM test</h1>
+<div id='content'></div>
+<input type="file" id="files" name="files[]" multiple/>
+<span>Chromosome </span><input id="chromosome" value="13"/>
+<span style="margin-left: 10px">Start Pos </span><input id="startpos" value="42078109"/>
+<span style="margin-left: 10px">End Pos </span><input id="endpos" value="43188109"/>
+<button onClick="testBam()" style="margin-left: 10px">Test Bam</button>
+<div style="margin-left:10px" id="container">
+    <canvas id="canvas" width="547" height="330"></canvas>
+</div>
 
-          var fileType0 = /[^.]+$/.exec(event.target.files[0].name)[0];
-          var fileType1 = /[^.]+$/.exec(event.target.files[1].name)[0];
+<div id='log'>
+</div>
 
-          if (fileType0 == 'bam' && fileType1 == 'bai') {
-      	    bamFile = event.target.files[0];
-      	    baiFile = event.target.files[1];
-      	 } else if (fileType1 == 'bam' && fileType0 == 'bai') {
-      	    bamFile = event.target.files[1];
-      	    baiFile = event.target.files[0];
-      	 } else {
-      	    alert('must select both a .bam and .bai file');
-      	 }
+<script>
+    function handleFileSelect(event) {
+
+        if (event.target.files.length != 2) {
+            alert('must select both a .bam and .bai file');
+            return;
         }
 
-        document.getElementById('files').addEventListener('change', handleFileSelect, false);
-   </script>
-   
-   <script>
-      // initalize drag n drop
-         var content = document.getElementById('content');
-      	if (!window.FileReader) {
-      	  content.innerHTML = "<p>This browser doesnt support the File API</p>";
-      	} else {
-      	  // Page Layout
-      	  content.innerHTML =
-      	    '<p>Drag a BAM(.bam) and its index(.bai) file onto this area <input type="hidden" id="file" /></p>';
+        var fileType0 = /[^.]+$/.exec(event.target.files[0].name)[0];
+        var fileType1 = /[^.]+$/.exec(event.target.files[1].name)[0];
 
-      	  // Displays gene charts.
-      	  function displayChart(file) {
-      	    var reader = new FileReader();
-      		var fileType = /[^.]+$/.exec(file.name);
+        if (fileType0 == 'bam' && fileType1 == 'bai') {
+            bamFile = event.target.files[0];
+            baiFile = event.target.files[1];
+        } else if (fileType1 == 'bam' && fileType0 == 'bai') {
+            bamFile = event.target.files[1];
+            baiFile = event.target.files[0];
+        } else {
+            alert('must select both a .bam and .bai file');
+        }
+    }
 
-      	   reader.onload = function(event) {
-      			var canvas = document.getElementById('canvas');
-      			chart = new Scribl(canvas, 810);
-      			if (fileType == "bed") 
-      				chart.loadBed(event.target.result);
-      			else if (fileType == "gb")
-      				chart.loadGenbank(event.target.result);
-      			else
-      			 	alert("File must have a .gb or .bed extension");
-      			chart.draw();		
-      	    };
-      	    reader.readAsText(file);
-      	  }		 
+    document.getElementById('files').addEventListener('change', handleFileSelect, false);
+</script>
 
-      	  // Input handler
-      	  document.getElementById('file').onchange = function() {
-      	    //displayFile(this.files[0]);
-      	    alert('change!');
+<script>
+    // initalize drag n drop
+    var content = document.getElementById('content');
+    if (!window.FileReader) {
+        content.innerHTML = '<p>This browser doesnt support the File API</p>';
+    } else {
+        // Page Layout
+        content.innerHTML =
+            '<p>Drag a BAM(.bam) and its index(.bai) file onto this area <input type="hidden" id="file" /></p>';
+
+        // Displays gene charts.
+        function displayChart(file) {
+            var reader = new FileReader();
+            var fileType = /[^.]+$/.exec(file.name);
+
+            reader.onload = function (event) {
+                var canvas = document.getElementById('canvas');
+                chart = new Scribl(canvas, 810);
+                if (fileType == 'bed')
+                    chart.loadBed(event.target.result);
+                else if (fileType == 'gb')
+                    chart.loadGenbank(event.target.result);
+                else
+                    alert('File must have a .gb or .bed extension');
+                chart.draw();
+            };
+            reader.readAsText(file);
+        }
+
+        // Input handler
+        document.getElementById('file').onchange = function () {
+            //displayFile(this.files[0]);
+            alert('change!');
 //      	    alert(this.files[0].name + " " + this.files[1].name);
-      	  };
+        };
 
-      	  // Reduce movement by adding invisible border
-      	  content.style.border = '4px solid transparent';
+        // Reduce movement by adding invisible border
+        content.style.border = '4px solid transparent';
 
-      	  // Add dragging events
-      	  content.ondragenter = function() {
-      	    content.style.border = '4px solid #b1ecb3';
-      	    return false;
-      	  };
+        // Add dragging events
+        content.ondragenter = function () {
+            content.style.border = '4px solid #b1ecb3';
+            return false;
+        };
 
-      	  content.ondragover = function() {
-      	    return false;
-      	  };
+        content.ondragover = function () {
+            return false;
+        };
 
-      	  content.ondragleave = function() {
-      	    return false;
-      	  };
+        content.ondragleave = function () {
+            return false;
+        };
 
-      	  content.ondrop = function(event) {
-      	    content.style.border = '4px solid transparent';
-      	    //alert(event.dataTransfer.files[0].name + " " + event.dataTransfer.files[1].name);
-      	    if (event.dataTransfer.files.length != 2) {
-      	       alert('must select both a .bam and .bai file');
-      	       return;
-      	    }
-      	    var fileType0 = /[^.]+$/.exec(event.dataTransfer.files[0].name);
-      	    var fileType1 = /[^.]+$/.exec(event.dataTransfer.files[1].name);
-      	    
-      	    if (fileType0 == 'bam' && fileType1 == 'bai') {
-         	    bamFile = event.dataTransfer.files[0];
-         	    baiFile = event.dataTransfer.files[1];
-         	 } else if (fileType1 == 'bam' && fileType0 == 'bai') {
-         	    bamFile = event.dataTransfer.files[1];
-         	    baiFile = event.dataTransfer.files[0];
-         	 } else {
-         	    alert('must select both a .bam and .bai file');
-         	 }
-      	    //displayChart(event.dataTransfer.files[0]);
-      	    return false;
-      	  };
-      	}
-   </script>
+        content.ondrop = function (event) {
+            content.style.border = '4px solid transparent';
+            //alert(event.dataTransfer.files[0].name + " " + event.dataTransfer.files[1].name);
+            if (event.dataTransfer.files.length != 2) {
+                alert('must select both a .bam and .bai file');
+                return;
+            }
+            var fileType0 = /[^.]+$/.exec(event.dataTransfer.files[0].name);
+            var fileType1 = /[^.]+$/.exec(event.dataTransfer.files[1].name);
+
+            if (fileType0 == 'bam' && fileType1 == 'bai') {
+                bamFile = event.dataTransfer.files[0];
+                baiFile = event.dataTransfer.files[1];
+            } else if (fileType1 == 'bam' && fileType0 == 'bai') {
+                bamFile = event.dataTransfer.files[1];
+                baiFile = event.dataTransfer.files[0];
+            } else {
+                alert('must select both a .bam and .bai file');
+            }
+            //displayChart(event.dataTransfer.files[0]);
+            return false;
+        };
+    }
+</script>
 </body>
 </html>

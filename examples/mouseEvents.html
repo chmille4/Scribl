@@ -1,46 +1,49 @@
-<!DOCTYPE HTML> 
+<!DOCTYPE HTML>
 <html lang="en">
-	<head>
-		<script src="../Scribl.min.js" ></script>
-		<link rel="stylesheet" type="text/css" href="demos.css" />		
-		
-		<script> 
+<head>
+    <script src="../dist/scribl.bundle.js"></script>
+    <link rel="stylesheet" type="text/css" href="demos.css"/>
 
-			function draw(canvasName) {  
-					
-					// Get Canvas and Create Chart
-				  	var canvas = document.getElementById(canvasName);  	
-					
-					// Create Chart
-					chart1 = new Scribl(canvas, 500);
+    <script>
 
-					// Add Gene      position, length, orientation
-					gene1 = chart1.addGene( 900,    750 , '-');
-					gene1.name = "Click Me";
-					gene1.onMouseover = "Start:900 Length:750";
-					gene1.onClick = "http://www.google.com";
-					
-					gene2 = chart1.addGene( 3500, 2500, '+');
-					gene2.name = "Gene 2";
-					gene2.onMouseover = "Start:3500 Length:2500";
-					gene2.onClick = function() {alert("you clicked me")};
-					
-					// Draw Chart
-					chart1.draw();
-			}
-				
-		</script>
+        function draw(canvasName) {
 
-	</head>  
-	
-	<body onload="draw('canvas')">
-		<div id="description"><h2>Events</h2>
-			add click and mouseover events to genes
-		</div><br/>
-		<div id="container">
-			<canvas id="canvas" width="547" height="330" ></canvas>  
-		</div>
-		
-	</body>
-	
+            // Get Canvas and Create Chart
+            var canvas = document.getElementById(canvasName);
+
+            // Create Chart
+            var chart1 = new Scribl(canvas, 500);
+
+            // Add Gene      position, length, orientation
+            var gene1 = chart1.addGene(900, 750, '-');
+            gene1.name = 'Click Me';
+            gene1.onMouseover = 'Start:900 Length:750';
+            gene1.onClick = 'http://www.google.com';
+
+            var gene2 = chart1.addGene(3500, 2500, '+');
+            gene2.name = 'Gene 2';
+            gene2.onMouseover = 'Start:3500 Length:2500';
+            gene2.onClick = function () {
+                alert('you clicked me');
+            };
+
+            // Draw Chart
+            chart1.draw();
+        }
+
+    </script>
+
+</head>
+
+<body onload="draw('canvas')">
+<div id="description"><h2>Events</h2>
+    add click and mouseover events to genes
+</div>
+<br/>
+<div id="container">
+    <canvas id="canvas" width="547" height="330"></canvas>
+</div>
+
+</body>
+
 </html>

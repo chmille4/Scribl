@@ -1,165 +1,216 @@
-<!DOCTYPE HTML> 
+<!DOCTYPE HTML>
 <html lang="en">
-	<head>
-		<title>Scribl - builder</title>
-		<script src="../Scribl.min.js" ></script>
-		
-		<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
-		<link rel="stylesheet" type="text/css" href="demos.css" />
-	  	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
-	  	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
-		
-		<script type="text/javascript">
-			  var _gaq = _gaq || [];
-			  _gaq.push(['_setAccount', 'UA-21069282-1']);
-			  _gaq.push(['_trackPageview']);
+<head>
+    <title>Scribl - builder</title>
+    <script src="../dist/scribl.bundle.js"></script>
 
-			  (function() {
-			    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-			    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-			  })();
-		</script>
-		
-		<script>
-	  		$(document).ready(function() {
-	    		$("#shapeSlider").slider( { min: 1, max: 20, value: 6, slide: function(event, ui){ redraw() } });
-	    		$("#laneSlider").slider( { min: 10, max: 200, value: 50, slide: function(event, ui){ redraw() } });
-				$("#rSlider1").slider( { min: 0, max: 260, value: 0, slide: function(event, ui){ redraw() } });
-				$("#bSlider1").slider( { min: 0, max: 260, value: 0, slide: function(event, ui){ redraw() } });	
-				$("#gSlider1").slider( { min: 0, max: 260, value: 0, slide: function(event, ui){ redraw() } });	
-				$("#rSlider2").slider( { min: 0, max: 260, value: 0, slide: function(event, ui){ redraw() } });	
-				$("#bSlider2").slider( { min: 0, max: 260, value: 0, slide: function(event, ui){ redraw() } });	
-				$("#gSlider2").slider( { min: 0, max: 260, value: 0, slide: function(event, ui){ redraw() } });	
-	  		});
-	  	</script>
-		
-		<script> 
+    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet"
+          type="text/css"/>
+    <link rel="stylesheet" type="text/css" href="demos.css"/>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 
-			function draw(canvasName) {  
-					
-					// Get Canvas and Create Chart
-				  	var canvas = document.getElementById(canvasName);  	
-					
-					// Create Chart
-					chart1 = new Scribl(canvas, 500);
-					chart1.glyph.color = "black";
-					
-					// Add Genes      position, length, orientation
-					gene1 = chart1.addGene( 900,    750 , '-');
-					gene2 = chart1.addGene( 3500, 2500, '+');
-					gene3 = chart1.addGene( 8100, 1000, '-');
-					gene4 = chart1.addGene( 6200, 1500, '+');
-					gene5 = chart1.addGene( 1000,  1000, '-');		
-					gene6 = chart1.addGene( 3500, 1500, '-');		
-					gene7 = chart1.addGene( 2230, 1000, '+');
-					gene8 = chart1.addGene( 5000, 1500, '+');				
-					gene9 = chart1.addGene( 7230, 1000, '-');
-					gene10 = chart1.addFeature(
-						new Complex('gene', 1500, 5000, '+', [ 
-							new BlockArrow('gene',0,500, '+'), 
-							new Rect('gene',2000,500), 
-							new Arrow('gene',5000, '+')
-						])
-					);
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-21069282-1']);
+        _gaq.push(['_trackPageview']);
 
-					// add name
-					gene3.name = "Gene 2";
-					gene3.text.color = "white";
-					
-					// Draw Chart
-					chart1.draw();
-					
-					// Create image of chart1
-					var img = chart1.canvas.toDataURL("image/png");
-					// Add link to download image
-					$("a#export").attr('href', img);
-					
-					// have to reset chart.gene.color to undefined or else it overrides everything downstream ...
-					chart1.glyph.color = undefined;
-			}
-			
-			function redraw() {
-				// changeable options
-				roundness = $("#shapeSlider").slider( "option", "value" );
-				laneSizes = $("#laneSlider").slider( "option", "value" );
-				r1 = $("#rSlider1").slider( "option", "value" );
-				g1 = $("#gSlider1").slider( "option", "value" );
-				b1 = $("#bSlider1").slider( "option", "value" );
-				r2 = $("#rSlider2").slider( "option", "value" );
-				g2 = $("#gSlider2").slider( "option", "value" );
-				b2 = $("#bSlider2").slider( "option", "value" );
-				canvas = document.getElementById('canvas');
-				canvas.height = chart1.getHeight() + 20;
-				
-				// set new values
-				chart1.glyph.roundness = roundness;
-				chart1.laneSizes = parseInt(laneSizes);
-				
-				// assemble color
-				top_color = "rgb(" + r1 + ", " + g1 + ", " + b1 + ")";
-				bottom_color = "rgb(" + r2 + ", " + g2 + ", " + b2 + ")";	
-				
-				chart1.glyph.color = [top_color, bottom_color];
+        (function () {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
 
-				chart1.redraw();
-				
-				// Create image of chart1
-				var img = chart1.canvas.toDataURL("image/png");
-				// Add link to download image
-				$("a#export").attr('href', img);
-			}
-				
-		</script>
+    <script>
+        $(document).ready(function () {
+            $('#shapeSlider').slider({
+                min: 1, max: 20, value: 6, slide: function (event, ui) {
+                    redraw();
+                }
+            });
+            $('#laneSlider').slider({
+                min: 10, max: 200, value: 50, slide: function (event, ui) {
+                    redraw();
+                }
+            });
+            $('#rSlider1').slider({
+                min: 0, max: 260, value: 0, slide: function (event, ui) {
+                    redraw();
+                }
+            });
+            $('#bSlider1').slider({
+                min: 0, max: 260, value: 0, slide: function (event, ui) {
+                    redraw();
+                }
+            });
+            $('#gSlider1').slider({
+                min: 0, max: 260, value: 0, slide: function (event, ui) {
+                    redraw();
+                }
+            });
+            $('#rSlider2').slider({
+                min: 0, max: 260, value: 0, slide: function (event, ui) {
+                    redraw();
+                }
+            });
+            $('#bSlider2').slider({
+                min: 0, max: 260, value: 0, slide: function (event, ui) {
+                    redraw();
+                }
+            });
+            $('#gSlider2').slider({
+                min: 0, max: 260, value: 0, slide: function (event, ui) {
+                    redraw();
+                }
+            });
+        });
+    </script>
 
-	</head>  
-	
-	<body onload="draw('canvas')">
-		<div id="description">
-			<h2>Chart Builder</h2><div>(Best viewed in Chrome/Safari)</div><br/>
-			since the chart is being drawn in the browser, changes are instant
-		</div>	
-		</div><br/>
-			<div style="margin-left: auto; margin-right: auto; width:40%">
-				<div style="float:left; width:40%">
-					<span>Gene Shape</span><br/>
-					<div id="shapeSlider" class="slider"></div>
-					<!-- <input id="shapeSlider" type="range" min="0" max="20" value="6" onchange="redraw()" /> -->
-					<br/><span>Track Size</span><br/>
-					<div id="laneSlider" class ="slider"></div>
-					<!-- <input id="laneSlider" type="range" min="10" max="200" value="70" onchange="redraw()" /> -->
-				</div>
-				
+    <script>
 
-				<div style="float:right; width:60%">
-					<div style="float:left">
-						<span>Gene Color 1</span><br/>
-						<span>r</span><div id="rSlider1" class="slider"></div><br/>
-						<span>g</span><div id="gSlider1" class="slider"></div><br/>
-						<span>b</span><div id="bSlider1" class="slider"></div>
-						<!-- <input id="rSlider1" type="range" min="0" max="260" value="0" onchange="redraw()" /><br/>
-						<input id="gSlider1" type="range" min="0" max="260" value="0" onchange="redraw()" /><br/>
-						<input id="bSlider1" type="range" min="0" max="260" value="0" onchange="redraw()" /> -->
-					</div>
-					<div style="float:right; margin-left: 5px">
-						<span>Gene Color 2</span><br/>
-						<span>r</span><div id="rSlider2" class="slider"></div><br/>
-						<span>g</span><div id="gSlider2" class="slider"></div><br/>
-						<span>b</span><div id="bSlider2" class="slider"></div>
-						<!-- <input id="rSlider2" type="range" min="0" max="260" value="0" onchange="redraw()" /><br/>
-						<input id="gSlider2" type="range" min="0" max="260" value="0" onchange="redraw()" /><br/>
-						<input id="bSlider2" type="range" min="0" max="260" value="0" onchange="redraw()" /> -->
-					</div>
-				</div>
+        var chart1;
 
-				<div style="clear:both"></div> <br/>
-			</div>
-		<div id="container">
-			<canvas id="canvas" width="547" height="350"></canvas>  
-			<br/><a id="export">Export as PNG (right click Save As)</a>
-		</div>
+        function draw(canvasName) {
 
-		
-	</body>
-	
+            // Get Canvas and Create Chart
+            var canvas = document.getElementById(canvasName);
+
+            // Create Chart
+            chart1 = new Scribl(canvas, 500);
+            chart1.glyph.color = 'black';
+
+            // Add Genes      position, length, orientation
+            var gene1 = chart1.addGene(900, 750, '-');
+            var gene2 = chart1.addGene(3500, 2500, '+');
+            var gene3 = chart1.addGene(8100, 1000, '-');
+            var gene4 = chart1.addGene(6200, 1500, '+');
+            var gene5 = chart1.addGene(1000, 1000, '-');
+            var gene6 = chart1.addGene(3500, 1500, '-');
+            var gene7 = chart1.addGene(2230, 1000, '+');
+            var gene8 = chart1.addGene(5000, 1500, '+');
+            var gene9 = chart1.addGene(7230, 1000, '-');
+            var gene10 = chart1.addFeature(
+                new Complex('gene', 1500, 5000, '+', [
+                    new BlockArrow('gene', 0, 500, '+'),
+                    new Rect('gene', 2000, 500),
+                    new Arrow('gene', 5000, '+')
+                ])
+            );
+
+            // add name
+            gene3.name = 'Gene 2';
+            gene3.text.color = 'white';
+
+            // Draw Chart
+            chart1.draw();
+
+            // Create image of chart1
+            var img = chart1.canvas.toDataURL('image/png');
+            // Add link to download image
+            $('a#export').attr('href', img);
+
+            // have to reset chart.gene.color to undefined or else it overrides everything downstream ...
+            chart1.glyph.color = undefined;
+        }
+
+        function redraw() {
+            // changeable options
+            var roundness = $('#shapeSlider').slider('option', 'value');
+            var laneSizes = $('#laneSlider').slider('option', 'value');
+            var r1 = $('#rSlider1').slider('option', 'value');
+            var g1 = $('#gSlider1').slider('option', 'value');
+            var b1 = $('#bSlider1').slider('option', 'value');
+            var r2 = $('#rSlider2').slider('option', 'value');
+            var g2 = $('#gSlider2').slider('option', 'value');
+            var b2 = $('#bSlider2').slider('option', 'value');
+            var canvas = document.getElementById('canvas');
+            canvas.height = chart1.getHeight() + 20;
+
+            // set new values
+            chart1.glyph.roundness = roundness;
+            chart1.laneSizes = parseInt(laneSizes);
+
+            // assemble color
+            var top_color = 'rgb(' + r1 + ', ' + g1 + ', ' + b1 + ')';
+            var bottom_color = 'rgb(' + r2 + ', ' + g2 + ', ' + b2 + ')';
+
+            chart1.glyph.color = [top_color, bottom_color];
+
+            chart1.redraw();
+
+            // Create image of chart1
+            var img = chart1.canvas.toDataURL('image/png');
+            // Add link to download image
+            $('a#export').attr('href', img);
+        }
+
+    </script>
+
+</head>
+
+<body onload="draw('canvas')">
+<div id="description">
+    <h2>Chart Builder</h2>
+    <div>(Best viewed in Chrome/Safari)</div>
+    <br/>
+    since the chart is being drawn in the browser, changes are instant
+</div>
+</div><br/>
+<div style="margin-left: auto; margin-right: auto; width:40%">
+    <div style="float:left; width:40%">
+        <span>Gene Shape</span><br/>
+        <div id="shapeSlider" class="slider"></div>
+        <!-- <input id="shapeSlider" type="range" min="0" max="20" value="6" onchange="redraw()" /> -->
+        <br/><span>Track Size</span><br/>
+        <div id="laneSlider" class="slider"></div>
+        <!-- <input id="laneSlider" type="range" min="10" max="200" value="70" onchange="redraw()" /> -->
+    </div>
+
+
+    <div style="float:right; width:60%">
+        <div style="float:left">
+            <span>Gene Color 1</span><br/>
+            <span>r</span>
+            <div id="rSlider1" class="slider"></div>
+            <br/>
+            <span>g</span>
+            <div id="gSlider1" class="slider"></div>
+            <br/>
+            <span>b</span>
+            <div id="bSlider1" class="slider"></div>
+            <!-- <input id="rSlider1" type="range" min="0" max="260" value="0" onchange="redraw()" /><br/>
+            <input id="gSlider1" type="range" min="0" max="260" value="0" onchange="redraw()" /><br/>
+            <input id="bSlider1" type="range" min="0" max="260" value="0" onchange="redraw()" /> -->
+        </div>
+        <div style="float:right; margin-left: 5px">
+            <span>Gene Color 2</span><br/>
+            <span>r</span>
+            <div id="rSlider2" class="slider"></div>
+            <br/>
+            <span>g</span>
+            <div id="gSlider2" class="slider"></div>
+            <br/>
+            <span>b</span>
+            <div id="bSlider2" class="slider"></div>
+            <!-- <input id="rSlider2" type="range" min="0" max="260" value="0" onchange="redraw()" /><br/>
+            <input id="gSlider2" type="range" min="0" max="260" value="0" onchange="redraw()" /><br/>
+            <input id="bSlider2" type="range" min="0" max="260" value="0" onchange="redraw()" /> -->
+        </div>
+    </div>
+
+    <div style="clear:both"></div>
+    <br/>
+</div>
+<div id="container">
+    <canvas id="canvas" width="547" height="350"></canvas>
+    <br/><a id="export">Export as PNG (right click Save As)</a>
+</div>
+
+
+</body>
+
 </html>

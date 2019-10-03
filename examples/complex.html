@@ -1,88 +1,89 @@
-<!DOCTYPE HTML> 
+<!DOCTYPE HTML>
 <html lang="en">
-	<head>
-		<script src="../Scribl.min.js" ></script>
-		<link rel="stylesheet" type="text/css" href="demos.css" />
-		
-		<script> 
+<head>
+    <script src="../dist/scribl.bundle.js"></script>
+    <link rel="stylesheet" type="text/css" href="demos.css"/>
 
-			function draw(canvasName) {  
-					
-					// Get Canvas and Create Chart
-				  	var canvas = document.getElementById(canvasName);  	
-					
-					// Create Chart
-					chart1 = new Scribl(canvas, 500);
-					
+    <script>
 
-					// Add Genes      position, length, orientation, opts
-					gene1 = chart1.addFeature( 
-						new Complex('complex', 1500, 8000, '+', [
-							new Arrow('arrow1',7000, '+', {'color':'none', 'borderColor':'black'}),
-							new BlockArrow('complex',0,500, '+'),
-							new Rect('complex',3500, 2000, {'color':'none', 'borderColor':'black'}),
-							new BlockArrow('complex',700,400, '+')
-						])
-					);
-					
-					// add more subfeatures to an already initialized complex glyph
-					gene2 = chart1.addFeature( new Complex('human', 100, 1000, '+', []));
-					gene2.addSubFeature(new Rect('human', 0, 300));
-					gene2.addSubFeature(new Arrow('human', 1000, '+'));
+        function draw(canvasName) {
 
-					
-					gene3 = chart1.addFeature( new Complex('complex', 0, 8000, '+', [
-						new Rect('complex',0,30),
-						new Rect('complex',50,30),
-						new Rect('complex',100,30),
-						new BlockArrow('complex',140,500, '+'),
-						new Arrow('complex',1500, '+'), 
-						new Rect('complex',1650, 50),
-						new Rect('complex',1750, 100),
-						new Rect('complex',1900, 100),
-						new Rect('complex',2200, 200),
-						new Rect('complex',2500, 50),
-						new Rect('complex',2600, 50),
-						new Rect('complex',2700, 50),
-						new Rect('complex',3500,100), 
-						new Rect('complex',3650, 50),
-						new Rect('complex',3750, 100),
-						new Rect('complex',3900, 100),
-						new Rect('complex',4200, 200),
-						new Rect('complex',4500, 50),
-						new Rect('complex',4600, 50),
-						new Rect('complex',4700, 50),
-						new BlockArrow('complex',6000, 2000, '+')
-					]));
+            // Get Canvas and Create Chart
+            var canvas = document.getElementById(canvasName);
 
-					
-					// set mouseover for whole gene
-					gene1.onMouseover = "Gene 1";
-					// override mouseover for second subfeature;
-					gene1.subFeatures[1].onMouseover = "Exon 1";
-					
-					// remove line color so that it defaults to the gene color
-					gene1.line.color = "";
-					// change line width
-					gene2.line.width = 3;
+            // Create Chart
+            chart1 = new Scribl(canvas, 500);
 
-					// Draw Chart
-					chart1.draw();
-			}
-				
-		</script>
 
-	</head>  
-	
-	<body onload="draw('canvas')">
-		<div id="description">
-			<h2>Complex Glyphs</h2><br/>
-			combine multiple glyphs to act as one
-		</div><br/>
-		<div id="container">
-			<canvas id="canvas" width="547" height="330"></canvas>  
-		</div>
-		
-	</body>
-	
+            // Add Genes      position, length, orientation, opts
+            var gene1 = chart1.addFeature(
+                new Complex('complex', 1500, 8000, '+', [
+                    new Arrow('arrow1', 7000, '+', {'color': 'none', 'borderColor': 'black'}),
+                    new BlockArrow('complex', 0, 500, '+'),
+                    new Rect('complex', 3500, 2000, {'color': 'none', 'borderColor': 'black'}),
+                    new BlockArrow('complex', 700, 400, '+')
+                ])
+            );
+
+            // add more subfeatures to an already initialized complex glyph
+            var gene2 = chart1.addFeature(new Complex('human', 100, 1000, '+', []));
+            gene2.addSubFeature(new Rect('human', 0, 300));
+            gene2.addSubFeature(new Arrow('human', 1000, '+'));
+
+
+            var gene3 = chart1.addFeature(new Complex('complex', 0, 8000, '+', [
+                new Rect('complex', 0, 30),
+                new Rect('complex', 50, 30),
+                new Rect('complex', 100, 30),
+                new BlockArrow('complex', 140, 500, '+'),
+                new Arrow('complex', 1500, '+'),
+                new Rect('complex', 1650, 50),
+                new Rect('complex', 1750, 100),
+                new Rect('complex', 1900, 100),
+                new Rect('complex', 2200, 200),
+                new Rect('complex', 2500, 50),
+                new Rect('complex', 2600, 50),
+                new Rect('complex', 2700, 50),
+                new Rect('complex', 3500, 100),
+                new Rect('complex', 3650, 50),
+                new Rect('complex', 3750, 100),
+                new Rect('complex', 3900, 100),
+                new Rect('complex', 4200, 200),
+                new Rect('complex', 4500, 50),
+                new Rect('complex', 4600, 50),
+                new Rect('complex', 4700, 50),
+                new BlockArrow('complex', 6000, 2000, '+')
+            ]));
+
+
+            // set mouseover for whole gene
+            gene1.onMouseover = 'Gene 1';
+            // override mouseover for second subfeature;
+            gene1.subFeatures[1].onMouseover = 'Exon 1';
+
+            // remove line color so that it defaults to the gene color
+            gene1.line.color = '';
+            // change line width
+            gene2.line.width = 3;
+
+            // Draw Chart
+            chart1.draw();
+        }
+
+    </script>
+
+</head>
+
+<body onload="draw('canvas')">
+<div id="description">
+    <h2>Complex Glyphs</h2><br/>
+    combine multiple glyphs to act as one
+</div>
+<br/>
+<div id="container">
+    <canvas id="canvas" width="547" height="330"></canvas>
+</div>
+
+</body>
+
 </html>

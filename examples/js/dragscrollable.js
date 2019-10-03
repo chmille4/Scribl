@@ -91,7 +91,7 @@ jQuery.fn.dragscrollable = function( options ){
 							event.data.scrollable.scrollTop() - delta.top);
 			
 			// Save where the cursor is
-			event.data.lastCoord={left: event.clientX, top: event.clientY}
+			event.data.lastCoord={left: event.clientX, top: event.clientY};
 			if (event.data.preventDefault) {
                 event.preventDefault();
                 return false;
@@ -106,14 +106,14 @@ jQuery.fn.dragscrollable = function( options ){
                 return false;
             }
 		}
-	}
+	};
 	
 	// set up the initial events
 	this.each(function() {
 		// closure object data for each scrollable element
 		var data = {scrollable : jQuery(this),
 					acceptPropagatedEvent : settings.acceptPropagatedEvent,
-                    preventDefault : settings.preventDefault }
+                    preventDefault : settings.preventDefault };
 		// Set mouse initiating event on the desired descendant
 		jQuery(this).find(settings.dragSelector).
 						bind('mousedown', data, dragscroll.mouseDownHandler);
